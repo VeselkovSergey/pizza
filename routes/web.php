@@ -14,11 +14,14 @@ use App\Http\Controllers;
 */
 
 Route::get('/', function () {
-    return view('home.index')
-        /*->middleware('permissions:home-page,index')
-        ->name('home-page')*/
-        ;
+    return redirect('all-routes');
+//    return view('home.index')
+//        /*->middleware('permissions:home-page,index')
+//        ->name('home-page')*/
+//        ;
 });
+
+Route::view('all-routes', 'debag.all-routes');
 
 Route::get('resources/{directory}/{fileName}', [Controllers\Resources\ResourceController::class, 'GetResources']);
 
@@ -47,5 +50,19 @@ Route::group(['prefix' => 'ingredients'], function() {
 
     Route::get('/create', [Controllers\Ingredients\IngredientsController::class, 'Create'])->name('ingredients-create');
     Route::post('/save', [Controllers\Ingredients\IngredientsController::class, 'Save'])->name('ingredients-save');
+
+});
+
+Route::group(['prefix' => 'supplies'], function() {
+
+    Route::get('/create', [Controllers\Ingredients\IngredientsController::class, 'Create'])->name('supply-create');
+    Route::post('/save', [Controllers\Ingredients\IngredientsController::class, 'Save'])->name('supply-save');
+
+});
+
+Route::group(['prefix' => 'suppliers'], function() {
+
+    Route::get('/create', [Controllers\Ingredients\IngredientsController::class, 'Create'])->name('suppliers-create');
+    Route::post('/save', [Controllers\Ingredients\IngredientsController::class, 'Save'])->name('suppliers-save');
 
 });
