@@ -13,9 +13,40 @@
 
             <div>Свойства</div>
             @foreach($propertiesForProducts as $propertyForProducts)
-                <label for="">{{$propertyForProducts->title . ' - ' . $propertyForProducts->value . ' ' . $propertyForProducts->Type->value_unit}}</label>
-                <input type="checkbox">
+                <div class="border m-5 p-5 w-fit">
+                    <label for="">{{$propertyForProducts->title . ' - ' . $propertyForProducts->value . ' ' . $propertyForProducts->Type->value_unit}}</label>
+                    <input type="checkbox">
+                    <div class="border m-5 p-5 w-fit">
+                        @foreach($ingredients as $ingredient)
+                            <div class="border m-5 p-5 flex w-fit">
+                                <div class="border p-5">
+                                    <label for="">{{$ingredient->title}}</label>
+                                    <input type="checkbox">
+                                </div>
+                                <div class="border p-5">
+                                    <label for="">Количество</label>
+                                    <input type="text">
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             @endforeach
+
+            <div>
+                <label for="">Себестоимость</label>
+                <input type="text">
+            </div>
+
+            <div>
+                <label for="">Наценка</label>
+                <input type="text">
+            </div>
+
+            <div>
+                <label for="">Продажная стоимость</label>
+                <input type="text">
+            </div>
 
             <div>
                 <button class="save-button">Создать</button>

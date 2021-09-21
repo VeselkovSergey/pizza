@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Controllers\Products;
+namespace App\Http\Controllers\Ingredients;
 
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
@@ -11,7 +11,7 @@ use App\Models\Products;
 use App\Models\PropertiesForProducts;
 use Illuminate\Http\Request;
 
-class ProductsController extends Controller
+class IngredientsController extends Controller
 {
     public function __construct()
     {
@@ -20,12 +20,7 @@ class ProductsController extends Controller
 
     public function Create()
     {
-        $propertiesForProducts = PropertiesForProducts::all();
-        $ingredients = Ingredients::all();
-        return view('products.createOrUpdate', [
-            'propertiesForProducts' => $propertiesForProducts,
-            'ingredients' => $ingredients,
-        ]);
+        return view('ingredients.createOrUpdate');
     }
 
     public function Save(Request $request)
@@ -35,7 +30,7 @@ class ProductsController extends Controller
             return ResultGenerate::Error('Пустое название');
         }
 
-        Products::create([
+        Ingredients::create([
             'title' => $title
         ]);
         return ResultGenerate::Success();

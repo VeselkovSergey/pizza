@@ -42,3 +42,10 @@ Route::group(['prefix' => 'type-for-properties'], function() {
     Route::post('/save', [Controllers\TypeForProperties\TypeForPropertiesController::class, 'Save'])->name('type-for-properties-save');
 
 });
+
+Route::group(['prefix' => 'ingredients'], function() {
+
+    Route::get('/create', [Controllers\Ingredients\IngredientsController::class, 'Create'])->name('ingredients-create');
+    Route::post('/save', [Controllers\Ingredients\IngredientsController::class, 'Save'])->name('ingredients-save');
+
+});
