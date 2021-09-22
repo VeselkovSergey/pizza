@@ -4,8 +4,12 @@
 
     <div>
 
-        <form class="supplier-create-or-edit-form" action="" onsubmit="return false;">
+        <form class="supply-create-or-edit-form" action="" onsubmit="return false;">
 
+            <div>
+                <label for="">Поставщик</label>
+                <input class="need-validate" name="title" type="text">
+            </div>
             <div>
                 <label for="">Название</label>
                 <input class="need-validate" name="title" type="text">
@@ -32,7 +36,7 @@
                 title: title,
             }
 
-            if (!CheckingFieldForEmptiness('supplier-create-or-edit-form', true)) {
+            if (!CheckingFieldForEmptiness('supply-create-or-edit-form', true)) {
                 return;
             }
 
