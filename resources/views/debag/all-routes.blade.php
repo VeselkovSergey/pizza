@@ -7,7 +7,7 @@
         <a href="{{route('type-for-properties-create')}}">Новый тип для свойства</a>
         <a href="{{route('ingredients-create')}}">Новый ингредиент</a>
         <a href="{{route('supplier-create')}}">Поставщики</a>
-        <a href="{{route('delivery-create')}}">Новая поставка</a>
+        <a href="{{route('supply-create')}}">Новая поставка</a>
     </div>
 @stop
 

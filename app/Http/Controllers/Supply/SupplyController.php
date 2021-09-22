@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Controllers\Deliveries;
+namespace App\Http\Controllers\Supply;
 
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
@@ -10,9 +10,10 @@ use App\Models\Ingredients;
 use App\Models\ProductProperties;
 use App\Models\Products;
 use App\Models\PropertiesForProducts;
+use App\Models\Supply;
 use Illuminate\Http\Request;
 
-class DeliveriesController extends Controller
+class SupplyController extends Controller
 {
     public function __construct()
     {
@@ -21,7 +22,7 @@ class DeliveriesController extends Controller
 
     public function Create()
     {
-        return view('deliveries.createOrUpdate');
+        return view('Supply.createOrUpdate');
     }
 
     public function Save(Request $request)
@@ -31,7 +32,7 @@ class DeliveriesController extends Controller
             return ResultGenerate::Error('Пустое название');
         }
 
-        Deliveries::create([
+        Supply::create([
             'title' => $title
         ]);
         return ResultGenerate::Success();
