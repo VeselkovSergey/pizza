@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Supply extends Model
 {
+    protected $table = 'supply';
     protected $fillable = [
-        'title',
+        'supplier_id',
+        'supply_date',
+        'payment_type',
     ];
 }

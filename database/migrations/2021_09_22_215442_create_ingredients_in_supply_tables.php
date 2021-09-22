@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTypesForPropertiesTable extends Migration
+class CreateIngredientsInSupplyTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateTypesForPropertiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('types_for_properties', function (Blueprint $table) {
+        Schema::create('ingredients_in_supply', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('value_unit')->comment('единица измерения');
-            $table->timestamps();
+            $table->integer('supply_id');
+            $table->integer('ingredient_id');
+            $table->integer('amount_ingredient');
+            $table->integer('price_ingredient');
         });
     }
 
@@ -28,6 +29,6 @@ class CreateTypesForPropertiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('types_for_properties');
+        Schema::dropIfExists('ingredients_in_supply_tables');
     }
 }

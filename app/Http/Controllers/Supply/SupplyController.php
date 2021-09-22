@@ -4,12 +4,11 @@
 namespace App\Http\Controllers\Supply;
 
 use App\Helpers\ResultGenerate;
+use App\Helpers\StringHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Deliveries;
 use App\Models\Ingredients;
-use App\Models\ProductProperties;
-use App\Models\Products;
-use App\Models\PropertiesForProducts;
+use App\Models\IngredientsInSupply;
+use App\Models\Suppliers;
 use App\Models\Supply;
 use Illuminate\Http\Request;
 
@@ -22,19 +21,38 @@ class SupplyController extends Controller
 
     public function Create()
     {
-        return view('Supply.createOrUpdate');
+        $suppliers = Suppliers::all();
+        $ingredients = Ingredients::all();
+        return view('supply.createOrUpdate', [
+            'suppliers' => $suppliers,
+            'ingredients' => $ingredients,
+        ]);
     }
 
     public function Save(Request $request)
     {
-        $title = $request->title;
-        if (empty($title)) {
-            return ResultGenerate::Error('Пустое название');
-        }
+        $supplierId = $request->supplierId;
+        $dateSupply = $request->dateSupply;
+        $paymentType = $request->paymentType;
+        $allIngredientsInSupplyData = StringHelper::JsonDecode($request->allIngredientsInSupplyData);
 
-        Supply::create([
-            'title' => $title
+        $newSupply = Supply::create([
+            'supplier_id' => $supplierId,
+            'supply_date' => $dateSupply,
+            'payment_type' => $paymentType,
         ]);
+
+        $ingredientInSupply = [];
+        foreach ($allIngredientsInSupplyData as $ingredientInSupplyData) {
+            $ingredientInSupply[] = [
+                'supply_id' => $newSupply->id,
+                'ingredient_id' => $ingredientInSupplyData->id,
+                'amount_ingredient' => $ingredientInSupplyData->amount,
+                'price_ingredient' => $ingredientInSupplyData->price,
+            ];
+        }
+        $newIngredientInSupply = IngredientsInSupply::insert($ingredientInSupply);
+
         return ResultGenerate::Success();
     }
 }

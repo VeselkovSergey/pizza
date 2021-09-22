@@ -26,4 +26,8 @@ class StringHelper
 
         return $value;
     }
+
+    public static function JsonDecode(string $json) {
+        return json_decode($json);
+    }
 }

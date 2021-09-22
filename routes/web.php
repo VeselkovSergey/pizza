@@ -32,17 +32,17 @@ Route::group(['prefix' => 'products'], function() {
 
 });
 
-Route::group(['prefix' => 'properties'], function() {
+Route::group(['prefix' => 'modifications'], function() {
 
-    Route::get('/create', [Controllers\PropertiesForProducts\PropertiesForProductsController::class, 'Create'])->name('property-create');
-    Route::post('/save', [Controllers\PropertiesForProducts\PropertiesForProductsController::class, 'Save'])->name('property-save');
+    Route::get('/create', [Controllers\Modifications\ModificationsController::class, 'Create'])->name('modification-create');
+    Route::post('/save', [Controllers\Modifications\ModificationsController::class, 'Save'])->name('modification-save');
 
 });
 
 Route::group(['prefix' => 'type-for-properties'], function() {
 
-    Route::get('/create', [Controllers\TypeForProperties\TypeForPropertiesController::class, 'Create'])->name('type-for-properties-create');
-    Route::post('/save', [Controllers\TypeForProperties\TypeForPropertiesController::class, 'Save'])->name('type-for-properties-save');
+    Route::get('/create', [Controllers\TypesModifications\TypesModificationsController::class, 'Create'])->name('modification-type-create');
+    Route::post('/save', [Controllers\TypesModifications\TypesModificationsController::class, 'Save'])->name('modification-type-save');
 
 });
 
@@ -50,6 +50,7 @@ Route::group(['prefix' => 'ingredients'], function() {
 
     Route::get('/create', [Controllers\Ingredients\IngredientsController::class, 'Create'])->name('ingredients-create');
     Route::post('/save', [Controllers\Ingredients\IngredientsController::class, 'Save'])->name('ingredients-save');
+    Route::get('/all', [Controllers\Ingredients\IngredientsController::class, 'GetAllIngredients'])->name('all-ingredients');
 
 });
 

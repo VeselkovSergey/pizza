@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TypesForProperties extends Model
+class TypesModifications extends Model
 {
     protected $fillable = [
         'title',

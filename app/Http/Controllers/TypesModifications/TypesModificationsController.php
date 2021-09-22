@@ -1,16 +1,16 @@
 <?php
 
 
-namespace App\Http\Controllers\TypeForProperties;
+namespace App\Http\Controllers\TypesModifications;
 
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
 use App\Models\Products;
-use App\Models\PropertiesForProducts;
-use App\Models\TypesForProperties;
+use App\Models\Modifications;
+use App\Models\TypesModifications;
 use Illuminate\Http\Request;
 
-class TypeForPropertiesController extends Controller
+class TypesModificationsController extends Controller
 {
     public function __construct()
     {
@@ -19,7 +19,7 @@ class TypeForPropertiesController extends Controller
 
     public function Create()
     {
-        return view('typeForProperties.createOrUpdate');
+        return view('typesModifications.createOrUpdate');
     }
 
     public function Save(Request $request)
@@ -33,7 +33,7 @@ class TypeForPropertiesController extends Controller
             return ResultGenerate::Error('Пустое значение');
         }
 
-        TypesForProperties::create([
+        TypesModifications::create([
             'title' => $title,
             'value_unit' => $valueUnit,
         ]);

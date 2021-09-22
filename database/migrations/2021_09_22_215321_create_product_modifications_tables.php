@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductPropertiesTable extends Migration
+class CreateProductModificationsTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateProductPropertiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_properties', function (Blueprint $table) {
+        Schema::create('product_modifications', function (Blueprint $table) {
             $table->id();
             $table->integer('product_id');
-            $table->integer('properties_id');
-            $table->float('cost_price');
+            $table->integer('modification_id');
+//            $table->float('cost_price');
             $table->float('selling_price');
             $table->float('margin');
             $table->timestamps();
@@ -31,6 +31,6 @@ class CreateProductPropertiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_properties');
+        Schema::dropIfExists('product_modifications_tables');
     }
 }

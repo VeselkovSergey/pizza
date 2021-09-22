@@ -6,9 +6,9 @@ namespace App\Http\Controllers\Products;
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
 use App\Models\Ingredients;
-use App\Models\ProductProperties;
+use App\Models\ProductModifications;
 use App\Models\Products;
-use App\Models\PropertiesForProducts;
+use App\Models\Modifications;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -20,10 +20,10 @@ class ProductsController extends Controller
 
     public function Create()
     {
-        $propertiesForProducts = PropertiesForProducts::all();
+        $modifications = Modifications::all();
         $ingredients = Ingredients::all();
         return view('products.createOrUpdate', [
-            'propertiesForProducts' => $propertiesForProducts,
+            'modifications' => $modifications,
             'ingredients' => $ingredients,
         ]);
     }

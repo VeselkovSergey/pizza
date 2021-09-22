@@ -24,7 +24,7 @@
 
     <body>
 
-        <div class="flash-message-container pos-abs z-5 py-5"></div>
+        <div class="flash-message-container pos-fix z-5 py-5"></div>
 
         <header>@include('layouts.header')</header>
 

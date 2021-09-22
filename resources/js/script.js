@@ -7,15 +7,15 @@ function Ajax(url, method, formDataRAW) {
 
         if (typeof (formDataRAW) === "undefined" || formDataRAW === null) {
             formDataRAW = {};
-        } else {
-
         }
 
-        Object.keys(formDataRAW).forEach((key) => {
-            formData.append(key, formDataRAW[key]);
-        });
-
-        console.log(formData)
+        if (typeof formDataRAW === 'object') {
+            Object.keys(formDataRAW).forEach((key) => {
+                formData.append(key, formDataRAW[key]);
+            });
+        } else {
+            formData = formDataRAW;
+        }
 
         let xhr = new XMLHttpRequest();
         xhr.open(method, url, true);

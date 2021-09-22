@@ -4,7 +4,7 @@
 
     <div>
 
-        <form class="properties-create-or-edit-form" action="" onsubmit="return false;">
+        <form class="modifications-create-or-edit-form" action="" onsubmit="return false;">
 
             <div>
                 <label for="">Название</label>
@@ -12,15 +12,15 @@
             </div>
             <div>
                 <label for="">Тип</label>
-                <select name="propertyType">
-                    @foreach($typesProperties as $typeProperty)
-                        <option value="{{$typeProperty->id}}">{{$typeProperty->title . ' - ' . $typeProperty->value_unit}}</option>
+                <select name="modificationType">
+                    @foreach($typeModifications as $typeModification)
+                        <option value="{{$typeModification->id}}">{{$typeModification->title . ' - ' . $typeModification->value_unit}}</option>
                     @endforeach
                 </select>
             </div>
             <div>
                 <label for="">Значение</label>
-                <input class="need-validate" name="propertyValue" type="text">
+                <input class="need-validate" name="modificationValue" type="text">
             </div>
             <div>
                 <button class="save-button">Создать</button>
@@ -40,19 +40,19 @@
         saveButton.addEventListener('click', () => {
 
             let title = document.body.querySelector('input[name="title"]').value;
-            let propertyType = document.body.querySelector('select[name="propertyType"]').value;
-            let propertyValue = document.body.querySelector('input[name="propertyValue"]').value;
+            let modificationType = document.body.querySelector('select[name="modificationType"]').value;
+            let modificationValue = document.body.querySelector('input[name="modificationValue"]').value;
             let data = {
                 title: title,
-                propertyType: propertyType,
-                propertyValue: propertyValue,
+                modificationType: modificationType,
+                modificationValue: modificationValue,
             }
 
-            if (!CheckingFieldForEmptiness('properties-create-or-edit-form', true)) {
+            if (!CheckingFieldForEmptiness('modifications-create-or-edit-form', true)) {
                 return;
             }
 
-            Ajax("{{route('property-save')}}", 'POST', data).then((response) => {
+            Ajax("{{route('modification-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
             })
         });

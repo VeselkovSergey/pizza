@@ -6,9 +6,9 @@ namespace App\Http\Controllers\Ingredients;
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
 use App\Models\Ingredients;
-use App\Models\ProductProperties;
+use App\Models\ProductModifications;
 use App\Models\Products;
-use App\Models\PropertiesForProducts;
+use App\Models\Modifications;
 use Illuminate\Http\Request;
 
 class IngredientsController extends Controller
@@ -34,5 +34,10 @@ class IngredientsController extends Controller
             'title' => $title
         ]);
         return ResultGenerate::Success();
+    }
+
+    public function GetAllIngredients()
+    {
+        return ResultGenerate::Success('', Ingredients::all());
     }
 }

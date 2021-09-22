@@ -1,16 +1,16 @@
 <?php
 
 
-namespace App\Http\Controllers\PropertiesForProducts;
+namespace App\Http\Controllers\Modifications;
 
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
 use App\Models\Products;
-use App\Models\PropertiesForProducts;
-use App\Models\TypesForProperties;
+use App\Models\Modifications;
+use App\Models\TypesModifications;
 use Illuminate\Http\Request;
 
-class PropertiesForProductsController extends Controller
+class ModificationsController extends Controller
 {
     public function __construct()
     {
@@ -19,31 +19,31 @@ class PropertiesForProductsController extends Controller
 
     public function Create()
     {
-        $typesProperties = TypesForProperties::all();
-        return view('properties.createOrUpdate', [
-            'typesProperties' => $typesProperties
+        $typeModifications = TypesModifications::all();
+        return view('modifications.createOrUpdate', [
+            'typeModifications' => $typeModifications
         ]);
     }
 
     public function Save(Request $request)
     {
         $title = $request->title;
-        $propertyType = $request->propertyType;
-        $propertyValue = $request->propertyValue;
+        $modificationType = $request->modificationType;
+        $modificationValue = $request->modificationValue;
         if (empty($title)) {
             return ResultGenerate::Error('Пустое название');
         }
-        if (empty($propertyType)) {
+        if (empty($modificationType)) {
             return ResultGenerate::Error('Пустой тип');
         }
-        if (empty($propertyValue)) {
+        if (empty($modificationValue)) {
             return ResultGenerate::Error('Пустое значение');
         }
 
-        PropertiesForProducts::create([
+        Modifications::create([
             'title' => $title,
-            'type_id' => $propertyType,
-            'value' => $propertyValue,
+            'type_id' => $modificationType,
+            'value' => $modificationValue,
         ]);
         return ResultGenerate::Success();
     }

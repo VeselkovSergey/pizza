@@ -4,7 +4,7 @@
 
     <div>
 
-        <form class="type-for-properties-create-or-edit-form" action="" onsubmit="return false;">
+        <form class="modification-typen-create-or-edit-form" action="" onsubmit="return false;">
 
             <div>
                 <label for="">Название</label>
@@ -38,11 +38,11 @@
                 valueUnit:valueUnit
             }
 
-            if (!CheckingFieldForEmptiness('type-for-properties-create-or-edit-form', true)) {
+            if (!CheckingFieldForEmptiness('modification-type-create-or-edit-form', true)) {
                 return;
             }
 
-            Ajax("{{route('type-for-properties-save')}}", 'POST', data).then((response) => {
+            Ajax("{{route('modification-type-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
             })
         });

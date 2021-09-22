@@ -11,10 +11,10 @@
                 <input class="need-validate" name="title" type="text">
             </div>
 
-            <div>Свойства</div>
-            @foreach($propertiesForProducts as $propertyForProducts)
+            <div>Модификации</div>
+            @foreach($modifications as $modification)
                 <div class="border m-5 p-5 w-fit">
-                    <label for="">{{$propertyForProducts->title . ' - ' . $propertyForProducts->value . ' ' . $propertyForProducts->Type->value_unit}}</label>
+                    <label for="">{{$modification->title . ' - ' . $modification->value . ' ' . $modification->Type->value_unit}}</label>
                     <input type="checkbox">
                     <div class="border m-5 p-5 w-fit">
                         @foreach($ingredients as $ingredient)
@@ -30,23 +30,22 @@
                             </div>
                         @endforeach
                     </div>
+                    <div>
+                        <label for="">Себестоимость</label>
+                        <input type="text">
+                    </div>
+
+                    <div>
+                        <label for="">Наценка</label>
+                        <input type="text">
+                    </div>
+
+                    <div>
+                        <label for="">Продажная стоимость</label>
+                        <input type="text">
+                    </div>
                 </div>
             @endforeach
-
-            <div>
-                <label for="">Себестоимость</label>
-                <input type="text">
-            </div>
-
-            <div>
-                <label for="">Наценка</label>
-                <input type="text">
-            </div>
-
-            <div>
-                <label for="">Продажная стоимость</label>
-                <input type="text">
-            </div>
 
             <div>
                 <button class="save-button">Создать</button>

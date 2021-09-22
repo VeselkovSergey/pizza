@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIngredientsInSupplyTable extends Migration
+class CreateTypesModificationsTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateIngredientsInSupplyTable extends Migration
      */
     public function up()
     {
-        Schema::create('ingredients_in_supply', function (Blueprint $table) {
+        Schema::create('types_modifications', function (Blueprint $table) {
             $table->id();
-            $table->integer('supply_id');
-            $table->integer('ingredient_id');
-            $table->integer('amount_ingredient');
-            $table->integer('price_ingredient');
+            $table->string('title');
+            $table->string('value_unit')->comment('единица измерения');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateIngredientsInSupplyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ingredients_in_supply');
+        Schema::dropIfExists('product_types_modifications_tables');
     }
 }

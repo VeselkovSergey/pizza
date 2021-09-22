@@ -6,9 +6,9 @@ namespace App\Http\Controllers\Suppliers;
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
 use App\Models\Ingredients;
-use App\Models\ProductProperties;
+use App\Models\ProductModifications;
 use App\Models\Products;
-use App\Models\PropertiesForProducts;
+use App\Models\Modifications;
 use App\Models\Suppliers;
 use Illuminate\Http\Request;
 

@@ -1,15 +1,15 @@
 <?php
 
 
-namespace App\Http\Controllers\ProductProperties;
+namespace App\Http\Controllers\ProductModifications;
 
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
-use App\Models\ProductProperties;
+use App\Models\ProductModifications;
 use App\Models\Products;
 use Illuminate\Http\Request;
 
-class ProductPropertiesController extends Controller
+class ProductModificationsController extends Controller
 {
     public function __construct()
     {

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePropertiesForProductsTable extends Migration
+class CreateModificationsTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePropertiesForProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('properties_for_products', function (Blueprint $table) {
+        Schema::create('modifications', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->integer('type_id');
@@ -29,6 +29,6 @@ class CreatePropertiesForProductsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('properties_for_products');
+        Schema::dropIfExists('modifications_tables');
     }
 }
