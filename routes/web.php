@@ -53,16 +53,16 @@ Route::group(['prefix' => 'ingredients'], function() {
 
 });
 
-Route::group(['prefix' => 'supplies'], function() {
+Route::group(['prefix' => 'deliveries'], function() {
 
-    Route::get('/create', [Controllers\Ingredients\IngredientsController::class, 'Create'])->name('supply-create');
-    Route::post('/save', [Controllers\Ingredients\IngredientsController::class, 'Save'])->name('supply-save');
+    Route::get('/create', [Controllers\Deliveries\DeliveriesController::class, 'Create'])->name('delivery-create');
+    Route::post('/save', [Controllers\Deliveries\DeliveriesController::class, 'Save'])->name('delivery-save');
 
 });
 
 Route::group(['prefix' => 'suppliers'], function() {
 
-    Route::get('/create', [Controllers\Ingredients\IngredientsController::class, 'Create'])->name('suppliers-create');
-    Route::post('/save', [Controllers\Ingredients\IngredientsController::class, 'Save'])->name('suppliers-save');
+    Route::get('/create', [Controllers\Suppliers\SuppliersController::class, 'Create'])->name('supplier-create');
+    Route::post('/save', [Controllers\Suppliers\SuppliersController::class, 'Save'])->name('supplier-save');
 
 });
