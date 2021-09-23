@@ -3,6 +3,7 @@
 @section('content')
 
     <h4>### Добавить срок годности для каждого ингредиента. Аналитика по срокам, устраиваем акцию на продукцию с данным ингридиентом. И следим что используется.</h4>
+    <h4>### Доделать подтягивание цен из пред. поставок</h4>
 
     <div>
 
@@ -152,7 +153,6 @@
             });
 
             inputIngredientSum.addEventListener('change', (event) => {
-                console.log(123)
                 CountSumTotal();
             });
 
@@ -178,7 +178,6 @@
             let totalSumSupply = document.body.querySelector('input[name="totalSumSupply"]');
             let totalSumSupplyValue = 0;
             allIngredientsSum.forEach((sum) => {
-                console.log(parseFloat(sum.value))
                 totalSumSupplyValue += parseFloat(sum.value);
             });
             totalSumSupply.value = parseFloat(totalSumSupplyValue).toFixed(2);
@@ -197,7 +196,6 @@
             }
             return generatedIngredientsSelector;
         }
-
 
         function CountSum(amount, price) {
             if (amount !== '' && price !== '') {

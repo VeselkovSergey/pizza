@@ -2,6 +2,8 @@
 
 @section('content')
 
+    <h4>### Доделать подтягивание цен из пред. поставок</h4>
+
     <div>
 
         <form class="product-create-or-edit-form" action="" onsubmit="return false;">
@@ -113,6 +115,10 @@
                                                             '<div>' +
                                                                 '<label>Количество</label>' +
                                                                 '<input type="text">' +
+                                                            '</div>' +
+                                                            '<div>' +
+                                                                '<label>Стоимость</label>' +
+                                                                '<input type="text" readonly>' +
                                                             '</div>' +
                                                             '<div>' +
                                                                 '<button class="delete-ingredient-button">Удалить ингредиент</button>' +
