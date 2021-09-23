@@ -34,6 +34,11 @@
             </div>
 
             <div>
+                <label>Сумма</label>
+                <input name="totalSumSupply" type="text" readonly value="0">
+            </div>
+
+            <div>
                 <button class="add-ingredients-in-supply-button">Добавить товар в поставку</button>
             </div>
 
@@ -111,7 +116,7 @@
             rowIngredient.classList.add('border');
             rowIngredient.innerHTML =   '<div class="m-5">' +
                                             '<label for="">Товар</label>' +
-                                            GeneratedInputIngredients() +
+                                            GenerateIngredientsSelector() +
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<label for="">Количество</label>' +
@@ -123,7 +128,7 @@
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<label for="">Сумма</label>' +
-                                            '<input class="need-validate" name="sum" type="text" readonly>' +
+                                            '<input class="need-validate" name="sum" type="text" value="0" readonly>' +
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<button class="delete-ingredient-button">Удалить</button>' +
@@ -146,41 +151,57 @@
                 console.log(ingredient)
             });
 
+            inputIngredientSum.addEventListener('change', (event) => {
+                console.log(123)
+                CountSumTotal();
+            });
+
             inputIngredientAmount.addEventListener('input', (event) => {
                 let amount = inputIngredientAmount.value;
                 let price = inputIngredientPrice.value;
                 let countSum = CountSum(amount, price);
-                inputIngredientSum.value = countSum;
+                inputIngredientSum.value = parseFloat(countSum).toFixed(2);
+                CountSumTotal();
             });
 
             inputIngredientPrice.addEventListener('input', (event) => {
                 let price = inputIngredientPrice.value;
                 let amount = inputIngredientAmount.value;
                 let countSum = CountSum(amount, price);
-                inputIngredientSum.value = countSum;
+                inputIngredientSum.value = parseFloat(countSum).toFixed(2);
+                CountSumTotal();
             });
         }
 
-        let generatedInputIngredients = null;
+        function CountSumTotal() {
+            let allIngredientsSum = document.body.querySelectorAll('input[name="sum"]');
+            let totalSumSupply = document.body.querySelector('input[name="totalSumSupply"]');
+            let totalSumSupplyValue = 0;
+            allIngredientsSum.forEach((sum) => {
+                console.log(parseFloat(sum.value))
+                totalSumSupplyValue += parseFloat(sum.value);
+            });
+            totalSumSupply.value = parseFloat(totalSumSupplyValue).toFixed(2);
+        }
 
-        function GeneratedInputIngredients() {
-            if (generatedInputIngredients === null) {
-                let tempGeneratedInputIngredients = '<select name="ingredient">';
-                tempGeneratedInputIngredients += '<option value="null" disabled selected>Выберите продукт</option>';
+        let generatedIngredientsSelector = null;
+        function GenerateIngredientsSelector() {
+            if (generatedIngredientsSelector === null) {
+                let tempGenerateIngredientsSelector = '<select name="ingredient">';
+                tempGenerateIngredientsSelector += '<option value="null" disabled selected>Выберите продукт</option>';
                 Object.keys(allIngredients).forEach((key) => {
-                    tempGeneratedInputIngredients += '<option value="' + allIngredients[key]['id'] + '">' + allIngredients[key]['title'] + '</option>';
+                    tempGenerateIngredientsSelector += '<option value="' + allIngredients[key]['id'] + '">' + allIngredients[key]['title'] + '</option>';
                 });
-                tempGeneratedInputIngredients += '</select>';
-                generatedInputIngredients = tempGeneratedInputIngredients;
+                tempGenerateIngredientsSelector += '</select>';
+                generatedIngredientsSelector = tempGenerateIngredientsSelector;
             }
-            return generatedInputIngredients;
-
+            return generatedIngredientsSelector;
         }
 
 
         function CountSum(amount, price) {
             if (amount !== '' && price !== '') {
-                return amount * price;
+                return parseFloat(amount).toFixed(2) * parseFloat(price).toFixed(2);
             } else {
                 return 0;
             }
@@ -189,7 +210,7 @@
         let allIngredients = null;
         Ajax("{{route('all-ingredients')}}").then((response) => {
             allIngredients = response.result;
-            GeneratedInputIngredients();
+            GenerateIngredientsSelector();
         });
 
     </script>

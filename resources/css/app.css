@@ -5,3 +5,7 @@ label {
 .invalid-value {
     border-color: red;
 }
+
+input[readonly] {
+    background-color: #dee0e4;
+}

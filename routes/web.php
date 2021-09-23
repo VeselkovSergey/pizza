@@ -36,10 +36,11 @@ Route::group(['prefix' => 'modifications'], function() {
 
     Route::get('/create', [Controllers\Modifications\ModificationsController::class, 'Create'])->name('modification-create');
     Route::post('/save', [Controllers\Modifications\ModificationsController::class, 'Save'])->name('modification-save');
+    Route::get('/all', [Controllers\Modifications\ModificationsController::class, 'GetAllModifications'])->name('all-modifications');
 
 });
 
-Route::group(['prefix' => 'type-for-properties'], function() {
+Route::group(['prefix' => 'types-modifications'], function() {
 
     Route::get('/create', [Controllers\TypesModifications\TypesModificationsController::class, 'Create'])->name('modification-type-create');
     Route::post('/save', [Controllers\TypesModifications\TypesModificationsController::class, 'Save'])->name('modification-type-save');

@@ -47,4 +47,9 @@ class ModificationsController extends Controller
         ]);
         return ResultGenerate::Success();
     }
+
+    public function GetAllModifications()
+    {
+        return ResultGenerate::Success('', Modifications::all());
+    }
 }
