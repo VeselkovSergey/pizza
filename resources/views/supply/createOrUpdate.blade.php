@@ -120,11 +120,11 @@
                                             GenerateIngredientsSelector() +
                                         '</div>' +
                                         '<div class="m-5">' +
-                                            '<label for="">Количество</label>' +
+                                            '<label for="">Количество (гр/мл)</label>' +
                                             '<input class="need-validate" name="amount" type="text">' +
                                         '</div>' +
                                         '<div class="m-5">' +
-                                            '<label for="">Цена</label>' +
+                                            '<label for="">Цена за гр/мл</label>' +
                                             '<input class="need-validate" name="price" type="text">' +
                                         '</div>' +
                                         '<div class="m-5">' +

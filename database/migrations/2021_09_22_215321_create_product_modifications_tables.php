@@ -19,7 +19,7 @@ class CreateProductModificationsTables extends Migration
             $table->integer('modification_id');
 //            $table->float('cost_price');
 //            $table->float('margin');
-            $table->float('selling_price');
+            $table->string('selling_price');
             $table->timestamps();
         });
     }

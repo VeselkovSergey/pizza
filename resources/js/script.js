@@ -1,4 +1,4 @@
-function Ajax(url, method, formDataRAW) {
+function Ajax22(url, method, formDataRAW) {
     return new Promise(function (resolve, reject) {
         let formData = new FormData();
         if (typeof (method) === "undefined" || method === null) {
@@ -46,11 +46,87 @@ function Ajax(url, method, formDataRAW) {
     });
 }
 
+function Ajax(url, method, formDataRAW) {
+    return new Promise(function(resolve, reject) {
+        let formData = new FormData();
+        if ( typeof(method) === "undefined" || method === null ) {
+            method = 'get';
+        }
+
+        if ( typeof(formDataRAW) === "undefined" || formDataRAW === null ) {
+            formDataRAW = {};
+        } else {
+            Object.keys(formDataRAW).forEach((key) => {
+                if (Array.isArray(formDataRAW[key])) {
+                    formDataRAW[key].forEach((value) => {
+                        //console.log(value)
+                        formData.append(key, value);
+                    });
+                    //formDataRAW[key] = JSON.stringify(formDataRAW[key]);
+
+                } else {
+                    formData.append(key, formDataRAW[key]);
+                }
+            });
+        }
+
+
+
+        var xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+
+        let csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
+
+        xhr.onload = function() {
+            if (this.status == 200) {
+                try {
+                    resolve(JSON.parse(this.response));
+                } catch {
+                    resolve(this.response);
+                }
+            } else {
+                var error = new Error(this.statusText);
+                error.code = this.status;
+                reject(error);
+            }
+        };
+
+        xhr.onerror = function() {
+            reject(new Error("Network Error"));
+        };
+
+        xhr.send(formData);
+    });
+}
+
+function GetDataFormContainer(container, startElement = document.body) {
+    let data = [];
+    startElement.querySelectorAll('.' + container + ' input, .' + container + ' select, .' + container + ' textarea').forEach((el) => {
+        if (el.type === 'file') {
+            for (let i = 0; i < el.files.length; i++) {
+                data[el.id + '-' + i] = el.files[i];
+            }
+        } else {
+            if (el.name === '') {
+                data[el.id] = el.value;
+            } else {
+                if (data[el.name] === undefined) {
+                    data[el.name] = [];
+                }
+                let value = el.type !== 'checkbox' ? el.value : el.checked
+                data[el.name].push(value);
+            }
+        }
+    });
+    return data;
+}
+
 function CheckingFieldForEmptiness(container, ShowFlashMessage = false) {
     let check = true;
     document.body.querySelectorAll('.' + container + ' .need-validate').forEach((element) => {
         let strValue = element.value;
-        if (strValue === '' || strValue === null || strValue === undefined) {
+        if (strValue === '' || strValue === null ||strValue === 'null' || strValue === undefined) {
             check = false;
             element.classList.add('invalid-value');
             element.addEventListener('input', () => {
@@ -66,7 +142,7 @@ function CheckingFieldForEmptiness(container, ShowFlashMessage = false) {
 
 function FieldCorrection(element) {
     let strValue = element.value;
-    if (strValue !== '' && strValue !== null && strValue !== undefined) {
+    if (strValue !== '' && strValue !== null && strValue !== 'null' && strValue !== undefined) {
         element.classList.remove('invalid-value');
         element.removeEventListener('input', null);
     }

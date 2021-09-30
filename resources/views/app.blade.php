@@ -30,8 +30,6 @@
 
         <main class="m-25">@yield('content')</main>
 
-        <div class="hide csrf_token">{{csrf_token()}}</div>
-
         <script src="{{ asset('resources/js/script.js') }}"></script>
 
         @yield('js')
