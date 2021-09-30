@@ -31,7 +31,6 @@ class ProductsController extends Controller
 
     public function Save(Request $request)
     {
-
         $title = $request->title;
         $modifications = $request->modifications;
         if (empty($title)) {

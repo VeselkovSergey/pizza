@@ -59,6 +59,9 @@
 
             Ajax("{{route('product-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
+                if (response.status === true) {
+                    location.reload();
+                }
             })
         });
 
