@@ -1,5 +1,10 @@
 label {
     display: block;
+    width: 100%;
+}
+
+textarea {
+    resize: vertical;
 }
 
 .invalid-value {
@@ -10,6 +15,12 @@ input[readonly] {
     background-color: #dee0e4;
 }
 
-.product-window-shadow {
+.product-window-shadow, .basket-window-shadow {
     background-color: rgba(0, 0, 0, 0.5);
+}
+
+input[type='text'], textarea {
+    border: 1px solid #cbcdd1;
+    padding: 5px 10px;
+    border-radius: 5px;
 }

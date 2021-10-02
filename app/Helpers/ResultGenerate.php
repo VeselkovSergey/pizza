@@ -18,7 +18,7 @@ class ResultGenerate
             'status' => $status,
             'message' => $message,
             'result' => $object,
-        ]);
+        ], JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -33,6 +33,6 @@ class ResultGenerate
             'status' => $status,
             'message' => $message,
             'result' => $object,
-        ]);
+        ], JSON_UNESCAPED_UNICODE);
     }
 }

@@ -4,7 +4,7 @@
 
     <style>
 
-        input[type="radio"]:checked + label {
+        input[type="radio"]:checked.modification-input + label {
             background-color: #FFFFFF;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
         }
@@ -47,7 +47,7 @@
 
                 <div class="flex">
 
-                    <div class="border p-10 w-50">от {{$product->MinimumPrice()}} ₽</div>
+                    <div class="border p-10 w-50">от {{$product->minimumPrice}} ₽</div>
 
                     <div class="w-50">
                         <button class="w-100 h-100">в корзину</button>
@@ -74,45 +74,34 @@
             });
         });
 
+        let modificationSelected = null;
         function ProductWindowGenerator(productId) {
 
             let productTitle = allProducts['product-'+productId].title;
-            ModificationsGenerate(productId);
 
             let productWindow = document.createElement('div');
-            productWindow.className = 'product-window w-100 h-100 pos-fix';
+            productWindow.className = 'product-window w-100 h-100 pos-fix z-2';
             productWindow.innerHTML =
                 '<div class="product-window-shadow w-100 h-100">' +
                 '</div>' +
                 '<div class="pos-abs bg-white border-radius-10 scroll-off" style="top: 50px;left: calc(50% - 20%); width: 40%">' +
-                    '<div class="button-close-product-window pos-abs flex cp" style="right: 10px; top: 10px">'+SvgCloseButton+'</div>' +
-                    '<div class="flex">' +
-                        '<div class="w-50 m-25">' +
-                            '<div>' +
-                                '<img src="http://pizza.local/img-pizza.jpeg" class="w-100" alt="">' +
+                    '<div class="button-close-product-window pos-abs flex cp" style="right: 20px; top: 20px">'+SvgCloseButton+'</div>' +
+                    '<div class="scroll-auto" style="max-height: calc(100vh - 100px);">' +
+                        '<div class="flex">' +
+                            '<div class="w-50 m-25">' +
+                                '<div>' +
+                                    '<img src="http://pizza.local/img-pizza.jpeg" class="w-100" alt="">' +
+                                '</div>' +
+                                '<div>традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</div>' +
                             '</div>' +
-                            '<div>традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</div>' +
-                        '</div>' +
-                        '<div class="w-50 flex-column p-25" style="background: rgb(252, 252, 252);">' +
-                            '<div class="text-center">'+productTitle+'</div>' +
-                            IngredientsGenerator(productId) +
-                            // '<div>Ингредиенты</div>' +
-                            ModificationsGenerate(productId) +
-                            // '<div class="container-modification">' +
-                            //     '<div>' +
-                            //         '<input name="mod" class="hide" id="1" type="radio" checked/>' +
-                            //         '<label class="modification-button" for="1">Модификатор 1</label>' +
-                            //     '</div>' +
-                            //     '<div>' +
-                            //         '<input name="mod" class="hide" id="2" type="radio"/>' +
-                            //         '<label class="modification-button" for="2">Модификатор 2</label>' +
-                            //     '</div>' +
-                            //     '<div>' +
-                            //         '<input name="mod" class="hide" id="3" type="radio"/>' +
-                            //         '<label class="modification-button" for="3">Модификатор 3</label>' +
-                            //     '</div>' +
-                            // '</div>' +
-                            '<div class="container-button-put-in-basket mt-a mx-a w-75"><button class="button-put-in-basket w-100 p-5 cp">в корзину</button></div>' +
+                            '<div class="w-50 flex-column p-25" style="background: rgb(252, 252, 252);">' +
+                                '<div class="text-center">'+productTitle+'</div>' +
+                                '<div class="container-ingredients">' +
+                                    IngredientsGenerator(productId) +
+                                '</div>'+
+                                ModificationsGenerate(productId) +
+                                '<div class="container-button-put-in-basket mt-a mx-a w-75"><button class="button-put-in-basket w-100 p-5 cp">в корзину</button></div>' +
+                            '</div>' +
                         '</div>' +
                     '</div>' +
                 '</div>';
@@ -128,23 +117,35 @@
             });
 
             let buttonPutInBasket = productWindow.querySelector('.button-put-in-basket');
-            buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + startPriceModification + ' ₽';
+            buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + startSellingPriceModification + ' ₽';
 
             productWindow.querySelectorAll('.modification-button').forEach((el) => {
                 el.addEventListener('click', () => {
-                   let priceModification = el.dataset.priceModification;
-                    buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + priceModification + ' ₽';
+                    let productId = el.dataset.productId;
+                    let modificationType = el.dataset.modificationType;
+                    let modificationId = el.dataset.modificationId;
+                    let modification = allProducts[productId]['modifications'][modificationType][modificationId];
+                    let sellingPriceModification = modification.sellingPrice;
+                    let ingredients = IngredientsGenerator(null, modification);
+                    let containerIngredients = productWindow.querySelector('.container-ingredients');
+                    containerIngredients.innerHTML = ingredients;
+                    buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + sellingPriceModification + ' ₽';
+                    modificationSelected = {
+                        product: allProducts[productId],
+                        modification: allProducts[productId]['modifications'][modificationType][modificationId],
+                    }
                 });
             });
 
             buttonPutInBasket.addEventListener('click', () => {
-                FlashMessage('На эту кнопку товар добавляется в корзину');
+                FlashMessage('Добавлено: <br/>' + modificationSelected.product.title + ', ' + modificationSelected.modification.title + ' ' + modificationSelected.modification.value);
+                AddProductInBasket(modificationSelected);
             });
 
             document.body.prepend(productWindow);
         }
 
-        let startPriceModification = 0;
+        let startSellingPriceModification = 0;
         function ModificationsGenerate(productId) {
             let containerAllModifications = '<div>';
             Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
@@ -154,12 +155,18 @@
                 Object.keys(modificationType).forEach(function (modificationId) {
                     let modification = modificationType[modificationId];
                     let checkedInput = i === 0 ? 'checked' : '';
-                    i === 0 ? startPriceModification = modification.sellingPrice : '';
+                    if(i === 0) {
+                        startSellingPriceModification = modification.sellingPrice;
+                        modificationSelected = {
+                            product: allProducts['product-'+productId],
+                            modification: modificationType[modificationId],
+                        }
+                    }
                     let buttonWidth = 'width:' + (100 / modification.modificationTypeCount) + '%;';
                     let modificationIdHTML =
                         '<div class="text-center" style="' + buttonWidth + '">' +
-                            '<input name="' + modificationTypeId + '" class="hide" id="' + modificationId + '" type="radio" ' + checkedInput + '/>' +
-                            '<label class="modification-button" data-price-modification="' + modification.sellingPrice + '" for="' + modificationId + '">' + modification.title + ' - ' + modification.value + '</label>' +
+                            '<input name="' + modificationTypeId + '" class="hide modification-input" id="' + modificationId + '" type="radio" ' + checkedInput + '/>' +
+                            '<label class="modification-button" data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.title + ' - ' + modification.value + '</label>' +
                         '</div>';
                     modificationTypeHTML += modificationIdHTML;
                     i++;
@@ -171,70 +178,36 @@
             return containerAllModifications;
         }
 
-        function IngredientsGenerator(productId) {
+        function IngredientsGenerator(productId, modification) {
             let containerAllModifications = '<div class="flex-wrap">';
-            Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
-                let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
-                let i = 0;
-                Object.keys(modificationType).forEach(function (modificationId) {
-                    let modification = modificationType[modificationId];
-                    let ingredients = modification.ingredients;
-                    Object.keys(ingredients).forEach(function (ingredientId) {
-                        let ingredient = ingredients[ingredientId];
-                        if (i === 0) {
-                            containerAllModifications += '<div class="p-10 flex-center"><input checked type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">' + ingredient.title + '</label></div>';
-                        }
+            if (modification === undefined) {
+                Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
+                    let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
+                    let i = 0;
+                    Object.keys(modificationType).forEach(function (modificationId) {
+                        let modification = modificationType[modificationId];
+                        let ingredients = modification.ingredients;
+                        Object.keys(ingredients).forEach(function (ingredientId) {
+                            let ingredient = ingredients[ingredientId];
+                            if (i === 0) {
+                                containerAllModifications += '<div class="p-5 flex-center"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">' + ingredient.title + '</label></div>';
+                            }
+                        });
+                        i++;
                     });
-                    i++;
                 });
-            });
+            } else {
+                let ingredients = modification.ingredients;
+                Object.keys(ingredients).forEach(function (ingredientId) {
+                    let ingredient = ingredients[ingredientId];
+                    containerAllModifications += '<div class="p-5 flex-center"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">' + ingredient.title + '</label></div>';
+                });
+            }
             containerAllModifications += '</div>';
             return containerAllModifications;
         }
 
-        let allProducts = [];
-        @foreach($allProducts as $product)  {{-- крутим продукты --}}
-
-            allProducts['product-{{$product->id}}'] = {
-                title: '{{$product->title}}',
-                modifications: [],
-            };
-
-            @php
-            // массив для однотипных модификаций
-            $arrModifications = [];
-            @endphp
-
-            @foreach($product->Modifications as $modification)  {{-- крутим модификации --}}
-
-                @if(!in_array($modification->Modification->type_id, $arrModifications))   {{-- если еще не добавляли данную модификацию --}}
-                    @php
-                        $arrModifications[] = $modification->Modification->type_id;  // добавляем тип модификации который еще не добавляли
-                    @endphp
-                    allProducts['product-{{$product->id}}']['modifications']['modification-type-{{$modification->Modification->type_id}}'] = [];   {{-- создаем под тип модификации массив --}}
-                @endif
-
-                allProducts['product-{{$product->id}}']['modifications']['modification-type-{{$modification->Modification->type_id}}']['modification-{{$modification->id}}'] = {
-                    id: '{{$modification->id}}',
-                    title: '{{$modification->Modification->title}}',
-                    value: '{{$modification->Modification->value}}',
-                    sellingPrice: '{{$modification->selling_price}}',
-                    modificationTypeCount: '{{sizeof($product->Modifications)}}',
-                    ingredients: [],
-                };
-
-                @foreach($modification->Ingredients as $ingredient)  {{-- крутим ингредиенты --}}
-
-                    allProducts['product-{{$product->id}}']['modifications']['modification-type-{{$modification->Modification->type_id}}']['modification-{{$modification->id}}']['ingredients']['ingredient-{{$ingredient->Ingredient->id}}'] = {
-                        id: '{{$ingredient->Ingredient->id}}',
-                        title: '{{$ingredient->Ingredient->title}}',
-                    }
-
-                @endforeach
-
-            @endforeach
-
-        @endforeach
+        let allProducts = JSON.parse('@json($allProducts)');
 
     </script>
 

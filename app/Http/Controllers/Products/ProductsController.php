@@ -3,6 +3,9 @@
 
 namespace App\Http\Controllers\Products;
 
+use App\Helpers\ArrayHelper;
+use App\Helpers\Files;
+use App\Models\Files as FilesDB;
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
 use App\Models\Ingredients;
@@ -15,9 +18,70 @@ use function GuzzleHttp\Promise\all;
 
 class ProductsController extends Controller
 {
-    public function __construct()
-    {
 
+    public function GetAllProducts()
+    {
+        $allProductsJSON = Files::GetFile('allProduct');
+        if ($allProductsJSON !== false) {
+            return $allProductsJSON->contentFile;
+        } else {
+            return self::UpdateFileAllProducts()->contentFile;
+        }
+
+    }
+
+    public static function UpdateFileAllProducts()
+    {
+        $allProductsDB = Products::all();
+        $allProducts = [];
+        foreach ($allProductsDB as $product) {
+
+            $allProducts['product-' . $product->id] = [
+                'id' => $product->id,
+                'title' => $product->title,
+                'minimumPrice' => $product->MinimumPrice(),
+                'modifications' => [],
+            ];
+
+            $arrModifications = [];
+
+            foreach ($product->Modifications as $modification) {
+
+                if (!in_array($modification->Modification->type_id, $arrModifications)) {
+                    $arrModifications[] = $modification->Modification->type_id;  // добавляем тип модификации который еще не добавляли
+
+                    $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id] = [];
+
+                }
+
+                $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id]['modification-' . $modification->id] = [
+                    'id' => $modification->id,
+                    'title' => $modification->Modification->title,
+                    'value' => $modification->Modification->value,
+                    'sellingPrice' => $modification->selling_price,
+                    'modificationTypeCount' => sizeof($product->Modifications),
+                    'ingredients' => [],
+                ];
+
+                foreach ($modification->Ingredients as $ingredient) {
+
+                    $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id]['modification-' . $modification->id]['ingredients']['ingredient-' . $ingredient->Ingredient->id] = [
+                        'id' => $ingredient->Ingredient->id,
+                        'title' => $ingredient->Ingredient->title,
+                    ];
+                }
+            }
+        }
+
+        $oldFileAllProducts = Files::GetFile('allProduct');
+
+        $fileAllProducts = Files::MakeFile(ArrayHelper::ArrayToObject($allProducts), 'allProduct', 'json');
+
+        if (!empty($oldFileAllProducts) && $fileAllProducts) {
+            Files::DeleteFiles($oldFileAllProducts->modelFile->id);
+        }
+
+        return $fileAllProducts;
     }
 
     public function IndexAdmin()

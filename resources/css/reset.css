@@ -5,3 +5,8 @@ body {
 *, *:focus, *:hover {
     outline: none;
 }
+
+.clear-button {
+    border: unset;
+    background-color: unset;
+}

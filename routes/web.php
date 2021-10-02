@@ -19,7 +19,7 @@ Route::get('/', function () {
 //        /*->middleware('permissions:home-page,index')
 //        ->name('home-page')*/
 //        ;
-});
+})->name('home-page');
 
 Route::view('all-routes', 'debag.all-routes');
 
@@ -34,6 +34,7 @@ Route::group(['prefix' => 'catalog'], function() {
 Route::group(['prefix' => 'products'], function() {
 
     Route::get('/all-admin', [Controllers\Products\ProductsController::class, 'IndexAdmin'])->name('all-products-admin-page');
+    Route::get('/all-products', [Controllers\Products\ProductsController::class, 'GetAllProducts'])->name('all-products');
     Route::get('/create', [Controllers\Products\ProductsController::class, 'Create'])->name('product-create');
     Route::post('/save', [Controllers\Products\ProductsController::class, 'Save'])->name('product-save');
 

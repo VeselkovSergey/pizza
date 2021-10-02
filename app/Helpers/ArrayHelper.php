@@ -23,4 +23,19 @@ class ArrayHelper
 
         return $new;
     }
+
+    public static function ArrayToObject($arr)
+    {
+        if (is_array($arr)) {
+            $new = [];
+            foreach ($arr as $key => $val) {
+                $new[$key] = self::ArrayToObject($val);
+            }
+            $new = (object)$new;
+        } else {
+            $new = $arr;
+        }
+
+        return $new;
+    }
 }

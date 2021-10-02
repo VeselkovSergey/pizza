@@ -1,4 +1,7 @@
-const SvgCloseButton = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16"> <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"/> </svg>'
+const SvgCloseButton = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16"> <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"/> </svg>';
+const SvgPlusButton = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16"> <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/> </svg>';
+const SvgMinusButton = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16"> <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/> </svg>';
+const SvgTrashButton = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"> <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/> <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/> </svg>';
 
 function Ajax22(url, method, formDataRAW) {
     return new Promise(function (resolve, reject) {
@@ -49,13 +52,13 @@ function Ajax22(url, method, formDataRAW) {
 }
 
 function Ajax(url, method, formDataRAW) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         let formData = new FormData();
-        if ( typeof(method) === "undefined" || method === null ) {
+        if (typeof (method) === "undefined" || method === null) {
             method = 'get';
         }
 
-        if ( typeof(formDataRAW) === "undefined" || formDataRAW === null ) {
+        if (typeof (formDataRAW) === "undefined" || formDataRAW === null) {
             formDataRAW = {};
         } else {
             Object.keys(formDataRAW).forEach((key) => {
@@ -73,14 +76,13 @@ function Ajax(url, method, formDataRAW) {
         }
 
 
-
         var xhr = new XMLHttpRequest();
         xhr.open(method, url, true);
 
         let csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
 
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (this.status == 200) {
                 try {
                     resolve(JSON.parse(this.response));
@@ -94,7 +96,7 @@ function Ajax(url, method, formDataRAW) {
             }
         };
 
-        xhr.onerror = function() {
+        xhr.onerror = function () {
             reject(new Error("Network Error"));
         };
 
@@ -128,7 +130,7 @@ function CheckingFieldForEmptiness(container, ShowFlashMessage = false) {
     let check = true;
     document.body.querySelectorAll('.' + container + ' .need-validate').forEach((element) => {
         let strValue = element.value;
-        if (strValue === '' || strValue === null ||strValue === 'null' || strValue === undefined) {
+        if (strValue === '' || strValue === null || strValue === 'null' || strValue === undefined) {
             check = false;
             element.classList.add('invalid-value');
             element.addEventListener('input', () => {
@@ -160,6 +162,12 @@ function HideElement(element) {
 
 function FlashMessage(message, autoClose = true, timeout = 3000) {
     let flashMessageContainer = document.body.querySelector('.flash-message-container');
+    if (flashMessageContainer === null) {
+        flashMessageContainer = document.createElement('div');
+        flashMessageContainer.className = 'flash-message-container pos-fix z-5 py-5';
+        document.body.prepend(flashMessageContainer);
+    }
+
     let newMessage = document.createElement('div');
     newMessage.classList.add('flash-message-text');
     newMessage.innerHTML = message;
@@ -167,6 +175,282 @@ function FlashMessage(message, autoClose = true, timeout = 3000) {
     if (autoClose) {
         setTimeout(() => {
             newMessage.remove();
+            if (flashMessageContainer.childNodes.length === 0) {
+                flashMessageContainer.remove();
+            }
         }, timeout);
+    }
+}
+
+if (localStorage.getItem('basket') === null) {
+    localStorage.setItem('basket', JSON.stringify({}));
+}
+
+UpdateBasketCounter(CountProductsInBasket())
+
+function AddProductInBasket(data) {
+    let modificationId = data.modification.id
+    let basket = JSON.parse(localStorage.getItem('basket'));
+    let modificationInBasket = basket['modification-' + modificationId];
+    if (modificationInBasket === undefined) {
+        basket['modification-' + modificationId] = {
+            amount: 1,
+            data: data,
+        };
+    } else {
+        basket['modification-' + modificationId].amount = modificationInBasket.amount + 1;
+    }
+    localStorage.setItem('basket', JSON.stringify(basket));
+    UpdateBasketCounter(CountProductsInBasket())
+}
+
+function DeleteProductInBasket(data) {
+    let modificationId = data.modification.id
+    let basket = JSON.parse(localStorage.getItem('basket'));
+    let modificationInBasket = basket['modification-' + modificationId];
+    if (basket['modification-' + modificationId] !== undefined) { // есть в корзине
+        if (basket['modification-' + modificationId].amount > 1) {
+            basket['modification-' + modificationId].amount = modificationInBasket.amount - 1;
+        } else {
+            delete basket['modification-' + modificationId];
+        }
+
+        localStorage.setItem('basket', JSON.stringify(basket));
+        UpdateBasketCounter(CountProductsInBasket())
+    }
+}
+
+function ClearProductInBasket(data) {
+    let modificationId = data.modification.id
+    let basket = JSON.parse(localStorage.getItem('basket'));
+    delete basket['modification-' + modificationId];
+
+    localStorage.setItem('basket', JSON.stringify(basket));
+    UpdateBasketCounter(CountProductsInBasket())
+}
+
+function CountProductsInBasket() {
+    let count = 0;
+    let basket = JSON.parse(localStorage.getItem('basket'));
+    Object.keys(basket).forEach((key) => {
+        count += basket[key].amount
+    });
+    return count;
+}
+
+function AmountProductInBasket(modificationId) {
+    let basket = JSON.parse(localStorage.getItem('basket'));
+    console.log(basket['modification-' + modificationId])
+    if (basket['modification-' + modificationId] === undefined) {
+        return 0;
+    } else {
+        return basket['modification-' + modificationId].amount
+    }
+}
+
+function PriceSumProductsInBasket() {
+    let priceSum = 0;
+    let basket = JSON.parse(localStorage.getItem('basket'));
+    Object.keys(basket).forEach((key) => {
+        priceSum += (basket[key].data.modification.sellingPrice * basket[key].amount);
+    });
+    return priceSum;
+}
+
+function UpdateBasketCounter(value) {
+    let basketCounter = document.body.querySelector('.amount-item-in-basket');
+    basketCounter.innerHTML = value;
+}
+
+function GetAllProductsInBasket() {
+    return JSON.parse(localStorage.getItem('basket'));
+}
+
+let basketButton = document.body.querySelector('.button-basket');
+basketButton.addEventListener('click', () => {
+    BasketWindow();
+});
+
+triggerEvent( basketButton, 'click' );
+
+function triggerEvent(elem, event) {
+    elem.dispatchEvent(new Event(event));
+}
+
+function BasketWindow() {
+    let basketWindow = document.createElement('div');
+    basketWindow.className = 'basket-window w-100 h-100 pos-fix z-2';
+    basketWindow.innerHTML =
+        '<div class="basket-window-shadow w-100 h-100">' +
+        '</div>' +
+        '<div class="pos-abs bg-white border-radius-10 scroll-off" style="top: 50px;left: calc(50% - 12.5%); width: 25%; /*height: calc(100% - 100px);*/">' +
+            '<div class="button-close-basket-window pos-abs flex cp" style="right: 20px; top: 20px">' + SvgCloseButton + '</div>' +
+            '<div class="scroll-auto" style="max-height: calc(100vh - 100px);">' +
+                '<div class="p-25" style="height: calc(100% - 50px);">' +
+                    '<div class="flex-wrap">' +
+                        ProductsInBasketGenerationHTML() +
+                    '</div>' +
+                    '<div class="flex-wrap">' +
+                        OrderInfoGenerationHTML() +
+                    '</div>' +
+                '</div>'+
+            '</div>'+
+        '</div>';
+
+    let basketWindowShadow = basketWindow.querySelector('.basket-window-shadow');
+    basketWindowShadow.addEventListener('click', () => {
+        basketWindow.remove();
+    });
+
+    let buttonCloseBasketWindowShadow = basketWindow.querySelector('.button-close-basket-window');
+    buttonCloseBasketWindowShadow.addEventListener('click', () => {
+        basketWindow.remove();
+    });
+
+    document.body.prepend(basketWindow);
+
+    let priceSumProductsInBasket = document.body.querySelector('.price-sum-products-in-basket');
+
+    let deleteProductButtons = document.body.querySelectorAll('.delete-product-button');
+    deleteProductButtons.forEach((el) => {
+        el.addEventListener('click', () => {
+            let modificationId = el.dataset.modificationId;
+            let amountProduct = document.body.querySelector('.amount-product[data-modification-id="' + modificationId + '"]');
+            let modification = {
+                modification: {id: modificationId},
+            }
+            DeleteProductInBasket(modification);
+            let amountProductInBasket = AmountProductInBasket(modificationId);
+            amountProduct.innerHTML = amountProductInBasket;
+            if (amountProductInBasket === 0) {
+                let containerProductInBasket = el.closest('.container-product-in-basket');
+                containerProductInBasket.remove();
+            }
+            let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
+            priceSumProductsInBasket.innerHTML = 'Итого: ' + resultPriceSumProductsInBasket + ' ₽';
+            if (resultPriceSumProductsInBasket === 0) {
+                basketWindow.remove();
+            }
+        });
+    });
+
+    let clearProductButton = document.body.querySelectorAll('.clear-product-button');
+    clearProductButton.forEach((el) => {
+        el.addEventListener('click', () => {
+            let modificationId = el.dataset.modificationId;
+            let amountProduct = document.body.querySelector('.amount-product[data-modification-id="' + modificationId + '"]');
+            let modification = {
+                modification: {id: modificationId},
+            }
+            ClearProductInBasket(modification);
+            let amountProductInBasket = AmountProductInBasket(modificationId);
+            amountProduct.innerHTML = amountProductInBasket;
+            if (amountProductInBasket === 0) {
+                let containerProductInBasket = el.closest('.container-product-in-basket');
+                containerProductInBasket.remove();
+            }
+            let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
+            priceSumProductsInBasket.innerHTML = 'Итого: ' + resultPriceSumProductsInBasket + ' ₽';
+            if (resultPriceSumProductsInBasket === 0) {
+                basketWindow.remove();
+            }
+        });
+    });
+
+    let addProductButtons = document.body.querySelectorAll('.add-product-button');
+    addProductButtons.forEach((el) => {
+        el.addEventListener('click', () => {
+            let modificationId = el.dataset.modificationId;
+            let amountProduct = document.body.querySelector('.amount-product[data-modification-id="' + modificationId + '"]');
+            let modification = {
+                modification: {id: modificationId},
+            }
+            AddProductInBasket(modification);
+            amountProduct.innerHTML = AmountProductInBasket(modificationId);
+            priceSumProductsInBasket.innerHTML = 'Итого: ' + PriceSumProductsInBasket() + ' ₽';
+        });
+    });
+}
+
+function ProductsInBasketGenerationHTML() {
+    let productsInBasketGenerationHTML = '<div class="w-100">Корзина</div>';
+    let countProductsInBasket = CountProductsInBasket();
+    if (countProductsInBasket === 0) {
+        productsInBasketGenerationHTML += '<div class="w-100">В корзине пусто</div>'
+    } else {
+        let basket = GetAllProductsInBasket();
+
+        Object.keys(basket).forEach((key) => {
+            let product = basket[key].data.product;
+            let modification = basket[key].data.modification;
+            let modificationId = modification.id
+            let amount = basket[key].amount
+
+            let modificationHTML =
+                '<div class="container-product-in-basket w-100 flex-center-vertical">' +
+                    '<div class="p-10 mr-a">' +
+                        '<div>' + product.title + '</div>' +
+                        '<div>' + modification.title + '</div>' +
+                        '<div>' + modification.value + '</div>' +
+                    '</div>' +
+                    '<div class="border-radius-25 flex-center" style="background-color: rgb(243, 243, 247);">' +
+                        '<button class="delete-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgMinusButton + '</button>' +
+                        '<div class="m-5 amount-product flex-center" style="min-width: 20px;" data-modification-id="' + modificationId + '">' + amount + '</div>' +
+                        '<button class="add-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgPlusButton + '</button>' +
+                    '</div>' +
+                    '<button class="clear-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgTrashButton + '</button>' +
+                '<div class="p-10">' + modification.sellingPrice + ' ₽</div>' +
+                '</div>';
+            productsInBasketGenerationHTML += modificationHTML
+        });
+        productsInBasketGenerationHTML += '<div class="price-sum-products-in-basket w-100 text-right">Итого: ' + PriceSumProductsInBasket() + ' ₽</div>';
+    }
+
+    return productsInBasketGenerationHTML;
+}
+
+function OrderInfoGenerationHTML() {
+    let countProductsInBasket = CountProductsInBasket();
+    if (countProductsInBasket !== 0) {
+        return  '<div class="w-100">' +
+                    '<div>Оформление заказа</div>' +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<label for="">Имя</label>' +
+                        '<input class="w-100" type="text">' +
+                    '</div>' +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<label for="">Номер телефона</label>' +
+                        '<input class="w-100" type="text">' +
+                    '</div>' +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<label for="">Адрес для доставки</label>' +
+                        '<input class="w-100" type="text">' +
+                    '</div>' +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<label for="">Комментарий</label>' +
+                        '<textarea class="w-100"></textarea>' +
+                    '</div>' +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<label for="">Промокод</label>' +
+                        '<input class="w-75" type="text">' +
+                        '<button class="w-20 ml-a">Применить</button>' +
+                    '</div>' +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<div class="w-100">Способ оплаты</div>' +
+                        '<div class="flex w-100"">' +
+                            '<div class="flex">' +
+                                '<input checked name="typePayment" type="radio">' +
+                                '<label for="">Картой</label>' +
+                            '</div>' +
+                            '<div class="flex ml-25">' +
+                                '<input name="typePayment" type="radio">' +
+                                '<label for="">Наличные</label>' +
+                            '</div>' +
+                        '</div>' +
+                        '</div>' +
+                    '<div class="w-100 flex-center mt-25"><button class="w-75">Оформить заказ</button></div>' +
+                '</div>';
+    } else {
+        return '';
     }
 }

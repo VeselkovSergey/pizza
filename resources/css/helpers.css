@@ -440,6 +440,16 @@
     flex-direction: column;
 }
 
+.flex-center-vertical {
+    display: flex;
+    align-items: center;
+}
+
+.flex-center-horizontal {
+    display: flex;
+    justify-content: center;
+}
+
 .flex-column-center {
     display: flex;
     flex-direction: column;
@@ -572,6 +582,14 @@
 
 .text-center {
     text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
 }
 
 .scroll-auto {

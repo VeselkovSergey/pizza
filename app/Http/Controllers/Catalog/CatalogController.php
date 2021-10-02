@@ -3,7 +3,9 @@
 
 namespace App\Http\Controllers\Catalog;
 
+use App\Helpers\ArrayHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Products\ProductsController;
 use App\Models\Products;
 
 class CatalogController extends Controller
@@ -14,9 +16,10 @@ class CatalogController extends Controller
 
     public function Index()
     {
-        $allProducts = Products::all();
+        $allProducts = new ProductsController();
+        $allProducts = $allProducts->GetAllProducts();
         return view('catalog.index', [
-            'allProducts' => $allProducts,
+            'allProducts' => json_decode($allProducts),
         ]);
     }
 }
