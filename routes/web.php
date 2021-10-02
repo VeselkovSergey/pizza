@@ -25,8 +25,15 @@ Route::view('all-routes', 'debag.all-routes');
 
 Route::get('resources/{directory}/{fileName}', [Controllers\Resources\ResourceController::class, 'GetResources']);
 
+Route::group(['prefix' => 'catalog'], function() {
+
+    Route::get('/', [Controllers\Catalog\CatalogController::class, 'Index'])->name('catalog');
+
+});
+
 Route::group(['prefix' => 'products'], function() {
 
+    Route::get('/all-admin', [Controllers\Products\ProductsController::class, 'IndexAdmin'])->name('all-products-admin-page');
     Route::get('/create', [Controllers\Products\ProductsController::class, 'Create'])->name('product-create');
     Route::post('/save', [Controllers\Products\ProductsController::class, 'Save'])->name('product-save');
 

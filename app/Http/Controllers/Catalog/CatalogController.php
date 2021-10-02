@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
+use App\Models\Products;
 
 class CatalogController extends Controller
 {
@@ -11,8 +12,11 @@ class CatalogController extends Controller
     {
     }
 
-    public function GetProducts()
+    public function Index()
     {
-        $products = '';
+        $allProducts = Products::all();
+        return view('catalog.index', [
+            'allProducts' => $allProducts,
+        ]);
     }
 }

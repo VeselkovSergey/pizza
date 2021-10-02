@@ -9,3 +9,7 @@ label {
 input[readonly] {
     background-color: #dee0e4;
 }
+
+.product-window-shadow {
+    background-color: rgba(0, 0, 0, 0.5);
+}

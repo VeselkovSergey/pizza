@@ -20,6 +20,8 @@
 
         @yield('css')
 
+        <script src="{{ asset('resources/js/add.prototypes.js') }}"></script>
+
     </head>
 
     <body>

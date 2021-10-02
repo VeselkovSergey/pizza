@@ -8,6 +8,8 @@
         <a href="{{route('supplier-create')}}">4 Поставщики (метро/рынок/рога и копыта)</a>
         <a href="{{route('supply-create')}}">5 Новая поставка (поставка. тут вносим ингредиенты)</a>
         <a href="{{route('product-create')}}">6 Новый продукт (не доделал)</a>
+        <a href="{{route('all-products-admin-page')}}">7 Все продукты</a>
+        <a href="{{route('catalog')}}">8 Каталог</a>
     </div>
 @stop
 

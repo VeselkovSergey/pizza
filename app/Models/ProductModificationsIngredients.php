@@ -12,4 +12,9 @@ class ProductModificationsIngredients extends Model
         'ingredient_amount',
         'visible',
     ];
+
+    public function Ingredient()
+    {
+        return $this->hasOne(Ingredients::class, 'id', 'ingredient_id');
+    }
 }

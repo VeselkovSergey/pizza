@@ -11,12 +11,21 @@ use App\Models\ProductModificationsIngredients;
 use App\Models\Products;
 use App\Models\Modifications;
 use Illuminate\Http\Request;
+use function GuzzleHttp\Promise\all;
 
 class ProductsController extends Controller
 {
     public function __construct()
     {
 
+    }
+
+    public function IndexAdmin()
+    {
+        $allProducts = Products::all();
+        return view('products.indexAdmin', [
+            'allProducts' => $allProducts,
+        ]);
     }
 
     public function Create()
