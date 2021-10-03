@@ -33,26 +33,28 @@
 
     </style>
 
-    <div class="flex">
+    <div class="flex-wrap">
 
         @foreach($allProducts as $product)
 
-            <div class="button-open-product border p-10 m-10 w-10 flex-column cp" data-product-id="{{$product->id}}">
+            <div class="button-open-product {{--p-10 m-10--}} w-10 w-100 flex-column cp" data-product-id="{{$product->id}}">
 
-                <div class="w-100 h-100">
-                    <img src="{{url('img-pizza.jpeg')}}" class="w-100" alt="">
-                </div>
-
-                <div class="border p-10">{{$product->title}}</div>
-
-                <div class="flex">
-
-                    <div class="border p-10 w-50">от {{$product->minimumPrice}} ₽</div>
-
-                    <div class="w-50">
-                        <button class="w-100 h-100">в корзину</button>
+                <div class="m-10 border flex-column">
+                    <div class="w-100 h-100">
+                        <img src="{{url('img-pizza.jpeg')}}" class="w-100" alt="">
                     </div>
 
+                    <div class="border p-10">{{$product->title}}</div>
+
+                    <div class="flex">
+
+                        <div class="border p-10 w-50">от {{$product->minimumPrice}} ₽</div>
+
+                        <div class="w-50">
+                            <button class="w-100 h-100">в корзину</button>
+                        </div>
+
+                    </div>
                 </div>
 
             </div>

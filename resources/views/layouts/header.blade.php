@@ -27,7 +27,7 @@
 {{--        </div>--}}
 {{--    </div>--}}
 {{--</div>--}}
-<div class="flex-center m-a" style="font-style: italic;font-weight: bold;font-size: 36px;">
+<div class="flex-center m-a" style="font-style: italic;font-weight: bold;font-size: x-large;">
     БРОПИЦЦА
 </div>
 <div class="flex-center p-5">

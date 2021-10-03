@@ -34,3 +34,51 @@ textarea {
     cursor: pointer;
     background-color: rgb(243, 243, 247);
 }
+
+
+
+/* ADAPTIVE*/
+
+.button-open-product {
+    width: 10%;
+}
+
+@media screen and (max-width: 1440px) {
+
+    .button-open-product {
+        width: 20%;
+    }
+
+}
+
+@media screen and (max-width: 1140px) {
+
+    .button-open-product {
+        width: 25%;
+    }
+
+}
+
+@media screen and (max-width: 960px) {
+
+    .button-open-product {
+        width: 50%;
+    }
+
+}
+
+@media screen and (max-width: 720px) {
+
+    .button-open-product {
+        width: 50%;
+    }
+
+}
+
+@media screen and (max-width: 540px) {
+
+    .button-open-product {
+        width: 100%;
+    }
+
+}
