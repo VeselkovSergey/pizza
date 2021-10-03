@@ -374,6 +374,18 @@ function BasketWindow() {
 
     startTrackingNumberInput();
 
+    let clientInformation = basketWindow.querySelector('.client-information');
+    if (clientInformation !== null) {
+        clientInformation.querySelectorAll('.last-data').forEach((el) => {
+            el.addEventListener('input', (event) => {
+                let inputName = event.target.name;
+                let inputValue = event.target.value;
+                inputName = inputName[0].toUpperCase() + inputName.slice(1);
+                localStorage.setItem('last' + inputName, inputValue);
+            });
+        });
+    }
+
 }
 
 function ProductsInBasketGenerationHTML() {
@@ -413,6 +425,10 @@ function ProductsInBasketGenerationHTML() {
     return productsInBasketGenerationHTML;
 }
 
+let lastClientName = localStorage.getItem('lastClientName') !== null ? localStorage.getItem('lastClientName') : '';
+let lastClientPhone = localStorage.getItem('lastClientPhone') !== null ? localStorage.getItem('lastClientPhone') : '';
+let lastClientAddressDelivery = localStorage.getItem('lastClientAddressDelivery') !== null ? localStorage.getItem('lastClientAddressDelivery') : '';
+
 function OrderInfoGenerationHTML() {
     let countProductsInBasket = CountProductsInBasket();
     if (countProductsInBasket !== 0) {
@@ -420,15 +436,15 @@ function OrderInfoGenerationHTML() {
                     '<div>Оформление заказа</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Имя</label>' +
-                        '<input name="clientName" class="need-validate w-100" type="text">' +
+                        '<input name="clientName" class="need-validate last-data w-100" type="text" value="' + lastClientName + '">' +
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Номер телефона</label>' +
-                        '<input name="clientPhone" class="need-validate phone-mask w-100" maxlength="16" type="text">' +
+                        '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '">' +
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Адрес для доставки</label>' +
-                        '<input name="clientAddressDelivery" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address w-100" type="text">' +
+                        '<input name="clientAddressDelivery" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '">' +
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Комментарий</label>' +
@@ -528,7 +544,7 @@ function startTrackingNumberInput() {
 }
 
 let timerSuggestionsAddress = null;
-function SuggestionsAddress(query, inputSuggestions) {
+function SuggestionsAddress(query, inputSuggestions, callback) {
 
     if (query.length < 4) {
         return
@@ -598,6 +614,12 @@ function ContainerSuggestionsGeneration(result, inputSuggestions) {
             itemSuggestion.addEventListener('click', () => {
                 inputSuggestions.value = itemSuggestion.innerHTML;
                 containerSuggestions.remove();
+
+                /* #todo remake */
+                let inputName = inputSuggestions.name;
+                let inputValue = inputSuggestions.value;
+                inputName = inputName[0].toUpperCase() + inputName.slice(1);
+                localStorage.setItem('last' + inputName, inputValue);
             });
         });
     }
