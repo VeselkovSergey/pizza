@@ -43,6 +43,10 @@ p {
     background-color: rgb(243, 243, 247);
 }
 
+.clear-product-button {
+    display: none;
+}
+
 
 /* ADAPTIVE*/
 
