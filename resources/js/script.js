@@ -240,19 +240,20 @@ function BasketWindow() {
     let basketWindow = document.createElement('div');
     basketWindow.className = 'basket-window w-100 h-100 pos-fix z-2';
     basketWindow.innerHTML =
-        '<div class="basket-window-shadow w-100 h-100">' +
-        '</div>' +
-        '<div class="modal-window pos-abs bg-white border-radius-10 scroll-off">' +
-            '<div class="button-close-basket-window pos-abs flex cp" style="right: 20px; top: 20px">' + SvgCloseButton + '</div>' +
-            '<div class="container-content-in-modal-window scroll-auto">' +
-                '<div class="p-25" style="height: calc(100% - 50px);">' +
-                    '<div class="flex-wrap">' +
-                        ProductsInBasketGenerationHTML() +
-                    '</div>' +
-                    '<div class="flex-wrap">' +
-                        OrderInfoGenerationHTML() +
-                    '</div>' +
-                '</div>'+
+        '<div class="modal-window pos-abs scroll-off flex-center">' +
+            '<div class="basket-window-shadow w-100 h-100"></div>' +
+            '<div class="modal-window-content pos-rel bg-white bg-white border-radius-10">' +
+                '<div class="button-close-basket-window pos-abs flex cp" style="right: 20px; top: 20px">' + SvgCloseButton + '</div>' +
+                '<div class="container-content-in-modal-window scroll-auto">' +
+                    '<div class="p-25" style="height: calc(100% - 50px);">' +
+                        '<div class="flex-wrap">' +
+                            ProductsInBasketGenerationHTML() +
+                        '</div>' +
+                        '<div class="flex-wrap">' +
+                            OrderInfoGenerationHTML() +
+                        '</div>' +
+                    '</div>'+
+                '</div>' +
             '</div>'+
         '</div>';
 

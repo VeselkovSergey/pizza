@@ -86,28 +86,29 @@
             let productWindow = document.createElement('div');
             productWindow.className = 'product-window w-100 h-100 pos-fix z-2';
             productWindow.innerHTML =
-                '<div class="product-window-shadow w-100 h-100">' +
-                '</div>' +
-                '<div class="modal-window pos-abs bg-white border-radius-10 scroll-off">' +
-                    '<div class="button-close-product-window pos-abs flex cp" style="right: 20px; top: 20px">'+SvgCloseButton+'</div>' +
-                    '<div class="container-content-in-modal-window scroll-auto">' +
-                        '<div class="container-product p-25 flex">' +
-                            '<div class="container-img-and-about-product w-50">' +
-                                '<div class="w-100">' +
-                                    '<div>' +
-                                        '<img src="' + imgUrl + '" class="w-100" alt="">' +
+                '<div class="modal-window pos-abs scroll-off flex-center">' +
+                    '<div class="product-window-shadow w-100 h-100"></div>' +
+                    '<div class="modal-window-content pos-rel bg-white bg-white border-radius-10">' +
+                        '<div class="button-close-product-window pos-abs flex cp" style="right: 20px; top: 20px">'+SvgCloseButton+'</div>' +
+                        '<div class="container-content-in-modal-window scroll-auto">' +
+                            '<div class="container-product p-25 flex">' +
+                                '<div class="container-img-and-about-product w-50">' +
+                                    '<div class="w-100">' +
+                                        '<div>' +
+                                            '<img src="' + imgUrl + '" class="w-100" alt="">' +
+                                        '</div>' +
+                                        '<p>Традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</p>' +
                                     '</div>' +
-                                    '<p>Традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</p>' +
                                 '</div>' +
-                            '</div>' +
-                            '<div class="container-modification-product w-50">' +
-                                '<div class="w-100 flex-column h-100" style="background: rgb(252, 252, 252);">' +
-                                    '<div class="text-center">'+productTitle+'</div>' +
-                                    '<div class="container-ingredients">' +
-                                        IngredientsGenerator(productId) +
-                                    '</div>'+
-                                    ModificationsGenerate(productId) +
-                                    '<div class="container-button-put-in-basket mt-a mx-a"><button class="button-put-in-basket btn first">В корзину</button></div>' +
+                                '<div class="container-modification-product w-50">' +
+                                    '<div class="w-100 flex-column h-100" style="background: rgb(252, 252, 252);">' +
+                                        '<div class="text-center">'+productTitle+'</div>' +
+                                        '<div class="container-ingredients">' +
+                                            IngredientsGenerator(productId) +
+                                        '</div>'+
+                                        ModificationsGenerate(productId) +
+                                        '<div class="container-button-put-in-basket mt-a mx-a"><button class="button-put-in-basket btn first">В корзину</button></div>' +
+                                    '</div>' +
                                 '</div>' +
                             '</div>' +
                         '</div>' +
