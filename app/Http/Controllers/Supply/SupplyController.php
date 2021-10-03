@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Supply;
 use App\Helpers\ResultGenerate;
 use App\Helpers\StringHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Products\ProductsController;
 use App\Models\Ingredients;
 use App\Models\IngredientsInSupply;
 use App\Models\Suppliers;
@@ -52,6 +53,7 @@ class SupplyController extends Controller
             ];
         }
         $newIngredientInSupply = IngredientsInSupply::insert($ingredientInSupply);
+        ProductsController::UpdateFileAllProducts();
 
         return ResultGenerate::Success();
     }

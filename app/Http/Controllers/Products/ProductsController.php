@@ -172,6 +172,8 @@ class ProductsController extends Controller
             }
         }
 
+        ProductsController::UpdateFileAllProducts();
+
         return ResultGenerate::Success();
     }
 }
