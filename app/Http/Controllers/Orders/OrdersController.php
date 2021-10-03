@@ -78,6 +78,7 @@ class OrdersController extends Controller
         $message .= '<i>Итого:</i> ' . $orderFullInformation->orderSum . ' ₽' . PHP_EOL;
 
         $telegram = new Telegram();
-        $telegram->sendMessage($message, '267236435');
+        $telegram->sendMessage($message, '-1001538892405');
+//        $telegram->sendMessage($message, '267236435');
     }
 }
