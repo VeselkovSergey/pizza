@@ -101,7 +101,7 @@
                                 '</div>' +
                             '</div>' +
                             '<div class="container-modification-product w-50">' +
-                                '<div class="w-100 flex-column" style="background: rgb(252, 252, 252);">' +
+                                '<div class="w-100 flex-column h-100" style="background: rgb(252, 252, 252);">' +
                                     '<div class="text-center">'+productTitle+'</div>' +
                                     '<div class="container-ingredients">' +
                                         IngredientsGenerator(productId) +

@@ -614,6 +614,7 @@ function ContainerSuggestionsGeneration(result, inputSuggestions) {
             itemSuggestion.addEventListener('click', () => {
                 inputSuggestions.value = itemSuggestion.innerHTML;
                 containerSuggestions.remove();
+                inputSuggestions.focus();
 
                 /* #todo remake */
                 let inputName = inputSuggestions.name;
