@@ -622,6 +622,10 @@ function ContainerSuggestionsGeneration(result, inputSuggestions) {
                 inputName = inputName[0].toUpperCase() + inputName.slice(1);
                 localStorage.setItem('last' + inputName, inputValue);
             });
+
+            inputSuggestions.addEventListener('blur', () => {
+                containerSuggestions.remove();
+            });
         });
     }
 
