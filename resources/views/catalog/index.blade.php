@@ -90,7 +90,7 @@
                 '</div>' +
                 '<div class="modal-window pos-abs bg-white border-radius-10 scroll-off">' +
                     '<div class="button-close-product-window pos-abs flex cp" style="right: 20px; top: 20px">'+SvgCloseButton+'</div>' +
-                    '<div class="scroll-auto" style="max-height: calc(100vh - 100px);">' +
+                    '<div class="container-content-in-modal-window scroll-auto">' +
                         '<div class="container-product p-25 flex">' +
                             '<div class="container-img-and-about-product w-50">' +
                                 '<div class="w-100">' +

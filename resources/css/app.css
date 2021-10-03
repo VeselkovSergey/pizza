@@ -57,6 +57,10 @@ header {
     width: 40%;
 }
 
+.container-content-in-modal-window {
+    max-height: calc(100vh - 100px);
+}
+
 @media screen and (max-width: 1440px) {
 
     .button-open-product {
@@ -131,6 +135,10 @@ header {
         top: 15px;
         left: calc(50% - 45%);
         width: 90%;
+    }
+
+    .container-content-in-modal-window {
+        max-height: calc(100vh - 30px);
     }
 
 }

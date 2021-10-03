@@ -244,7 +244,7 @@ function BasketWindow() {
         '</div>' +
         '<div class="modal-window pos-abs bg-white border-radius-10 scroll-off">' +
             '<div class="button-close-basket-window pos-abs flex cp" style="right: 20px; top: 20px">' + SvgCloseButton + '</div>' +
-            '<div class="scroll-auto" style="max-height: calc(100vh - 100px);">' +
+            '<div class="container-content-in-modal-window scroll-auto">' +
                 '<div class="p-25" style="height: calc(100% - 50px);">' +
                     '<div class="flex-wrap">' +
                         ProductsInBasketGenerationHTML() +
