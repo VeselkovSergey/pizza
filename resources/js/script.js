@@ -327,6 +327,7 @@ function BasketWindow() {
             AddProductInBasket(modification);
             amountProduct.innerHTML = AmountProductInBasket(modificationId);
             priceSumProductsInBasket.innerHTML = 'Итого: ' + PriceSumProductsInBasket() + ' ₽';
+            basketWindow.remove();
         });
     });
 
@@ -468,7 +469,7 @@ function startTrackingNumberInput() {
                 if (phoneInput.value.length === 2) {
                     phoneInput.value = phoneInput.value + "(";
                 } else if (phoneInput.value.length === 6) {
-                    phoneInput.value = phoneInput.value + ")-";
+                    phoneInput.value = phoneInput.value + ")";
                 } else if (phoneInput.value.length === 11 || phoneInput.value.length === 14) {
                     phoneInput.value = phoneInput.value + "-";
                 }
