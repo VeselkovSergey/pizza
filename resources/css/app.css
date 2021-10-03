@@ -24,3 +24,13 @@ textarea {
 .product-window-shadow, .basket-window-shadow {
     background-color: rgba(0, 0, 0, 0.5);
 }
+
+.container-suggestions-pos-abs {
+    border: 1px solid #cbcdd1;
+    background-color: #FFFFFF;
+}
+
+.suggestion-item:hover {
+    cursor: pointer;
+    background-color: rgb(243, 243, 247);
+}

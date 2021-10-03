@@ -359,6 +359,16 @@ function BasketWindow() {
         });
     }
 
+    let deliveryAddress = document.body.querySelector('.delivery-address');
+    if (deliveryAddress !== null) {
+        deliveryAddress.addEventListener('input', (event) => {
+            let searchAddress = event.target.value;
+            SuggestionsAddress(searchAddress, deliveryAddress);
+        });
+    }
+
+    startTrackingNumberInput();
+
 }
 
 function ProductsInBasketGenerationHTML() {
@@ -409,11 +419,11 @@ function OrderInfoGenerationHTML() {
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Номер телефона</label>' +
-                        '<input name="clientPhone" class="need-validate w-100" type="text">' +
+                        '<input name="clientPhone" class="need-validate phone-mask w-100" maxlength="17" type="text">' +
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Адрес для доставки</label>' +
-                        '<input name="clientAddressDelivery" class="need-validate w-100" type="text">' +
+                        '<input name="clientAddressDelivery" autocomplete="off" class="need-validate delivery-address w-100" type="text">' +
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Комментарий</label>' +
@@ -429,7 +439,7 @@ function OrderInfoGenerationHTML() {
                         '<div class="flex w-100"">' +
                             '<div class="flex">' +
                                 '<input checked name="typePayment" type="radio">' +
-                                '<label for="">Картой</label>' +
+                                '<label for="">Карта</label>' +
                             '</div>' +
                             '<div class="flex ml-25">' +
                                 '<input name="typePayment" type="radio">' +
@@ -443,3 +453,143 @@ function OrderInfoGenerationHTML() {
         return '';
     }
 }
+
+function startTrackingNumberInput() {
+    document.body.querySelectorAll('.phone-mask').forEach((element) => {
+
+        let phoneInput = element;
+
+        if (phoneInput !== null) {
+            phoneInput.addEventListener('keypress', (event) => {
+                if (event.keyCode < 47 || event.keyCode > 57) {
+                    event.preventDefault();
+                }
+
+                if (phoneInput.value.length === 2) {
+                    phoneInput.value = phoneInput.value + "(";
+                } else if (phoneInput.value.length === 6) {
+                    phoneInput.value = phoneInput.value + ")-";
+                } else if (phoneInput.value.length === 11 || phoneInput.value.length === 14) {
+                    phoneInput.value = phoneInput.value + "-";
+                }
+            });
+
+            phoneInput.addEventListener('keyup', (event) => {
+                let number = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+                if (number.indexOf(event.key) === -1) {
+                    if ((event.key === 'Backspace' || event.key === 'Delete') && phoneInput.value.length <= 2) {
+                        phoneInput.value = '+7';
+                        phoneInput.selectionStart = phoneInput.value.length;
+                    }
+                    event.preventDefault();
+                } else {
+                    if (phoneInput.value.length < 3) {
+                        phoneInput.value = '+7(' + event.key;
+                    }
+                }
+            });
+
+            phoneInput.addEventListener('focus', (event) => {
+                if (phoneInput.value.length === 0) {
+                    phoneInput.value = '+7';
+                    phoneInput.selectionStart = phoneInput.value.length;
+                }
+            });
+
+            phoneInput.addEventListener('click', (event) => {
+                if (phoneInput.selectionStart < 2) {
+                    phoneInput.selectionStart = phoneInput.value.length;
+                }
+                if (event.key === 'Backspace' && phoneInput.value.length <= 2) {
+                    event.preventDefault();
+                }
+            });
+
+            phoneInput.addEventListener('blur', () => {
+                if (phoneInput.value === '+7') {
+                    phoneInput.value = '';
+                }
+            });
+
+            phoneInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Backspace' && phoneInput.value.length <= 2) {
+                    phoneInput.value = '+7';
+                    phoneInput.selectionStart = phoneInput.value.length;
+                    event.preventDefault();
+                }
+            });
+        }
+    });
+}
+
+let timerSuggestionsAddress = null;
+function SuggestionsAddress(query, inputSuggestions) {
+
+    if (query.length < 4) {
+        return
+    }
+
+    clearTimeout(timerSuggestionsAddress)
+
+    timerSuggestionsAddress = setTimeout(() => {
+
+        const url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address";
+        const token = "980b289f33c7bafda2d4007c51a2d45d6c980425";
+
+        let options = {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": "Token " + token
+            },
+            body: JSON.stringify({query: query, count: 3})
+        }
+
+        fetch(url, options)
+            .then(response => response.text())
+            .then(result => ContainerSuggestionsGeneration(result, inputSuggestions))
+            .catch(error => console.log("error", error));
+    }, 500)
+}
+
+function ContainerSuggestionsGeneration(result, inputSuggestions) {
+    result = JSON.parse(result).suggestions;
+
+    let parentInputSuggestions = inputSuggestions.parentNode;
+    let oldSuggestionsElement = parentInputSuggestions.querySelector('.container-suggestions');
+    if (oldSuggestionsElement !== null) {
+        oldSuggestionsElement.remove();
+    }
+
+    let containerSuggestions = document.createElement('div');
+    containerSuggestions.className = 'container-suggestions w-100 pos-rel';
+
+    let containerSuggestionsAbsolutePosition = document.createElement('div');
+    containerSuggestionsAbsolutePosition.className = 'container-suggestions-pos-abs pos-abs top-0 left-0 w-100 border-radius-5';
+    if (result.length === 0) {
+        let itemSuggestion = document.createElement('div');
+        itemSuggestion.className = 'p-5';
+        itemSuggestion.innerHTML = 'Нет результатов удовлетворяющих поиску';
+        containerSuggestionsAbsolutePosition.append(itemSuggestion);
+    } else {
+        containerSuggestionsAbsolutePosition.innerHTML = '<div class="p-5 color-grey">Выберите подсказку:</div>';
+        result.forEach((item) => {
+            let itemSuggestion = document.createElement('div');
+            itemSuggestion.className = 'p-5 suggestion-item';
+            itemSuggestion.innerHTML = item.value;
+            containerSuggestionsAbsolutePosition.append(itemSuggestion);
+            itemSuggestion.addEventListener('click', () => {
+                inputSuggestions.value = itemSuggestion.innerHTML;
+                containerSuggestions.remove();
+            });
+        });
+    }
+
+    containerSuggestions.append(containerSuggestionsAbsolutePosition);
+
+    inputSuggestions.insertAdjacentElement('afterEnd', containerSuggestions);
+}
+
+

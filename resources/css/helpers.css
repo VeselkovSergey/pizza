@@ -514,6 +514,10 @@
     color: black;
 }
 
+.color-grey {
+    color: #94989e;
+}
+
 /* background */
 .bg-white {
     background-color: white;
