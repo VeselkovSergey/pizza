@@ -69,7 +69,7 @@ class OrdersController extends Controller
         $message .= '<i>Имя:</i> ' . $clientInformation->clientName . PHP_EOL;
         $message .= '<i>Телефон:</i> ' . $clientInformation->clientPhone . PHP_EOL;
         $message .= '<i>Оплата:</i> ' . ($clientInformation->typePayment[0] === true ? 'Карта' : 'Наличные') . PHP_EOL;
-        $message .= '<i>Адрес:</i> ' . $clientInformation->clientPhone . PHP_EOL;
+        $message .= '<i>Адрес:</i> ' . $clientInformation->clientAddressDelivery . PHP_EOL;
         $message .= '<i>Комментарий:</i> ' . $clientInformation->clientComment . PHP_EOL;
         $message .= '<i>Промокод:</i> ' . $clientInformation->clientPromokod . PHP_EOL;
         $message .= PHP_EOL;
