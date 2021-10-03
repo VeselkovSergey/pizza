@@ -44,6 +44,11 @@
 
             Ajax("{{route('modification-type-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
+                if (response.status === true) {
+                    title.value = '';
+                    valueUnit.value = '';
+                    title.focus();
+                }
             })
         });
 

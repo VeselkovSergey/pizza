@@ -54,6 +54,10 @@
 
             Ajax("{{route('modification-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
+                if (response.status === true) {
+                    title.value = '';
+                    title.focus();
+                }
             })
         });
 

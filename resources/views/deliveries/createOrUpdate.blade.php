@@ -38,6 +38,10 @@
 
             Ajax("{{route('delivery-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
+                if (response.status === true) {
+                    title.value = '';
+                    title.focus();
+                }
             });
         });
 

@@ -47,15 +47,11 @@
         let saveButton = document.body.querySelector('.save-button');
         saveButton.addEventListener('click', () => {
 
-            //let title = document.body.querySelector('input[name="title"]').value;
-
             let data = GetDataFormContainer('product-create-or-edit-form');
 
-            // if (!CheckingFieldForEmptiness('product-create-or-edit-form', true)) {
-            //     return;
-            // }
-
-            console.log(data)
+            if (!CheckingFieldForEmptiness('product-create-or-edit-form', true)) {
+                return;
+            }
 
             Ajax("{{route('product-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
@@ -87,15 +83,15 @@
                                                             '<div class="pricing-container">' +
                                                                 '<div>' +
                                                                     '<label>Себестоимость</label>' +
-                                                                    '<input readonly type="text">' +
+                                                                    '<input class="cost-price" readonly type="text">' +
                                                                 '</div>' +
                                                                 '<div>' +
                                                                     '<label>Наценка</label>' +
-                                                                    '<input type="text">' +
+                                                                    '<input class="markup" type="text">' +
                                                                 '</div>' +
                                                                 '<div>' +
                                                                     '<label>Цена продажи</label>' +
-                                                                    '<input class="need-validate" name="modifications['+ tempId +'][price]" type="text" value="">' +
+                                                                    '<input class="need-validate selling-price" name="modifications['+ tempId +'][price]" type="text" value="">' +
                                                                 '</div>' +
                                                             '</div>' +
                                                             '<div>' +
@@ -104,16 +100,69 @@
             let ingredientsContainer = generatedModificationContainer.querySelector('.ingredients-container');
             let addIngredientButton = generatedModificationContainer.querySelector('.add-ingredient-button');
             let deleteModificationButton = generatedModificationContainer.querySelector('.delete-modification-button');
+            let costPriceInput = generatedModificationContainer.querySelector('.cost-price');
+            let markupInput = generatedModificationContainer.querySelector('.markup');
+            let sellingPriceInput = generatedModificationContainer.querySelector('.selling-price');
             addIngredientButton.addEventListener('click', () => {
                 ingredientsContainer.append(GenerateIngredientContainer(tempId))
+                let allInputIngredientAmount = ingredientsContainer.querySelectorAll('.ingredient-amount');
+                let allInputIngredientPrice = ingredientsContainer.querySelectorAll('.ingredient-price');
+                let selectorsIngredients = ingredientsContainer.querySelectorAll('.selector-ingredients');
+
+                allInputIngredientAmount.forEach((el) => {
+                   el.addEventListener('input', (event) => {
+                       let costPriceValue = 0;
+                       allInputIngredientPrice.forEach((el) => {
+                           costPriceValue += parseInt(el.value);
+                       });
+                       costPriceInput.value = costPriceValue;
+                       markupInput.value = ((sellingPriceInput.value / costPriceInput.value) - 1) * 100;
+                   });
+                });
+
+                let deleteIngredientButtons = ingredientsContainer.querySelectorAll('.delete-ingredient-button');
+                deleteIngredientButtons.forEach((el) => {
+                    el.addEventListener('click', () => {
+                        let allInputIngredientPrice = ingredientsContainer.querySelectorAll('.ingredient-price');
+                        let costPriceValue = 0;
+                        allInputIngredientPrice.forEach((el) => {
+                            costPriceValue += parseInt(el.value);
+                        });
+                        costPriceInput.value = costPriceValue;
+                        markupInput.value = ((sellingPriceInput.value / costPriceInput.value) - 1) * 100;
+                    });
+                });
+
+                selectorsIngredients.forEach((el) => {
+                    el.addEventListener('change', (event) => {
+                        let allInputIngredientPrice = ingredientsContainer.querySelectorAll('.ingredient-price');
+                        let costPriceValue = 0;
+                        allInputIngredientPrice.forEach((el) => {
+                            costPriceValue += parseInt(el.value);
+                        });
+                        costPriceInput.value = costPriceValue;
+                        markupInput.value = ((sellingPriceInput.value / costPriceInput.value) - 1) * 100;
+                    });
+                });
+
             });
+
             deleteModificationButton.addEventListener('click', () => {
                 generatedModificationContainer.remove()
             });
+
+            markupInput.addEventListener('input', (event) => {
+                let markupValue = event.target.value;
+                sellingPriceInput.value = costPriceInput.value * ((markupValue / 100) + 1);
+            });
+
+            sellingPriceInput.addEventListener('input', (event) => {
+                let sellingPriceValue = event.target.value;
+                markupInput.value = ((sellingPriceValue / costPriceInput.value) - 1) * 100;
+            });
+
             return generatedModificationContainer;
         }
-
-
 
         function GenerateIngredientContainer(tempId) {
             let generatedIngredientContainer = document.createElement('div');
@@ -122,18 +171,47 @@
                                                             GenerateIngredientsSelector(tempId)+
                                                             '<div>' +
                                                                 '<label>Количество</label>' +
-                                                                '<input class="need-validate" name="modifications['+ tempId +'][ingredients][amount][]" type="text">' +
+                                                                '<input class="need-validate ingredient-amount" name="modifications['+ tempId +'][ingredients][amount][]" type="text">' +
+                                                            '</div>' +
+                                                            '<div>' +
+                                                                '<label>Стоимость за единицу</label>' +
+                                                                '<input class="unit-ingredient-price" type="text" readonly>' +
                                                             '</div>' +
                                                             '<div>' +
                                                                 '<label>Стоимость</label>' +
-                                                                '<input type="text" readonly>' +
+                                                                '<input class="ingredient-price" type="text" readonly>' +
                                                             '</div>' +
                                                             '<div class="flex">' +
                                                                 '<button class="delete-ingredient-button">Удалить ингредиент</button>' +
                                                             '</div>';
+
+            let ingredientPriceInput = generatedIngredientContainer.querySelector('.ingredient-price');
+            let unitIngredientPrice = generatedIngredientContainer.querySelector('.unit-ingredient-price');
+
             let deleteIngredientButton = generatedIngredientContainer.querySelector('.delete-ingredient-button');
             deleteIngredientButton.addEventListener('click', () => {
                 generatedIngredientContainer.remove();
+            });
+
+            let ingredientAmountInput = generatedIngredientContainer.querySelector('.ingredient-amount');
+            ingredientAmountInput.addEventListener('input', (event) => {
+                let selectedIndex = event.target.closest('.ingredient-container').querySelector('.selector-ingredients').options.selectedIndex;
+                let lastPriceIngredient = event.target.closest('.ingredient-container').querySelector('.selector-ingredients').options[selectedIndex].dataset.lastPriceIngredient;
+                if (lastPriceIngredient !== undefined) {
+                    let ingredientAmountValue = event.target.value;
+                    ingredientPriceInput.value = ingredientAmountValue * lastPriceIngredient;
+                }
+            });
+
+            let selectorIngredients = generatedIngredientContainer.querySelector('.selector-ingredients');
+            selectorIngredients.addEventListener('change', (event) => {
+                let selectedIndex = event.target.options.selectedIndex;
+                let lastPriceIngredient = event.target.options[selectedIndex].dataset.lastPriceIngredient;
+                unitIngredientPrice.value = lastPriceIngredient;
+                if (lastPriceIngredient !== undefined) {
+                    let ingredientAmountValue = ingredientAmountInput.value === '' ? 1 : ingredientAmountInput.value;
+                    ingredientPriceInput.value = ingredientAmountValue * lastPriceIngredient;
+                }
             });
             return generatedIngredientContainer;
         }
@@ -141,11 +219,11 @@
         let generatedIngredientsSelector = null;
         function GenerateIngredientsSelector(tempId) {
             //if (generatedIngredientsSelector === null) {
-                let tempGenerateIngredientsSelector =   '<div><label>Ингредиент</label><select class="need-validate" name="modifications['+ tempId +'][ingredients][id][]">';
+                let tempGenerateIngredientsSelector =   '<div><label>Ингредиент</label><select class="selector-ingredients need-validate" name="modifications['+ tempId +'][ingredients][id][]">';
 
                 tempGenerateIngredientsSelector += '<option value="" disabled selected>Выберите ингредиент</option>';
                 Object.keys(allIngredients).forEach((key) => {
-                    tempGenerateIngredientsSelector += '<option value="' + allIngredients[key]['id'] + '">' + allIngredients[key]['title'] + '</option>';
+                    tempGenerateIngredientsSelector += '<option data-last-price-ingredient="' + allIngredients[key]['last_price_ingredient'] + '" value="' + allIngredients[key]['id'] + '">' + allIngredients[key]['title'] + '</option>';
                 });
                 tempGenerateIngredientsSelector += '</select></div>';
                 generatedIngredientsSelector = tempGenerateIngredientsSelector;
