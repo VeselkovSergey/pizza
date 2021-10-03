@@ -141,4 +141,8 @@ header {
         max-height: calc(100vh - 30px);
     }
 
+    .button-put-in-basket {
+        margin-top: 25px;
+    }
+
 }
