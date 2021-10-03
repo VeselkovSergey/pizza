@@ -148,6 +148,7 @@
             buttonPutInBasket.addEventListener('click', () => {
                 FlashMessage('Добавлено: <br/>' + modificationSelected.product.title + ', ' + modificationSelected.modification.title + ' ' + modificationSelected.modification.value);
                 AddProductInBasket(modificationSelected);
+                productWindow.remove();
             });
 
             document.body.prepend(productWindow);

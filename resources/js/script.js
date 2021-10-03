@@ -327,7 +327,6 @@ function BasketWindow() {
             AddProductInBasket(modification);
             amountProduct.innerHTML = AmountProductInBasket(modificationId);
             priceSumProductsInBasket.innerHTML = 'Итого: ' + PriceSumProductsInBasket() + ' ₽';
-            basketWindow.remove();
         });
     });
 
