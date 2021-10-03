@@ -21,6 +21,10 @@ button {
     width: min-content;
 }
 
+p {
+    text-indent: 25px; /* Отступ первой строки в пикселах */
+}
+
 .invalid-value {
     border-color: red !important;
 }
