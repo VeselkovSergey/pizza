@@ -91,20 +91,24 @@
                 '<div class="modal-window pos-abs bg-white border-radius-10 scroll-off">' +
                     '<div class="button-close-product-window pos-abs flex cp" style="right: 20px; top: 20px">'+SvgCloseButton+'</div>' +
                     '<div class="scroll-auto" style="max-height: calc(100vh - 100px);">' +
-                        '<div class="flex">' +
-                            '<div class="w-50 m-25">' +
-                                '<div>' +
-                                    '<img src="' + imgUrl + '" class="w-100" alt="">' +
+                        '<div class="container-product p-25 flex">' +
+                            '<div class="container-img-and-about-product w-50">' +
+                                '<div class="w-100">' +
+                                    '<div>' +
+                                        '<img src="' + imgUrl + '" class="w-100" alt="">' +
+                                    '</div>' +
+                                    '<div>традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</div>' +
                                 '</div>' +
-                                '<div>традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</div>' +
                             '</div>' +
-                            '<div class="w-50 flex-column p-25" style="background: rgb(252, 252, 252);">' +
-                                '<div class="text-center">'+productTitle+'</div>' +
-                                '<div class="container-ingredients">' +
-                                    IngredientsGenerator(productId) +
-                                '</div>'+
-                                ModificationsGenerate(productId) +
-                                '<div class="container-button-put-in-basket mt-a mx-a w-75"><button class="button-put-in-basket w-100 p-5 cp">в корзину</button></div>' +
+                            '<div class="container-modification-product w-50">' +
+                                '<div class="w-100 flex-column" style="background: rgb(252, 252, 252);">' +
+                                    '<div class="text-center">'+productTitle+'</div>' +
+                                    '<div class="container-ingredients">' +
+                                        IngredientsGenerator(productId) +
+                                    '</div>'+
+                                    ModificationsGenerate(productId) +
+                                    '<div class="container-button-put-in-basket mt-a mx-a w-75"><button class="button-put-in-basket w-100 p-5 cp">в корзину</button></div>' +
+                                '</div>' +
                             '</div>' +
                         '</div>' +
                     '</div>' +
@@ -168,7 +172,7 @@
                     }
                     let buttonWidth = 'width:' + (100 / modification.modificationTypeCount) + '%;';
                     let modificationIdHTML =
-                        '<div class="text-center" style="' + buttonWidth + '">' +
+                        '<div class="text-center flex" style="' + buttonWidth + '">' +
                             '<input name="' + modificationTypeId + '" class="hide modification-input" id="' + modificationId + '" type="radio" ' + checkedInput + '/>' +
                             '<label class="modification-button" data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.title + ' - ' + modification.value + '</label>' +
                         '</div>';
