@@ -541,6 +541,16 @@ function SuggestionsAddress(query, inputSuggestions) {
         const url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address";
         const token = "980b289f33c7bafda2d4007c51a2d45d6c980425";
 
+        let data = {
+            query:query,
+            locations: [{
+                "region": "Московская",
+                "city": "Дубна"
+            }],
+            restrict_value: true,
+            count: 3,
+        }
+
         let options = {
             method: "POST",
             mode: "cors",
@@ -549,7 +559,7 @@ function SuggestionsAddress(query, inputSuggestions) {
                 "Accept": "application/json",
                 "Authorization": "Token " + token
             },
-            body: JSON.stringify({query: query, count: 3})
+            body: JSON.stringify(data)
         }
 
         fetch(url, options)
