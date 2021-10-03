@@ -423,7 +423,7 @@ function OrderInfoGenerationHTML() {
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Адрес для доставки</label>' +
-                        '<input name="clientAddressDelivery" autocomplete="off" class="need-validate delivery-address w-100" type="text">' +
+                        '<input name="clientAddressDelivery" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address w-100" type="text">' +
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Комментарий</label>' +
