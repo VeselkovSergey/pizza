@@ -30,7 +30,7 @@
 <div class="flex-center m-a" style="font-style: italic;font-weight: bold;font-size: large;">
     БРОПИЦЦА
 </div>
-<div class="flex-center p-5">
+<div class="container-profile-and-basket flex-center p-5">
     @php
         $actionConditionAuth = !\Illuminate\Support\Facades\Auth::check() ? 'LoginPage()' : 'UserOrdersPage()';
     @endphp

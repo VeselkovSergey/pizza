@@ -26,7 +26,7 @@
 
     <body>
 
-        <header class="flex-wrap pos-sticky top-0 bg-white z-1 px-25">@include('layouts.header')</header>
+        <header class="flex-wrap pos-sticky top-0 bg-white z-1">@include('layouts.header')</header>
 
         <main class="m-25">@yield('content')</main>
 

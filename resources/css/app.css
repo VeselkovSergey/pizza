@@ -43,6 +43,11 @@ textarea {
     width: 10%;
 }
 
+header {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
 @media screen and (max-width: 1440px) {
 
     .button-open-product {
@@ -79,6 +84,19 @@ textarea {
 
     .button-open-product {
         width: 100%;
+    }
+
+    header {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .container-profile {
+        display: none;
+    }
+
+    .phone-container-header {
+        display: none;
     }
 
 }
