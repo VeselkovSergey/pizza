@@ -79,6 +79,8 @@
 
             let productTitle = allProducts['product-'+productId].title;
 
+            let imgUrl = "{{url('img-pizza.jpeg')}}";
+
             let productWindow = document.createElement('div');
             productWindow.className = 'product-window w-100 h-100 pos-fix z-2';
             productWindow.innerHTML =
@@ -90,7 +92,7 @@
                         '<div class="flex">' +
                             '<div class="w-50 m-25">' +
                                 '<div>' +
-                                    '<img src="{{url('img-pizza.jpeg')}}" class="w-100" alt="">' +
+                                    '<img src="' + imgUrl + '" class="w-100" alt="">' +
                                 '</div>' +
                                 '<div>традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</div>' +
                             '</div>' +
