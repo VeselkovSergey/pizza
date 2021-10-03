@@ -30,6 +30,12 @@
 
         <main class="m-25">@yield('content')</main>
 
+        <script>
+
+            const routeOrderCreate = "{{route('order-create')}}";
+
+        </script>
+
         <script src="{{ asset('resources/js/script.js') }}"></script>
 
         @yield('js')

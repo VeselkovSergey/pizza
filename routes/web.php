@@ -76,3 +76,9 @@ Route::group(['prefix' => 'suppliers'], function() {
     Route::post('/save', [Controllers\Suppliers\SuppliersController::class, 'Save'])->name('supplier-save');
 
 });
+
+Route::group(['prefix' => 'order'], function() {
+
+    Route::post('/create', [Controllers\Orders\OrdersController::class, 'Create'])->name('order-create');
+
+});

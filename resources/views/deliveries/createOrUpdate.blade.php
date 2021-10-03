@@ -38,7 +38,7 @@
 
             Ajax("{{route('delivery-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
-            })
+            });
         });
 
     </script>

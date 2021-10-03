@@ -16,7 +16,8 @@
         "laravel/tinker": "^2.5",
         "scssphp/scssphp": "^1.8",
         "ext-mbstring": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-curl": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
