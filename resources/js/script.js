@@ -424,7 +424,7 @@ function OrderInfoGenerationHTML() {
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Номер телефона</label>' +
-                        '<input name="clientPhone" class="need-validate phone-mask w-100" maxlength="17" type="text">' +
+                        '<input name="clientPhone" class="need-validate phone-mask w-100" maxlength="16" type="text">' +
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Адрес для доставки</label>' +
