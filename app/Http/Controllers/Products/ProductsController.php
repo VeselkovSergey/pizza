@@ -22,6 +22,7 @@ class ProductsController extends Controller
     public function GetAllProducts()
     {
         $allProductsJSON = Files::GetFile('allProduct');
+        dd($allProductsJSON);
         if ($allProductsJSON !== false) {
             return $allProductsJSON->contentFile;
         } else {
