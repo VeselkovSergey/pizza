@@ -473,7 +473,7 @@ function OrderInfoGenerationHTML() {
                             '</div>' +
                         '</div>' +
                         '</div>' +
-                    '<div class="order-create w-100 flex-center mt-25"><button class="<!--w-75 p-5 cp--> button-put-in-basket btn first">Оформить заказ</button></div>' +
+                    '<div class="order-create w-100 flex-center mt-25"><button class="cp button-put-in-basket btn first mt-25">Оформить заказ</button></div>' +
                 '</div>';
     } else {
         return '';
