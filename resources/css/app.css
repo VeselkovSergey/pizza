@@ -17,10 +17,6 @@ textarea {
     resize: vertical;
 }
 
-button {
-    width: min-content;
-}
-
 p {
     text-indent: 25px; /* Отступ первой строки в пикселах */
 }

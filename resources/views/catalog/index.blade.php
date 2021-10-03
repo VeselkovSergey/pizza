@@ -107,7 +107,7 @@
                                         IngredientsGenerator(productId) +
                                     '</div>'+
                                     ModificationsGenerate(productId) +
-                                    '<div class="container-button-put-in-basket mt-a mx-a w-75"><button class="button-put-in-basket w-100 p-5 cp mt-25">в корзину</button></div>' +
+                                    '<div class="container-button-put-in-basket mt-a mx-a"><button class="button-put-in-basket btn first">В корзину</button></div>' +
                                 '</div>' +
                             '</div>' +
                         '</div>' +
