@@ -17,3 +17,8 @@ body {
     border: unset;
     background-color: unset;
 }
+
+.clear-a {
+    text-decoration: none;
+    color: black;
+}
