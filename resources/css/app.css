@@ -18,7 +18,7 @@ textarea {
 }
 
 .invalid-value {
-    border-color: red!important;
+    border-color: red !important;
 }
 
 .product-window-shadow, .basket-window-shadow {
@@ -36,7 +36,6 @@ textarea {
 }
 
 
-
 /* ADAPTIVE*/
 
 .button-open-product {
@@ -48,10 +47,21 @@ header {
     padding-right: 25px;
 }
 
+.modal-window {
+    top: 50px;
+    left: calc(50% - 12.5%);
+    width: 25%;
+}
+
 @media screen and (max-width: 1440px) {
 
     .button-open-product {
         width: 20%;
+    }
+
+    .modal-window {
+        left: calc(50% - 25%);
+        width: 50%;
     }
 
 }
@@ -68,6 +78,11 @@ header {
 
     .button-open-product {
         width: 50%;
+    }
+
+    .modal-window {
+        left: calc(50% - 40%);
+        width: 80%;
     }
 
 }
@@ -97,6 +112,11 @@ header {
 
     .phone-container-header {
         display: none;
+    }
+
+    .modal-window {
+        left: calc(50% - 45%);
+        width: 90%;
     }
 
 }

@@ -88,7 +88,7 @@
             productWindow.innerHTML =
                 '<div class="product-window-shadow w-100 h-100">' +
                 '</div>' +
-                '<div class="pos-abs bg-white border-radius-10 scroll-off" style="top: 50px;left: calc(50% - 20%); width: 40%">' +
+                '<div class="modal-window pos-abs bg-white border-radius-10 scroll-off">' +
                     '<div class="button-close-product-window pos-abs flex cp" style="right: 20px; top: 20px">'+SvgCloseButton+'</div>' +
                     '<div class="scroll-auto" style="max-height: calc(100vh - 100px);">' +
                         '<div class="flex">' +
