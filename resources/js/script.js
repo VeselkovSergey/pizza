@@ -474,7 +474,7 @@ function startTrackingNumberInput() {
                     phoneInput.value = phoneInput.value + "(";
                 } else if (phoneInput.value.length === 6) {
                     phoneInput.value = phoneInput.value + ")";
-                } else if (phoneInput.value.length === 11 || phoneInput.value.length === 14) {
+                } else if (phoneInput.value.length === 10 || phoneInput.value.length === 13) {
                     phoneInput.value = phoneInput.value + "-";
                 }
             });
