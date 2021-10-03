@@ -351,10 +351,10 @@ function BasketWindow() {
 
             Ajax(routeOrderCreate, 'POST', data).then((response) => {
                 FlashMessage(response.message);
-                // if (response.status === true) {
-                //     basketWindow.remove();
-                //     DeleteAllProductsInBasket();
-                // }
+                if (response.status === true) {
+                    basketWindow.remove();
+                    DeleteAllProductsInBasket();
+                }
             })
         });
     }
