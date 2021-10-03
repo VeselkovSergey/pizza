@@ -231,7 +231,7 @@ basketButton.addEventListener('click', () => {
     BasketWindow();
 });
 
-triggerEvent( basketButton, 'click' );
+// triggerEvent( basketButton, 'click' );
 function triggerEvent(elem, event) {
     elem.dispatchEvent(new Event(event));
 }
