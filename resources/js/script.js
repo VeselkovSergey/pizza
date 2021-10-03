@@ -258,12 +258,14 @@ function BasketWindow() {
 
     let basketWindowShadow = basketWindow.querySelector('.basket-window-shadow');
     basketWindowShadow.addEventListener('click', () => {
-        basketWindow.remove();
+        // basketWindow.remove();
+        basketWindow.slowRemove();
     });
 
     let buttonCloseBasketWindowShadow = basketWindow.querySelector('.button-close-basket-window');
     buttonCloseBasketWindowShadow.addEventListener('click', () => {
-        basketWindow.remove();
+        // basketWindow.remove();
+        basketWindow.slowRemove();
     });
 
     document.body.prepend(basketWindow);
@@ -288,7 +290,8 @@ function BasketWindow() {
             let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
             priceSumProductsInBasket.innerHTML = 'Итого: ' + resultPriceSumProductsInBasket + ' ₽';
             if (resultPriceSumProductsInBasket === 0) {
-                basketWindow.remove();
+                // basketWindow.remove();
+                basketWindow.slowRemove();
             }
         });
     });
@@ -311,7 +314,8 @@ function BasketWindow() {
             let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
             priceSumProductsInBasket.innerHTML = 'Итого: ' + resultPriceSumProductsInBasket + ' ₽';
             if (resultPriceSumProductsInBasket === 0) {
-                basketWindow.remove();
+                // basketWindow.remove();
+                basketWindow.slowRemove();
             }
         });
     });
@@ -352,7 +356,8 @@ function BasketWindow() {
             Ajax(routeOrderCreate, 'POST', data).then((response) => {
                 FlashMessage(response.message);
                 if (response.status === true) {
-                    basketWindow.remove();
+                    // basketWindow.remove();
+                    basketWindow.slowRemove();
                     DeleteAllProductsInBasket();
                 }
             })

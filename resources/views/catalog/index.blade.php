@@ -116,12 +116,14 @@
 
             let productWindowShadow = productWindow.querySelector('.product-window-shadow');
             productWindowShadow.addEventListener('click', () => {
-                productWindow.remove();
+                // productWindow.remove();
+                productWindow.slowRemove();
             });
 
             let buttonCloseProductWindowShadow = productWindow.querySelector('.button-close-product-window');
             buttonCloseProductWindowShadow.addEventListener('click', () => {
-                productWindow.remove();
+                // productWindow.remove();
+                productWindow.slowRemove();
             });
 
             let buttonPutInBasket = productWindow.querySelector('.button-put-in-basket');
@@ -148,7 +150,8 @@
             buttonPutInBasket.addEventListener('click', () => {
                 FlashMessage('Добавлено: <br/>' + modificationSelected.product.title + ', ' + modificationSelected.modification.title + ' ' + modificationSelected.modification.value);
                 AddProductInBasket(modificationSelected);
-                productWindow.remove();
+                // productWindow.remove();
+                productWindow.slowRemove();
             });
 
             document.body.prepend(productWindow);

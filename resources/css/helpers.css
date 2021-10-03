@@ -603,3 +603,17 @@
 .scroll-off {
     overflow: hidden;
 }
+
+.slow-remove {
+    animation: slow-remove-opacity 400ms cubic-bezier(0.5, 0, 0.5, 1);
+    animation-fill-mode: forwards;
+}
+
+@keyframes slow-remove-opacity {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

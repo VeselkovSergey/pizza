@@ -14,3 +14,10 @@ Element.prototype.showToggle = function () {
         this.classList.add('hide');
     }
 }
+
+Element.prototype.slowRemove = function () {
+    this.classList.add('slow-remove');
+    setTimeout(() => {
+        this.remove()
+    }, 400);
+}
