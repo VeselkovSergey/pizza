@@ -409,13 +409,17 @@ function ProductsInBasketGenerationHTML() {
                         '<div>' + modification.title + '</div>' +
                         '<div>' + modification.value + '</div>' +
                     '</div>' +
-                    '<div class="border-radius-25 flex-center" style="background-color: rgb(243, 243, 247);">' +
-                        '<button class="delete-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgMinusButton + '</button>' +
-                        '<div class="m-5 amount-product flex-center" style="min-width: 20px;" data-modification-id="' + modificationId + '">' + amount + '</div>' +
-                        '<button class="add-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgPlusButton + '</button>' +
+                    '<div class="flex-column-center">' +
+                        '<div class="border-radius-25 flex-center" style="background-color: rgb(243, 243, 247);">' +
+                            '<button class="delete-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgMinusButton + '</button>' +
+                            '<div class="m-5 amount-product flex-center" style="min-width: 20px;" data-modification-id="' + modificationId + '">' + amount + '</div>' +
+                            '<button class="add-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgPlusButton + '</button>' +
+                        '</div>' +
+                        '<div class="flex-center">' +
+                            '<div class="p-10">' + modification.sellingPrice + ' ₽</div>' +
+                            '<button class="clear-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgTrashButton + '</button>' +
+                        '</div>' +
                     '</div>' +
-                    '<div class="p-10">' + modification.sellingPrice + ' ₽</div>' +
-                    '<button class="clear-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgTrashButton + '</button>' +
                 '</div>';
             productsInBasketGenerationHTML += modificationHTML
         });
