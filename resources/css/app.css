@@ -17,6 +17,10 @@ textarea {
     resize: vertical;
 }
 
+button {
+    width: min-content;
+}
+
 .invalid-value {
     border-color: red !important;
 }
