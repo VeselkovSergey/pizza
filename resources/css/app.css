@@ -145,4 +145,8 @@ header {
         max-height: calc(100vh - 30px);
     }
 
+    .promokod-apply-button {
+        margin-top: 5px;
+    }
+
 }
