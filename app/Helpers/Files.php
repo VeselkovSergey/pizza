@@ -70,6 +70,7 @@ class Files
         } else {
             $file = FilesDB::find($filesId);
             if ($file) {
+                $file->delete();
                 return Storage::disk($file->disk)->delete($file->path . '/' . $file->hash_name . '.' . $file->extension);
             }
         }
