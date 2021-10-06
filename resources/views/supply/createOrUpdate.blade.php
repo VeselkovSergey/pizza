@@ -100,6 +100,11 @@
 
             Ajax("{{route('supply-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
+                if (response.status === true) {
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000)
+                }
             });
         });
 
