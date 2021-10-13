@@ -616,7 +616,7 @@ function ContainerSuggestionsGeneration(result, inputSuggestions) {
             itemSuggestion.className = 'p-5 suggestion-item';
             itemSuggestion.innerHTML = item.value;
             containerSuggestionsAbsolutePosition.append(itemSuggestion);
-            itemSuggestion.addEventListener('click', () => {
+            itemSuggestion.addEventListener('mousedown', () => {
                 inputSuggestions.value = itemSuggestion.innerHTML;
                 containerSuggestions.remove();
                 inputSuggestions.focus();
