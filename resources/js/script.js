@@ -627,12 +627,12 @@ function ContainerSuggestionsGeneration(result, inputSuggestions) {
                 inputName = inputName[0].toUpperCase() + inputName.slice(1);
                 localStorage.setItem('last' + inputName, inputValue);
             });
-
-            inputSuggestions.addEventListener('blur', () => {
-                containerSuggestions.remove();
-            });
         });
     }
+
+    inputSuggestions.addEventListener('blur', () => {
+        containerSuggestions.remove();
+    });
 
     containerSuggestions.append(containerSuggestionsAbsolutePosition);
 
