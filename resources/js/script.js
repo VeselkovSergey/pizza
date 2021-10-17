@@ -607,7 +607,7 @@ function ContainerSuggestionsGeneration(result, inputSuggestions) {
     if (result.length === 0) {
         let itemSuggestion = document.createElement('div');
         itemSuggestion.className = 'p-5';
-        itemSuggestion.innerHTML = 'Нет результатов удовлетворяющих поиску';
+        itemSuggestion.innerHTML = 'Нет результатов удовлетворяющих запросу';
         containerSuggestionsAbsolutePosition.append(itemSuggestion);
     } else {
         containerSuggestionsAbsolutePosition.innerHTML = '<div class="p-5 color-grey">Выберите подсказку:</div>';
