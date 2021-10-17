@@ -23,14 +23,6 @@
 
         }
 
-        .container-button-put-in-basket {
-
-        }
-
-        .button-put-in-basket {
-
-        }
-
     </style>
 
     <div class="flex-wrap">
@@ -40,21 +32,18 @@
             <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}">
 
                 <div class="m-10 flex-column p-5 border-radius-10 shadow">
-                    <div class="w-100 h-100">
+                    <div class="mb-10">
                         <img src="{{url('img-pizza.jpeg')}}" class="w-100" alt="">
                     </div>
 
-                    <div class="p-10">{{$product->title}}</div>
+                    <div class="text-center mb-10">{{$product->title}}</div>
 
-                    <div class="flex">
+                    <div class="text-center mb-10">от {{$product->minimumPrice}} ₽</div>
 
-                        <div class="p-10 w-50">от {{$product->minimumPrice}} ₽</div>
-
-                        <div class="w-50 p-5">
-                            <button class="w-100 h-100 bg-grey color-white border-radius clear-button">в корзину</button>
-                        </div>
-
+                    <div class="mx-10 mb-10">
+                        <button class="w-100 h-100 bg-grey color-white border-radius-5 clear-button p-10 cp">в корзину</button>
                     </div>
+
                 </div>
 
             </div>
