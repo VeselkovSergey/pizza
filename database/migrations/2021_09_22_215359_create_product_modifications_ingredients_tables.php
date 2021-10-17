@@ -17,7 +17,7 @@ class CreateProductModificationsIngredientsTables extends Migration
             $table->id();
             $table->integer('product_modification_id')->comment('продукт созданный на основе свойств');
             $table->integer('ingredient_id');
-            $table->string('ingredient_amount');
+            $table->float('ingredient_amount');
             $table->integer('visible')->default(1)->comment('0 - не видимый, 1 - видимый');
             $table->timestamps();
         });

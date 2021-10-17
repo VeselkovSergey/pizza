@@ -18,7 +18,7 @@ class CreateIngredientsInSupplyTables extends Migration
             $table->integer('supply_id');
             $table->integer('ingredient_id');
             $table->float('amount_ingredient');
-            $table->float('price_ingredient');
+            $table->decimal('price_ingredient');
         });
     }
 
