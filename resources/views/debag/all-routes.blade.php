@@ -8,7 +8,7 @@
         <a href="{{route('all-ingredients')}}">Все ингредиенты (JSON)</a>
         <a href="{{route('supplier-create')}}">4 Поставщики (метро/рынок/рога и копыта)</a>
         <a href="{{route('supply-create')}}">5 Новая поставка (поставка. тут вносим ингредиенты)</a>
-        <a href="{{route('product-create')}}">6 Новый продукт (не доделал)</a>
+        <a href="{{route('product-create')}}">6 Новый продукт</a>
         <a href="{{route('all-products-admin-page')}}">7 Все продукты (Админка)</a>
         <a href="{{route('catalog')}}">8 Каталог (Сайт)</a>
         <a href="{{route('all-products')}}">9 Все продукты (JSON)</a>

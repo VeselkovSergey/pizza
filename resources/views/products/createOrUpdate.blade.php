@@ -8,8 +8,6 @@
         }
     </style>
 
-    <h4>### Доделать подтягивание цен из пред. поставок</h4>
-
     <div>
 
         <form class="product-create-or-edit-form" action="" onsubmit="return false;">
@@ -46,7 +44,7 @@
 
         let saveButton = document.body.querySelector('.save-button');
         saveButton.addEventListener('click', () => {
-
+            saveButton.hide();
             let data = GetDataFormContainer('product-create-or-edit-form');
 
             if (!CheckingFieldForEmptiness('product-create-or-edit-form', true)) {
@@ -58,6 +56,7 @@
                 if (response.status === true) {
                     location.reload();
                 }
+                saveButton.show();
             })
         });
 
@@ -110,12 +109,12 @@
                 let selectorsIngredients = ingredientsContainer.querySelectorAll('.selector-ingredients');
 
                 allInputIngredientAmount.forEach((el) => {
-                   el.addEventListener('input', (event) => {
-                       let costPriceValue = 0;
+                   el.addEventListener('input', () => {
+                       let costPriceValue = 0.00;
                        allInputIngredientPrice.forEach((el) => {
-                           costPriceValue += parseInt(el.value);
+                           costPriceValue = parseFloat(costPriceValue) + parseFloat(el.value);
                        });
-                       costPriceInput.value = costPriceValue;
+                       costPriceInput.value = parseFloat(costPriceValue).toFixed(2);
                        markupInput.value = ((sellingPriceInput.value / costPriceInput.value) - 1) * 100;
                    });
                 });
@@ -124,23 +123,23 @@
                 deleteIngredientButtons.forEach((el) => {
                     el.addEventListener('click', () => {
                         let allInputIngredientPrice = ingredientsContainer.querySelectorAll('.ingredient-price');
-                        let costPriceValue = 0;
+                        let costPriceValue = 0.00;
                         allInputIngredientPrice.forEach((el) => {
-                            costPriceValue += parseInt(el.value);
+                            costPriceValue = parseFloat(costPriceValue) + parseFloat(el.value);
                         });
-                        costPriceInput.value = costPriceValue;
+                        costPriceInput.value = parseFloat(costPriceValue).toFixed(2);
                         markupInput.value = ((sellingPriceInput.value / costPriceInput.value) - 1) * 100;
                     });
                 });
 
                 selectorsIngredients.forEach((el) => {
-                    el.addEventListener('change', (event) => {
+                    el.addEventListener('change', () => {
                         let allInputIngredientPrice = ingredientsContainer.querySelectorAll('.ingredient-price');
-                        let costPriceValue = 0;
+                        let costPriceValue = 0.00;
                         allInputIngredientPrice.forEach((el) => {
-                            costPriceValue += parseInt(el.value);
+                            costPriceValue = parseFloat(costPriceValue) + parseFloat(el.value);
                         });
-                        costPriceInput.value = costPriceValue;
+                        costPriceInput.value = parseFloat(costPriceValue).toFixed(2);
                         markupInput.value = ((sellingPriceInput.value / costPriceInput.value) - 1) * 100;
                     });
                 });
@@ -199,7 +198,7 @@
                 let lastPriceIngredient = event.target.closest('.ingredient-container').querySelector('.selector-ingredients').options[selectedIndex].dataset.lastPriceIngredient;
                 if (lastPriceIngredient !== undefined) {
                     let ingredientAmountValue = event.target.value;
-                    ingredientPriceInput.value = ingredientAmountValue * lastPriceIngredient;
+                    ingredientPriceInput.value = parseFloat(ingredientAmountValue * lastPriceIngredient).toFixed(2);
                 }
             });
 
@@ -210,7 +209,7 @@
                 unitIngredientPrice.value = lastPriceIngredient;
                 if (lastPriceIngredient !== undefined) {
                     let ingredientAmountValue = ingredientAmountInput.value === '' ? 1 : ingredientAmountInput.value;
-                    ingredientPriceInput.value = ingredientAmountValue * lastPriceIngredient;
+                    ingredientPriceInput.value = parseFloat(ingredientAmountValue * lastPriceIngredient).toFixed(2);
                 }
             });
             return generatedIngredientContainer;
@@ -244,8 +243,6 @@
             //}
             return generatedModificationsSelector;
         }
-
-
 
         let allModifications = null;
         Ajax("{{route('all-modifications')}}").then((response) => {

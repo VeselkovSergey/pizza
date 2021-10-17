@@ -35,7 +35,7 @@ function Ajax(url, method, formDataRAW) {
         xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
 
         xhr.onload = function () {
-            if (this.status == 200) {
+            if (this.status === 200) {
                 try {
                     resolve(JSON.parse(this.response));
                 } catch {
@@ -486,7 +486,7 @@ function OrderInfoGenerationHTML() {
                         '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '">' +
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
-                        '<label for="">Адрес для доставки</label>' +
+                        '<label for="">Адрес для доставки (улица, дом, кв.)</label>' +
                         '<input name="clientAddressDelivery" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '">' +
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
@@ -553,7 +553,7 @@ function startTrackingNumberInput() {
                 }
             });
 
-            phoneInput.addEventListener('focus', (event) => {
+            phoneInput.addEventListener('focus', () => {
                 if (phoneInput.value.length === 0) {
                     phoneInput.value = '+7';
                     phoneInput.selectionStart = phoneInput.value.length;

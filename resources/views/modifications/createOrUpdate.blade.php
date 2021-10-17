@@ -39,13 +39,16 @@
         let saveButton = document.body.querySelector('.save-button');
         saveButton.addEventListener('click', () => {
 
-            let title = document.body.querySelector('input[name="title"]').value;
-            let modificationType = document.body.querySelector('select[name="modificationType"]').value;
-            let modificationValue = document.body.querySelector('input[name="modificationValue"]').value;
+            let title = document.body.querySelector('input[name="title"]');
+            let titleValue = title.value;
+            let modificationType = document.body.querySelector('select[name="modificationType"]');
+            let modificationTypeValue = modificationType.value;
+            let modificationValue = document.body.querySelector('input[name="modificationValue"]');
+            let modificationValueValue = modificationValue.value;
             let data = {
-                title: title,
-                modificationType: modificationType,
-                modificationValue: modificationValue,
+                title: titleValue,
+                modificationType: modificationTypeValue,
+                modificationValue: modificationValueValue,
             }
 
             if (!CheckingFieldForEmptiness('modifications-create-or-edit-form', true)) {
@@ -56,6 +59,7 @@
                 FlashMessage(response.message);
                 if (response.status === true) {
                     title.value = '';
+                    modificationValueValue.value = '';
                     title.focus();
                 }
             })
