@@ -16,8 +16,8 @@ class GitHubController extends ApiController
         echo 'git pull complete' . PHP_EOL;
     }
 
-    public function test()
+    public function test(Request $request)
     {
-        dd(123);
+        dd($request);
     }
 }
