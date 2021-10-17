@@ -119,6 +119,7 @@
                 FlashMessage('Добавлено: <br/>' + modificationSelected.product.title + ', ' + modificationSelected.modification.title + ' ' + modificationSelected.modification.value);
                 AddProductInBasket(modificationSelected);
                 modalWindow.slowRemove();
+                document.body.classList.remove('scroll-off');
             });
 
             let modalWindow = ModalWindow(productContent);
