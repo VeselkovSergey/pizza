@@ -115,6 +115,70 @@ function HideElement(element) {
     element.classList.add('hide');
 }
 
+function ModalWindow(content, closingCallback) {
+
+    let closeButtonSVG = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.6365 13.3996L13.4001 12.636L7.76373 6.99961L13.4001 1.36325L12.6365 0.599609L7.0001 6.23597L1.36373 0.599609L0.600098 1.36325L6.23646 6.99961L0.600098 12.636L1.36373 13.3996L7.0001 7.76325L12.6365 13.3996Z" fill="#000000"></path> </svg>';
+
+    let modalWindowComponentContainer = CreateElement('div', {
+        attr: {
+            class: 'modal-window-component-container',
+        }
+    });
+
+    let modalWindowComponent = CreateElement('div', {attr: {class: 'modal-window-component'}}, modalWindowComponentContainer);
+
+    let modalWindowShadow = CreateElement('div', {
+        attr: {class: 'modal-window-shadow'}, events: {
+            click: () => {
+                closingCallback ? closingCallback() : '';
+                modalWindowComponentContainer.remove();
+            }
+        }
+    }, modalWindowComponent);
+
+    let modalWindowContainer = CreateElement('div', {
+        attr: {
+            class: 'modal-window-content-container',
+        }
+    }, modalWindowComponent);
+
+    let modalWindowCloseButton = CreateElement('div', {
+        attr: {
+            class: 'modal-window-close-button',
+        },
+        content: closeButtonSVG,
+        events: {
+            click: () => {
+                closingCallback ? closingCallback() : '';
+                modalWindowComponentContainer.remove();
+            }
+        }
+    }, modalWindowContainer);
+
+    let modalWindowContent = CreateElement('div', {
+        attr: {
+            class: 'modal-window-content',
+        }
+    }, modalWindowContainer);
+
+    if (typeof content === 'string') {
+        modalWindowContent.innerHTML = content
+    } else {
+        modalWindowContent.append(content)
+    }
+
+    document.body.append(modalWindowComponentContainer);
+
+    return modalWindowComponentContainer;
+}
+
+function ModalWindowFlash(content, timer = 2000) {
+    let modalWindow = ModalWindow(content)
+    setTimeout(() => {
+        modalWindow.remove();
+    }, timer);
+}
+
 function FlashMessage(message, autoClose = true, timeout = 3000) {
     let flashMessageContainer = document.body.querySelector('.flash-message-container');
     if (flashMessageContainer === null) {
@@ -237,39 +301,16 @@ function triggerEvent(elem, event) {
 }
 
 function BasketWindow() {
-    let basketWindow = document.createElement('div');
-    basketWindow.className = 'basket-window w-100 h-100 pos-fix z-2';
-    basketWindow.innerHTML =
-        '<div class="modal-window pos-abs scroll-off flex-center">' +
-            '<div class="basket-window-shadow w-100 h-100"></div>' +
-            '<div class="modal-window-content pos-rel bg-white bg-white border-radius-10">' +
-                '<div class="button-close-basket-window pos-abs flex cp" style="right: 20px; top: 20px">' + SvgCloseButton + '</div>' +
-                '<div class="container-content-in-modal-window scroll-auto">' +
-                    '<div class="p-25" style="height: calc(100% - 50px);">' +
+    let basketContent = document.createElement('div');
+    basketContent.innerHTML =
                         '<div class="flex-wrap">' +
                             ProductsInBasketGenerationHTML() +
                         '</div>' +
                         '<div class="flex-wrap">' +
                             OrderInfoGenerationHTML() +
-                        '</div>' +
-                    '</div>'+
-                '</div>' +
-            '</div>'+
-        '</div>';
+                        '</div>';
 
-    let basketWindowShadow = basketWindow.querySelector('.basket-window-shadow');
-    basketWindowShadow.addEventListener('click', () => {
-        // basketWindow.remove();
-        basketWindow.slowRemove();
-    });
-
-    let buttonCloseBasketWindowShadow = basketWindow.querySelector('.button-close-basket-window');
-    buttonCloseBasketWindowShadow.addEventListener('click', () => {
-        // basketWindow.remove();
-        basketWindow.slowRemove();
-    });
-
-    document.body.prepend(basketWindow);
+    let modalWindow = ModalWindow(basketContent);
 
     let priceSumProductsInBasket = document.body.querySelector('.price-sum-products-in-basket');
 
@@ -291,8 +332,7 @@ function BasketWindow() {
             let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
             priceSumProductsInBasket.innerHTML = 'Итого: ' + resultPriceSumProductsInBasket + ' ₽';
             if (resultPriceSumProductsInBasket === 0) {
-                // basketWindow.remove();
-                basketWindow.slowRemove();
+                modalWindow.slowRemove();
             }
         });
     });
@@ -315,8 +355,7 @@ function BasketWindow() {
             let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
             priceSumProductsInBasket.innerHTML = 'Итого: ' + resultPriceSumProductsInBasket + ' ₽';
             if (resultPriceSumProductsInBasket === 0) {
-                // basketWindow.remove();
-                basketWindow.slowRemove();
+                modalWindow.slowRemove();
             }
         });
     });
@@ -357,8 +396,7 @@ function BasketWindow() {
             Ajax(routeOrderCreate, 'POST', data).then((response) => {
                 FlashMessage(response.message);
                 if (response.status === true) {
-                    // basketWindow.remove();
-                    basketWindow.slowRemove();
+                    modalWindow.slowRemove();
                     DeleteAllProductsInBasket();
                 }
             })
@@ -375,7 +413,7 @@ function BasketWindow() {
 
     startTrackingNumberInput();
 
-    let clientInformation = basketWindow.querySelector('.client-information');
+    let clientInformation = basketContent.querySelector('.client-information');
     if (clientInformation !== null) {
         clientInformation.querySelectorAll('.last-data').forEach((el) => {
             el.addEventListener('input', (event) => {

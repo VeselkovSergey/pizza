@@ -83,15 +83,9 @@
 
             let imgUrl = "{{url('img-pizza.jpeg')}}";
 
-            let productWindow = document.createElement('div');
-            productWindow.className = 'product-window w-100 h-100 pos-fix z-2';
-            productWindow.innerHTML =
-                '<div class="modal-window pos-abs scroll-off flex-center">' +
-                    '<div class="product-window-shadow w-100 h-100"></div>' +
-                    '<div class="modal-window-content pos-rel bg-white bg-white border-radius-10">' +
-                        '<div class="button-close-product-window pos-abs flex cp" style="right: 20px; top: 20px">'+SvgCloseButton+'</div>' +
-                        '<div class="container-content-in-modal-window scroll-auto">' +
-                            '<div class="container-product p-25 flex">' +
+            let productContent = document.createElement('div');
+            productContent.className = 'flex-wrap product-content';
+            productContent.innerHTML =
                                 '<div class="container-img-and-about-product w-50">' +
                                     '<div class="w-100">' +
                                         '<div>' +
@@ -109,28 +103,12 @@
                                         ModificationsGenerate(productId) +
                                         '<div class="container-button-put-in-basket mt-a mx-a"><button class="button-put-in-basket btn first mt-25">В корзину</button></div>' +
                                     '</div>' +
-                                '</div>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>';
+                                '</div>';
 
-            let productWindowShadow = productWindow.querySelector('.product-window-shadow');
-            productWindowShadow.addEventListener('click', () => {
-                // productWindow.remove();
-                productWindow.slowRemove();
-            });
-
-            let buttonCloseProductWindowShadow = productWindow.querySelector('.button-close-product-window');
-            buttonCloseProductWindowShadow.addEventListener('click', () => {
-                // productWindow.remove();
-                productWindow.slowRemove();
-            });
-
-            let buttonPutInBasket = productWindow.querySelector('.button-put-in-basket');
+            let buttonPutInBasket = productContent.querySelector('.button-put-in-basket');
             buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + startSellingPriceModification + ' ₽';
 
-            productWindow.querySelectorAll('.modification-button').forEach((el) => {
+            productContent.querySelectorAll('.modification-button').forEach((el) => {
                 el.addEventListener('click', () => {
                     let productId = el.dataset.productId;
                     let modificationType = el.dataset.modificationType;
@@ -138,7 +116,7 @@
                     let modification = allProducts[productId]['modifications'][modificationType][modificationId];
                     let sellingPriceModification = modification.sellingPrice;
                     let ingredients = IngredientsGenerator(null, modification);
-                    let containerIngredients = productWindow.querySelector('.container-ingredients');
+                    let containerIngredients = productContent.querySelector('.container-ingredients');
                     containerIngredients.innerHTML = ingredients;
                     buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + sellingPriceModification + ' ₽';
                     modificationSelected = {
@@ -151,11 +129,11 @@
             buttonPutInBasket.addEventListener('click', () => {
                 FlashMessage('Добавлено: <br/>' + modificationSelected.product.title + ', ' + modificationSelected.modification.title + ' ' + modificationSelected.modification.value);
                 AddProductInBasket(modificationSelected);
-                // productWindow.remove();
-                productWindow.slowRemove();
+                modalWindow.slowRemove();
             });
 
-            document.body.prepend(productWindow);
+            let modalWindow = ModalWindow(productContent);
+
         }
 
         let startSellingPriceModification = 0;
