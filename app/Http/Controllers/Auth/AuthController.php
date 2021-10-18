@@ -41,7 +41,8 @@ class AuthController extends Controller
                 $user = self::FastRegistrationUserByPhone($clientPhone);
             }
             Auth::login($user);
-            return ResultGenerate::Success();
+            session()->flash('execFunction', $request->execFunction);
+            return ResultGenerate::Success('Вы авторизовались');
         }
 
         return ResultGenerate::Error('Не верный код');

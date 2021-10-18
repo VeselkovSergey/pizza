@@ -35,8 +35,8 @@
 
 <div class="container-profile-and-basket flex-center p-5">
     @php
-        $authCheck = \Illuminate\Support\Facades\Auth::check();
-        $actionConditionAuth = !$authCheck ? 'LoginWindow()' : 'Logout()';
+        $authCheck = auth()->check();
+        $actionConditionAuth = !$authCheck ? 'LoginWindow()' : 'Profile()';
     @endphp
     <div onclick="{{$actionConditionAuth}}" class="container-profile flex-column-center text-center cp p-5 mx-15 {{$authCheck ? 'color-green' : ''}}">
         <div>
@@ -46,7 +46,7 @@
         </div>
         <div class="text-center">
             @if($authCheck)
-                Выход
+                Профиль
             @else
                 Вход
             @endif

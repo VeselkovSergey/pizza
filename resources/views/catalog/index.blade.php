@@ -41,7 +41,7 @@
                     <div class="text-center mb-10">от {{$product->minimumPrice}} ₽</div>
 
                     <div class="mx-10 mb-10">
-                        <button class="w-100 h-100 bg-grey color-white border-radius-5 clear-button p-10 cp">в корзину</button>
+                        <button class="w-100 h-100 bg-grey color-white border-radius-5 clear-button p-10 cp">В корзину</button>
                     </div>
 
                 </div>

@@ -33,6 +33,7 @@ p {
 .container-suggestions-pos-abs {
     border: 1px solid #cbcdd1;
     background-color: #FFFFFF;
+    width: calc(100% - 2px); /* - border */
 }
 
 .suggestion-item:hover {
@@ -175,4 +176,8 @@ header {
 .modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-content {
     overflow: auto;
     max-height: 80vh;
+}
+
+.buttons-edit-amount-product:active {
+    transform: scale(0.95);
 }

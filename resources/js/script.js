@@ -93,7 +93,7 @@ function CheckingFieldForEmptiness(container, ShowFlashMessage = false) {
             }, {once: true});
         }
     });
-    if (!check) {
+    if (!check && ShowFlashMessage) {
         FlashMessage('Заполните все поля!');
     }
     return check;
@@ -132,7 +132,7 @@ function ModalWindow(content, closingCallback, flash) {
         attr: {class: 'modal-window-shadow'}, events: {
             click: () => {
                 closingCallback ? closingCallback() : '';
-                modalWindowComponentContainer.remove();
+                modalWindowComponentContainer.slowRemove();
                 !flash ? documentBody.classList.remove('scroll-off') : '';
             }
         }
@@ -152,7 +152,7 @@ function ModalWindow(content, closingCallback, flash) {
         events: {
             click: () => {
                 closingCallback ? closingCallback() : '';
-                modalWindowComponentContainer.remove();
+                modalWindowComponentContainer.slowRemove();
                 !flash ? documentBody.classList.remove('scroll-off') : '';
             }
         }
@@ -302,17 +302,14 @@ function triggerEvent(elem, event) {
     elem.dispatchEvent(new Event(event));
 }
 
+let basketWindow;
 function BasketWindow() {
     let basketContent = document.createElement('div');
     basketContent.innerHTML =
-                        '<div class="flex-wrap">' +
-                            ProductsInBasketGenerationHTML() +
-                        '</div>' +
-                        '<div class="flex-wrap">' +
-                            OrderInfoGenerationHTML() +
-                        '</div>';
+        ProductsInBasketGenerationHTML() +
+        OrderInfoGenerationHTML();
 
-    let modalWindow = ModalWindow(basketContent);
+    basketWindow = ModalWindow(basketContent);
 
     let priceSumProductsInBasket = document.body.querySelector('.price-sum-products-in-basket');
 
@@ -332,9 +329,9 @@ function BasketWindow() {
                 containerProductInBasket.remove();
             }
             let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
-            priceSumProductsInBasket.innerHTML = 'Итого: ' + resultPriceSumProductsInBasket + ' ₽';
+            priceSumProductsInBasket.innerHTML = 'Итого: ' + parseFloat(resultPriceSumProductsInBasket).toFixed(2) + ' ₽';
             if (resultPriceSumProductsInBasket === 0) {
-                modalWindow.slowRemove();
+                basketWindow.slowRemove();
                 document.body.classList.remove('scroll-off');
             }
         });
@@ -356,9 +353,9 @@ function BasketWindow() {
                 containerProductInBasket.remove();
             }
             let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
-            priceSumProductsInBasket.innerHTML = 'Итого: ' + resultPriceSumProductsInBasket + ' ₽';
+            priceSumProductsInBasket.innerHTML = 'Итого: ' + parseFloat(resultPriceSumProductsInBasket).toFixed(2) + ' ₽';
             if (resultPriceSumProductsInBasket === 0) {
-                modalWindow.slowRemove();
+                basketWindow.slowRemove();
                 document.body.classList.remove('scroll-off');
             }
         });
@@ -374,38 +371,21 @@ function BasketWindow() {
             }
             AddProductInBasket(modification);
             amountProduct.innerHTML = AmountProductInBasket(modificationId);
-            priceSumProductsInBasket.innerHTML = 'Итого: ' + PriceSumProductsInBasket() + ' ₽';
+            let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
+            priceSumProductsInBasket.innerHTML = 'Итого: ' + parseFloat(resultPriceSumProductsInBasket).toFixed(2) + ' ₽';
         });
     });
 
     let orderCreateButton = document.body.querySelector('.order-create');
     if (orderCreateButton !== null) {
         orderCreateButton.addEventListener('click', () => {
-
-            if (CheckingFieldForEmptiness('client-information') === false) {
-                return;
+            if (!auth) {
+                LoginWindow('BasketWindow()');
+                basketWindow.slowRemove();
+            } else {
+                CreateOrder();
             }
-
-            let clientInformation = GetDataFormContainer('client-information', );
-            let ObjectClientInformation = {};
-            for (let key in clientInformation) {
-                ObjectClientInformation[key] = clientInformation[key].length === 1 ? clientInformation[key][0] : clientInformation[key];
-            }
-
-            let data = {
-                basket: JSON.stringify(GetAllProductsInBasket()),
-                clientInformation: JSON.stringify(ObjectClientInformation),
-            };
-
-            Ajax(routeOrderCreate, 'POST', data).then((response) => {
-                FlashMessage(response.message);
-                if (response.status === true) {
-                    modalWindow.slowRemove();
-                    document.body.classList.remove('scroll-off');
-                    DeleteAllProductsInBasket();
-                }
-            })
-        });
+         });
     }
 
     let deliveryAddress = document.body.querySelector('.delivery-address');
@@ -432,6 +412,32 @@ function BasketWindow() {
 
 }
 
+function CreateOrder() {
+    if (CheckingFieldForEmptiness('client-information') === false) {
+        return;
+    }
+
+    let clientInformation = GetDataFormContainer('client-information', );
+    let ObjectClientInformation = {};
+    for (let key in clientInformation) {
+        ObjectClientInformation[key] = clientInformation[key].length === 1 ? clientInformation[key][0] : clientInformation[key];
+    }
+
+    let data = {
+        basket: JSON.stringify(GetAllProductsInBasket()),
+        clientInformation: JSON.stringify(ObjectClientInformation),
+    };
+
+    Ajax(routeOrderCreate, 'POST', data).then((response) => {
+        FlashMessage(response.message);
+        if (response.status === true) {
+            basketWindow.slowRemove();
+            document.body.classList.remove('scroll-off');
+            DeleteAllProductsInBasket();
+        }
+    });
+}
+
 function ProductsInBasketGenerationHTML() {
     let productsInBasketGenerationHTML = '<div class="w-100">Корзина</div>';
     let countProductsInBasket = CountProductsInBasket();
@@ -454,9 +460,9 @@ function ProductsInBasketGenerationHTML() {
                         '<div>' + modification.value + '</div>' +
                     '</div>' +
                     '<div class="flex-column-center">' +
-                        '<div class="border-radius-25 flex-center" style="background-color: rgb(243, 243, 247);">' +
+                        '<div class="buttons-edit-amount-product border-radius-25 flex-center" style="background-color: rgb(243, 243, 247);">' +
                             '<button class="delete-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgMinusButton + '</button>' +
-                            '<div class="m-5 amount-product flex-center" style="min-width: 20px;" data-modification-id="' + modificationId + '">' + amount + '</div>' +
+                            '<div class="m-5 amount-product text-center" style="min-width: 20px;" data-modification-id="' + modificationId + '">' + amount + '</div>' +
                             '<button class="add-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgPlusButton + '</button>' +
                         '</div>' +
                         '<div class="flex-center">' +
@@ -467,7 +473,8 @@ function ProductsInBasketGenerationHTML() {
                 '</div>';
             productsInBasketGenerationHTML += modificationHTML
         });
-        productsInBasketGenerationHTML += '<div class="price-sum-products-in-basket w-100 text-right">Итого: ' + PriceSumProductsInBasket() + ' ₽</div>';
+        let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
+        productsInBasketGenerationHTML += '<div class="price-sum-products-in-basket w-100 text-right">Итого: ' + parseFloat(resultPriceSumProductsInBasket).toFixed(2) + ' ₽</div>';
     }
 
     return productsInBasketGenerationHTML;
@@ -486,10 +493,10 @@ function OrderInfoGenerationHTML() {
                         '<label for="">Имя</label>' +
                         '<input name="clientName" class="need-validate last-data w-100" type="text" value="' + lastClientName + '">' +
                     '</div>' +
-                    '<div class="w-100 flex-wrap mt-10">' +
-                        '<label for="">Номер телефона</label>' +
-                        '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '">' +
-                    '</div>' +
+                    // '<div class="w-100 flex-wrap mt-10 hide">' +
+                    //     '<label for="">Номер телефона</label>' +
+                    //     '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text"  readonly value="' + userPhone + '">' +
+                    // '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Адрес для доставки (улица, дом, кв.)</label>' +
                         '<input name="clientAddressDelivery" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '">' +
@@ -498,11 +505,11 @@ function OrderInfoGenerationHTML() {
                         '<label for="">Комментарий</label>' +
                         '<textarea name="clientComment" class="w-100"></textarea>' +
                     '</div>' +
-                    '<div class="w-100 flex-wrap mt-10">' +
-                        '<label for="">Промокод</label>' +
-                        '<input name="clientPromokod" class="w-75 mr-a" type="text">' +
-                        '<button class="promokod-apply-button">Применить</button>' +
-                    '</div>' +
+                    // '<div class="w-100 flex-wrap mt-10">' +
+                    //     '<label for="">Промокод</label>' +
+                    //     '<input name="clientPromoCode" class="w-75 mr-a mb-10" type="text">' +
+                    //     '<button class="promokod-apply-button clear-button bg-grey color-white py-5 px-10 border-radius-5 mb-10">Применить</button>' +
+                    // '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<div class="w-100">Способ оплаты</div>' +
                         '<div class="flex w-100"">' +
@@ -516,7 +523,7 @@ function OrderInfoGenerationHTML() {
                             '</div>' +
                         '</div>' +
                         '</div>' +
-                    '<div class="order-create w-100 flex-center mt-25"><button class="cp button-put-in-basket btn first mt-25">Оформить заказ</button></div>' +
+                    '<div class="order-create w-100 flex-center mt-25"><button class="cp button-put-in-basket btn first mt-25">' + (auth ? 'Оформить заказ' : 'Авторизоваться') + '</button></div>' +
                 '</div>';
     } else {
         return '';
@@ -628,12 +635,12 @@ function SuggestionsAddress(query, inputSuggestions, callback) {
 
         fetch(url, options)
             .then(response => response.text())
-            .then(result => ContainerSuggestionsGeneration(result, inputSuggestions))
+            .then(result => ContainerSuggestionsGeneration(result, inputSuggestions, callback))
             .catch(error => console.log("error", error));
     }, 500)
 }
 
-function ContainerSuggestionsGeneration(result, inputSuggestions) {
+function ContainerSuggestionsGeneration(result, inputSuggestions, callback) {
     result = JSON.parse(result).suggestions;
 
     let parentInputSuggestions = inputSuggestions.parentNode;
@@ -646,7 +653,7 @@ function ContainerSuggestionsGeneration(result, inputSuggestions) {
     containerSuggestions.className = 'container-suggestions w-100 pos-rel';
 
     let containerSuggestionsAbsolutePosition = document.createElement('div');
-    containerSuggestionsAbsolutePosition.className = 'container-suggestions-pos-abs pos-abs top-0 left-0 w-100 border-radius-5';
+    containerSuggestionsAbsolutePosition.className = 'container-suggestions-pos-abs pos-abs top-0 left-0 border-radius-5';
     if (result.length === 0) {
         let itemSuggestion = document.createElement('div');
         itemSuggestion.className = 'p-5';
@@ -682,12 +689,10 @@ function ContainerSuggestionsGeneration(result, inputSuggestions) {
     inputSuggestions.insertAdjacentElement('afterEnd', containerSuggestions);
 }
 
-function LoginWindow() {
+function LoginWindow(callback) {
     let phoneContainer;
     let phoneField;
     let confirmationContainer;
-    let authButton;
-    let confirmationButton;
     let confirmationCodeInput;
     let loginWindowContent = CreateElement('div', {
         childs: [
@@ -714,10 +719,11 @@ function LoginWindow() {
                                 content: 'Авторизоваться',
                                 class: 'btn first',
                                 events: {
-                                    click: (ev) => {
+                                    click: () => {
                                         if (PhoneValidation(phoneField.value) !== false) {
                                             phoneContainer.hide();
                                             confirmationContainer.show();
+                                            confirmationCodeInput.focus();
                                         }
                                     }
                                 }
@@ -747,14 +753,22 @@ function LoginWindow() {
                                 content: 'Подтвердить',
                                 class: 'btn first',
                                 events: {
-                                    click: (ev) => {
+                                    click: () => {
                                         let confirmationCodeInputValue = confirmationCodeInput.value.replace(/[^\d;]/g, '');
                                         if (confirmationCodeInputValue.length !== 4) {
                                             ModalWindowFlash('Нужно 4 цифры');
                                         } else {
-                                            Ajax(routeCheckConfirmationCode, 'post', {confirmationCode: confirmationCodeInputValue}).then((response) => {
+                                            let execFunction = '';
+                                            if (callback) {
+                                                execFunction = callback;
+                                            }
+                                            Ajax(routeCheckConfirmationCode, 'post', {confirmationCode: confirmationCodeInputValue, execFunction: execFunction}).then((response) => {
                                                 if (response.status) {
-                                                    location.reload();
+                                                    loginWindow.slowRemove();
+                                                    FlashMessage(response.message);
+                                                    setTimeout(() => {
+                                                        location.reload();
+                                                    }, 1500);
                                                 } else {
                                                     ModalWindowFlash(response.message);
                                                 }
@@ -773,6 +787,7 @@ function LoginWindow() {
     });
 
     let loginWindow = ModalWindow(loginWindowContent);
+    phoneField.focus();
 
     startTrackingNumberInput();
 
@@ -803,6 +818,33 @@ function Logout() {
     Ajax(routeLogout).then((response) => {
         location.reload();
     });
+}
+
+function Profile() {
+    let profileContent =  CreateElement('div', {
+        childs: [
+            CreateElement('div', {
+                content: 'Личный кабинет находится в разработке <br /> Ваш номер телефона: +' + userPhone,
+                class: 'mb-10'
+            }),
+            CreateElement('div', {
+                childs: [
+                    CreateElement('button', {
+                        content: 'Выйти из профиля',
+                        class: 'btn first',
+                        events: {
+                            click: () => {
+                                Logout();
+                            }
+                        }
+                    }),
+                ],
+                class: 'flex-center'
+            }),
+        ]
+    });
+
+    let ProfileWindow = ModalWindow(profileContent);
 }
 
 
