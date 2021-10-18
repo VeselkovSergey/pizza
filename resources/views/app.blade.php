@@ -33,6 +33,9 @@
         <script>
 
             const routeOrderCreate = "{{route('order-create')}}";
+            const routePhoneValidation = "{{route('phone-validation')}}";
+            const routeCheckConfirmationCode = "{{route('check-confirmation-code')}}";
+            const routeLogout = "{{route('logout')}}";
 
         </script>
 

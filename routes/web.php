@@ -82,3 +82,25 @@ Route::group(['prefix' => 'order'], function() {
     Route::post('/create', [Controllers\Orders\OrdersController::class, 'Create'])->name('order-create');
 
 });
+
+Route::group(['prefix' => 'auth'], function() {
+
+    Route::post('/phone-validation', [Controllers\Auth\AuthController::class, 'PhoneValidation'])->name('phone-validation');
+    Route::post('/check-confirmation-code', [Controllers\Auth\AuthController::class, 'CheckConfirmationCode'])->name('check-confirmation-code');
+
+    Route::get('/logout', [Controllers\Auth\AuthController::class, 'Logout'])->name('logout');
+
+});
+
+
+/*
+ *  test routes
+ */
+Route::get('/test-ucaller', function () {
+    return ;
+    $ucaller = new App\Services\Ucaller\Ucaller();
+    $balance = $ucaller->GetBalance();
+    $info = $ucaller->GetInfo();
+    $initCall = $ucaller->InitCall();
+    dd($balance, $info, $initCall);
+});

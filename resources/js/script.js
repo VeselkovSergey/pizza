@@ -115,10 +115,9 @@ function HideElement(element) {
     element.classList.add('hide');
 }
 
-function ModalWindow(content, closingCallback) {
-
+function ModalWindow(content, closingCallback, flash) {
     let documentBody = document.body;
-    documentBody.classList.add('scroll-off');
+    !flash ? documentBody.classList.add('scroll-off') : '';
     let closeButtonSVG = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.6365 13.3996L13.4001 12.636L7.76373 6.99961L13.4001 1.36325L12.6365 0.599609L7.0001 6.23597L1.36373 0.599609L0.600098 1.36325L6.23646 6.99961L0.600098 12.636L1.36373 13.3996L7.0001 7.76325L12.6365 13.3996Z" fill="#000000"></path> </svg>';
 
     let modalWindowComponentContainer = CreateElement('div', {
@@ -134,7 +133,7 @@ function ModalWindow(content, closingCallback) {
             click: () => {
                 closingCallback ? closingCallback() : '';
                 modalWindowComponentContainer.remove();
-                documentBody.classList.remove('scroll-off');
+                !flash ? documentBody.classList.remove('scroll-off') : '';
             }
         }
     }, modalWindowComponent);
@@ -154,7 +153,7 @@ function ModalWindow(content, closingCallback) {
             click: () => {
                 closingCallback ? closingCallback() : '';
                 modalWindowComponentContainer.remove();
-                documentBody.classList.remove('scroll-off');
+                !flash ? documentBody.classList.remove('scroll-off') : '';
             }
         }
     }, modalWindowContainer);
@@ -177,7 +176,7 @@ function ModalWindow(content, closingCallback) {
 }
 
 function ModalWindowFlash(content, timer = 2000) {
-    let modalWindow = ModalWindow(content)
+    let modalWindow = ModalWindow(content, undefined, true)
     setTimeout(() => {
         modalWindow.remove();
     }, timer);
@@ -263,7 +262,6 @@ function CountProductsInBasket() {
 
 function AmountProductInBasket(modificationId) {
     let basket = JSON.parse(localStorage.getItem('basket'));
-    console.log(basket['modification-' + modificationId])
     if (basket['modification-' + modificationId] === undefined) {
         return 0;
     } else {
@@ -682,6 +680,129 @@ function ContainerSuggestionsGeneration(result, inputSuggestions) {
     containerSuggestions.append(containerSuggestionsAbsolutePosition);
 
     inputSuggestions.insertAdjacentElement('afterEnd', containerSuggestions);
+}
+
+function LoginWindow() {
+    let phoneContainer;
+    let phoneField;
+    let confirmationContainer;
+    let authButton;
+    let confirmationButton;
+    let confirmationCodeInput;
+    let loginWindowContent = CreateElement('div', {
+        childs: [
+            CreateElement('div', {
+                content: 'Авторизация',
+                class: 'mb-10 text-center'
+            }),
+            phoneContainer = CreateElement('div', {
+                childs: [
+                    CreateElement('label', {
+                        content: 'Номер телефона',
+                        class: 'mb-5 text-center',
+                    }),
+                    phoneField = CreateElement('input', {
+                        attr: {
+                            placeholder: '+7(999)000-11-22',
+                            class: 'clear-input p-5 border-radius-5 border w-a text-center phone-mask',
+                            maxlength: '16',
+                        }
+                    }),
+                    CreateElement('div', {
+                        childs: [
+                            CreateElement('button', {
+                                content: 'Авторизоваться',
+                                class: 'btn first',
+                                events: {
+                                    click: (ev) => {
+                                        if (PhoneValidation(phoneField.value) !== false) {
+                                            phoneContainer.hide();
+                                            confirmationContainer.show();
+                                        }
+                                    }
+                                }
+                            }),
+                        ],
+                        class: 'flex-center mt-10',
+                    }),
+                ],
+                class: 'mb-10 flex-column',
+            }),
+            confirmationContainer = CreateElement('div', {
+                childs: [
+                    CreateElement('label', {
+                        content: 'Для подтверждения номера Вам поступит звонок, введите последние 4 цифры входящего номера',
+                        class: 'mb-5 text-center',
+                    }),
+                    confirmationCodeInput = CreateElement('input', {
+                        attr: {
+                            placeholder: '1234',
+                            class: 'clear-input p-5 border-radius-5 border w-a text-center',
+                            maxlength: 4,
+                        }
+                    }),
+                    CreateElement('div', {
+                        childs: [
+                            CreateElement('button', {
+                                content: 'Подтвердить',
+                                class: 'btn first',
+                                events: {
+                                    click: (ev) => {
+                                        let confirmationCodeInputValue = confirmationCodeInput.value.replace(/[^\d;]/g, '');
+                                        if (confirmationCodeInputValue.length !== 4) {
+                                            ModalWindowFlash('Нужно 4 цифры');
+                                        } else {
+                                            Ajax(routeCheckConfirmationCode, 'post', {confirmationCode: confirmationCodeInputValue}).then((response) => {
+                                                if (response.status) {
+                                                    location.reload();
+                                                } else {
+                                                    ModalWindowFlash(response.message);
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            }),
+                        ],
+                        class: 'flex-center mt-10',
+                    }),
+                ],
+                class: 'mb-10 flex-column hide',
+            }),
+        ],
+    });
+
+    let loginWindow = ModalWindow(loginWindowContent);
+
+    startTrackingNumberInput();
+
+    function PhoneValidation(phoneValue) {
+        phoneValue = phoneValue.replace(/[^\d;]/g, '');
+        if (phoneValue === '') {
+            ModalWindowFlash('Укажите номер телефона');
+            return false;
+        }
+
+        if (phoneValue.length !== 11) {
+            ModalWindowFlash('Не верный формат номера');
+            return false;
+        }
+
+        Ajax(routePhoneValidation, 'post', {phone: phoneValue}).then((response) => {
+            if (response.status) {
+                return true;
+            } else {
+                ModalWindow('Непредвиденная ошибка. Мы уже работаем над этим. Попробуйте позже.');
+                return false;
+            }
+        });
+    }
+}
+
+function Logout() {
+    Ajax(routeLogout).then((response) => {
+        location.reload();
+    });
 }
 
 

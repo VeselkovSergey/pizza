@@ -530,6 +530,10 @@
     color: #94989e;
 }
 
+.color-green {
+    color: green;
+}
+
 /* background */
 .bg-white {
     background-color: white;
@@ -606,6 +610,10 @@
 
 .text-right {
     text-align: right;
+}
+
+.text-underline {
+    text-decoration: underline;
 }
 
 .scroll-auto {

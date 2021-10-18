@@ -22,3 +22,12 @@ body {
     text-decoration: none;
     color: black;
 }
+
+.clear-input {
+    outline: unset;
+    border: unset;
+}
+
+input {
+    width: 100%;
+}
