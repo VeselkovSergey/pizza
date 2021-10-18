@@ -92,15 +92,39 @@ Route::group(['prefix' => 'auth'], function() {
 
 });
 
+Route::group(['prefix' => 'administration'], function() {
+
+    Route::get('/', function () {
+        return 'administration-page';
+    })->name('administration-page');
+
+});
+
+Route::group(['prefix' => 'management'], function() {
+
+    Route::get('/', function () {
+        return 'manager-page';
+    })->name('manager-page');
+
+});
+
+Route::group(['prefix' => 'cook'], function() {
+
+    Route::get('/', function () {
+        return 'cook-page';
+    })->name('cook-page');
+
+});
+
 
 /*
  *  test routes
  */
 Route::get('/test-ucaller', function () {
     return ;
-    $ucaller = new App\Services\Ucaller\Ucaller();
-    $balance = $ucaller->GetBalance();
-    $info = $ucaller->GetInfo();
-    $initCall = $ucaller->InitCall();
-    dd($balance, $info, $initCall);
+//    $ucaller = new App\Services\Ucaller\Ucaller();
+//    $balance = $ucaller->GetBalance();
+//    $info = $ucaller->GetInfo();
+//    $initCall = $ucaller->InitCall();
+//    dd($balance, $info, $initCall);
 });

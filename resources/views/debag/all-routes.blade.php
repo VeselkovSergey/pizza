@@ -12,6 +12,9 @@
         <a href="{{route('all-products-admin-page')}}">7 Все продукты (Админка)</a>
         <a href="{{route('catalog')}}">8 Каталог (Сайт)</a>
         <a href="{{route('all-products')}}">9 Все продукты (JSON)</a>
+        <a href="{{route('administration-page')}}">АРМ Администратора</a>
+        <a href="{{route('manager-page')}}">АРМ Менеджера</a>
+        <a href="{{route('cook-page')}}">АРМ Повора</a>
     </div>
 @stop
 
