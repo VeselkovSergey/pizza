@@ -30,6 +30,10 @@
 
         <main class="m-25">@yield('content')</main>
 
+        <div class="pos-fix top-0 left-0 w-100 h-100vh bg-white flex-center z-1 pre-text">
+            <div style="font-style: italic; font-size: 100px;">БРОПИЦЦА - НАСТОЯЩАЯ ПИЦЦА ДЛЯ ТЕБЯ</div>
+        </div>
+
         <script>
 
             const routeOrderCreate = "{{route('order-create')}}";

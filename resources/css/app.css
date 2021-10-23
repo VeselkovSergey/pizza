@@ -176,3 +176,21 @@ header {
     overflow: auto;
     max-height: 80vh;
 }
+
+.pre-text {
+    animation: pre-text-hide 3s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes pre-text-hide {
+    50% {
+        opacity: 1;
+    }
+    99% {
+        height: 100vh;
+    }
+    100% {
+        opacity: 0;
+        height: 0;
+    }
+}
