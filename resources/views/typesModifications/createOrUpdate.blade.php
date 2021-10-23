@@ -31,11 +31,13 @@
         let saveButton = document.body.querySelector('.save-button');
         saveButton.addEventListener('click', () => {
 
-            let title = document.body.querySelector('input[name="title"]').value;
-            let valueUnit = document.body.querySelector('input[name="value_unit"]').value;
+            let title = document.body.querySelector('input[name="title"]');
+            let titleValue = title.value;
+            let valueUnit = document.body.querySelector('input[name="value_unit"]');
+            let valueUnitValue = valueUnit.value;
             let data = {
-                title: title,
-                valueUnit:valueUnit
+                title: titleValue,
+                valueUnit:valueUnitValue
             }
 
             if (!CheckingFieldForEmptiness('modification-type-create-or-edit-form', true)) {

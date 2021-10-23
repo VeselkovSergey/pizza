@@ -39,7 +39,7 @@ class Files
         $extension = $ext;
         $type = $ext;
         $hashFileName = pathinfo(Str::random(40), PATHINFO_FILENAME);
-        $data = is_string($data) ? $data : json_encode($data);
+        $data = is_string($data) ? $data : json_encode($data, JSON_UNESCAPED_UNICODE);
         $fullPath = $path . '/' . $hashFileName. '.' .$ext;
         $saveFile = Storage::disk($disk)->put($fullPath, $data);
 

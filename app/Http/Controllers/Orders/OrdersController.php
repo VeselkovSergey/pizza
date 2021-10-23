@@ -19,6 +19,7 @@ class OrdersController extends Controller
     {
         $basket = json_decode($request->basket);
         $clientInformation = json_decode($request->clientInformation);
+        $clientInformation->clientPhone = auth()->user()->phone;
         $modificationsId = [];
         $amountProductModificationInOrder = [];
         foreach ($basket as $product) {
@@ -51,8 +52,6 @@ class OrdersController extends Controller
         $this->SendTelegram($orderFullInformation);
 
         return ResultGenerate::Success('Заказ принят. Мы скоро свяжимся с вами.');
-
-        dd($orderFullInformation, $request->all());
     }
 
     private function SendTelegram($orderFullInformation) {
@@ -67,11 +66,11 @@ class OrdersController extends Controller
 
         $message = '<b>Клиент:</b>' . PHP_EOL;
         $message .= '<i>Имя:</i> ' . $clientInformation->clientName . PHP_EOL;
-        $message .= '<i>Телефон:</i> ' . $clientInformation->clientPhone . PHP_EOL;
+        $message .= '<i>Телефон:</i> +' . $clientInformation->clientPhone . PHP_EOL;
         $message .= '<i>Оплата:</i> ' . ($clientInformation->typePayment[0] === true ? 'Карта' : 'Наличные') . PHP_EOL;
         $message .= '<i>Адрес:</i> ' . $clientInformation->clientAddressDelivery . PHP_EOL;
         $message .= '<i>Комментарий:</i> ' . $clientInformation->clientComment . PHP_EOL;
-        $message .= '<i>Промокод:</i> ' . $clientInformation->clientPromokod . PHP_EOL;
+//        $message .= '<i>Промокод:</i> ' . $clientInformation->clientPromoCode . PHP_EOL;
         $message .= PHP_EOL;
         $message .= '<b>Заказ:</b>' . PHP_EOL;
         $message .= $products;

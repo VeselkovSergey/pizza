@@ -27,9 +27,10 @@
         let saveButton = document.body.querySelector('.save-button');
         saveButton.addEventListener('click', () => {
 
-            let title = document.body.querySelector('input[name="title"]').value;
+            let title = document.body.querySelector('input[name="title"]');
+            let titleValue = title.value;
             let data = {
-                title: title,
+                title: titleValue,
             }
 
             if (!CheckingFieldForEmptiness('ingredients-create-or-edit-form', true)) {

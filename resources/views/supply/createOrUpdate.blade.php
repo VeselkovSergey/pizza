@@ -125,11 +125,11 @@
                                             GenerateIngredientsSelector() +
                                         '</div>' +
                                         '<div class="m-5">' +
-                                            '<label for="">Количество (гр/мл)</label>' +
+                                            '<label for="">Количество (кг/литр)</label>' +
                                             '<input class="need-validate" name="amount" type="text">' +
                                         '</div>' +
                                         '<div class="m-5">' +
-                                            '<label for="">Цена за гр/мл</label>' +
+                                            '<label for="">Цена за кг/литр</label>' +
                                             '<input class="need-validate" name="price" type="text">' +
                                         '</div>' +
                                         '<div class="m-5">' +
@@ -157,11 +157,11 @@
                 console.log(ingredient)
             });
 
-            inputIngredientSum.addEventListener('change', (event) => {
+            inputIngredientSum.addEventListener('change', () => {
                 CountSumTotal();
             });
 
-            inputIngredientAmount.addEventListener('input', (event) => {
+            inputIngredientAmount.addEventListener('input', () => {
                 let amount = inputIngredientAmount.value;
                 let price = inputIngredientPrice.value;
                 let countSum = CountSum(amount, price);
@@ -169,7 +169,7 @@
                 CountSumTotal();
             });
 
-            inputIngredientPrice.addEventListener('input', (event) => {
+            inputIngredientPrice.addEventListener('input', () => {
                 let price = inputIngredientPrice.value;
                 let amount = inputIngredientAmount.value;
                 let countSum = CountSum(amount, price);

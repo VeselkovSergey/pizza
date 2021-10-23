@@ -35,14 +35,22 @@
         </div>
 
         <script>
+            const auth = {{auth()->check() ? 'true' : 'false'}};
+            const userPhone = "{{auth()->check() ? auth()->user()->phone : ''}}";
 
             const routeOrderCreate = "{{route('order-create')}}";
-
+            const routePhoneValidation = "{{route('phone-validation')}}";
+            const routeCheckConfirmationCode = "{{route('check-confirmation-code')}}";
+            const routeLogout = "{{route('logout')}}";
         </script>
 
         <script src="{{ asset('resources/js/script.js') }}"></script>
 
         @yield('js')
+
+        <script>
+            eval({{session('execFunction')}});
+        </script>
 
     </body>
 

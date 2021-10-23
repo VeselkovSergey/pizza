@@ -27,7 +27,6 @@ class ProductsController extends Controller
         } else {
             return self::UpdateFileAllProducts()->contentFile;
         }
-
     }
 
     public static function UpdateFileAllProducts()
