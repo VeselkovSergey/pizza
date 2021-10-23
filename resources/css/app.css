@@ -183,8 +183,17 @@ header {
 }
 
 .pre-text {
-    animation: pre-text-hide 3s;
+
+    animation: pre-text-hide 5s;
     animation-fill-mode: forwards;
+}
+
+.pre-text>div {
+    font-style: italic;
+    font-size: 50px;
+    word-break: break-all;
+    padding: 50px;
+    text-align: center;
 }
 
 @keyframes pre-text-hide {
