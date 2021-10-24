@@ -27,7 +27,7 @@ class ManagerARMController extends Controller
         $orderId = request()->orderId;
         $order = OrdersController::Order($orderId);
         $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
-        $orderStatuses = OrdersController::Statuses($order);
+        $orderStatuses = OrdersController::OrderStatuses($order);
         $clientInfo = json_decode($order->client_raw_data);
         return view('arm.management.orders.order', [
             'order' => $order,
@@ -51,11 +51,11 @@ class ManagerARMController extends Controller
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['newOrder']);
     }
 
-    public function ChangeStatusOrderToProcessing()
+    public function ChangeStatusOrderToManagerProcesses()
     {
         $orderId = request()->orderId;
         $order = OrdersController::Order($orderId);
-        return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['processing']);
+        return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['managerProcesses']);
     }
 
     public function TransferOrderToKitchen()

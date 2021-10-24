@@ -111,7 +111,7 @@ Route::group(['prefix' => 'arm'], function() {
         Route::post('/order/search-by-phone', [Controllers\ARM\ManagerARMController::class, 'SearchByPhone'])->name('manager-arm-order-search-bu-phone');
 
         Route::post('/change-status-order-to-new-order', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToNewOrder'])->name('manager-arm-change-status-order-to-new-order-page');
-        Route::post('/change-status-order-to-processing', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToProcessing'])->name('manager-arm-change-status-order-to-processing-page');
+        Route::post('/change-status-order-to-manager-processes', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToManagerProcesses'])->name('manager-arm-change-status-order-to-manager-processes-page');
         Route::post('/transfer-order-to-kitchen', [Controllers\ARM\ManagerARMController::class, 'TransferOrderToKitchen'])->name('manager-arm-transfer-order-to-kitchen-page');
         Route::post('/transfer-order-to-delivery', [Controllers\ARM\ManagerARMController::class, 'TransferOrderToDelivery'])->name('manager-arm-transfer-order-to-delivery-page');
         Route::post('/change-status-order-to-completed', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToCompleted'])->name('manager-arm-change-status-order-to-completed-page');
@@ -122,6 +122,16 @@ Route::group(['prefix' => 'arm'], function() {
     Route::group(['prefix' => 'chef'], function() {
 
         Route::get('/', [Controllers\ARM\ChefARMController::class, 'Index'])->name('chef-arm-page');
+
+        Route::get('/orders', [Controllers\ARM\ChefARMController::class, 'Orders'])->name('chef-arm-orders-page');
+
+        Route::get('/order/{orderId?}', [Controllers\ARM\ChefARMController::class, 'Order'])->name('chef-arm-order-page');
+
+        Route::post('/change-status-order-to-cooked', [Controllers\ARM\ChefARMController::class, 'ChangeStatusOrderToCooked'])->name('chef-arm-change-status-order-to-cooked');
+
+        Route::post('/change-status-product-to-new', [Controllers\ARM\ChefARMController::class, 'ChangeStatusProductToNew'])->name('chef-arm-change-status-product-to-new');
+        Route::post('/change-status-product-to-chef-processes', [Controllers\ARM\ChefARMController::class, 'ChangeStatusProductToChefProcesses'])->name('chef-arm-change-status-product-to-chef-processes');
+        Route::post('/change-status-product-to-cooked', [Controllers\ARM\ChefARMController::class, 'ChangeStatusProductToCooKed'])->name('chef-arm-change-status-product-to-cooked');
 
     });
 

@@ -19,23 +19,25 @@ class Orders extends Model
         1 => 'Новый заказ',
         2 => 'Менеджер взял в работу',
         3 => 'Передан на кухню',
-        4 => 'Приготовлен',
-        5 => 'Передан курьеру',
-        6 => 'Доставлен',
-        7 => 'Выполнен',
-        8 => 'Отказ',
+        4 => 'Повар взял в работу',
+        5 => 'Приготовлен',
+        6 => 'Передан курьеру',
+        7 => 'Доставлен',
+        8 => 'Выполнен',
+        9 => 'Отказ',
     ];
 
     const STATUS_TEXT = [
         'clientCreateOrder' => 0,
         'newOrder' => 1,
-        'processing' => 2,
+        'managerProcesses' => 2,
         'kitchen' => 3,
-        'cooked' => 4,
-        'courier' => 5,
-        'delivered' => 6,
-        'completed' => 7,
-        'cancelled' => 8,
+        'chefProcesses' => 4,
+        'cooked' => 5,
+        'courier' => 6,
+        'delivered' => 7,
+        'completed' => 8,
+        'cancelled' => 9,
     ];
 
     public function ProductsModifications()

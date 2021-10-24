@@ -3,7 +3,7 @@
 @section('content')
 
     <style>
-        .change-status:hover {
+        .order-change-status:hover {
             transform: scale(1.1);
         }
     </style>
@@ -12,12 +12,12 @@
         <a class="block mb-10" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
 
         <div class="mb-10">
-            <button class="change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-1" data-url="{{route('manager-arm-change-status-order-to-new-order-page')}}">Вернуть в статус: Новый</button>
-            <button class="change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-2" data-url="{{route('manager-arm-change-status-order-to-processing-page')}}">Взять в работу</button>
-            <button class="change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-3" data-url="{{route('manager-arm-transfer-order-to-kitchen-page')}}">Передать на кухню</button>
-            <button class="change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-5" data-url="{{route('manager-arm-transfer-order-to-delivery-page')}}">Передать в доставку</button>
-            <button class="change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-7" data-url="{{route('manager-arm-change-status-order-to-completed-page')}}">Выполнен</button>
-            <button class="change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-8" data-url="{{route('manager-arm-change-status-order-to-canceled-page')}}">Отказ</button>
+            <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-1" data-url="{{route('manager-arm-change-status-order-to-new-order-page')}}">Вернуть в статус: Новый</button>
+            <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-2" data-url="{{route('manager-arm-change-status-order-to-manager-processes-page')}}">Взять в работу</button>
+            <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-3" data-url="{{route('manager-arm-transfer-order-to-kitchen-page')}}">Передать на кухню</button>
+            <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-6" data-url="{{route('manager-arm-transfer-order-to-delivery-page')}}">Передать в доставку</button>
+            <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-7" data-url="{{route('manager-arm-change-status-order-to-completed-page')}}">Выполнен</button>
+            <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-8" data-url="{{route('manager-arm-change-status-order-to-canceled-page')}}">Отказ</button>
         </div>
 
         <div class="mb-10 p-5 order-status-{{$order->status_id}}">Заказ {{$order->created_at}} {{\App\Models\Orders::STATUS[$order->status_id]}}</div>
@@ -64,11 +64,11 @@
 @section('js')
 
     <script>
-        let buttonChangeStatus = document.body.querySelectorAll('.change-status');
-        buttonChangeStatus.forEach((button) => {
+        let buttonsOrderChangeStatus = document.body.querySelectorAll('.order-change-status');
+        buttonsOrderChangeStatus.forEach((button) => {
             button.addEventListener('click', () => {
                 let url = button.dataset.url;
-                Ajax(url, 'post', {orderId: {{$order->id}}}).then((response) => {
+                Ajax(url, 'post', {orderId: {{$order->id}}}).then(() => {
                     location.reload();
                 });
             });
