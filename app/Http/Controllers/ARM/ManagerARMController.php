@@ -85,4 +85,11 @@ class ManagerARMController extends Controller
         $order = OrdersController::Order($orderId);
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['cancelled']);
     }
+
+    public function ChangeStatusOrderToDelivered()
+    {
+        $orderId = request()->orderId;
+        $order = OrdersController::Order($orderId);
+        return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['delivered']);
+    }
 }

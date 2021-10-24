@@ -15,6 +15,7 @@
         <a href="{{route('administrator-arm-page')}}">АРМ Администратора</a>
         <a href="{{route('manager-arm-page')}}">АРМ Менеджера</a>
         <a href="{{route('chef-arm-page')}}">АРМ Повара</a>
+        <a href="yandexnavi://build_route_on_map?lat_from=55.74&lon_from=37.60&lat_to=55.76&lon_to=37.64">Строю маршрут</a>
     </div>
 @stop
 

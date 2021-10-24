@@ -33,13 +33,15 @@
                     </div>
 
                     <div class="bg-white p-10">
-                        <button class="order-product-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp product-in-order-status-1" data-url="{{route('chef-arm-change-status-product-to-new')}}">Вернуть в статус: Не начинали готовить</button>
-                        @if($productModificationInOrder->status_id !== \App\Models\ProductsModificationsInOrders::STATUS_TEXT['chefProcesses'])
-                            <button class="order-product-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp product-in-order-status-2" data-url="{{route('chef-arm-change-status-product-to-chef-processes')}}">Взять в работу</button>
-                        @endif
-                        @if($productModificationInOrder->status_id === \App\Models\ProductsModificationsInOrders::STATUS_TEXT['chefProcesses'])
-                            <button class="order-product-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp product-in-order-status-3" data-url="{{route('chef-arm-change-status-product-to-cooked')}}">Приготовлен</button>
-                        @endif
+                        @switch($productModificationInOrder->status_id)
+                            @case(\App\Models\ProductsModificationsInOrders::STATUS_TEXT['new'])
+                                <button class="order-product-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp product-in-order-status-2" data-url="{{route('chef-arm-change-status-product-to-chef-processes')}}">Взять в работу</button>
+                                @break
+                            @case(\App\Models\ProductsModificationsInOrders::STATUS_TEXT['chefProcesses'])
+                                <button class="order-product-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp product-in-order-status-1" data-url="{{route('chef-arm-change-status-product-to-new')}}">Вернуть в статус: Не начинали готовить</button>
+                                <button class="order-product-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp product-in-order-status-3" data-url="{{route('chef-arm-change-status-product-to-cooked')}}">Приготовлен</button>
+                            @break
+                        @endswitch
                     </div>
                 </div>
             @endforeach
