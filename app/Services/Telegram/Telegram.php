@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Telegram;
 
 class Telegram
@@ -157,6 +158,18 @@ class Telegram
         }
         $this->inlineKeyboard[$this->type][] = $arrBtn;
 
+    }
+
+    public function RequestContact($text = 'Отправить номер для получения статусов заказа')
+    {
+        $this->inlineKeyboard = [
+            'keyboard' => [[[
+                'text' => $text,
+                'request_contact' => true,
+            ]]],
+            'resize_keyboard' => true,
+            'one_time_keyboard' => true,
+        ];
     }
 
 }

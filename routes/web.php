@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\Telegram\Telegram;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 /*
@@ -148,4 +149,12 @@ Route::get('/test-ucaller', function () {
 //    $info = $ucaller->GetInfo();
 //    $initCall = $ucaller->InitCall();
 //    dd($balance, $info, $initCall);
+});
+
+Route::get('/test-bot', function () {
+//    return ;
+//    $message = 'Приветствуем. Вы сможете получать уведомления о статусе вашего заказа в этом боте. Осталось только поделиться номером телефона для синхронизации ваших заказов' . PHP_EOL;
+//    $telegram = new Telegram('2081173182:AAEuKyhCNybjJTiZD-NQAxbhUj0YBNmopXk');
+//    $telegram->RequestContact();
+//    $telegram->sendMessage($message, '267236435');
 });
