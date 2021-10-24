@@ -16,6 +16,7 @@ class CreateProductsModificationsInOrdersTable extends Migration
         Schema::create('products_modifications_in_orders', function (Blueprint $table) {
             $table->id();
             $table->integer('order_id');
+            $table->integer('status_id');
             $table->integer('product_modification_id');
             $table->integer('product_modification_amount');
             $table->timestamps();

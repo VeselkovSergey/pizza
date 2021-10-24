@@ -92,27 +92,38 @@ Route::group(['prefix' => 'auth'], function() {
 
 });
 
-Route::group(['prefix' => 'administration'], function() {
+Route::group(['prefix' => 'arm'], function() {
 
-    Route::get('/', function () {
-        return 'administration-page';
-    })->name('administration-page');
 
-});
+    Route::group(['prefix' => 'administration'], function() {
 
-Route::group(['prefix' => 'management'], function() {
+        Route::get('/', [Controllers\ARM\AdministratorARMController::class, 'Index'])->name('administrator-arm-page');
 
-    Route::get('/', function () {
-        return 'manager-page';
-    })->name('manager-page');
+    });
 
-});
+    Route::group(['prefix' => 'management'], function() {
 
-Route::group(['prefix' => 'cook'], function() {
+        Route::get('/', [Controllers\ARM\ManagerARMController::class, 'Index'])->name('manager-arm-page');
 
-    Route::get('/', function () {
-        return 'cook-page';
-    })->name('cook-page');
+        Route::get('/orders', [Controllers\ARM\ManagerARMController::class, 'Orders'])->name('manager-arm-orders-page');
+
+        Route::get('/order/{orderId?}', [Controllers\ARM\ManagerARMController::class, 'Order'])->name('manager-arm-order-page');
+        Route::post('/order/search-by-phone', [Controllers\ARM\ManagerARMController::class, 'SearchByPhone'])->name('manager-arm-order-search-bu-phone');
+
+        Route::post('/change-status-order-to-new-order', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToNewOrder'])->name('manager-arm-change-status-order-to-new-order-page');
+        Route::post('/change-status-order-to-processing', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToProcessing'])->name('manager-arm-change-status-order-to-processing-page');
+        Route::post('/transfer-order-to-kitchen', [Controllers\ARM\ManagerARMController::class, 'TransferOrderToKitchen'])->name('manager-arm-transfer-order-to-kitchen-page');
+        Route::post('/transfer-order-to-delivery', [Controllers\ARM\ManagerARMController::class, 'TransferOrderToDelivery'])->name('manager-arm-transfer-order-to-delivery-page');
+        Route::post('/change-status-order-to-completed', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToCompleted'])->name('manager-arm-change-status-order-to-completed-page');
+        Route::post('/change-status-order-to-canceled', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToCanceled'])->name('manager-arm-change-status-order-to-canceled-page');
+
+    });
+
+    Route::group(['prefix' => 'chef'], function() {
+
+        Route::get('/', [Controllers\ARM\ChefARMController::class, 'Index'])->name('chef-arm-page');
+
+    });
 
 });
 

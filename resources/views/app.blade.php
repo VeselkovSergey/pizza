@@ -30,10 +30,6 @@
 
         <main class="m-25">@yield('content')</main>
 
-        <div class="pos-fix top-0 left-0 w-100 h-100vh bg-white flex-center z-1 pre-text">
-            <div>БРОПИЦЦА - НАСТОЯЩАЯ ПИЦЦА ДЛЯ ТЕБЯ</div>
-        </div>
-
         <script>
             const auth = {{auth()->check() ? 'true' : 'false'}};
             const userPhone = "{{auth()->check() ? auth()->user()->phone : ''}}";
