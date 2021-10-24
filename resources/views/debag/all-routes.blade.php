@@ -14,7 +14,7 @@
         <a href="{{route('all-products')}}">9 Все продукты (JSON)</a>
         <a href="{{route('administrator-arm-page')}}">АРМ Администратора</a>
         <a href="{{route('manager-arm-page')}}">АРМ Менеджера</a>
-        <a href="{{route('chef-arm-page')}}">АРМ Повора</a>
+        <a href="{{route('chef-arm-page')}}">АРМ Повара</a>
     </div>
 @stop
 
