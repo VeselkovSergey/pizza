@@ -27,13 +27,13 @@ class OrdersController extends Controller
 
         $newOrder = Orders::create([
             'user_id' => auth()->user()->id,
-            'status_id' => Orders::STATUS_TEXT['newOrder'],
+            'status_id' => Orders::STATUS_TEXT['clientCreateOrder'],
             'client_raw_data' => json_encode($clientInformation),
             'products_raw_data' => json_encode($basket),
             'all_information_raw_data' => json_encode($request->all()),
         ]);
         $orderId = $newOrder->id;
-        self::ChangeStatus($newOrder, 1);
+        self::ChangeStatus($newOrder, Orders::STATUS_TEXT['newOrder']);
 
         $modificationsId = [];
         $amountProductModificationInOrder = [];

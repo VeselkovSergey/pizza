@@ -15,6 +15,7 @@ class Orders extends Model
     ];
 
     const STATUS = [
+        0 => 'Клиент создал заказ',
         1 => 'Новый заказ',
         2 => 'Менеджер взял в работу',
         3 => 'Передан на кухню',
@@ -26,6 +27,7 @@ class Orders extends Model
     ];
 
     const STATUS_TEXT = [
+        'clientCreateOrder' => 0,
         'newOrder' => 1,
         'processing' => 2,
         'kitchen' => 3,
