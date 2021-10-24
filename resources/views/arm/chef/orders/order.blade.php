@@ -6,7 +6,7 @@
         <a class="block mb-10" href="{{route('chef-arm-orders-page')}}">Назад к заказам</a>
 
         <div class="mb-10">
-            <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-5" data-url="{{route('chef-arm-change-status-order-to-cooked')}}">Приготовлен</button>
+            <button class="hide status-is-cooked order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-5" data-url="{{route('chef-arm-change-status-order-to-cooked')}}">Приготовлен</button>
         </div>
 
         <div class="mb-10 p-5 order-status-{{$order->status_id}}">Заказ на кухне с {{$order->updated_at}} {{\App\Models\Orders::STATUS[$order->status_id]}}</div>
@@ -71,6 +71,20 @@
                 });
             });
         });
+
+        OrderProductsStatusCheck();
+        function OrderProductsStatusCheck() {
+            let amountProductsWithStatusIsCooked = 0;
+            document.body.querySelectorAll('.product-container').forEach((product) => {
+                let productStatus = product.dataset.orderProductStatus;
+                if (parseInt(productStatus) === 3) {
+                    amountProductsWithStatusIsCooked++;
+                }
+            });
+            if (amountProductsWithStatusIsCooked === {{sizeof($productsModificationsInOrder)}}) {
+                document.body.querySelector('button.status-is-cooked').show()
+            }
+        }
 
     </script>
 
