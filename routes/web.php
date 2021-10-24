@@ -161,3 +161,5 @@ Route::get('/test-bot', function () {
 //    $telegram->RequestContact();
 //    $telegram->sendMessage($message, '267236435');
 });
+
+Route::view('test-maps', 'debag.test');
