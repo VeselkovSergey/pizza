@@ -8,6 +8,7 @@ use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Products\ProductsController;
 use App\Models\Orders;
+use App\Models\OrdersProductsStatusLogs;
 use App\Models\OrdersStatusLogs;
 use App\Models\ProductModifications;
 use App\Models\Products;
@@ -46,7 +47,6 @@ class OrdersController extends Controller
         }
         $productsModifications = ProductModifications::whereIn('id', $modificationsId)->get();
 
-        $productsModificationsInNewOrder = [];
         $orderFullInformationAboutOrderedProduct = [];
         $orderSum = 0;
         foreach ($productsModifications as $productsModification) {
@@ -59,18 +59,14 @@ class OrdersController extends Controller
             $orderSum = $orderSum + ($productsModification->selling_price * $amountProductModificationInOrder[$productsModification->id]);
             $orderFullInformationAboutOrderedProduct[] = $dataModification;
 
-            $dataModificationForDB = [
+            $newProductModificationInNewOrder = ProductsModificationsInOrders::create([
                 'order_id' => $orderId,
-                'status_id' => ProductsModificationsInOrders::STATUS_TEXT['new'],
+                'status_id' => ProductsModificationsInOrders::STATUS_TEXT['create'],
                 'product_modification_id' => $productsModification->id,
-                'product_modification_amount' => $amountProductModificationInOrder[$productsModification->id],
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ];
-            $productsModificationsInNewOrder[] = $dataModificationForDB;
+                'product_modification_amount' => $amountProductModificationInOrder[$productsModification->id]
+            ]);
+            self::OrderProductChangeStatus($newProductModificationInNewOrder, ProductsModificationsInOrders::STATUS_TEXT['new']);
         }
-
-        $newProductsModificationsInNewOrder = ProductsModificationsInOrders::query()->insert($productsModificationsInNewOrder);
 
         $orderFullInformation = (object)[
             'products' => $orderFullInformationAboutOrderedProduct,
@@ -115,12 +111,17 @@ class OrdersController extends Controller
         return Orders::all();
     }
 
+    public static function KitchenOrdersOnly()
+    {
+        return Orders::query()->where('status_id', Orders::STATUS_TEXT['kitchen'])->get();
+    }
+
     public static function Order(int $orderId)
     {
         return Orders::find($orderId);
     }
 
-    public static function Statuses(Orders $order)
+    public static function OrderStatuses(Orders $order)
     {
         return $order->Statuses;
     }
@@ -152,5 +153,24 @@ class OrdersController extends Controller
             $order->status_id = $status_id;
         }
         return $order->save();
+    }
+
+    public static function OrderProduct($productId)
+    {
+        return ProductsModificationsInOrders::find($productId);
+    }
+
+    public static function OrderProductChangeStatus(ProductsModificationsInOrders $product, $status_id)
+    {
+        if ($product->status_id !== $status_id) {
+            OrdersProductsStatusLogs::query()->create([
+                'order_product_id' => $product->id,
+                'old_status_id' => $product->status_id,
+                'new_status_id' => $status_id,
+                'user_id' => 1,//auth()->user()->id, #toDo включить когда сделаю авторизацию для сотрудников
+            ]);
+            $product->status_id = $status_id;
+        }
+        return $product->save();
     }
 }
