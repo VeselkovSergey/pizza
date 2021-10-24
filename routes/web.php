@@ -157,9 +157,49 @@ Route::get('/test-ucaller', function () {
 Route::get('/test-bot', function () {
 //    return ;
 //    $message = 'Приветствуем. Вы сможете получать уведомления о статусе вашего заказа в этом боте. Осталось только поделиться номером телефона для синхронизации ваших заказов' . PHP_EOL;
-//    $telegram = new Telegram('2081173182:AAEuKyhCNybjJTiZD-NQAxbhUj0YBNmopXk');
+    $telegram = new Telegram('2081173182:AAEuKyhCNybjJTiZD-NQAxbhUj0YBNmopXk');
 //    $telegram->RequestContact();
 //    $telegram->sendMessage($message, '267236435');
+});
+
+Route::get('/test-parse', function () {
+
+    $param = http_build_query([
+        'rtext' => 'Дубна, Московская область, Россия, улица Вернова, 9  ~ улица Попова, 3, Дубна, Московская область, Россия ~ улица Понтекорво, 2, Дубна, Московская область, Россия ~ Дубна, Московская область, Россия, улица Вернова, 9',
+        'rtt' => 'auto',
+    ]);
+
+    $url = 'https://yandex.ru/maps/?' . $param;
+
+    $headers = [
+        'Host' => '<calculated when request is sent>',
+        'User-Agent' => 'PostmanRuntime/7.28.4',
+    ]; // создаем заголовки
+
+    $curl = curl_init(); // создаем экземпляр curl
+
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_VERBOSE, 1);
+    curl_setopt($curl, CURLOPT_POST, false); //
+    curl_setopt($curl, CURLOPT_URL, $url);
+
+    $result = curl_exec($curl);
+    $server_error = curl_error($curl);
+
+
+    dd($result, $server_error);
+    $result = file_get_contents($url);
+    //print_r();
+//    dd($result);
+    preg_match('({"appVersion.+})', $result, $matches);
+    dd($matches);
+    $resultYa = json_decode($matches[0]);
+
+    $distance = $resultYa->routerResponse->routes[0]->distance->text;
+    dd($distance, $resultYa);
+    dd();
+    //
 });
 
 Route::view('test-maps', 'debag.test');
