@@ -253,6 +253,7 @@ Route::get('/test-parse', function () {
         $endTime = $resultYa->routerResponse->routes[0]->paths[array_key_last($resultYa->routerResponse->routes[0]->paths)]->endTime->value;
         $deliveryTime = ($endTime - $startTime) / 60;
 
+
         $data = (object)[
             'distance' => $distance,
             'deliveryTime' => $deliveryTime,
