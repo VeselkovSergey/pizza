@@ -258,7 +258,7 @@ header {
     }
 
     .product-content {
-        width: calc(100vw - 50px);
+        width: 100%;
     }
 
     .promokod-apply-button {
@@ -280,6 +280,8 @@ header {
 
     .modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-content {
         max-height: calc(100vh - 50px);
+        min-height: calc(100vh - 50px);
+        width: calc(100vw - 50px);
     }
 
 }
