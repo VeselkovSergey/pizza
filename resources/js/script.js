@@ -187,7 +187,7 @@ function CloseByScroll(modalWindowComponentContainer, container, content) {
 
         let startTouch = 0;
         containerModalWindow.addEventListener('touchstart', (event) => {
-            console.log('start', event)
+            //console.log('start', event)
             containerModalWindow.style.transition = 'transform 0ms ease-out';
             if (content.getBoundingClientRect().top >= 0) {
                 startTouch = event.changedTouches[0].clientY;
@@ -196,8 +196,9 @@ function CloseByScroll(modalWindowComponentContainer, container, content) {
 
         let lengthSwipe = 0;
         containerModalWindow.addEventListener('touchmove', (event) => {
-            console.log(lengthSwipe, startTouch)
-            if (content.getBoundingClientRect().top >= -1) {
+            //console.log(lengthSwipe, startTouch, content.getBoundingClientRect().top)
+            let correctionCoefficient = 50;     // padding +
+            if (content.getBoundingClientRect().top >= (-1 + correctionCoefficient)) {
                 lengthSwipe = event.changedTouches[0].clientY - startTouch;
                 if (lengthSwipe > 0) {
                     containerModalWindow.style.transform = 'translateY(' + lengthSwipe + 'px)';
@@ -210,7 +211,7 @@ function CloseByScroll(modalWindowComponentContainer, container, content) {
         let heightClientScreen = document.documentElement.clientHeight;
 
         containerModalWindow.addEventListener('touchend', (event) => {
-            console.log(heightClientScreen)
+            //console.log(heightClientScreen)
             containerModalWindow.style.transition = '';
             if (lengthSwipe < (heightClientScreen / 3)) {
                 containerModalWindow.style.transform = 'translateY(0px)';
