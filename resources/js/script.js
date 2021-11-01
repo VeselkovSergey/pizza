@@ -172,7 +172,54 @@ function ModalWindow(content, closingCallback, flash) {
 
     document.body.append(modalWindowComponentContainer);
 
+    if (typeof content !== 'string') {
+        CloseByScroll(modalWindowComponentContainer, modalWindowContainer, content);
+    }
+
     return modalWindowComponentContainer;
+}
+
+function CloseByScroll(modalWindowComponentContainer, container, content) {
+    let widthClientScreen = document.documentElement.clientWidth;
+    if (widthClientScreen < 768) {
+
+        let containerModalWindow = container;
+
+        let startTouch = 0;
+        containerModalWindow.addEventListener('touchstart', (event) => {
+            console.log('start', event)
+            containerModalWindow.style.transition = 'transform 0ms ease-out';
+            if (content.getBoundingClientRect().top >= 0) {
+                startTouch = event.changedTouches[0].clientY;
+            }
+        })
+
+        let lengthSwipe = 0;
+        containerModalWindow.addEventListener('touchmove', (event) => {
+            console.log(lengthSwipe, startTouch)
+            if (content.getBoundingClientRect().top >= -1) {
+                lengthSwipe = event.changedTouches[0].clientY - startTouch;
+                if (lengthSwipe > 0) {
+                    containerModalWindow.style.transform = 'translateY(' + lengthSwipe + 'px)';
+                }
+            } else {
+                startTouch = event.changedTouches[0].clientY;
+            }
+        });
+
+        let heightClientScreen = document.documentElement.clientHeight;
+
+        containerModalWindow.addEventListener('touchend', (event) => {
+            console.log(heightClientScreen)
+            containerModalWindow.style.transition = '';
+            if (lengthSwipe < (heightClientScreen / 3)) {
+                containerModalWindow.style.transform = 'translateY(0px)';
+            } else {
+                containerModalWindow.style.transform = 'translateY(' + heightClientScreen + 'px)';
+                modalWindowComponentContainer.slowRemove();
+            }
+        });
+    }
 }
 
 function ModalWindowFlash(content, timer = 2000) {

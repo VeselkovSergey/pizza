@@ -133,50 +133,6 @@
             });
 
             let modalWindow = ModalWindow(productContent);
-
-            let widthClientScreen = document.documentElement.clientWidth;
-            if (widthClientScreen < 768) {
-
-                let containerModalWindow = document.body.querySelector('.modal-window-content-container');
-
-                let startTouch = 0;
-                containerModalWindow.addEventListener('touchstart', (event) => {
-                    console.log('start', event)
-                    console.log('start', )
-                    containerModalWindow.style.transition = 'transform 0ms ease-out';
-                    if (document.body.querySelector('.product-content').getBoundingClientRect().top >= 0) {
-                        startTouch = event.changedTouches[0].clientY;
-                    }
-                })
-
-                let lengthSwipe = 0;
-                containerModalWindow.addEventListener('touchmove', (event) => {
-                    console.log(lengthSwipe, startTouch)
-                    if (document.body.querySelector('.product-content').getBoundingClientRect().top >= -1) {
-                        lengthSwipe = event.changedTouches[0].clientY - startTouch;
-                        if (lengthSwipe > 0) {
-                            containerModalWindow.style.transform = 'translateY(' + lengthSwipe + 'px)';
-                        }
-                    } else {
-                        startTouch = event.changedTouches[0].clientY;
-                    }
-                });
-
-                let heightClientScreen = document.documentElement.clientHeight;
-
-                containerModalWindow.addEventListener('touchend', (event) => {
-                    console.log(heightClientScreen)
-                    containerModalWindow.style.transition = '';
-                    if (lengthSwipe < (heightClientScreen / 3)) {
-                        containerModalWindow.style.transform = 'translateY(0px)';
-                    } else {
-                        containerModalWindow.style.transform = 'translateY(' + heightClientScreen + 'px)';
-                        modalWindow.slowRemove();
-                    }
-                });
-            }
-
-
         }
 
         let startSellingPriceModification = 0;
