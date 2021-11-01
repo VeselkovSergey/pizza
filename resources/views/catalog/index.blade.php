@@ -32,16 +32,22 @@
             <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}">
 
                 <div class="m-10 flex-column p-5 border-radius-10 shadow">
-                    <div class="mb-10">
-                        <img src="{{url('img-pizza.jpeg')}}" class="w-100" alt="">
+
+                    <div class="container-product-img-and-description">
+                        <div class="container-product-img mb-10">
+                            <img src="{{url('img-pizza.jpeg')}}" class="w-100" alt="">
+                        </div>
+
+                        <div class="container-product-description p-10">
+                            <div class="text-center mb-10">{{$product->title}}</div>
+                            <div>Описание</div>
+                        </div>
                     </div>
 
-                    <div class="text-center mb-10">{{$product->title}}</div>
-
-                    <div class="text-center mb-10">от {{$product->minimumPrice}} ₽</div>
+{{--                    <div class="text-center mb-10">от {{$product->minimumPrice}} ₽</div>--}}
 
                     <div class="mx-10 mb-10">
-                        <button class="w-100 h-100 bg-grey color-white border-radius-5 clear-button p-10 cp">В корзину</button>
+                        <button class="w-100 h-100 bg-grey color-white border-radius-5 clear-button p-10 cp">от {{$product->minimumPrice}} ₽</button>
                     </div>
 
                 </div>
@@ -52,9 +58,9 @@
 
     </div>
 
-    <div class="pos-fix top-0 left-0 w-100 h-100vh bg-white flex-center z-1 pre-text">
-        <div>БРОПИЦЦА - НАСТОЯЩАЯ ПИЦЦА ДЛЯ ТЕБЯ</div>
-    </div>
+{{--    <div class="pos-fix top-0 left-0 w-100 h-100vh bg-white flex-center z-1 pre-text">--}}
+{{--        <div>БРОПИЦЦА - НАСТОЯЩАЯ ПИЦЦА ДЛЯ ТЕБЯ</div>--}}
+{{--    </div>--}}
 
 @stop
 

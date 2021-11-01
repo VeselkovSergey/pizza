@@ -61,6 +61,10 @@ header {
     width: 50vw;
 }
 
+.container-product-img-and-description {
+    display: block;
+}
+
 @media screen and (max-width: 1440px) {
 
     .button-open-product {
@@ -125,6 +129,18 @@ header {
 
     .promokod-apply-button {
         margin-top: 5px;
+    }
+
+    .container-product-img-and-description {
+        display: flex;
+    }
+
+    .container-product-img {
+        width: 25%;
+    }
+
+    .container-product-description {
+        width: 75%;
     }
 
 }
