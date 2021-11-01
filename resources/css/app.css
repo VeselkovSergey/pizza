@@ -115,7 +115,7 @@ header {
 
 .modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-content {
     overflow: auto;
-    max-height: 90vh;
+    max-height: 80vh;
 }
 
 .buttons-edit-amount-product:active {
