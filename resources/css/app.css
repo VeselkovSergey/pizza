@@ -258,10 +258,10 @@ header {
     }
 
     .product-content {
-        width: 100%;
+        width: 85vw;
     }
 
-    .promokod-apply-button {
+    .promocode-apply-button {
         margin-top: 5px;
     }
 
@@ -277,14 +277,14 @@ header {
         width: 65%;
     }
 
-    .modal-window-component-container .modal-window-component .modal-window-content-container {
-        border-radius: 0;
-    }
+    /*.modal-window-component-container .modal-window-component .modal-window-content-container {*/
+    /*    border-radius: 0;*/
+    /*}*/
 
-    .modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-content {
-        max-height: calc(100vh - 50px);
-        min-height: calc(100vh - 50px);
-        width: calc(100vw - 50px);
-    }
+    /*.modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-content {*/
+    /*    max-height: calc(100vh - 50px);*/
+    /*    min-height: calc(100vh - 50px);*/
+    /*    width: calc(100vw - 50px);*/
+    /*}*/
 
 }
