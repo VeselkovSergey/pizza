@@ -173,13 +173,17 @@ function ModalWindow(content, closingCallback, flash) {
     document.body.append(modalWindowComponentContainer);
 
     if (typeof content !== 'string') {
-        CloseByScroll(modalWindowComponentContainer, modalWindowContainer, content);
+        CloseByScroll(modalWindowComponentContainer, modalWindowContainer, content, () => {
+            closingCallback ? closingCallback() : '';
+            modalWindowComponentContainer.slowRemove();
+            !flash ? documentBody.classList.remove('scroll-off') : '';
+        });
     }
 
     return modalWindowComponentContainer;
 }
 
-function CloseByScroll(modalWindowComponentContainer, container, content) {
+function CloseByScroll(modalWindowComponentContainer, container, content, closingCallback) {
     let widthClientScreen = document.documentElement.clientWidth;
     if (widthClientScreen < 768) {
 
@@ -217,7 +221,7 @@ function CloseByScroll(modalWindowComponentContainer, container, content) {
                 containerModalWindow.style.transform = 'translateY(0px)';
             } else {
                 containerModalWindow.style.transform = 'translateY(' + heightClientScreen + 'px)';
-                modalWindowComponentContainer.slowRemove();
+                closingCallback ? closingCallback() : '';
             }
         });
     }
