@@ -508,7 +508,7 @@ function OrderInfoGenerationHTML() {
                     // '<div class="w-100 flex-wrap mt-10">' +
                     //     '<label for="">Промокод</label>' +
                     //     '<input name="clientPromoCode" class="w-75 mr-a mb-10" type="text">' +
-                    //     '<button class="promocode-apply-button clear-button bg-grey color-white py-5 px-10 border-radius-5 mb-10">Применить</button>' +
+                    //     '<button class="promo-code-apply-button clear-button bg-grey color-white py-5 px-10 border-radius-5 mb-10">Применить</button>' +
                     // '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<div class="w-100">Способ оплаты</div>' +

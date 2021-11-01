@@ -261,7 +261,7 @@ header {
         width: 80vw;
     }
 
-    .promocode-apply-button {
+    .promo-code-apply-button {
         margin-top: 5px;
     }
 
@@ -275,6 +275,10 @@ header {
 
     .container-product-description {
         width: 65%;
+    }
+
+    .first:hover {
+        box-shadow: unset;
     }
 
     /*.modal-window-component-container .modal-window-component .modal-window-content-container {*/
