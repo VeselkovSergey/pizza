@@ -277,6 +277,9 @@ header {
         width: 65%;
     }
 
+    .modal-window-component-container .modal-window-component .modal-window-content-container {
+        border-radius: 0;
+    }
 
     .modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-content {
         max-height: calc(100vh - 50px);
