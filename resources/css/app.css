@@ -21,6 +21,10 @@ p {
     text-indent: 25px; /* Отступ первой строки в пикселах */
 }
 
+main {
+    margin: 25px;
+}
+
 .invalid-value {
     border-color: red !important;
 }

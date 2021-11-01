@@ -28,7 +28,7 @@
 
         <header class="flex-wrap pos-sticky top-0 bg-white z-1">@include('layouts.header')</header>
 
-        <main class="m-25">@yield('content')</main>
+        <main>@yield('content')</main>
 
         <script>
             const auth = {{auth()->check() ? 'true' : 'false'}};
