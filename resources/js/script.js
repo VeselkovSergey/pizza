@@ -789,7 +789,8 @@ function LoginWindow(callback) {
                         attr: {
                             placeholder: '+7(999)000-11-22',
                             class: 'clear-input p-5 border-radius-5 border w-a text-center phone-mask',
-                            maxlength: '16'
+                            maxlength: '16',
+                            type: 'tel'
                         }
                     }),
                     CreateElement('div', {
