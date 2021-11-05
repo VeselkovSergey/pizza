@@ -612,7 +612,7 @@ function startTrackingNumberInput() {
                             if (i === 0) {
                                 formatPhone += "+";
                                 if (char !== '7') {
-                                    formatPhone += '7';
+                                    formatPhone += '7(';
                                 }
                                 if (char === '8') {
                                     char = '';
