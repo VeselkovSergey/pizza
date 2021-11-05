@@ -589,6 +589,7 @@ function startTrackingNumberInput() {
 
         if (phoneInput !== null) {
             phoneInput.addEventListener('keypress', (event) => {
+                alert(event.keyCode)
                 if (event.keyCode < 47 || event.keyCode > 57) {
                     event.preventDefault();
                 }
@@ -763,6 +764,7 @@ function LoginWindow(callback) {
                             placeholder: '+7(999)000-11-22',
                             class: 'clear-input p-5 border-radius-5 border w-a text-center phone-mask',
                             maxlength: '16',
+                            value: '+7('
                         }
                     }),
                     CreateElement('div', {
@@ -840,6 +842,8 @@ function LoginWindow(callback) {
 
     let loginWindow = ModalWindow(loginWindowContent);
     phoneField.focus();
+
+    phoneField.selectionStart = phoneField.value.length
 
     startTrackingNumberInput();
 
