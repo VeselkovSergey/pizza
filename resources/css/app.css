@@ -253,9 +253,9 @@ header {
         padding-right: 0;
     }
 
-    .container-profile {
-        display: none;
-    }
+    /*.container-profile {*/
+    /*    display: none;*/
+    /*}*/
 
     .phone-container-header {
         display: none;

@@ -58,9 +58,9 @@
 
     </div>
 
-    <div class="pos-fix top-0 left-0 w-100 h-100vh bg-white flex-center z-1 pre-text">
-        <div>БРОПИЦЦА - НАСТОЯЩАЯ ПИЦЦА ДЛЯ ТЕБЯ</div>
-    </div>
+{{--    <div class="pos-fix top-0 left-0 w-100 h-100vh bg-white flex-center z-1 pre-text">--}}
+{{--        <div>БРОПИЦЦА - НАСТОЯЩАЯ ПИЦЦА ДЛЯ ТЕБЯ</div>--}}
+{{--    </div>--}}
 
 @stop
 
