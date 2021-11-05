@@ -588,65 +588,87 @@ function startTrackingNumberInput() {
         let phoneInput = element;
 
         if (phoneInput !== null) {
-            phoneInput.addEventListener('keypress', (event) => {
-                alert(event.keyCode)
-                if (event.keyCode < 47 || event.keyCode > 57) {
-                    event.preventDefault();
-                }
 
-                if (phoneInput.value.length === 2) {
-                    phoneInput.value = phoneInput.value + "(";
-                } else if (phoneInput.value.length === 6) {
-                    phoneInput.value = phoneInput.value + ")";
-                } else if (phoneInput.value.length === 10 || phoneInput.value.length === 13) {
-                    phoneInput.value = phoneInput.value + "-";
-                }
-            });
-
-            phoneInput.addEventListener('keyup', (event) => {
-                let number = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-                if (number.indexOf(event.key) === -1) {
-                    if ((event.key === 'Backspace' || event.key === 'Delete') && phoneInput.value.length <= 2) {
-                        phoneInput.value = '+7';
-                        phoneInput.selectionStart = phoneInput.value.length;
-                    }
-                    event.preventDefault();
-                } else {
-                    if (phoneInput.value.length < 3) {
-                        phoneInput.value = '+7(' + event.key;
-                    }
-                }
-            });
-
-            phoneInput.addEventListener('focus', () => {
-                if (phoneInput.value.length === 0) {
-                    phoneInput.value = '+7';
-                    phoneInput.selectionStart = phoneInput.value.length;
-                }
-            });
-
-            phoneInput.addEventListener('click', (event) => {
-                if (phoneInput.selectionStart < 2) {
-                    phoneInput.selectionStart = phoneInput.value.length;
-                }
-                if (event.key === 'Backspace' && phoneInput.value.length <= 2) {
-                    event.preventDefault();
-                }
-            });
-
-            phoneInput.addEventListener('blur', () => {
-                if (phoneInput.value === '+7') {
-                    phoneInput.value = '';
-                }
-            });
+            let number = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Backspace', 'Delete'];
 
             phoneInput.addEventListener('keydown', (event) => {
-                if (event.key === 'Backspace' && phoneInput.value.length <= 2) {
-                    phoneInput.value = '+7';
-                    phoneInput.selectionStart = phoneInput.value.length;
+                console.log(event)
+                if (number.indexOf(event.key) === -1 || (event.key === 'Backspace' || event.key === 'Delete') && phoneInput.value.length <= 3) {
+                    console.log('Не верная клавиша')
                     event.preventDefault();
                 }
+
+                // if (event.key === 'Backspace' && phoneInput.value.length <= 3) {
+                //     phoneInput.value = '+7(';
+                //     phoneInput.selectionStart = phoneInput.value.length;
+                //     event.preventDefault();
+                // }
             });
+
+            let timer;
+            phoneInput.addEventListener('keyup', (event) => {
+                if ((event.key !== 'Backspace' && event.key !== 'Delete')) {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        let rawPhone = phoneInput.value;
+                        let onlyNumber = rawPhone.replace(/[^0-9]/g,"");
+                        console.log(rawPhone, onlyNumber)
+                        let formatPhone = '';
+                        for (let i = 0; i < onlyNumber.length; i++) {
+
+                            if (i === 0) {
+                                formatPhone += "+";
+                            } else if (i === 1) {
+                                formatPhone += "(";
+                            } else if (i === 4) {
+                                formatPhone += ")";
+                            } else if (i === 7 || i === 9) {
+                                formatPhone += "-";
+                            }
+
+                            if (i <= 10) {
+                                formatPhone += onlyNumber.charAt(i);
+                            }
+
+                        }
+                        phoneInput.value = formatPhone;
+
+                    }, 100);
+                }
+            //     if (number.indexOf(event.key) === -1) {
+            //         if ((event.key === 'Backspace' || event.key === 'Delete') && phoneInput.value.length <= 2) {
+            //             phoneInput.value = '+7(';
+            //             phoneInput.selectionStart = phoneInput.value.length;
+            //         }
+            //         event.preventDefault();
+            //     } else {
+            //         if (phoneInput.value.length < 3) {
+            //             phoneInput.value = '+7(' + event.key;
+            //         }
+            //     }
+            });
+
+            // phoneInput.addEventListener('focus', () => {
+            //     if (phoneInput.value.length === 0) {
+            //         phoneInput.value = '+7(';
+            //         phoneInput.selectionStart = phoneInput.value.length;
+            //     }
+            // });
+            //
+            // phoneInput.addEventListener('click', (event) => {
+            //     if (phoneInput.selectionStart < 3) {
+            //         phoneInput.selectionStart = phoneInput.value.length;
+            //     }
+            //     if (event.key === 'Backspace' && phoneInput.value.length <= 3) {
+            //         event.preventDefault();
+            //     }
+            // });
+            //
+            // phoneInput.addEventListener('blur', () => {
+            //     if (phoneInput.value === '+7(') {
+            //         phoneInput.value = '';
+            //     }
+            // });
         }
     });
 }
@@ -764,7 +786,7 @@ function LoginWindow(callback) {
                             placeholder: '+7(999)000-11-22',
                             class: 'clear-input p-5 border-radius-5 border w-a text-center phone-mask',
                             maxlength: '16',
-                            value: '+7('
+                            value: '+7'
                         }
                     }),
                     CreateElement('div', {
