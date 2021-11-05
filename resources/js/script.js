@@ -694,7 +694,7 @@ function ContainerSuggestionsGeneration(result, inputSuggestions, callback) {
     containerSuggestions.className = 'container-suggestions w-100 pos-rel';
 
     let containerSuggestionsAbsolutePosition = document.createElement('div');
-    containerSuggestionsAbsolutePosition.className = 'container-suggestions-pos-abs pos-abs top-0 left-0 border-radius-5';
+    containerSuggestionsAbsolutePosition.className = 'container-suggestions-pos-abs pos-abs left-0 border-radius-5';
     if (result.length === 0) {
         let itemSuggestion = document.createElement('div');
         itemSuggestion.className = 'p-5';
@@ -727,7 +727,17 @@ function ContainerSuggestionsGeneration(result, inputSuggestions, callback) {
 
     containerSuggestions.append(containerSuggestionsAbsolutePosition);
 
-    inputSuggestions.insertAdjacentElement('afterEnd', containerSuggestions);
+    inputSuggestions.insertAdjacentElement('afterend', containerSuggestions);
+
+    let heightClientScreen = document.documentElement.clientHeight;
+    let h = containerSuggestionsAbsolutePosition.getBoundingClientRect().height;
+    let b = containerSuggestionsAbsolutePosition.getBoundingClientRect().bottom;
+
+    if (h + b > heightClientScreen ) {
+        containerSuggestionsAbsolutePosition.style.bottom = inputSuggestions.getBoundingClientRect().height + 'px';
+    } else {
+        containerSuggestionsAbsolutePosition.classList.add('top-0');
+    }
 }
 
 function LoginWindow(callback) {
