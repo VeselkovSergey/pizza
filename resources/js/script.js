@@ -355,6 +355,7 @@ function triggerEvent(elem, event) {
 }
 
 let basketWindow;
+
 function BasketWindow() {
     let basketContent = document.createElement('div');
     basketContent.innerHTML =
@@ -437,7 +438,7 @@ function BasketWindow() {
             } else {
                 CreateOrder();
             }
-         });
+        });
     }
 
     let deliveryAddress = document.body.querySelector('.delivery-address');
@@ -469,7 +470,7 @@ function CreateOrder() {
         return;
     }
 
-    let clientInformation = GetDataFormContainer('client-information', );
+    let clientInformation = GetDataFormContainer('client-information',);
     let ObjectClientInformation = {};
     for (let key in clientInformation) {
         ObjectClientInformation[key] = clientInformation[key].length === 1 ? clientInformation[key][0] : clientInformation[key];
@@ -603,7 +604,7 @@ function startTrackingNumberInput() {
                     clearTimeout(timer);
                     timer = setTimeout(() => {
                         let rawPhone = phoneInput.value;
-                        let onlyNumber = rawPhone.replace(/[^0-9]/g,'');
+                        let onlyNumber = rawPhone.replace(/[^0-9]/g, '');
                         let formatPhone = '';
                         for (let i = 0; i < onlyNumber.length; i++) {
 
@@ -640,6 +641,7 @@ function startTrackingNumberInput() {
 }
 
 let timerSuggestionsAddress = null;
+
 function SuggestionsAddress(query, inputSuggestions, callback) {
 
     if (query.length < 4) {
@@ -654,7 +656,7 @@ function SuggestionsAddress(query, inputSuggestions, callback) {
         const token = "980b289f33c7bafda2d4007c51a2d45d6c980425";
 
         let data = {
-            query:query,
+            query: query,
             locations: [{
                 "region": "Московская",
                 "city": "Дубна"
@@ -710,7 +712,9 @@ function ContainerSuggestionsGeneration(result, inputSuggestions, callback) {
             itemSuggestion.addEventListener('mousedown', () => {
                 inputSuggestions.value = itemSuggestion.innerHTML;
                 containerSuggestions.remove();
-                inputSuggestions.focus();
+                setTimeout(() => {
+                    inputSuggestions.focus();
+                }, 100)
 
                 /* #todo remake */
                 let inputName = inputSuggestions.name;
@@ -733,7 +737,7 @@ function ContainerSuggestionsGeneration(result, inputSuggestions, callback) {
     let h = containerSuggestionsAbsolutePosition.getBoundingClientRect().height;
     let b = containerSuggestionsAbsolutePosition.getBoundingClientRect().bottom;
 
-    if (h + b > heightClientScreen ) {
+    if (h + b > heightClientScreen) {
         containerSuggestionsAbsolutePosition.style.bottom = inputSuggestions.getBoundingClientRect().height + 'px';
     } else {
         containerSuggestionsAbsolutePosition.classList.add('top-0');
@@ -815,7 +819,10 @@ function LoginWindow(callback) {
                                             if (callback) {
                                                 execFunction = callback;
                                             }
-                                            Ajax(routeCheckConfirmationCode, 'post', {confirmationCode: confirmationCodeInputValue, execFunction: execFunction}).then((response) => {
+                                            Ajax(routeCheckConfirmationCode, 'post', {
+                                                confirmationCode: confirmationCodeInputValue,
+                                                execFunction: execFunction
+                                            }).then((response) => {
                                                 if (response.status) {
                                                     loginWindow.slowRemove();
                                                     FlashMessage(response.message);
@@ -876,7 +883,7 @@ function Logout() {
 }
 
 function Profile() {
-    let profileContent =  CreateElement('div', {
+    let profileContent = CreateElement('div', {
         childs: [
             CreateElement('div', {
                 content: 'Личный кабинет находится в разработке <br /> Ваш номер телефона: +' + userPhone,
