@@ -612,7 +612,7 @@ function startTrackingNumberInput() {
                             if (i === 0) {
                                 formatPhone += '+';
                                 if (char !== '7') {
-                                    formatPhone += '7(';
+                                    formatPhone += '7';
                                 }
                                 if (char === '8') {
                                     char = '';
@@ -787,6 +787,7 @@ function LoginWindow(callback) {
                             placeholder: '1234',
                             class: 'clear-input p-5 border-radius-5 border w-a text-center',
                             maxlength: 4,
+                            type: 'number'
                         }
                     }),
                     CreateElement('div', {
