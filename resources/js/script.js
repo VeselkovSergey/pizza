@@ -899,4 +899,25 @@ function Profile() {
     let ProfileWindow = ModalWindow(profileContent);
 }
 
+let mainMenu = document.body.querySelector('.button-menu');
+if (mainMenu) {
+    mainMenu.addEventListener('click', () => {
+        document.body.querySelector('.left-menu').showToggle();
+    });
+}
+
+let mainMenuShadow = document.body.querySelector('.shadow-menu');
+if (mainMenuShadow) {
+    mainMenuShadow.addEventListener('click', () => {
+        document.body.querySelector('.left-menu').showToggle();
+    });
+}
+
+let mainMenuCloseButton = document.body.querySelector('.close-menu-button')
+if (mainMenuCloseButton) {
+    mainMenuCloseButton.addEventListener('click', () => {
+        document.body.querySelector('.left-menu').showToggle();
+    });
+}
+
 

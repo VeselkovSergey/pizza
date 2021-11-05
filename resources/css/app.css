@@ -203,6 +203,34 @@ header {
     color: #FFFFFF;
 }
 
+.button-menu {
+     display: none;
+ }
+
+.close-menu-button > svg {
+    transition: transform 500ms;
+}
+
+.left-menu:not(.hide) .close-menu-button > svg {
+    animation: rotate 1s;
+}
+
+.close-menu-button > svg:hover {
+    transform: rotate(360deg);
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
+}
+
 @media screen and (max-width: 1440px) {
 
     .button-open-product {
@@ -253,9 +281,13 @@ header {
         padding-right: 0;
     }
 
-    /*.container-profile {*/
-    /*    display: none;*/
-    /*}*/
+    .container-profile {
+        display: none;
+    }
+
+    .button-menu {
+        display: flex;
+    }
 
     .phone-container-header {
         display: none;
