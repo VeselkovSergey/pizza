@@ -155,7 +155,7 @@
                     let modificationIdHTML =
                         '<div class="text-center flex" style="' + buttonWidth + '">' +
                             '<input name="' + modificationTypeId + '" class="hide modification-input" id="' + modificationId + '" type="radio" ' + checkedInput + '/>' +
-                            '<label class="modification-button" style="font-size: 12px;" data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.title + ' - ' + modification.value + '</label>' +
+                            '<label class="modification-button"data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.title + ' - ' + modification.value + '</label>' +
                         '</div>';
                     modificationTypeHTML += modificationIdHTML;
                     i++;
