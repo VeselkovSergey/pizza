@@ -589,20 +589,12 @@ function startTrackingNumberInput() {
 
         if (phoneInput !== null) {
 
-            let number = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Backspace', 'Delete'];
+            let number = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowTop', 'ArrowDown'];
 
             phoneInput.addEventListener('keydown', (event) => {
-                console.log(event)
                 if (number.indexOf(event.key) === -1) {
-                    console.log('Не верная клавиша')
                     event.preventDefault();
                 }
-
-                // if (event.key === 'Backspace' && phoneInput.value.length <= 3) {
-                //     phoneInput.value = '+7(';
-                //     phoneInput.selectionStart = phoneInput.value.length;
-                //     event.preventDefault();
-                // }
             });
 
             let timer;
@@ -622,6 +614,9 @@ function startTrackingNumberInput() {
                                 if (char !== '7') {
                                     formatPhone += '7';
                                 }
+                                if (char === '8') {
+                                    char = '';
+                                }
                             } else if (i === 1) {
                                 formatPhone += "(";
                             } else if (i === 4) {
@@ -637,42 +632,9 @@ function startTrackingNumberInput() {
                         }
                         phoneInput.value = formatPhone;
 
-                    }, 100);
+                    }, 50);
                 }
-            //     if (number.indexOf(event.key) === -1) {
-            //         if ((event.key === 'Backspace' || event.key === 'Delete') && phoneInput.value.length <= 2) {
-            //             phoneInput.value = '+7(';
-            //             phoneInput.selectionStart = phoneInput.value.length;
-            //         }
-            //         event.preventDefault();
-            //     } else {
-            //         if (phoneInput.value.length < 3) {
-            //             phoneInput.value = '+7(' + event.key;
-            //         }
-            //     }
             });
-
-            // phoneInput.addEventListener('focus', () => {
-            //     if (phoneInput.value.length === 0) {
-            //         phoneInput.value = '+7(';
-            //         phoneInput.selectionStart = phoneInput.value.length;
-            //     }
-            // });
-            //
-            // phoneInput.addEventListener('click', (event) => {
-            //     if (phoneInput.selectionStart < 3) {
-            //         phoneInput.selectionStart = phoneInput.value.length;
-            //     }
-            //     if (event.key === 'Backspace' && phoneInput.value.length <= 3) {
-            //         event.preventDefault();
-            //     }
-            // });
-            //
-            // phoneInput.addEventListener('blur', () => {
-            //     if (phoneInput.value === '+7(') {
-            //         phoneInput.value = '';
-            //     }
-            // });
         }
     });
 }
