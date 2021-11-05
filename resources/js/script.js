@@ -593,7 +593,7 @@ function startTrackingNumberInput() {
 
             phoneInput.addEventListener('keydown', (event) => {
                 console.log(event)
-                if (number.indexOf(event.key) === -1 || (event.key === 'Backspace' || event.key === 'Delete') && phoneInput.value.length <= 3) {
+                if (number.indexOf(event.key) === -1) {
                     console.log('Не верная клавиша')
                     event.preventDefault();
                 }
@@ -616,6 +616,11 @@ function startTrackingNumberInput() {
                         let formatPhone = '';
                         for (let i = 0; i < onlyNumber.length; i++) {
 
+                            let char = onlyNumber.charAt(i);
+                            if (i === 0 && char !== '7') {
+                                char = '7';
+                            }
+
                             if (i === 0) {
                                 formatPhone += "+";
                             } else if (i === 1) {
@@ -627,7 +632,7 @@ function startTrackingNumberInput() {
                             }
 
                             if (i <= 10) {
-                                formatPhone += onlyNumber.charAt(i);
+                                formatPhone += char;
                             }
 
                         }
@@ -785,8 +790,7 @@ function LoginWindow(callback) {
                         attr: {
                             placeholder: '+7(999)000-11-22',
                             class: 'clear-input p-5 border-radius-5 border w-a text-center phone-mask',
-                            maxlength: '16',
-                            value: '+7'
+                            maxlength: '16'
                         }
                     }),
                     CreateElement('div', {
