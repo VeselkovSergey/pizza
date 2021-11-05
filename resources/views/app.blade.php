@@ -26,6 +26,12 @@
 
     <body>
 
+
+        @php
+            $authCheck = auth()->check();
+            $actionConditionAuth = !$authCheck ? 'LoginWindow()' : 'Profile()';
+        @endphp
+
         <header class="flex-wrap pos-sticky top-0 bg-white z-1">@include('layouts.header')</header>
 
         <nav class="left-menu hide z-2 pos-fix top-0 left-0 w-100 h-100">
@@ -39,8 +45,8 @@
                 <div class="scroll-auto pr-25 h-100">
                     <div class="fast-menu-in-left-menu">
                         <div class="flex-column p-10">
-                            <div class="mb-10">
-                                @if(auth()->check())
+                            <div class="mb-10 {{$authCheck ? 'color-green' : ''}}" onclick="{{$actionConditionAuth}}">
+                                @if($authCheck)
                                     Профиль
                                 @else
                                     Вход
