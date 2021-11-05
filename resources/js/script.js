@@ -617,12 +617,12 @@ function startTrackingNumberInput() {
                         for (let i = 0; i < onlyNumber.length; i++) {
 
                             let char = onlyNumber.charAt(i);
-                            if (i === 0 && char !== '7') {
-                                char = '7';
-                            }
 
                             if (i === 0) {
                                 formatPhone += "+";
+                                if (char !== '7') {
+                                    formatPhone += '7';
+                                }
                             } else if (i === 1) {
                                 formatPhone += "(";
                             } else if (i === 4) {
