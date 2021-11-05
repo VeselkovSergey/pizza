@@ -31,7 +31,7 @@
 
             <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}">
 
-                <div class="m-10 flex-column p-5 border-radius-10 shadow">
+                <div class="m-10 flex-column p-5 border-radius-10 shadow p-10">
 
                     <div class="container-product-img-and-description">
                         <div class="container-product-img mb-10">
@@ -46,9 +46,8 @@
 
 {{--                    <div class="text-center mb-10">от {{$product->minimumPrice}} ₽</div>--}}
 
-                    <div class="mx-10 mb-10">
-                        <button class="w-100 h-100 bg-grey color-white border-radius-5 clear-button p-10 cp">от {{$product->minimumPrice}} ₽</button>
-                    </div>
+                    <button class="w-100 h-100 bg-grey color-white border-radius-5 clear-button p-10 cp">от {{$product->minimumPrice}} ₽</button>
+
 
                 </div>
 
