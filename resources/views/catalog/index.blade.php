@@ -27,7 +27,7 @@
 
     <div class="flex-wrap">
 
-        @foreach($allProducts as $product)
+        @foreach(json_decode($allProducts) as $product)
 
             <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}">
 
@@ -196,7 +196,7 @@
             return containerAllModifications;
         }
 
-        let allProducts = JSON.parse('{{json_encode($allProducts)}}');
+        let allProducts = JSON.parse('{{$allProducts}}');
 
     </script>
 

@@ -172,7 +172,7 @@ Route::get('/test-parse', function () {
         'Дубна, Московская область, Россия, улица Вернова, 9',
     ];
 
-    dd(implode(' ~ ', $adresses));
+//    dd(implode(' ~ ', $adresses));
 
 //    $cookiesRaw = \App\Helpers\ArrayHelper::ObjectToArray(json_decode(file_get_contents('./cookie.json')));
 //    $cookies = '';

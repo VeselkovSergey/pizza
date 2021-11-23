@@ -19,7 +19,7 @@ class CatalogController extends Controller
         $allProducts = new ProductsController();
         $allProducts = $allProducts->GetAllProducts();
         return view('catalog.index', [
-            'allProducts' => json_decode($allProducts),
+            'allProducts' => $allProducts,
         ]);
     }
 }
