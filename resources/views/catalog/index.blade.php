@@ -196,7 +196,7 @@
             return containerAllModifications;
         }
 
-        let allProducts = {{!! json_encode($allProducts) !!}};
+        let allProducts = {!! json_encode($allProducts) !!};
 
     </script>
 
