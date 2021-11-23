@@ -192,7 +192,7 @@
             return containerAllModifications;
         }
 
-        let allProducts = JSON.parse('@json($allProducts)');
+        let allProducts = JSON.parse('{{json_encode($allProducts)}}');
 
     </script>
 
