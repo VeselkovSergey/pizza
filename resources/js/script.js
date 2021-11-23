@@ -172,7 +172,59 @@ function ModalWindow(content, closingCallback, flash) {
 
     document.body.append(modalWindowComponentContainer);
 
+    // if (typeof content !== 'string') {
+    //     CloseByScroll(modalWindowComponentContainer, modalWindowContainer, content, () => {
+    //         closingCallback ? closingCallback() : '';
+    //         modalWindowComponentContainer.slowRemove();
+    //         !flash ? documentBody.classList.remove('scroll-off') : '';
+    //     });
+    // }
+
     return modalWindowComponentContainer;
+}
+
+function CloseByScroll(modalWindowComponentContainer, container, content, closingCallback) {
+    let widthClientScreen = document.documentElement.clientWidth;
+    if (widthClientScreen < 768) {
+
+        let containerModalWindow = container;
+
+        let startTouch = 0;
+        containerModalWindow.addEventListener('touchstart', (event) => {
+            //console.log('start', event)
+            containerModalWindow.style.transition = 'transform 0ms ease-out';
+            if (content.getBoundingClientRect().top >= 0) {
+                startTouch = event.changedTouches[0].clientY;
+            }
+        })
+
+        let lengthSwipe = 0;
+        containerModalWindow.addEventListener('touchmove', (event) => {
+            //console.log(lengthSwipe, startTouch, content.getBoundingClientRect().top)
+            let correctionCoefficient = 50;     // padding +
+            if (content.getBoundingClientRect().top >= (-1 + correctionCoefficient)) {
+                lengthSwipe = event.changedTouches[0].clientY - startTouch;
+                if (lengthSwipe > 0) {
+                    containerModalWindow.style.transform = 'translateY(' + lengthSwipe + 'px)';
+                }
+            } else {
+                startTouch = event.changedTouches[0].clientY;
+            }
+        });
+
+        let heightClientScreen = document.documentElement.clientHeight;
+
+        containerModalWindow.addEventListener('touchend', (event) => {
+            //console.log(heightClientScreen)
+            containerModalWindow.style.transition = '';
+            if (lengthSwipe < (heightClientScreen / 3)) {
+                containerModalWindow.style.transform = 'translateY(0px)';
+            } else {
+                containerModalWindow.style.transform = 'translateY(' + heightClientScreen + 'px)';
+                closingCallback ? closingCallback() : '';
+            }
+        });
+    }
 }
 
 function ModalWindowFlash(content, timer = 2000) {
@@ -303,6 +355,7 @@ function triggerEvent(elem, event) {
 }
 
 let basketWindow;
+
 function BasketWindow() {
     let basketContent = document.createElement('div');
     basketContent.innerHTML =
@@ -385,7 +438,7 @@ function BasketWindow() {
             } else {
                 CreateOrder();
             }
-         });
+        });
     }
 
     let deliveryAddress = document.body.querySelector('.delivery-address');
@@ -417,7 +470,7 @@ function CreateOrder() {
         return;
     }
 
-    let clientInformation = GetDataFormContainer('client-information', );
+    let clientInformation = GetDataFormContainer('client-information',);
     let ObjectClientInformation = {};
     for (let key in clientInformation) {
         ObjectClientInformation[key] = clientInformation[key].length === 1 ? clientInformation[key][0] : clientInformation[key];
@@ -508,7 +561,7 @@ function OrderInfoGenerationHTML() {
                     // '<div class="w-100 flex-wrap mt-10">' +
                     //     '<label for="">Промокод</label>' +
                     //     '<input name="clientPromoCode" class="w-75 mr-a mb-10" type="text">' +
-                    //     '<button class="promokod-apply-button clear-button bg-grey color-white py-5 px-10 border-radius-5 mb-10">Применить</button>' +
+                    //     '<button class="promo-code-apply-button clear-button bg-grey color-white py-5 px-10 border-radius-5 mb-10">Применить</button>' +
                     // '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<div class="w-100">Способ оплаты</div>' +
@@ -536,62 +589,51 @@ function startTrackingNumberInput() {
         let phoneInput = element;
 
         if (phoneInput !== null) {
-            phoneInput.addEventListener('keypress', (event) => {
-                if (event.keyCode < 47 || event.keyCode > 57) {
-                    event.preventDefault();
-                }
 
-                if (phoneInput.value.length === 2) {
-                    phoneInput.value = phoneInput.value + "(";
-                } else if (phoneInput.value.length === 6) {
-                    phoneInput.value = phoneInput.value + ")";
-                } else if (phoneInput.value.length === 10 || phoneInput.value.length === 13) {
-                    phoneInput.value = phoneInput.value + "-";
-                }
-            });
-
-            phoneInput.addEventListener('keyup', (event) => {
-                let number = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-                if (number.indexOf(event.key) === -1) {
-                    if ((event.key === 'Backspace' || event.key === 'Delete') && phoneInput.value.length <= 2) {
-                        phoneInput.value = '+7';
-                        phoneInput.selectionStart = phoneInput.value.length;
-                    }
-                    event.preventDefault();
-                } else {
-                    if (phoneInput.value.length < 3) {
-                        phoneInput.value = '+7(' + event.key;
-                    }
-                }
-            });
-
-            phoneInput.addEventListener('focus', () => {
-                if (phoneInput.value.length === 0) {
-                    phoneInput.value = '+7';
-                    phoneInput.selectionStart = phoneInput.value.length;
-                }
-            });
-
-            phoneInput.addEventListener('click', (event) => {
-                if (phoneInput.selectionStart < 2) {
-                    phoneInput.selectionStart = phoneInput.value.length;
-                }
-                if (event.key === 'Backspace' && phoneInput.value.length <= 2) {
-                    event.preventDefault();
-                }
-            });
-
-            phoneInput.addEventListener('blur', () => {
-                if (phoneInput.value === '+7') {
-                    phoneInput.value = '';
-                }
-            });
+            let number = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowTop', 'ArrowDown'];
 
             phoneInput.addEventListener('keydown', (event) => {
-                if (event.key === 'Backspace' && phoneInput.value.length <= 2) {
-                    phoneInput.value = '+7';
-                    phoneInput.selectionStart = phoneInput.value.length;
+                if (number.indexOf(event.key) === -1) {
                     event.preventDefault();
+                }
+            });
+
+            let timer;
+            phoneInput.addEventListener('keyup', (event) => {
+                if ((event.key !== 'Backspace' && event.key !== 'Delete')) {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        let rawPhone = phoneInput.value;
+                        let onlyNumber = rawPhone.replace(/[^0-9]/g, '');
+                        let formatPhone = '';
+                        for (let i = 0; i < onlyNumber.length; i++) {
+
+                            let char = onlyNumber.charAt(i);
+
+                            if (i === 0) {
+                                formatPhone += '+';
+                                if (char !== '7') {
+                                    formatPhone += '7';
+                                }
+                                if (char === '8') {
+                                    char = '';
+                                }
+                            } else if (i === 1) {
+                                formatPhone += '(';
+                            } else if (i === 4) {
+                                formatPhone += ')';
+                            } else if (i === 7 || i === 9) {
+                                formatPhone += '-';
+                            }
+
+                            if (i <= 10) {
+                                formatPhone += char;
+                            }
+
+                        }
+                        phoneInput.value = formatPhone;
+
+                    }, 50);
                 }
             });
         }
@@ -599,6 +641,7 @@ function startTrackingNumberInput() {
 }
 
 let timerSuggestionsAddress = null;
+
 function SuggestionsAddress(query, inputSuggestions, callback) {
 
     if (query.length < 4) {
@@ -613,7 +656,7 @@ function SuggestionsAddress(query, inputSuggestions, callback) {
         const token = "980b289f33c7bafda2d4007c51a2d45d6c980425";
 
         let data = {
-            query:query,
+            query: query,
             locations: [{
                 "region": "Московская",
                 "city": "Дубна"
@@ -653,7 +696,7 @@ function ContainerSuggestionsGeneration(result, inputSuggestions, callback) {
     containerSuggestions.className = 'container-suggestions w-100 pos-rel';
 
     let containerSuggestionsAbsolutePosition = document.createElement('div');
-    containerSuggestionsAbsolutePosition.className = 'container-suggestions-pos-abs pos-abs top-0 left-0 border-radius-5';
+    containerSuggestionsAbsolutePosition.className = 'container-suggestions-pos-abs pos-abs left-0 border-radius-5';
     if (result.length === 0) {
         let itemSuggestion = document.createElement('div');
         itemSuggestion.className = 'p-5';
@@ -669,7 +712,9 @@ function ContainerSuggestionsGeneration(result, inputSuggestions, callback) {
             itemSuggestion.addEventListener('mousedown', () => {
                 inputSuggestions.value = itemSuggestion.innerHTML;
                 containerSuggestions.remove();
-                inputSuggestions.focus();
+                setTimeout(() => {
+                    inputSuggestions.focus();
+                }, 100)
 
                 /* #todo remake */
                 let inputName = inputSuggestions.name;
@@ -686,7 +731,17 @@ function ContainerSuggestionsGeneration(result, inputSuggestions, callback) {
 
     containerSuggestions.append(containerSuggestionsAbsolutePosition);
 
-    inputSuggestions.insertAdjacentElement('afterEnd', containerSuggestions);
+    inputSuggestions.insertAdjacentElement('afterend', containerSuggestions);
+
+    let heightClientScreen = document.documentElement.clientHeight;
+    let h = containerSuggestionsAbsolutePosition.getBoundingClientRect().height;
+    let b = containerSuggestionsAbsolutePosition.getBoundingClientRect().bottom;
+
+    if (h + b > heightClientScreen) {
+        containerSuggestionsAbsolutePosition.style.bottom = inputSuggestions.getBoundingClientRect().height + 'px';
+    } else {
+        containerSuggestionsAbsolutePosition.classList.add('top-0');
+    }
 }
 
 function LoginWindow(callback) {
@@ -711,6 +766,7 @@ function LoginWindow(callback) {
                             placeholder: '+7(999)000-11-22',
                             class: 'clear-input p-5 border-radius-5 border w-a text-center phone-mask',
                             maxlength: '16',
+                            type: 'tel'
                         }
                     }),
                     CreateElement('div', {
@@ -745,6 +801,7 @@ function LoginWindow(callback) {
                             placeholder: '1234',
                             class: 'clear-input p-5 border-radius-5 border w-a text-center',
                             maxlength: 4,
+                            type: 'tel'
                         }
                     }),
                     CreateElement('div', {
@@ -762,7 +819,10 @@ function LoginWindow(callback) {
                                             if (callback) {
                                                 execFunction = callback;
                                             }
-                                            Ajax(routeCheckConfirmationCode, 'post', {confirmationCode: confirmationCodeInputValue, execFunction: execFunction}).then((response) => {
+                                            Ajax(routeCheckConfirmationCode, 'post', {
+                                                confirmationCode: confirmationCodeInputValue,
+                                                execFunction: execFunction
+                                            }).then((response) => {
                                                 if (response.status) {
                                                     loginWindow.slowRemove();
                                                     FlashMessage(response.message);
@@ -788,6 +848,8 @@ function LoginWindow(callback) {
 
     let loginWindow = ModalWindow(loginWindowContent);
     phoneField.focus();
+
+    phoneField.selectionStart = phoneField.value.length
 
     startTrackingNumberInput();
 
@@ -821,7 +883,7 @@ function Logout() {
 }
 
 function Profile() {
-    let profileContent =  CreateElement('div', {
+    let profileContent = CreateElement('div', {
         childs: [
             CreateElement('div', {
                 content: 'Личный кабинет находится в разработке <br /> Ваш номер телефона: +' + userPhone,
@@ -845,6 +907,27 @@ function Profile() {
     });
 
     let ProfileWindow = ModalWindow(profileContent);
+}
+
+let mainMenu = document.body.querySelector('.button-menu');
+if (mainMenu) {
+    mainMenu.addEventListener('click', () => {
+        document.body.querySelector('.left-menu').showToggle();
+    });
+}
+
+let mainMenuShadow = document.body.querySelector('.shadow-menu');
+if (mainMenuShadow) {
+    mainMenuShadow.addEventListener('click', () => {
+        document.body.querySelector('.left-menu').showToggle();
+    });
+}
+
+let mainMenuCloseButton = document.body.querySelector('.close-menu-button')
+if (mainMenuCloseButton) {
+    mainMenuCloseButton.addEventListener('click', () => {
+        document.body.querySelector('.left-menu').showToggle();
+    });
 }
 
 
