@@ -268,9 +268,9 @@ Route::get('/rebase-ing', function () {
     $allIng = \App\Models\ProductModificationsIngredients::all();
     foreach ($allIng as $ing) {
         var_dump($ing->ingredient_amount);
-//        if (!is_float($ing->ingredient_amount)) {
-//            $ing->ingredient_amount = ($ing->ingredient_amount / 1000);
-//            $ing->save();
-//        }
+        if (!str_contains($ing->ingredient_amount, '.')) {
+            $ing->ingredient_amount = ($ing->ingredient_amount / 1000);
+            $ing->save();
+        }
     }
 });
