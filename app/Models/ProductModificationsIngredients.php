@@ -2,6 +2,12 @@
 
 namespace App\Models;
 
+/**
+ * @property integer product_modification_id
+ * @property integer ingredient_id
+ * @property float ingredient_amount
+ * @property integer visible
+ */
 class ProductModificationsIngredients extends BaseModel
 {
     protected $fillable = [
