@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Products extends Model
+class Products extends BaseModel
 {
     protected $fillable = [
         'title',
@@ -17,6 +15,6 @@ class Products extends Model
 
     public function MinimumPrice()
     {
-        return ProductModifications::query()->where('product_id', $this->id)->orderBy('selling_price')->first()->selling_price;
+        return ProductModifications::where('product_id', $this->id)->orderBy('selling_price')->first()->selling_price;
     }
 }

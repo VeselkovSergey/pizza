@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class OrdersStatusLogs extends Model
+class OrdersStatusLogs extends BaseModel
 {
     protected $fillable = [
         'order_id',

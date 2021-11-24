@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Supply extends Model
+class Supply extends BaseModel
 {
     protected $table = 'supply';
     protected $fillable = [

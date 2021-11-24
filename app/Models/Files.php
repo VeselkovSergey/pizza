@@ -5,10 +5,9 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Files extends Model
+class Files extends BaseModel
 {
     use HasFactory, Notifiable;
 

@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class ProductModifications extends Model
+class ProductModifications extends BaseModel
 {
     protected $fillable = [
         'product_id',

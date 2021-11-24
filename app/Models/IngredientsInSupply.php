@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class IngredientsInSupply extends Model
+/**
+ * @property integer supply_id
+ * @property integer ingredient_id
+ * @property float amount_ingredient
+ * @property float price_ingredient
+ */
+class IngredientsInSupply extends BaseModel
 {
     protected $table = 'ingredients_in_supply';
     protected $fillable = [

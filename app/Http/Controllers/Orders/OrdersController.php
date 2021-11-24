@@ -113,7 +113,7 @@ class OrdersController extends Controller
 
     public static function KitchenOrdersOnly()
     {
-        return Orders::query()->where('status_id', Orders::STATUS_TEXT['kitchen'])->get();
+        return Orders::where('status_id', Orders::STATUS_TEXT['kitchen'])->get();
     }
 
     public static function Order(int $orderId)
@@ -133,7 +133,7 @@ class OrdersController extends Controller
 
     public static function SearchByPhone(string $phone)
     {
-        $user = User::query()->where('phone', $phone)->first();
+        $user = User::where('phone', $phone)->first();
         $orders = [];
         if ($user) {
             $orders = $user->Orders;
@@ -144,7 +144,7 @@ class OrdersController extends Controller
     public static function ChangeStatus(Orders $order, $status_id)
     {
         if ($order->status_id !== $status_id) {
-            OrdersStatusLogs::query()->create([
+            OrdersStatusLogs::create([
                 'order_id' => $order->id,
                 'old_status_id' => $order->status_id,
                 'new_status_id' => $status_id,
@@ -163,7 +163,7 @@ class OrdersController extends Controller
     public static function OrderProductChangeStatus(ProductsModificationsInOrders $product, $status_id)
     {
         if ($product->status_id !== $status_id) {
-            OrdersProductsStatusLogs::query()->create([
+            OrdersProductsStatusLogs::create([
                 'order_product_id' => $product->id,
                 'old_status_id' => $product->status_id,
                 'new_status_id' => $status_id,
