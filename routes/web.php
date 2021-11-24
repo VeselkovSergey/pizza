@@ -263,3 +263,12 @@ Route::get('/test-parse', function () {
 });
 
 Route::view('test-maps', 'debag.test');
+
+Route::get('/rebase-ing', function () {
+    $allIng = \App\Models\ProductModificationsIngredients::all();
+    foreach ($allIng as $ing) {
+        if ($ing->ingredient_amount > 0) {
+            dd($ing);
+        }
+    }
+});
