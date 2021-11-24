@@ -267,9 +267,10 @@ Route::view('test-maps', 'debag.test');
 Route::get('/rebase-ing', function () {
     $allIng = \App\Models\ProductModificationsIngredients::all();
     foreach ($allIng as $ing) {
-        if (!is_float($ing->ingredient_amount)) {
-            $ing->ingredient_amount = ($ing->ingredient_amount / 1000);
-            $ing->save();
-        }
+        var_dump($ing->ingredient_amount);
+//        if (!is_float($ing->ingredient_amount)) {
+//            $ing->ingredient_amount = ($ing->ingredient_amount / 1000);
+//            $ing->save();
+//        }
     }
 });
