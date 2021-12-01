@@ -62,7 +62,12 @@ header {
 }
 
 .product-content {
-    width: 50vw;
+    width: 25vw;
+    flex-direction: column;
+}
+
+.container-img-and-about-product, .container-modification-product {
+    width: 100%;
 }
 
 .container-product-img-and-description {
@@ -238,7 +243,7 @@ header {
     }
 
     .product-content {
-        width: 75vw;
+        width: 33vw;
     }
 }
 
@@ -266,6 +271,10 @@ header {
 
     .modification-button {
         font-size: 12px;
+    }
+
+    .product-content {
+        width: 50vw;
     }
 
 }
