@@ -63,6 +63,8 @@
 
         <main>@yield('content')</main>
 
+        <footer>@include('layouts.footer')</footer>
+
         <script>
             const auth = {{auth()->check() ? 'true' : 'false'}};
             const userPhone = "{{auth()->check() ? auth()->user()->phone : ''}}";
