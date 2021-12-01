@@ -365,3 +365,7 @@ header {
     font-family: 'Arkhip';
     font-weight: 600;
 }
+
+.container-ingredients {
+    font-weight: normal;
+}
