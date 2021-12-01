@@ -23,6 +23,11 @@
 
         }
 
+        .black-t {
+            background-color: black;
+            color: white;
+        }
+
     </style>
 
     <div class="flex-wrap">
@@ -31,7 +36,7 @@
 
             <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}">
 
-                <div class="m-10 flex-column p-5 border-radius-10 shadow p-10">
+                <div class="m-10 flex-column p-5 border-radius-10 shadow p-10 {{isset(request()->black) ? 'black-t' : ''}}">
 
                     <div class="container-product-img-and-description">
                         <div class="container-product-img mb-10">
