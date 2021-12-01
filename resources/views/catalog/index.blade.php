@@ -93,7 +93,7 @@
             let productTitle = allProducts['product-'+productId].title;
 
 {{--            let imgUrl = "{{url('img-pizza.jpeg')}}";--}}
-            let imgUrl = "{{url('pizza-blank.jpg')}}";
+            let imgUrl = "{{url('pizza-blank-1.jpg')}}";
 
             let productContent = document.createElement('div');
             productContent.className = 'flex-wrap product-content';
