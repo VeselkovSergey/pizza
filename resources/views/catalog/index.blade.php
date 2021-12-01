@@ -35,7 +35,8 @@
 
                     <div class="container-product-img-and-description">
                         <div class="container-product-img mb-10">
-                            <img src="{{url('img-pizza.jpeg')}}" class="w-100" alt="">
+{{--                            <img src="{{url('img-pizza.jpeg')}}" class="w-100" alt="">--}}
+                            <img src="{{url('pizza-blank.jpg')}}" class="w-100" alt="">
                         </div>
 
                         <div class="container-product-description p-10">
@@ -79,7 +80,8 @@
 
             let productTitle = allProducts['product-'+productId].title;
 
-            let imgUrl = "{{url('img-pizza.jpeg')}}";
+{{--            let imgUrl = "{{url('img-pizza.jpeg')}}";--}}
+            let imgUrl = "{{url('pizza-blank.jpg')}}";
 
             let productContent = document.createElement('div');
             productContent.className = 'flex-wrap product-content';
