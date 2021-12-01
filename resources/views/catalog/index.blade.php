@@ -36,7 +36,7 @@
                     <div class="container-product-img-and-description">
                         <div class="container-product-img mb-10">
 {{--                            <img src="{{url('img-pizza.jpeg')}}" class="w-100" alt="">--}}
-                            <img src="{{url('pizza-blank-2.jpg')}}" class="w-100" alt="">
+                            <img src="{{url('pizza-blank-3.jpg')}}" class="w-100" alt="">
                         </div>
 
                         <div class="container-product-description p-10">
