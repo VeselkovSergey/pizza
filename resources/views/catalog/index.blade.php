@@ -40,7 +40,7 @@
 
                         <div class="container-product-description p-10">
                             <div class="text-center mb-10">{{$product->title}}</div>
-                            <div>Описание</div>
+{{--                            <div>Описание</div>--}}
                         </div>
                     </div>
 
