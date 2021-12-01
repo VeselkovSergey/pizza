@@ -74,6 +74,10 @@ header {
     display: block;
 }
 
+.container-ingredients {
+    text-transform: lowercase;
+}
+
 /* модальное окно */
 .modal-window-component-container {
     position: fixed;

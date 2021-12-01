@@ -89,7 +89,7 @@
                                         '<div>' +
                                             '<img src="' + imgUrl + '" class="w-100" alt="">' +
                                         '</div>' +
-                                        '<p>Традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</p>' +
+                                        // '<p>Традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</p>' +
                                     '</div>' +
                                 '</div>' +
                                 '<div class="container-modification-product w-50">' +
@@ -179,7 +179,7 @@
                         Object.keys(ingredients).forEach(function (ingredientId) {
                             let ingredient = ingredients[ingredientId];
                             if (i === 0) {
-                                containerAllModifications += '<div class="p-5 flex-center"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">' + ingredient.title + '</label></div>';
+                                containerAllModifications += '<div class="p-5 flex-center"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">~ ' + ingredient.title + '</label></div>';
                             }
                         });
                         i++;
