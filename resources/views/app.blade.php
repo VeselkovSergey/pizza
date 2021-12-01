@@ -18,6 +18,8 @@
 
         <link href="{{asset('resources/scss/app.scss')}}" rel="stylesheet">
 
+        <link href="{{asset('fonts/fonts.css')}}" rel="stylesheet">
+
         @yield('css')
 
         <script src="{{ asset('resources/js/add.prototypes.js') }}"></script>
