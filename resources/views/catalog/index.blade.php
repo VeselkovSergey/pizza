@@ -27,6 +27,9 @@
 
     <div class="flex-wrap">
 
+        @php
+        $hj = 1;
+        @endphp
         @foreach($allProducts as $product)
 
             <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}">
@@ -36,7 +39,7 @@
                     <div class="container-product-img-and-description">
                         <div class="container-product-img mb-10">
 {{--                            <img src="{{url('img-pizza.jpeg')}}" class="w-100" alt="">--}}
-                            <img src="{{url('pizza-blank-3.jpg')}}" class="w-100" alt="">
+                            <img src="{{url('pizza-blank-'.$hj.'.jpg')}}" class="w-100" alt="">
                         </div>
 
                         <div class="container-product-description p-10">
@@ -53,6 +56,15 @@
                 </div>
 
             </div>
+
+            @php
+                if ($hj < 3) {
+                    $hj++;
+                } else {
+                    $hj = 1;
+                }
+            @endphp
+
 
         @endforeach
 
