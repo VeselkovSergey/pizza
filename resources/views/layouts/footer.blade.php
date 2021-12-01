@@ -1,4 +1,4 @@
-<div class="bg-violet flex-space-between py-10" style="background-color: #2e3192; justify-content: space-evenly;">
+<div class="bg-violet flex-space-between py-10" style="background-color: black; justify-content: space-evenly;">
 
     <div class="flex-center">
         <div class="mr-10">
