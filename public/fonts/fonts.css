@@ -167,7 +167,14 @@
 }
 
 * {
-    font-family: 'Visby CF';
-    font-weight: 500;
+    /*standard*/
+
+    /*font-family: 'Visby CF';*/
+    /*font-weight: 500;*/
+    /*font-style: normal;*/
+
+    /*semi bold*/
+    font-family: 'Visby CF Extra';
+    font-weight: 800;
     font-style: normal;
 }
