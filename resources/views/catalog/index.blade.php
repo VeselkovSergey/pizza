@@ -180,7 +180,7 @@
                         Object.keys(ingredients).forEach(function (ingredientId) {
                             let ingredient = ingredients[ingredientId];
                             if (i === 0) {
-                                containerAllModifications += '<div class="pl-5 flex-center"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">~ ' + ingredient.title + '</label></div>';
+                                containerAllModifications += '<div class="pl-5 flex-center ingredient"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">~ ' + ingredient.title + '</label></div>';
                             }
                         });
                         i++;
@@ -190,7 +190,7 @@
                 let ingredients = modification.ingredients;
                 Object.keys(ingredients).forEach(function (ingredientId) {
                     let ingredient = ingredients[ingredientId];
-                    containerAllModifications += '<div class="pl-5 flex-center"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">~ ' + ingredient.title + '</label></div>';
+                    containerAllModifications += '<div class="pl-5 flex-center ingredient"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">~ ' + ingredient.title + '</label></div>';
                 });
             }
             containerAllModifications += '</div>';
