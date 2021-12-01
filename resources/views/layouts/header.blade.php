@@ -29,7 +29,7 @@
 {{--</div>--}}
 <a class="flex-center m-a clear-a" href="{{route('home-page')}}">
     <div style="font-style: italic;font-weight: bold;font-size: large;">
-        БРОПИЦЦА
+        BROпицца
     </div>
 </a>
 
