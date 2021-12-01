@@ -190,7 +190,7 @@
                 let ingredients = modification.ingredients;
                 Object.keys(ingredients).forEach(function (ingredientId) {
                     let ingredient = ingredients[ingredientId];
-                    containerAllModifications += '<div class="p-5 flex-center"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">' + ingredient.title + '</label></div>';
+                    containerAllModifications += '<div class="pl-5 flex-center"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">~ ' + ingredient.title + '</label></div>';
                 });
             }
             containerAllModifications += '</div>';
