@@ -63,7 +63,9 @@
 
         <main>@yield('content')</main>
 
-        <footer>@include('layouts.footer')</footer>
+        @if(isset($footer) && $footer === true)
+            <footer>@include('layouts.footer')</footer>
+        @endif
 
         <script>
             const auth = {{auth()->check() ? 'true' : 'false'}};

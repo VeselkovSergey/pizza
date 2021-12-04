@@ -20,6 +20,7 @@ class CatalogController extends Controller
         $allProducts = $allProducts->GetAllProducts();
         return view('catalog.index', [
             'allProducts' => json_decode($allProducts),
+            'footer' => true,
         ]);
     }
 }
