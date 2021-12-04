@@ -108,7 +108,7 @@ class OrdersController extends Controller
 
     public static function AllOrders()
     {
-        return Orders::all();
+        return Orders::query()->orderBy('id', 'desk')->get();
     }
 
     public static function KitchenOrdersOnly()
