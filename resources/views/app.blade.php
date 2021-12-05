@@ -47,7 +47,7 @@
                 <div class="scroll-auto pr-25 h-100">
                     <div class="fast-menu-in-left-menu">
                         <div class="flex-column p-10">
-                            <div class="mb-10 {{$authCheck ? 'color-green' : ''}}" onclick="{{$actionConditionAuth}}">
+                            <div class="mb-10 {{$authCheck ? 'color-green' : 'color-black'}}" onclick="{{$actionConditionAuth}}">
                                 @if($authCheck)
                                     Профиль
                                 @else
