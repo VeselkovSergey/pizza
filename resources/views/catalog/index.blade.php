@@ -5,11 +5,13 @@
     <style>
 
         input[type="radio"]:checked.modification-input + label {
-            background-color: #FFFFFF;
+            /*background-color: #FFFFFF;*/
+            background-color: #010101;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
         }
         .container-modification {
-            background-color: rgb(243, 243, 247);
+            /*background-color: rgb(243, 243, 247);*/
+            background-color: #434343;
             padding: 5px;
             display: flex;
             justify-content: space-between;
@@ -36,7 +38,7 @@
 
             <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}">
 
-                <div class="m-10 flex-column p-5 border-radius-10 shadow p-10 {{isset(request()->black) ? 'black-t' : ''}}">
+                <div class="m-10 flex-column p-5 border-radius-10 border-orange p-10 {{isset(request()->black) ? 'black-t' : ''}}">
 
                     <div class="container-product-img-and-description">
                         <div class="container-product-img mb-10">
@@ -101,7 +103,7 @@
                                     '</div>' +
                                 '</div>' +
                                 '<div class="container-modification-product w-50">' +
-                                    '<div class="w-100 flex-column h-100" style="background: rgb(252, 252, 252);">' +
+                                    '<div class="w-100 flex-column h-100">' +
                                         '<div class="text-center text-up">'+productTitle+'</div>' +
                                         '<div class="container-ingredients text-down">' +
                                             IngredientsGenerator(productId) +

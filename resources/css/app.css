@@ -103,7 +103,7 @@ header {
     z-index: 1;
     position: relative;
     border-radius: 10px;
-    background-color: white;
+    /*background-color: white;*/
     padding: 25px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     margin-left: 10px;
@@ -116,6 +116,10 @@ header {
     right: 10px;
     cursor: pointer;
     display: flex;
+}
+
+.modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-close-button path {
+    fill: white;
 }
 
 .modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-content {
@@ -349,6 +353,12 @@ header {
     /*    width: calc(100vw - 50px);*/
     /*}*/
 
+    .button-basket {
+        position: absolute;
+        right: 10px;
+        bottom: calc(-75vh);
+    }
+
 }
 
 @font-face {
@@ -368,4 +378,8 @@ header {
 
 .ingredient label {
     font-weight: normal;
+}
+
+.modal-window-content-container {
+    background-color: #101010;
 }
