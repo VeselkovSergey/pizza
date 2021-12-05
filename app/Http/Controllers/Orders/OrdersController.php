@@ -79,14 +79,15 @@ class OrdersController extends Controller
         return ResultGenerate::Success('Заказ принят. Мы скоро свяжимся с вами.');
     }
 
-    private function SendTelegram($orderFullInformation) {
+    private function SendTelegram($orderFullInformation)
+    {
 
         $allProductsInOrder = $orderFullInformation->products;
         $clientInformation = $orderFullInformation->clientInformation;
 
         $products = '';
         foreach ($allProductsInOrder as $key => $product) {
-            $products .= $key + 1 . '. ' .$product->title . ' - ' . $product->amount . PHP_EOL;
+            $products .= $key + 1 . '. ' . $product->title . ' - ' . $product->amount . PHP_EOL;
         }
 
         $message = '<b>Клиент:</b>' . PHP_EOL;
@@ -133,7 +134,7 @@ class OrdersController extends Controller
 
     public static function SearchByPhone(string $phone)
     {
-        $user = User::where('phone', $phone)->first();
+        $user = User::where('phone', 'like', '%' . $phone . '%')->first();
         $orders = [];
         if ($user) {
             $orders = $user->Orders;
