@@ -27,6 +27,7 @@ main {
 
 .invalid-value {
     border-color: red !important;
+    border-width: 2px !important;
 }
 
 .product-window-shadow, .basket-window-shadow {
