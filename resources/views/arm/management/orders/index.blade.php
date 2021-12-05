@@ -40,7 +40,7 @@
         buttonSearchOrdersByPhone.addEventListener('input', (event) => {
             let field = event.target;
             let value = field.value;
-            if (value.length === 11) {
+            if (value.length > 9) {
                 SearchOrdersByPhone(value);
             } else {
                 foundOrdersContainer.hide();
