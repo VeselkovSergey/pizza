@@ -356,7 +356,7 @@ header {
     .button-basket {
         position: absolute;
         right: 10px;
-        bottom: calc(-75vh);
+        bottom: calc(-70vh);
     }
 
 }
