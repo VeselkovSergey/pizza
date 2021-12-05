@@ -382,4 +382,5 @@ header {
 
 .modal-window-content-container {
     background-color: #101010;
+    border: 1px solid #ff7300;
 }
