@@ -651,3 +651,19 @@
         opacity: 0;
     }
 }
+
+.bg-orange {
+    background-color: #ff7300;
+}
+
+.color-orange {
+    color: #ff7300;
+}
+
+.bg-black-custom {
+    background-color: #101010;
+}
+
+.color-black-custom {
+    color: #101010;
+}
