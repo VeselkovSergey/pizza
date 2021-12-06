@@ -637,7 +637,23 @@
     overflow: auto;
 }
 
+.scroll-y-auto {
+    overflow: auto;
+}
+
+.scroll-x-auto {
+    overflow: auto;
+}
+
 .scroll-off {
+    overflow: hidden;
+}
+
+.scroll-y-off {
+    overflow: hidden;
+}
+
+.scroll-x-off {
     overflow: hidden;
 }
 

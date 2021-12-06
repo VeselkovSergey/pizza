@@ -124,7 +124,8 @@ header {
 }
 
 .modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-content {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     max-height: 80vh;
 }
 
