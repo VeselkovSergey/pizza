@@ -21,11 +21,11 @@ class AuthController extends Controller
 
         $phone = $request->phone;
 
-        $ucaller = new Ucaller();
-        $initCall = $ucaller->InitCall($phone);
-        $code = $initCall['code'];
+//        $ucaller = new Ucaller();
+//        $initCall = $ucaller->InitCall($phone);
+//        $code = $initCall['code'];
 
-//        $code = '1111';
+        $code = '1111';
 
         session()->put('confirmationCode', $code);
         session()->put('clientPhone', $phone);
