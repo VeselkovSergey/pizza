@@ -779,7 +779,7 @@ function LoginWindow(callback) {
                                         if (PhoneValidation(phoneField.value) !== false) {
                                             phoneContainer.remove();
                                             confirmationContainer.show();
-                                            confirmationCodeInput.focus();
+                                            // confirmationCodeInput.focus();
                                         }
                                     }
                                 }
