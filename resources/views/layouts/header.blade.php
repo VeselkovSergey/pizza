@@ -71,5 +71,5 @@
     </div>
 </div>
 <div class="phone-container-header flex-center p-5">
-    <a class="color-black text-center" style="text-decoration: none;" href="tel:{{env('PHONE_COMPANY')}}">{{env('PHONE_COMPANY')}}</a>
+    <a class="color-black text-center color-white" style="text-decoration: none;" href="tel:{{env('PHONE_COMPANY')}}">{{env('PHONE_COMPANY')}}</a>
 </div>
