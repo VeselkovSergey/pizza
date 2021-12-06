@@ -3,15 +3,15 @@ body {
     margin: 0;
 }
 
-*, *:focus, *:hover {
-    outline: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
+/**, *:focus, *:hover {*/
+/*    outline: none;*/
+/*    -moz-user-select: none;*/
+/*    -o-user-select: none;*/
+/*    -khtml-user-select: none;*/
+/*    -webkit-user-select: none;*/
+/*    user-select: none;*/
+/*    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);*/
+/*}*/
 
 .clear-button {
     border: unset;
