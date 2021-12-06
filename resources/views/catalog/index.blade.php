@@ -53,14 +53,15 @@
                 <div class="w-100 ml-10" id="category-{{$product->categoryId}}">{{$product->categoryTitle}}</div>
             @endif
 
-            <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}">
+                @php($imgFile = (file_exists(public_path() . '/img/' . $product->id . '.jpg') ? 'img/' . $product->id . '.jpg' : 'img-pizza.jpeg'))
+
+                <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}" data-product-img="{{url($imgFile)}}">
 
                 <div class="m-10 flex-column p-5 border-radius-10 border-orange p-10 {{isset(request()->black) ? 'black-t' : ''}}">
 
                     <div class="container-product-img-and-description">
                         <div class="container-product-img mb-10">
-{{--                            <img src="{{url('img-pizza.jpeg')}}" class="w-100" alt="">--}}
-                            <img src="{{url((isset(request()->picture_id) ? 'pizza-blank-'.request()->picture_id : 'img-pizza' ).'.jpg')}}" class="w-100" alt="">
+                            <img src="{{url($imgFile)}}" class="w-100" alt="">
                         </div>
 
                         <div class="container-product-description p-10">
@@ -96,17 +97,17 @@
         document.body.querySelectorAll('.button-open-product').forEach((el) => {
             el.addEventListener('click', () => {
                 let productId = el.dataset.productId;
-                ProductWindowGenerator(productId);
+                let productImg = el.dataset.productImg;
+                ProductWindowGenerator(productId, productImg);
             });
         });
 
         let modificationSelected = null;
-        function ProductWindowGenerator(productId) {
+        function ProductWindowGenerator(productId, productImg) {
 
             let productTitle = allProducts['product-'+productId].title;
 
-{{--            let imgUrl = "{{url('img-pizza.jpeg')}}";--}}
-            let imgUrl = "{{url('pizza-blank-1.jpg')}}";
+            let imgUrl = productImg;
 
             let productContent = document.createElement('div');
             productContent.className = 'flex-wrap product-content';
