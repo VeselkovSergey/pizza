@@ -800,8 +800,8 @@ function LoginWindow(callback) {
                         attr: {
                             placeholder: '1234',
                             class: 'clear-input p-5 border-radius-5 border w-a text-center',
-                            maxlength: 4,
-                            type: 'tel'
+                            // maxlength: 4,
+                            // type: 'tel'
                         }
                     }),
                     CreateElement('div', {
