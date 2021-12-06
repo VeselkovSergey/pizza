@@ -179,7 +179,7 @@
         }
 
         function IngredientsGenerator(productId, modification) {
-            let containerAllModifications = '<div class="flex-wrap">';
+            let containerAllModifications = '<div class="flex-wrap-center">';
             if (modification === undefined) {
                 Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
                     let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
