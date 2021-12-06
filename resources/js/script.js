@@ -802,7 +802,6 @@ function LoginWindow(callback) {
                             class: 'clear-input p-5 border-radius-5 border w-a text-center',
                             maxlength: 4,
                             type: 'tel',
-                            // tabIndex: 0
                         }
                     }),
                     CreateElement('div', {
