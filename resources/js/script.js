@@ -777,7 +777,7 @@ function LoginWindow(callback) {
                                 events: {
                                     click: () => {
                                         if (PhoneValidation(phoneField.value) !== false) {
-                                            phoneContainer.hide();
+                                            phoneContainer.remove();
                                             confirmationContainer.show();
                                             confirmationCodeInput.focus();
                                         }
