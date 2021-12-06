@@ -1,7 +1,7 @@
 <div class="bg-violet flex-space-between py-10" style="background-color: black; justify-content: space-evenly;">
 
     <div class="flex-center">
-        <div class="mr-10">
+        <a href="https://vk.com/bropizza_dubna " class="mr-10">
             <svg width="32" height="32" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <style>.cls-vk-1 {
@@ -19,8 +19,8 @@
                           d="M9.62,19.77H17.3a.79.79,0,0,1,.74.51c.85,2.19,4.38,10.76,7.61,11.46,2.4,0,1.55-11.4-1.5-11.4-.8,0,1.42-1.42,1.57-1.48a16.38,16.38,0,0,1,8.66,0c1.53.64,1.79,2.43,1.83,3.95s-1.7,8,.59,8.7c3,.92,6.86-8.49,7.76-10.8a.79.79,0,0,1,.74-.5h8.55a.8.8,0,0,1,.74,1.11,74.74,74.74,0,0,1-6.31,11.52,1.59,1.59,0,0,0,.16,2C51,37.58,58,45.34,54,45.34H45.37a1.57,1.57,0,0,1-1.18-.53c-1.34-1.48-5.24-5.6-7-5.27-1.46.27-1.6,2.75-1.53,4.37a1.6,1.6,0,0,1-1.48,1.68c-1.53.09-3.62.13-3.81.12-6.1-.39-9.71-4.46-13.16-9A56.33,56.33,0,0,1,8.86,20.83.81.81,0,0,1,9.62,19.77Z"/>
                 </g>
             </svg>
-        </div>
-        <div>
+        </a>
+        <a href="https://www.instagram.com/bro_pizza_dubna">
             <svg width="32" height="32" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <defs>
                     <style>.cls-inst-1 {
@@ -51,7 +51,7 @@
                     <circle class="cls-inst-2" cx="45.6" cy="19.2" r="2.4"/>
                 </g>
             </svg>
-        </div>
+        </a>
     </div>
 
 

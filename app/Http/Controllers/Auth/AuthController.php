@@ -18,12 +18,15 @@ class AuthController extends Controller
 {
     public function PhoneValidation(Request $request)
     {
-//        $ucaller = new Ucaller();
-//        $initCall = $ucaller->InitCall($request->phone);
-//        $code = $initCall['code'];
 
         $phone = $request->phone;
+
+//        $ucaller = new Ucaller();
+//        $initCall = $ucaller->InitCall($phone);
+//        $code = $initCall['code'];
+
         $code = '1111';
+
         session()->put('confirmationCode', $code);
         session()->put('clientPhone', $phone);
         return ResultGenerate::Success('Введите последние 4 цифры входящего звонка');

@@ -15,13 +15,11 @@ use App\Http\Controllers;
 |
 */
 
-Route::get('/', function () {
-    return redirect('all-routes');
-//    return view('home.index')
-//        /*->middleware('permissions:home-page,index')
-//        ->name('home-page')*/
-//        ;
-})->name('home-page');
+//Route::get('/', function () {
+//    //return redirect('all-routes');
+//})->name('home-page');
+
+Route::get('/', [Controllers\Catalog\CatalogController::class, 'Index'])->name('home-page');
 
 Route::view('all-routes', 'debag.all-routes');
 

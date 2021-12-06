@@ -192,7 +192,7 @@
         }
 
         function IngredientsGenerator(productId, modification) {
-            let containerAllModifications = '<div class="flex-wrap">';
+            let containerAllModifications = '<div class="flex-wrap-center">';
             if (modification === undefined) {
                 Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
                     let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
@@ -203,7 +203,7 @@
                         Object.keys(ingredients).forEach(function (ingredientId) {
                             let ingredient = ingredients[ingredientId];
                             if (i === 0) {
-                                containerAllModifications += '<div class="pl-5 flex-center ingredient"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">~ ' + ingredient.title + '</label></div>';
+                                containerAllModifications += '<div class="pl-5 flex-center ingredient"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">' + ingredient.title + ', </label></div>';
                             }
                         });
                         i++;
@@ -213,7 +213,7 @@
                 let ingredients = modification.ingredients;
                 Object.keys(ingredients).forEach(function (ingredientId) {
                     let ingredient = ingredients[ingredientId];
-                    containerAllModifications += '<div class="pl-5 flex-center ingredient"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">~ ' + ingredient.title + '</label></div>';
+                    containerAllModifications += '<div class="pl-5 flex-center ingredient"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label for="' + ingredientId + '">' + ingredient.title + ', </label></div>';
                 });
             }
             containerAllModifications += '</div>';
