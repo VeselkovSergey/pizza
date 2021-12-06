@@ -19,10 +19,10 @@ use function GuzzleHttp\Promise\all;
 class ProductsController extends Controller
 {
 
-    public function GetAllProducts()
+    public function GetAllProducts($forceUpdate = false)
     {
         $allProductsJSON = Files::GetFile('allProduct');
-        if ($allProductsJSON !== false) {
+        if ($allProductsJSON !== false && $forceUpdate === false) {
             return $allProductsJSON->contentFile;
         } else {
             return self::UpdateFileAllProducts()->contentFile;
@@ -31,13 +31,15 @@ class ProductsController extends Controller
 
     public static function UpdateFileAllProducts()
     {
-        $allProductsDB = Products::all();
+        $allProductsDB = Products::query()->orderBy('category_id')->get();
         $allProducts = [];
         foreach ($allProductsDB as $product) {
 
             $allProducts['product-' . $product->id] = [
                 'id' => $product->id,
                 'title' => $product->title,
+                'categoryId' => $product->category_id,
+                'categoryTitle' => $product->Category->title,
                 'minimumPrice' => $product->MinimumPrice(),
                 'modifications' => [],
             ];

@@ -17,4 +17,9 @@ class Products extends BaseModel
     {
         return ProductModifications::where('product_id', $this->id)->orderBy('selling_price')->first()->selling_price;
     }
+
+    public function Category()
+    {
+        return $this->hasOne(Categories::class, 'id', 'category_id');
+    }
 }

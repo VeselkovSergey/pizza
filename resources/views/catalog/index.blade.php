@@ -32,9 +32,22 @@
 
     </style>
 
-    <div class="flex-wrap">
+{{--    <div class="pos-fix w-100 bg-black">--}}
+{{--        <div class="pos-abs top-0 w-100 p-5 bg-black">--}}
+{{--            @foreach($allCategory as $category)--}}
+{{--                <a class="clear-a color-orange" href="#category-{{$category->id}}">{{$category->title}}</a>--}}
+{{--            @endforeach--}}
+{{--        </div>--}}
+{{--    </div>--}}
+
+    <div class="flex-wrap pt-10">
 
         @foreach($allProducts as $product)
+
+            @if(!isset($category) || $product->categoryId !== $category)
+                @php($category = $product->categoryId)
+                <div class="w-100 ml-10" id="category-{{$product->categoryId}}">{{$product->categoryTitle}}</div>
+            @endif
 
             <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}">
 
