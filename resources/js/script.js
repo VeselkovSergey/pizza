@@ -508,7 +508,7 @@ function ProductsInBasketGenerationHTML() {
             let modificationHTML =
                 '<div class="container-product-in-basket w-100 flex-center-vertical">' +
                     '<div class="p-10 mr-a">' +
-                        '<div>' + product.title + '</div>' +
+                        '<div>' + product.categoryTitle + ': ' + product.title + '</div>' +
                         '<div>' + (modification.title !== 'Соло-продукт' ? modification.title : '') + '</div>' +
                         '<div>' + (modification.value !== 'Отсутствует' ? modification.value : '') + '</div>' +
                     '</div>' +
