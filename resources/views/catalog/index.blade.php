@@ -164,7 +164,7 @@
 
         let startSellingPriceModification = 0;
         function ModificationsGenerate(productId) {
-            let containerAllModifications = '<div>';
+            let containerAllModificationsTemp = '';
             let disableModificationContainer = false;
             Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
                 if (allProducts['product-'+productId]['modifications'][modificationTypeId] == 4) {
@@ -189,17 +189,19 @@
                         '<div class="text-center flex" style="' + buttonWidth + '">' +
                             '<input name="' + modificationTypeId + '" class="hide modification-input" id="' + modificationId + '" type="radio" ' + checkedInput + '/>' +
                             // '<label class="modification-button"data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.title + ' - ' + modification.value + '</label>' +
-                            '<label class="modification-button"data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.value + '</label>' +
+                            '<label class="modification-button" data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.value + '</label>' +
                         '</div>';
                     modificationTypeHTML += modificationIdHTML;
                     i++;
                 });
                 modificationTypeHTML += '</div>';
-                containerAllModifications += modificationTypeHTML;
+                containerAllModificationsTemp += modificationTypeHTML;
             });
-            containerAllModifications += '</div>';
+            let containerAllModifications
             if (disableModificationContainer) {
-                containerAllModifications.hide();
+                containerAllModifications = '<div class="hide">'+ containerAllModificationsTemp +'</div>';
+            } else {
+                containerAllModifications = '<div>'+ containerAllModificationsTemp +'</div>';
             }
             return containerAllModifications;
         }
