@@ -165,7 +165,12 @@
         let startSellingPriceModification = 0;
         function ModificationsGenerate(productId) {
             let containerAllModifications = '<div>';
+            let disableModificationContainer = false;
             Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
+                if (allProducts['product-'+productId]['modifications'][modificationTypeId] == 4) {
+                    disableModificationContainer = true;
+                }
+                console.log(allProducts['product-'+productId]['modifications'][modificationTypeId])
                 let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
                 let modificationTypeHTML = '<div class="container-modification">';
                 let i = 0;
@@ -193,6 +198,9 @@
                 containerAllModifications += modificationTypeHTML;
             });
             containerAllModifications += '</div>';
+            if (disableModificationContainer) {
+                containerAllModifications.hide();
+            }
             return containerAllModifications;
         }
 
