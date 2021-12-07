@@ -39,6 +39,7 @@ main {
     border: 1px solid #cbcdd1;
     background-color: #FFFFFF;
     width: calc(100% - 2px); /* - border */
+    color: black;
 }
 
 .suggestion-item:hover {
