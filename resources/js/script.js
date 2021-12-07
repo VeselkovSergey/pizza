@@ -328,10 +328,62 @@ function DeleteAllProductsInBasket() {
 
 function PriceSumProductsInBasket() {
     let priceSum = 0;
+    let sumIdentModifications = {};
     let basket = JSON.parse(localStorage.getItem('basket'));
+    let sumAllDiscountProduct = 0;
     Object.keys(basket).forEach((key) => {
+        let modificationTypeId = basket[key].data.modification.modificationTypeId;
+
+        if (basket[key].data.modification.modificationTypeDiscountPrice !== false) {
+            if (!!!sumIdentModifications[modificationTypeId]) {
+                sumIdentModifications[modificationTypeId] = {
+                    count: 0,
+                    maxPrice: basket[key].data.modification.sellingPrice,
+                    minPrice: basket[key].data.modification.sellingPrice,
+                    discountPrice: basket[key].data.modification.modificationTypeDiscountPrice,
+                };
+            }
+
+            let oldCount = sumIdentModifications[modificationTypeId]['count'];
+            sumIdentModifications[modificationTypeId]['count'] = oldCount + basket[key].amount;
+
+            let maxPrice = sumIdentModifications[modificationTypeId]['maxPrice'] > basket[key].data.modification.sellingPrice
+                ? sumIdentModifications[modificationTypeId]['maxPrice']
+                : basket[key].data.modification.sellingPrice;
+
+            let minPrice = sumIdentModifications[modificationTypeId]['minPrice'] < basket[key].data.modification.sellingPrice
+                ? sumIdentModifications[modificationTypeId]['minPrice']
+                : basket[key].data.modification.sellingPrice;
+
+            sumIdentModifications[modificationTypeId]['maxPrice'] = maxPrice;
+            sumIdentModifications[modificationTypeId]['minPrice'] = minPrice;
+            sumAllDiscountProduct += (basket[key].data.modification.sellingPrice * basket[key].amount);
+        }
+
         priceSum += (basket[key].data.modification.sellingPrice * basket[key].amount);
     });
+
+    console.log(sumIdentModifications);
+
+    let sumDiscount = 0;
+    Object.keys(sumIdentModifications).forEach((key) => {
+        let count = sumIdentModifications[key]['count'];
+        let discountPrice = sumIdentModifications[key]['discountPrice'];
+        let maxPrice = sumIdentModifications[key]['maxPrice'];
+
+        if (count === 1) {
+            sumDiscount += parseInt(maxPrice);
+        } else if (count % 2 === 0) {
+            sumDiscount += (count / 2) * parseInt(discountPrice);
+        } else if ((count - 1) % 2 === 0) {
+            sumDiscount += ((count - 1) / 2) * parseInt(discountPrice);
+            sumDiscount += parseInt(maxPrice);
+        }
+
+    });
+
+    priceSum = priceSum - sumAllDiscountProduct + sumDiscount;
+
     return priceSum;
 }
 
@@ -479,6 +531,7 @@ function CreateOrder() {
     let data = {
         basket: JSON.stringify(GetAllProductsInBasket()),
         clientInformation: JSON.stringify(ObjectClientInformation),
+        orderSum: PriceSumProductsInBasket(),
     };
 
     Ajax(routeOrderCreate, 'POST', data).then((response) => {
