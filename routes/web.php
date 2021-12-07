@@ -153,6 +153,13 @@ Route::get('/test-ucaller', function () {
 //    dd($balance, $info, $initCall);
 });
 
+Route::get('/ucaller-balance', function () {
+//    return;
+    $ucaller = new App\Services\Ucaller\Ucaller();
+    $balance = $ucaller->GetBalance();
+    dd($balance);
+});
+
 Route::get('/test-bot', function () {
 //    return ;
 //    $message = 'Приветствуем. Вы сможете получать уведомления о статусе вашего заказа в этом боте. Осталось только поделиться номером телефона для синхронизации ваших заказов' . PHP_EOL;
