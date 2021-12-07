@@ -26,10 +26,18 @@ class OrdersController extends Controller
         $basket = json_decode($request->basket);
         $clientInformation = json_decode($request->clientInformation);
         $orderSumFront = $request->orderSum;
-        $clientInformation->clientPhone = auth()->user()->phone;
+        $clientInformation->clientPhone =  (in_array(auth()->user()->id, [5])) ? $clientInformation->clientPhone : auth()->user()->phone;
+
+        $clientInformation->clientPhone = preg_replace("/[^0-9]/", '', $clientInformation->clientPhone);
+
+        $user = User::where('phone', $clientInformation->clientPhone)->first();
+
+        if (!$user) {
+            $user = AuthController::FastRegistrationUserByPhone($clientInformation->clientPhone);
+        }
 
         $newOrder = Orders::create([
-            'user_id' => auth()->user()->id,
+            'user_id' => $user->id,
             'status_id' => Orders::STATUS_TEXT['clientCreateOrder'],
             'client_raw_data' => json_encode($clientInformation),
             'products_raw_data' => json_encode($basket),
@@ -79,7 +87,7 @@ class OrdersController extends Controller
 
         $this->SendTelegram($orderFullInformation);
 
-        AuthController::UpdateUserName(auth()->user(), $clientInformation->clientName);
+        AuthController::UpdateUserName($user, $clientInformation->clientName);
 
         return ResultGenerate::Success('Заказ принят. Мы скоро свяжимся с вами.');
     }

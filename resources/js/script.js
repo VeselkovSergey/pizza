@@ -590,6 +590,12 @@ let lastClientAddressDelivery = localStorage.getItem('lastClientAddressDelivery'
 
 function OrderInfoGenerationHTML() {
     let countProductsInBasket = CountProductsInBasket();
+    let phoneInput = admin ?
+        '<div class="w-100 flex-wrap mt-10">' +
+            '<label for="">Номер телефона</label>' +
+            '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="">' +
+        '</div>' : '';
+
     if (countProductsInBasket !== 0) {
         return  '<div class="client-information w-100">' +
                     '<div>Оформление заказа</div>' +
@@ -597,10 +603,7 @@ function OrderInfoGenerationHTML() {
                         '<label for="">Имя</label>' +
                         '<input name="clientName" class="need-validate last-data w-100" type="text" value="' + lastClientName + '">' +
                     '</div>' +
-                    // '<div class="w-100 flex-wrap mt-10 hide">' +
-                    //     '<label for="">Номер телефона</label>' +
-                    //     '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text"  readonly value="' + userPhone + '">' +
-                    // '</div>' +
+                        phoneInput +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Адрес для доставки (улица, дом, кв.)</label>' +
                         '<input name="clientAddressDelivery" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '">' +

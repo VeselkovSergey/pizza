@@ -59,6 +59,7 @@ class AuthController extends Controller
 
     public static function FastRegistrationUserByPhone($phone)
     {
+        $phone = preg_replace("/[^0-9]/", '', $phone);
         $randomPassword = Str::random();
         return User::create([
             'name' => 'Новый пользователь',
