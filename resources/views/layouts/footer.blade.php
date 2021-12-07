@@ -1,6 +1,6 @@
-<div class="bg-violet flex-space-between py-10" style="background-color: black; justify-content: space-evenly;">
+<div class="bg-violet flex-space-between py-10 footer-container" style="background-color: black; justify-content: space-evenly;">
 
-    <div class="flex-center">
+    <div class="flex-center social-link-container">
         <a href="https://vk.com/bropizza_dubna " class="mr-10">
             <svg width="32" height="32" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -55,11 +55,11 @@
     </div>
 
 
-    <div class="color-white">
+    <div class="color-white text-center title-app">
         © 2021 BRO ПИЦЦА CORP.
     </div>
 
-    <div class="flex-center">
+    <div class="flex-center partner-container">
         <a target="_blank" href="https://ucaller.ru"><img height="32" src="https://static.ucaller.ru/logo/gray.png" alt=""></a>
         <div>
             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="32" viewBox="0 0 48 32" fill="none">

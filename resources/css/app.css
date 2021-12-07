@@ -361,6 +361,24 @@ header {
         bottom: calc(-70vh);
     }
 
+    .footer-container {
+        flex-wrap: wrap;
+    }
+
+    .title-app {
+        order: 1;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .social-link-container {
+        order: 2;
+    }
+
+    .partner-container {
+        order: 3;
+    }
+
 }
 
 @font-face {
