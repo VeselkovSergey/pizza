@@ -61,4 +61,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Orders::class, 'user_id', 'id');
     }
+
+    public function IsAdmin()
+    {
+        if (auth()->check() && auth()->user()->role_id === 999) {
+            return true;
+        }
+        return false;
+    }
 }

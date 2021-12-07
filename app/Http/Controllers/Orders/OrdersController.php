@@ -26,7 +26,7 @@ class OrdersController extends Controller
         $basket = json_decode($request->basket);
         $clientInformation = json_decode($request->clientInformation);
         $orderSumFront = $request->orderSum;
-        $clientInformation->clientPhone =  (in_array(auth()->user()->id, [5])) ? $clientInformation->clientPhone : auth()->user()->phone;
+        $clientInformation->clientPhone = auth()->user()->IsAdmin() ? $clientInformation->clientPhone : auth()->user()->phone;
 
         $clientInformation->clientPhone = preg_replace("/[^0-9]/", '', $clientInformation->clientPhone);
 
