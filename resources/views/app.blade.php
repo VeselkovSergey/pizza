@@ -69,7 +69,7 @@
 
         <script>
             const auth = {{auth()->check() ? 'true' : 'false'}};
-            const admin = {{auth()->user()->IsAdmin() ? 'true' : 'false'}};
+            const admin = {{(auth()->check() && auth()->user()->IsAdmin()) ? 'true' : 'false'}};
             const userPhone = "{{auth()->check() ? auth()->user()->phone : ''}}";
 
             const routeOrderCreate = "{{route('order-create')}}";
