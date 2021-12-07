@@ -60,7 +60,7 @@ class ProductsController extends Controller
                     'title' => $modification->Modification->title,
                     'value' => $modification->Modification->value,
                     'modificationTypeId' => $modification->Modification->id,
-                    'modificationTypeDiscountPrice' => self::DiscountSale($modification->Modification->id),
+                    'modificationTypeDiscountPrice' => !in_array($product->id, [24, 31, 32]) ? self::DiscountSale($modification->Modification->id) : false,
                     'sellingPrice' => $modification->selling_price,
                     'modificationTypeCount' => sizeof($product->Modifications),
                     'ingredients' => [],
