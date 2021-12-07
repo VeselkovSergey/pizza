@@ -167,6 +167,7 @@
             let containerAllModificationsTemp = '';
             let disableModificationContainer = false;
             Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
+                console.log(allProducts['product-'+productId]['modifications'][modificationTypeId])
                 if (allProducts['product-'+productId]['modifications'][modificationTypeId] == 4) {
                     disableModificationContainer = true;
                 }
@@ -197,11 +198,12 @@
                 modificationTypeHTML += '</div>';
                 containerAllModificationsTemp += modificationTypeHTML;
             });
-            let containerAllModifications
+            let containerAllModifications;
+            console.log(disableModificationContainer)
             if (disableModificationContainer) {
                 containerAllModifications = '<div class="hide">'+ containerAllModificationsTemp +'</div>';
             } else {
-                containerAllModifications = '<div class="hide">'+ containerAllModificationsTemp +'</div>';
+                containerAllModifications = '<div>'+ containerAllModificationsTemp +'</div>';
             }
             return containerAllModifications;
         }
