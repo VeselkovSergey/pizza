@@ -201,7 +201,7 @@
             if (disableModificationContainer) {
                 containerAllModifications = '<div class="hide">'+ containerAllModificationsTemp +'</div>';
             } else {
-                containerAllModifications = '<div>'+ containerAllModificationsTemp +'</div>';
+                containerAllModifications = '<div class="hide">'+ containerAllModificationsTemp +'</div>';
             }
             return containerAllModifications;
         }
