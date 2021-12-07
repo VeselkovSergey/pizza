@@ -16,7 +16,7 @@ class ManagerARMController extends Controller
 
     public function Orders()
     {
-        $orders = OrdersController::AllOrders();
+        $orders = OrdersController::TodayOrders();
         return view('arm.management.orders.index', [
             'orders' => $orders
         ]);

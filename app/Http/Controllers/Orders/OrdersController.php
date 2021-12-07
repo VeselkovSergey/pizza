@@ -118,6 +118,12 @@ class OrdersController extends Controller
         return Orders::query()->orderBy('id', 'desc')->get();
     }
 
+    public static function TodayOrders()
+    {
+        $today = date('Y-m-d 00:00:00', time());
+        return Orders::query()->where('created_at', '>=', $today)->orderBy('id', 'desc')->get();
+    }
+
     public static function KitchenOrdersOnly()
     {
         return Orders::where('status_id', Orders::STATUS_TEXT['kitchen'])->get();
