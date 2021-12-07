@@ -363,8 +363,6 @@ function PriceSumProductsInBasket() {
         priceSum += (basket[key].data.modification.sellingPrice * basket[key].amount);
     });
 
-    console.log(sumIdentModifications);
-
     let sumDiscount = 0;
     Object.keys(sumIdentModifications).forEach((key) => {
         let count = sumIdentModifications[key]['count'];
