@@ -509,8 +509,8 @@ function ProductsInBasketGenerationHTML() {
                 '<div class="container-product-in-basket w-100 flex-center-vertical">' +
                     '<div class="p-10 mr-a">' +
                         '<div>' + product.title + '</div>' +
-                        '<div>' + modification.title + '</div>' +
-                        '<div>' + modification.value + '</div>' +
+                        '<div>' + (modification.title !== 'Соло-продукт' ? modification.title : '') + '</div>' +
+                        '<div>' + (modification.value !== 'Отсутствует' ? modification.value : '') + '</div>' +
                     '</div>' +
                     '<div class="flex-column-center">' +
                         '<div class="buttons-edit-amount-product border-radius-25 flex-center" style="background-color: rgb(243, 243, 247);">' +
