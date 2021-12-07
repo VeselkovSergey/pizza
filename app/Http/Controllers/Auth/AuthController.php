@@ -67,4 +67,10 @@ class AuthController extends Controller
             'password' => $randomPassword,
         ]);
     }
+
+    public static function UpdateUserName(User $user, string $newName)
+    {
+        $user->name = $newName;
+        $user->save();
+    }
 }

@@ -79,6 +79,8 @@ class OrdersController extends Controller
 
         $this->SendTelegram($orderFullInformation);
 
+        AuthController::UpdateUserName(auth()->user(), $clientInformation->clientName);
+
         return ResultGenerate::Success('Заказ принят. Мы скоро свяжимся с вами.');
     }
 
