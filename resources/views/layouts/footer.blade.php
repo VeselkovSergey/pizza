@@ -60,7 +60,7 @@
     </div>
 
     <div class="flex-center">
-        <a target="https://ucaller.ru"><img height="32" src="https://static.ucaller.ru/logo/gray.png" alt=""></a>
+        <a target="_blank" href="https://ucaller.ru"><img height="32" src="https://static.ucaller.ru/logo/gray.png" alt=""></a>
         <div>
             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="32" viewBox="0 0 48 32" fill="none">
                 <g opacity="0.75">
