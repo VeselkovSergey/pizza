@@ -54,7 +54,7 @@
                                     Вход
                                 @endif
                             </div>
-                            <a class="color-black text-center" style="text-decoration: none;" href="tel:{{env('PHONE_COMPANY')}}">{{env('PHONE_COMPANY')}}</a>
+                            <a class="color-black text-center" style="text-decoration: none;" href="tel:+7(926)585-36-21">+7(926)585-36-21</a>
                         </div>
                     </div>
                 </div>

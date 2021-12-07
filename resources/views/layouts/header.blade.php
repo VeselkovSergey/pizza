@@ -71,5 +71,5 @@
     </div>
 </div>
 <div class="phone-container-header flex-center p-5">
-    <a class="text-center color-white" style="text-decoration: none;" href="tel:{{env('PHONE_COMPANY')}}">{{env('PHONE_COMPANY')}}</a>
+    <a class="text-center color-white" style="text-decoration: none;" href="tel:+7(926)585-36-21">+7(926)585-36-21</a>
 </div>
