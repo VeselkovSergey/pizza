@@ -167,10 +167,6 @@
             let containerAllModificationsTemp = '';
             let disableModificationContainer = false;
             Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
-                if (allProducts['product-'+productId]['modifications'][modificationTypeId]['value'] === 'Отсутствует') {
-                    disableModificationContainer = true;
-                }
-                console.log(allProducts['product-'+productId]['modifications'][modificationTypeId])
                 let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
                 let modificationTypeHTML = '<div class="container-modification">';
                 let i = 0;
@@ -184,6 +180,11 @@
                             modification: modificationType[modificationId],
                         }
                     }
+
+                    if (modification.value === 'Отсутствует') {
+                        disableModificationContainer = true;
+                    }
+
                     let buttonWidth = 'width:' + (100 / modification.modificationTypeCount) + '%;';
                     let modificationIdHTML =
                         '<div class="text-center flex" style="' + buttonWidth + '">' +
