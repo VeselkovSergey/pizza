@@ -78,6 +78,8 @@
             const routePhoneValidation = "{{route('phone-validation')}}";
             const routeCheckConfirmationCode = "{{route('check-confirmation-code')}}";
             const routeLogout = "{{route('logout')}}";
+
+            const routeManagerArmCheckOrderStatusChange = "{{route('manager-arm-check-order-status-change')}}";
         </script>
 
         <script src="{{ asset('resources/js/script.js') }}"></script>

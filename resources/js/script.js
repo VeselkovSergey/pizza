@@ -992,4 +992,53 @@ if (mainMenuCloseButton) {
     });
 }
 
+ManagerArmCheckOrderStatusChange();
+function ManagerArmCheckOrderStatusChange() {
+    if (admin === false) {
+        return;
+    }
+    Ajax(routeManagerArmCheckOrderStatusChange, 'POST', {orderStatuses: JSON.stringify(localStorage.getItem('orderStatuses'))}).then((response) => {
+        if (response.status === true) {
+
+            let responseOrderStatuses = response.result;
+            let requestOrderStatuses = JSON.parse(localStorage.getItem('orderStatuses'));
+            let newOrderStatuses = {};
+            let changedOrderStatus = {};
+            Object.keys(responseOrderStatuses).forEach((key) => {
+
+                let responseOrders = responseOrderStatuses[key];
+
+                Object.keys(requestOrderStatuses).forEach((key) => {
+
+                    let requestOrders = requestOrderStatuses[key];
+
+                    if (responseOrders.orderId === requestOrders.orderId) {
+                        if (responseOrders.newStatus !== requestOrders.oldStatus) {    // заменить === на !===
+                            changedOrderStatus[requestOrders.orderId] = responseOrders.newStatus;
+                        }
+                        newOrderStatuses[requestOrders.orderId] = {
+                            orderId: responseOrders.orderId,
+                            oldStatus: responseOrders.newStatus,
+                        };
+                    }
+
+                });
+
+            });
+
+            localStorage.setItem('newOrderStatuses', JSON.stringify(newOrderStatuses));
+
+            let amountAlarmItem = document.body.querySelector('.amount-alarm-item');
+            let alarmContainer = document.body.querySelector('.alarm');
+            amountAlarmItem.innerHTML = Object.keys(changedOrderStatus).length;
+            if (Object.keys(changedOrderStatus).length > 0) {
+                alarmContainer.classList.add('motion');
+            } else {
+                alarmContainer.classList.remove('motion');
+            }
+        }
+        setTimeout(ManagerArmCheckOrderStatusChange, 10000);
+    });
+}
+
 

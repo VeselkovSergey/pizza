@@ -95,6 +95,20 @@
 
         ToggleShow();
 
+        let orderStatuses = JSON.parse(localStorage.getItem('orderStatuses'));
+        const orderId = {{$order->id}};
+        const orderStatus = {{$order->status_id}};
+
+        Object.keys(orderStatuses).forEach((key) => {
+            let order = orderStatuses[key];
+            if (order.orderId === orderId) {
+                orderStatuses[key].oldStatus = orderStatus;
+            }
+        });
+
+        localStorage.setItem('orderStatuses', JSON.stringify(orderStatuses));
+
+
     </script>
 
 @stop

@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers\ARM;
 
+use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Orders\OrdersController;
 use App\Models\Orders;
@@ -17,6 +18,7 @@ class ManagerARMController extends Controller
     public function Orders()
     {
         $orders = OrdersController::TodayOrders();
+//        $orders = OrdersController::AllOrders();
         return view('arm.management.orders.index', [
             'orders' => $orders
         ]);
@@ -93,5 +95,23 @@ class ManagerARMController extends Controller
         $orderId = request()->orderId;
         $order = OrdersController::Order($orderId);
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['delivered']);
+    }
+
+    public function CheckOrderStatusChange()
+    {
+        $orderStatuses = request()->post('orderStatuses');
+        $orderStatuses = json_decode(json_decode($orderStatuses));
+        if (empty($orderStatuses)) {
+            return ResultGenerate::Error();
+        }
+        $orders = new Orders();
+        $orders = $orders->query()->select(['id as orderId', 'status_id as newStatus']);
+        $orders = $orders->whereNotIn('status_id', [8, 9]);
+        foreach ($orderStatuses as $orderStatus) {
+            $orders = $orders->orWhere('id', $orderStatus->orderId);
+            $orders = $orders->where('status_id', '!=', $orderStatus->oldStatus);  #todo изменить = на !=
+        }
+
+        return ResultGenerate::Success('', $orders->get());
     }
 }

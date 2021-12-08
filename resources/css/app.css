@@ -405,3 +405,16 @@ header {
     background-color: #101010;
     border: 1px solid #ff7300;
 }
+
+.motion {
+    animation: motion-animation 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes motion-animation {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.5);
+    }
+}
