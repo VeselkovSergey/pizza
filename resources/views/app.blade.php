@@ -8,8 +8,10 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         @yield('meta')
 
-        <title>{{ isset($title_page) ? $title_page : env('APP_NAME') }}</title>
-
+{{--        <title>{{ isset($title_page) ? $title_page : env('APP_NAME') }}</title>--}}
+        <title>Пицца Дубна. БроПицца!</title>
+        <meta name="description" content="Привет БРО! Говорят в Дубне давненько никто не делал вкусную пиццу. Этому городу определенно нужен был спасатель! Классно что в Дубне открылись мы (БРОпицца)! Теперь вкусная пицца будет у каждого на столе!">
+        <meta name="keywords" content="Пицца, Дубна, Бропицца, вкусная пицца, пицца Дубна, новая пиццерия Дубна">
         <link href="{{asset('resources/css/reset.css')}}" rel="stylesheet">
         <link href="{{asset('resources/css/helpers.css')}}" rel="stylesheet">
         <link href="{{asset('resources/css/loaders.css')}}" rel="stylesheet">
