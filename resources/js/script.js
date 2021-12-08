@@ -617,7 +617,7 @@ function OrderInfoGenerationHTML() {
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Комментарий</label>' +
-                        '<textarea name="clientComment" class="w-100" placeholder="Особые пожелания, например если нужна сдача"></textarea>' +
+                        '<textarea name="clientComment" class="w-100" placeholder="Особые пожелания, например если нужна сдача, подъезд, код-домофона"></textarea>' +
                     '</div>' +
                     // '<div class="w-100 flex-wrap mt-10">' +
                     //     '<label for="">Промокод</label>' +
