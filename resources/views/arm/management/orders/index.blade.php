@@ -18,8 +18,12 @@
         </div>
         <div class="orders-container">
             @foreach($orders as $order)
-                <a href="{{route('manager-arm-order-page', $order->id)}}" class="order block clear-a border p-10 m-5 order-status-{{$order->status_id}}">
+                @php($clientData = json_decode($order->client_raw_data))
+                <a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}" class="order block clear-a border p-10 m-5 order-status-{{$order->status_id}}">
                     <div>{{\App\Models\Orders::STATUS[$order->status_id]}}</div>
+                    <div>Имя: {{$clientData->clientName}}</div>
+                    <div>Номер: {{$clientData->clientPhone}}</div>
+                    <div>Адрес: {{$clientData->clientAddressDelivery}}</div>
                     <div>{{$order->created_at}}</div>
                 </a>
             @endforeach
