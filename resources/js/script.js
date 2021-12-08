@@ -610,7 +610,7 @@ function OrderInfoGenerationHTML() {
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Комментарий</label>' +
-                        '<textarea name="clientComment" class="w-100"></textarea>' +
+                        '<textarea name="clientComment" class="w-100" placeholder="Особые пожелания, например если нужна сдача"></textarea>' +
                     '</div>' +
                     // '<div class="w-100 flex-wrap mt-10">' +
                     //     '<label for="">Промокод</label>' +
@@ -622,7 +622,7 @@ function OrderInfoGenerationHTML() {
                         '<div class="flex w-100"">' +
                             '<div class="flex">' +
                                 '<input checked name="typePayment" type="radio">' +
-                                '<label for="">Карта</label>' +
+                                '<label for="">Карта (перевод)</label>' +
                             '</div>' +
                             '<div class="flex ml-25">' +
                                 '<input name="typePayment" type="radio">' +
@@ -630,7 +630,7 @@ function OrderInfoGenerationHTML() {
                             '</div>' +
                         '</div>' +
                     '</div>' +
-                    '<div class="text-center mt-5">Бесплатная доставка от 500 рублей иначе 50 рублей по городу</div>' +
+                    '<div class="text-center mt-10">Бесплатная доставка от 500 рублей иначе 50 рублей по городу</div>' +
                     '<div class="order-create w-100 flex-center mt-25"><button class="cp button-put-in-basket btn first mt-25">' + (auth ? 'Оформить заказ' : 'Авторизоваться') + '</button></div>' +
                 '</div>';
     } else {
