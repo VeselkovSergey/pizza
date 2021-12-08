@@ -18,14 +18,22 @@ class AuthController extends Controller
 {
     public function PhoneValidation(Request $request)
     {
-
         $phone = $request->phone;
 
-        $ucaller = new Ucaller();
-        $initCall = $ucaller->InitCall($phone);
-        $code = $initCall['code'];
-
-//        $code = '1111';
+        if (in_array($phone, [
+            '79035023983',
+            '79151640548',
+            '79309372099',
+            '79017316362',
+            '79152370622',
+            '79125453311',
+        ])) {
+            $code = '1111';
+        } else {
+            $ucaller = new Ucaller();
+            $initCall = $ucaller->InitCall($phone);
+            $code = $initCall['code'];
+        }
 
         session()->put('confirmationCode', $code);
         session()->put('clientPhone', $phone);
