@@ -29,11 +29,13 @@ class ManagerARMController extends Controller
         $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
         $orderStatuses = OrdersController::OrderStatuses($order);
         $clientInfo = json_decode($order->client_raw_data);
+        $rawData = json_decode($order->all_information_raw_data);
         return view('arm.management.orders.order', [
             'order' => $order,
             'orderStatuses' => $orderStatuses,
             'productsModificationsInOrder' => $productsModificationsInOrder,
             'clientInfo' => $clientInfo,
+            'rawData' => $rawData,
         ]);
     }
 

@@ -19,8 +19,8 @@
                     <div>Кол-во: {{$productModificationInOrder->product_modification_amount}}</div>
 
                     <div class="bg-white color-black mt-10 mb-5 p-10">
-                        <div>Изменения статуса:</div>
-                        <div class="ml-10">
+                        <div class="toggle-button cp" data-toogle="status-log-container">Изменения статуса:</div>
+                        <div class="ml-10 status-log-container">
                             @foreach($productModificationInOrder->Statusses as $orderProductStatus)
                                 <div class="p-5 m-5">{{$orderProductStatus->created_at}}
                                     <span class="p-5 product-in-order-status-{{$orderProductStatus->old_status_id}}">{{\App\Models\ProductsModificationsInOrders::STATUS[$orderProductStatus->old_status_id]}}</span>
@@ -87,6 +87,8 @@
                 document.body.querySelector('button.status-is-cooked').show()
             }
         }
+
+        ToggleShow();
 
     </script>
 

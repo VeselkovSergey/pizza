@@ -40,8 +40,8 @@
         <div class="mb-10 p-5 order-status-{{$order->status_id}}">Заказ {{$order->created_at}} {{\App\Models\Orders::STATUS[$order->status_id]}}</div>
 
         <div>
-            <div>Изменения статуса:</div>
-            <div class="ml-10">
+            <div class="toggle-button cp" data-toogle="status-log-container">Изменения статуса:</div>
+            <div class="ml-10 status-log-container">
                 @foreach($orderStatuses as $orderStatus)
                     <div class="p-5 m-5">{{$orderStatus->created_at}}
                         <span class="p-5 order-status-{{$orderStatus->old_status_id}}">{{\App\Models\Orders::STATUS[$orderStatus->old_status_id]}}</span>
@@ -59,6 +59,7 @@
                 <div class="ml-10">
                     <div>Имя: {{$clientInfo->clientName}}</div>
                     <div>Номер телефона: {{$clientInfo->clientPhone}}</div>
+                    <div>Сумма к оплате: {{$rawData->orderSum}} ₽</div>
                     <div>Оплата: {{$clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные'}}</div>
                     <div>Адрес доставки: {{$clientInfo->clientAddressDelivery}}</div>
                     <div>Комментарий: {{$clientInfo->clientComment}}</div>
@@ -90,6 +91,9 @@
                 });
             });
         });
+
+        ToggleShow();
+
     </script>
 
 @stop

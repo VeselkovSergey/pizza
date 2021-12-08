@@ -60,3 +60,15 @@ function CreateElement(tag, params, parent) {
     //     }
     // }, containerAdditionalAnswer);
 }
+
+function ToggleShow() {
+    let allToggleButtons = document.body.querySelectorAll('.toggle-button');
+    allToggleButtons.forEach((toggleButton) => {
+        let toggleContainerSelector = toggleButton.dataset.toogle;
+        let toggleContainer = document.body.querySelector('.' + toggleContainerSelector);
+        toggleContainer.hide();
+        toggleButton.addEventListener('click', () => {
+            toggleContainer.showToggle();
+        });
+    });
+}
