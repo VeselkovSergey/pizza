@@ -629,7 +629,8 @@ function OrderInfoGenerationHTML() {
                                 '<label for="">Наличные</label>' +
                             '</div>' +
                         '</div>' +
-                        '</div>' +
+                    '</div>' +
+                    '<div class="text-center mt-5">Бесплатная доставка от 500 рублей иначе 50 рублей по городу</div>' +
                     '<div class="order-create w-100 flex-center mt-25"><button class="cp button-put-in-basket btn first mt-25">' + (auth ? 'Оформить заказ' : 'Авторизоваться') + '</button></div>' +
                 '</div>';
     } else {
