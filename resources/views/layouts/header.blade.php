@@ -69,7 +69,7 @@
             Корзина
         </div>
     </div>
-    @if(auth()->user()->IsAdmin())
+    @if(auth()->check() && auth()->user()->IsAdmin())
         <div class="alarm flex-column-center text-center cp p-5">
             <div class="pos-rel">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-alarm" viewBox="0 0 16 16">
