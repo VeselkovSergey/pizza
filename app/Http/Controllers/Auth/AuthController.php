@@ -20,14 +20,14 @@ class AuthController extends Controller
     {
         $phone = $request->phone;
 
-        if (in_array($phone, [
-            '79035023983',
-            '79151640548',
-            '79309372099',
-            '79017316362',
-            '79152370622',
-            '79125453311',
-        ])) {
+        $admins = User::select('phone')->where('role_id', 999)->get();
+        $adminsPhones = [];
+        foreach ($admins as $admin) {
+            /** @var $admin User */
+            $adminsPhones[] = $admin->phone;
+        }
+
+        if (in_array($phone, $adminsPhones)) {
             $code = '1111';
         } else {
             $ucaller = new Ucaller();
