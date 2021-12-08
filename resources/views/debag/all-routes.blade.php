@@ -1,3 +1,9 @@
+@php
+    if (!auth()->check() || !auth()->user()->IsAdmin()) {
+        return;
+    }
+@endphp
+
 @extends('app')
 
 @section('content')

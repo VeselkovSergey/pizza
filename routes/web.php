@@ -21,7 +21,7 @@ use App\Http\Controllers;
 
 Route::get('/', [Controllers\Catalog\CatalogController::class, 'Index'])->name('home-page');
 
-Route::view('all-routes', 'debag.all-routes');
+Route::view('all-routes', 'debag.all-routes')->name('all-routes');
 
 Route::get('resources/{directory}/{fileName}', [Controllers\Resources\ResourceController::class, 'GetResources']);
 
