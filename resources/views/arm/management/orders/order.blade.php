@@ -69,7 +69,8 @@
                 @foreach($productsModificationsInOrder as $productModificationInOrder)
                     <div class="p-5 mb-10 product-in-order-status-{{$productModificationInOrder->status_id}}">
                         <div>{{\App\Models\ProductsModificationsInOrders::STATUS[$productModificationInOrder->status_id]}}</div>
-                        <div>{{$productModificationInOrder->ProductModifications->Product->title . ' ' . $productModificationInOrder->ProductModifications->Modification->title . ' ' . $productModificationInOrder->ProductModifications->Modification->value . ' ' . $productModificationInOrder->ProductModifications->selling_price . ' ₽'}}</div>
+                        <div>{{$productModificationInOrder->ProductModifications->Product->title . ' ' . $productModificationInOrder->ProductModifications->Modification->title . ' ' . $productModificationInOrder->ProductModifications->Modification->value}}</div>
+                        <div>{{'Цена: ' . $productModificationInOrder->ProductModifications->selling_price . ' ₽'}}</div>
                         <div>Кол-во: {{$productModificationInOrder->product_modification_amount}}</div>
                     </div>
                 @endforeach
