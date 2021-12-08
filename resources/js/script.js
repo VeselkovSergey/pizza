@@ -526,10 +526,17 @@ function CreateOrder() {
         ObjectClientInformation[key] = clientInformation[key].length === 1 ? clientInformation[key][0] : clientInformation[key];
     }
 
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+    const userAgent = navigator.userAgent;
+
     let data = {
         basket: JSON.stringify(GetAllProductsInBasket()),
         clientInformation: JSON.stringify(ObjectClientInformation),
         orderSum: PriceSumProductsInBasket(),
+        screenWidth: screenWidth,
+        screenHeight: screenHeight,
+        userAgent: userAgent,
     };
 
     Ajax(routeOrderCreate, 'POST', data).then((response) => {
