@@ -59,6 +59,8 @@ class ProductsController extends Controller
                     'id' => $modification->id,
                     'title' => $modification->Modification->title,
                     'value' => $modification->Modification->value,
+                    'modificationTypeId' => $modification->Modification->id,
+                    'modificationTypeDiscountPrice' => !in_array($product->id, [24, 31, 32]) ? self::DiscountSale($modification->Modification->id) : false,
                     'sellingPrice' => $modification->selling_price,
                     'modificationTypeCount' => sizeof($product->Modifications),
                     'ingredients' => [],
@@ -83,6 +85,16 @@ class ProductsController extends Controller
         }
 
         return $fileAllProducts;
+    }
+
+    private static function DiscountSale($type)
+    {
+        return match ($type) {
+            2 => 535,
+            1 => 645,
+            3 => 799,
+            default => false,
+        };
     }
 
     public function IndexAdmin()

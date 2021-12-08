@@ -21,11 +21,11 @@ class AuthController extends Controller
 
         $phone = $request->phone;
 
-//        $ucaller = new Ucaller();
-//        $initCall = $ucaller->InitCall($phone);
-//        $code = $initCall['code'];
+        $ucaller = new Ucaller();
+        $initCall = $ucaller->InitCall($phone);
+        $code = $initCall['code'];
 
-        $code = '1111';
+//        $code = '1111';
 
         session()->put('confirmationCode', $code);
         session()->put('clientPhone', $phone);
@@ -59,6 +59,7 @@ class AuthController extends Controller
 
     public static function FastRegistrationUserByPhone($phone)
     {
+        $phone = preg_replace("/[^0-9]/", '', $phone);
         $randomPassword = Str::random();
         return User::create([
             'name' => 'Новый пользователь',
@@ -66,5 +67,11 @@ class AuthController extends Controller
             'phone' => $phone,
             'password' => $randomPassword,
         ]);
+    }
+
+    public static function UpdateUserName(User $user, string $newName)
+    {
+        $user->name = $newName;
+        $user->save();
     }
 }

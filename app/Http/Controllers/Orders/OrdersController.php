@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Orders;
 
 use App\Helpers\ArrayHelper;
 use App\Helpers\ResultGenerate;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Products\ProductsController;
 use App\Models\Orders;
@@ -24,10 +25,19 @@ class OrdersController extends Controller
     {
         $basket = json_decode($request->basket);
         $clientInformation = json_decode($request->clientInformation);
-        $clientInformation->clientPhone = auth()->user()->phone;
+        $orderSumFront = $request->orderSum;
+        $clientInformation->clientPhone = auth()->user()->IsAdmin() ? $clientInformation->clientPhone : auth()->user()->phone;
+
+        $clientInformation->clientPhone = preg_replace("/[^0-9]/", '', $clientInformation->clientPhone);
+
+        $user = User::where('phone', $clientInformation->clientPhone)->first();
+
+        if (!$user) {
+            $user = AuthController::FastRegistrationUserByPhone($clientInformation->clientPhone);
+        }
 
         $newOrder = Orders::create([
-            'user_id' => auth()->user()->id,
+            'user_id' => $user->id,
             'status_id' => Orders::STATUS_TEXT['clientCreateOrder'],
             'client_raw_data' => json_encode($clientInformation),
             'products_raw_data' => json_encode($basket),
@@ -71,10 +81,13 @@ class OrdersController extends Controller
         $orderFullInformation = (object)[
             'products' => $orderFullInformationAboutOrderedProduct,
             'orderSum' => $orderSum,
+            'orderSumFront' => $orderSumFront,
             'clientInformation' => $clientInformation,
         ];
 
         $this->SendTelegram($orderFullInformation);
+
+        AuthController::UpdateUserName($user, $clientInformation->clientName);
 
         return ResultGenerate::Success('Заказ принят. Мы скоро свяжимся с вами.');
     }
@@ -101,6 +114,7 @@ class OrdersController extends Controller
         $message .= '<b>Заказ:</b>' . PHP_EOL;
         $message .= $products . PHP_EOL;
         $message .= '<i>Итого:</i> ' . $orderFullInformation->orderSum . ' ₽' . PHP_EOL;
+        $message .= '<i>Итого со скидками:</i> ' . $orderFullInformation->orderSumFront . ' ₽' . PHP_EOL;
 
         $telegram = new Telegram();
         $telegram->sendMessage($message, '-1001538892405');
@@ -110,6 +124,12 @@ class OrdersController extends Controller
     public static function AllOrders()
     {
         return Orders::query()->orderBy('id', 'desc')->get();
+    }
+
+    public static function TodayOrders()
+    {
+        $today = date('Y-m-d 00:00:00', time());
+        return Orders::query()->where('created_at', '>=', $today)->orderBy('id', 'desc')->get();
     }
 
     public static function KitchenOrdersOnly()
@@ -149,7 +169,7 @@ class OrdersController extends Controller
                 'order_id' => $order->id,
                 'old_status_id' => $order->status_id,
                 'new_status_id' => $status_id,
-                'user_id' => 1,//auth()->user()->id, #toDo включить когда сделаю авторизацию для сотрудников
+                'user_id' => auth()->user()->id,
             ]);
             $order->status_id = $status_id;
         }
@@ -168,7 +188,7 @@ class OrdersController extends Controller
                 'order_product_id' => $product->id,
                 'old_status_id' => $product->status_id,
                 'new_status_id' => $status_id,
-                'user_id' => 1,//auth()->user()->id, #toDo включить когда сделаю авторизацию для сотрудников
+                'user_id' => auth()->user()->id,
             ]);
             $product->status_id = $status_id;
         }
