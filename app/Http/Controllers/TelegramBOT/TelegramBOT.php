@@ -11,6 +11,7 @@ class TelegramBOT extends Controller
 {
     function Index()
     {
+        dd(123);
         $telegram = new Telegram();
 
         $telegram->sendMessage(json_encode($telegram->incomingMessage()), '267236435');
