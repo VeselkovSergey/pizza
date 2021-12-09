@@ -406,11 +406,11 @@ function triggerEvent(elem, event) {
 
 let basketWindow;
 
-function BasketWindow() {
+function BasketWindow(orderWasEdited = false) {
     let basketContent = document.createElement('div');
     basketContent.innerHTML =
         ProductsInBasketGenerationHTML() +
-        OrderInfoGenerationHTML();
+        OrderInfoGenerationHTML(orderWasEdited);
 
     basketWindow = ModalWindow(basketContent);
 
@@ -486,7 +486,7 @@ function BasketWindow() {
                 LoginWindow('BasketWindow()');
                 basketWindow.slowRemove();
             } else {
-                CreateOrder();
+                CreateOrder(orderWasEdited);
             }
         });
     }
@@ -515,7 +515,7 @@ function BasketWindow() {
 
 }
 
-function CreateOrder() {
+function CreateOrder(orderWasEdited) {
     if (CheckingFieldForEmptiness('client-information') === false) {
         return;
     }
@@ -537,6 +537,7 @@ function CreateOrder() {
         screenWidth: screenWidth,
         screenHeight: screenHeight,
         userAgent: userAgent,
+        orderWasEdited: orderWasEdited,
     };
 
     Ajax(routeOrderCreate, 'POST', data).then((response) => {
@@ -591,16 +592,19 @@ function ProductsInBasketGenerationHTML() {
     return productsInBasketGenerationHTML;
 }
 
-let lastClientName = localStorage.getItem('lastClientName') !== null ? localStorage.getItem('lastClientName') : '';
-let lastClientPhone = localStorage.getItem('lastClientPhone') !== null ? localStorage.getItem('lastClientPhone') : '';
-let lastClientAddressDelivery = localStorage.getItem('lastClientAddressDelivery') !== null ? localStorage.getItem('lastClientAddressDelivery') : '';
+function OrderInfoGenerationHTML(orderWasEdited) {
 
-function OrderInfoGenerationHTML() {
+    let lastClientName = localStorage.getItem('lastClientName') !== null ? localStorage.getItem('lastClientName') : '';
+    let lastClientPhone = localStorage.getItem('lastClientPhone') !== null ? localStorage.getItem('lastClientPhone') : '';
+    let lastClientAddressDelivery = localStorage.getItem('lastClientAddressDelivery') !== null ? localStorage.getItem('lastClientAddressDelivery') : '';
+    let lastClientComment = localStorage.getItem('lastClientComment') !== null ? localStorage.getItem('lastClientComment') : '';
+    let lastTypePayment = localStorage.getItem('lastTypePayment') !== null ? localStorage.getItem('lastTypePayment') : '';
+
     let countProductsInBasket = CountProductsInBasket();
     let phoneInput = admin ?
         '<div class="w-100 flex-wrap mt-10">' +
             '<label for="">Номер телефона</label>' +
-            '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="">' +
+            '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '">' +
         '</div>' : '';
 
     if (countProductsInBasket !== 0) {
@@ -617,7 +621,7 @@ function OrderInfoGenerationHTML() {
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Комментарий</label>' +
-                        '<textarea name="clientComment" class="w-100" placeholder="Особые пожелания, например если нужна сдача, подъезд, код-домофона"></textarea>' +
+                        '<textarea name="clientComment" class="w-100 last-data" placeholder="Особые пожелания, например если нужна сдача, подъезд, код-домофона">' + lastClientComment + '</textarea>' +
                     '</div>' +
                     // '<div class="w-100 flex-wrap mt-10">' +
                     //     '<label for="">Промокод</label>' +
@@ -628,17 +632,17 @@ function OrderInfoGenerationHTML() {
                         '<div class="w-100">Способ оплаты</div>' +
                         '<div class="flex w-100"">' +
                             '<div class="flex">' +
-                                '<input checked name="typePayment" type="radio">' +
+                                '<input ' + ((lastTypePayment === 'card' || lastTypePayment === '') ? 'checked' : '') + ' name="typePayment" value="card" type="radio" class="last-data">' +
                                 '<label for="">Карта (перевод)</label>' +
                             '</div>' +
                             '<div class="flex ml-25">' +
-                                '<input name="typePayment" type="radio">' +
+                                '<input ' + (lastTypePayment === 'cash' ? 'checked' : '') + '  name="typePayment" type="radio" value="cash" class="last-data">' +
                                 '<label for="">Наличные</label>' +
                             '</div>' +
                         '</div>' +
                     '</div>' +
                     '<div class="text-center mt-10">Бесплатная доставка от 500 рублей иначе 50 рублей по городу</div>' +
-                    '<div class="order-create w-100 flex-center mt-25"><button class="cp button-put-in-basket btn first mt-25">' + (auth ? 'Оформить заказ' : 'Авторизоваться') + '</button></div>' +
+                    '<div class="order-create w-100 flex-center mt-25"><button class="cp button-put-in-basket btn first mt-25">' + (orderWasEdited ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button></div>' +
                 '</div>';
     } else {
         return '';

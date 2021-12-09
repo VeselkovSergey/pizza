@@ -6,6 +6,7 @@ namespace App\Http\Controllers\ARM;
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Orders\OrdersController;
+use App\Http\Controllers\Products\ProductsController;
 use App\Models\Orders;
 use App\Models\User;
 use App\Services\Telegram\Telegram;
@@ -34,6 +35,10 @@ class ManagerARMController extends Controller
         $orderStatuses = OrdersController::OrderStatuses($order);
         $clientInfo = json_decode($order->client_raw_data);
         $rawData = json_decode($order->all_information_raw_data);
+
+        $allProducts = new ProductsController();
+        $allProducts = $allProducts->GetAllProducts();
+
         $couriers = User::where('role_id', 111)->get();
         return view('arm.management.orders.order', [
             'order' => $order,
@@ -42,6 +47,7 @@ class ManagerARMController extends Controller
             'clientInfo' => $clientInfo,
             'rawData' => $rawData,
             'couriers' => $couriers,
+            'allProducts' => json_decode($allProducts),
         ]);
     }
 

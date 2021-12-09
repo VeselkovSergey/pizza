@@ -3,13 +3,18 @@
 @section('content')
 
     <style>
-        .order-change-status:hover {
+        .order-change-status:hover, .order-edit-button:hover, .back-to-orders:hover {
             transform: scale(1.1);
         }
     </style>
 
     <div>
-        <a class="color-white block mb-10" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
+        <button class="mb-10 cp back-to-orders">
+            <a class="clear-a" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
+        </button>
+        @if($order->status_id === \App\Models\Orders::STATUS_TEXT['managerProcesses'])
+        <button class="hide mb-10 cp order-edit-button">Редактировать заказ</button>
+        @endif
 
         <div class="mb-10">
             @switch($order->status_id)
@@ -66,7 +71,9 @@
                 </div>
             </div>
             <div>
+                @php($productsAndModificationsInOrderForOrderEdit = [])
                 @foreach($productsModificationsInOrder as $productModificationInOrder)
+                    @php($productsAndModificationsInOrderForOrderEdit[] = (object)['productId' => $productModificationInOrder->ProductModifications->Product->id, 'modificationId' => $productModificationInOrder->product_modification_id, 'amount' => $productModificationInOrder->product_modification_amount, 'modificationTypeId' => $productModificationInOrder->ProductModifications->Modification->type_id])
                     <div class="p-5 mb-10 product-in-order-status-{{$productModificationInOrder->status_id}}">
                         <div>{{\App\Models\ProductsModificationsInOrders::STATUS[$productModificationInOrder->status_id]}}</div>
                         <div>{{$productModificationInOrder->ProductModifications->Product->title . ' ' . $productModificationInOrder->ProductModifications->Modification->title . ' ' . $productModificationInOrder->ProductModifications->Modification->value}}</div>
@@ -83,6 +90,10 @@
 @section('js')
 
     <script>
+
+        let allProducts = {!! json_encode($allProducts, JSON_UNESCAPED_UNICODE) !!};
+        let productsAndModificationsInOrderForOrderEdit = {!! json_encode($productsAndModificationsInOrderForOrderEdit, JSON_UNESCAPED_UNICODE) !!};
+
         let buttonsOrderChangeStatus = document.body.querySelectorAll('.order-change-status');
         buttonsOrderChangeStatus.forEach((button) => {
             button.addEventListener('click', () => {
@@ -127,14 +138,50 @@
         const orderId = {{$order->id}};
         const orderStatus = {{$order->status_id}};
 
-        Object.keys(orderStatuses).forEach((key) => {
-            let order = orderStatuses[key];
-            if (order.orderId === orderId) {
-                orderStatuses[key].oldStatus = orderStatus;
-            }
-        });
+        if (orderStatuses !== null) {
+            Object.keys(orderStatuses).forEach((key) => {
+                let order = orderStatuses[key];
+                if (order.orderId === orderId) {
+                    orderStatuses[key].oldStatus = orderStatus;
+                }
+            });
+        }
 
         localStorage.setItem('orderStatuses', JSON.stringify(orderStatuses));
+
+        let orderEditButton = document.body.querySelector('.order-edit-button');
+        orderEditButton.addEventListener('click', () => {
+
+            DeleteAllProductsInBasket();
+
+            Object.keys(productsAndModificationsInOrderForOrderEdit).forEach((key) => {
+
+                let modification = {
+                    product: allProducts['product-'+productsAndModificationsInOrderForOrderEdit[key].productId],
+                    modification: allProducts['product-'+productsAndModificationsInOrderForOrderEdit[key].productId]['modifications']['modification-type-'+productsAndModificationsInOrderForOrderEdit[key].modificationTypeId]['modification-'+productsAndModificationsInOrderForOrderEdit[key].modificationId],
+                }
+
+                for (let i = 0; i < productsAndModificationsInOrderForOrderEdit[key].amount; i++) {
+                    AddProductInBasket(modification);
+                }
+
+            });
+
+            let lastClientName = '{{$clientInfo->clientName}}';
+            let lastClientPhone = '{{$clientInfo->clientPhone}}';
+            let lastClientAddressDelivery = '{{$clientInfo->clientAddressDelivery}}';
+            let lastClientComment = '{{$clientInfo->clientComment}}';
+            let lastTypePayment = '{{$clientInfo->typePayment[0] === true ? 'card' : 'cash'}}';
+
+            localStorage.setItem('lastClientName', lastClientName);
+            localStorage.setItem('lastClientPhone', lastClientPhone);
+            localStorage.setItem('lastClientAddressDelivery', lastClientAddressDelivery);
+            localStorage.setItem('lastClientComment', lastClientComment);
+            localStorage.setItem('lastTypePayment', lastTypePayment);
+
+            BasketWindow(true);
+
+        });
 
 
     </script>
