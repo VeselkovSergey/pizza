@@ -3,7 +3,7 @@
 @section('content')
 
     <div>
-        <a class="block mb-10" href="{{route('chef-arm-orders-page')}}">Назад к заказам</a>
+        <a class="color-white block mb-10" href="{{route('chef-arm-orders-page')}}">Назад к заказам</a>
 
         <div class="mb-10">
             <button class="hide status-is-cooked order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-5" data-url="{{route('chef-arm-change-status-order-to-cooked')}}">Приготовлен</button>

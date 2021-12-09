@@ -5,7 +5,7 @@
     <div>
         <div>ARM менеджера</div>
         <div>
-            <a href="{{route('manager-arm-orders-page')}}">Заказы</a>
+            <a class="color-white" href="{{route('manager-arm-orders-page')}}">Заказы</a>
         </div>
     </div>
 

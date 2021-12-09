@@ -5,7 +5,7 @@
     <div>
         <div>ARM повара</div>
         <div>
-            <a href="{{route('chef-arm-orders-page')}}">Заказы</a>
+            <a class="color-white" href="{{route('chef-arm-orders-page')}}">Заказы</a>
         </div>
     </div>
 

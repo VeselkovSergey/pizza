@@ -9,7 +9,7 @@
     </style>
 
     <div>
-        <a class="block mb-10" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
+        <a class="color-white block mb-10" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
 
         <div class="mb-10">
             @switch($order->status_id)
