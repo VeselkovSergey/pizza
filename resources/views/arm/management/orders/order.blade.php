@@ -87,11 +87,39 @@
         buttonsOrderChangeStatus.forEach((button) => {
             button.addEventListener('click', () => {
                 let url = button.dataset.url;
-                Ajax(url, 'post', {orderId: {{$order->id}}}).then(() => {
-                    location.reload();
-                });
+                if (url === "{{route('manager-arm-transfer-order-to-delivery-page')}}") {
+                    CreateModalWindowForCourierSelection(url);
+                } else {
+                    Ajax(url, 'post', {orderId: {{$order->id}}}).then(() => {
+                        location.reload();
+                    });
+                }
             });
         });
+
+        function CreateModalWindowForCourierSelection(url) {
+
+            let container =
+                '<div class="flex-column-center selector-courier">' +
+                '<div class="mb-15">Выберите курьера</div>' +
+                @foreach($couriers as $courier)
+                    '<label class="p-5 cp"><input type="radio" name="courier" @if($loop->first) checked @endif value="{{$courier->id}}">{{$courier->name}}</label>' +
+                @endforeach
+                '<button class="mt-15 select-courier-button">Подтвердить</button>' +
+                '</div>';
+
+            let modalWindow = ModalWindow(container);
+
+            let button = modalWindow.querySelector('.select-courier-button');
+            button.addEventListener('click', () => {
+                let courierId = modalWindow.querySelector('.selector-courier input:checked').value;
+
+                Ajax(url, 'post', {orderId: {{$order->id}}, courierId: courierId}).then(() => {
+                    location.reload();
+                });
+
+            });
+        }
 
         ToggleShow();
 

@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+/**
+ * @property integer courier_id
+ */
 class Orders extends BaseModel
 {
     protected $fillable = [
@@ -10,6 +13,7 @@ class Orders extends BaseModel
         'client_raw_data',
         'products_raw_data',
         'all_information_raw_data',
+        'courier_id',
     ];
 
     const STATUS = [

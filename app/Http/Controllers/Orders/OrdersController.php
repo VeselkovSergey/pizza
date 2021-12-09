@@ -137,6 +137,10 @@ class OrdersController extends Controller
         return Orders::where('status_id', Orders::STATUS_TEXT['kitchen'])->get();
     }
 
+    /**
+     * @param int $orderId
+     * @return Orders
+     */
     public static function Order(int $orderId)
     {
         return Orders::find($orderId);

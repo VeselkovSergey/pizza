@@ -20,6 +20,7 @@ class CreateOrdersTable extends Migration
             $table->jsonb('client_raw_data');
             $table->jsonb('products_raw_data');
             $table->jsonb('all_information_raw_data');
+            $table->integer('courier_id')->nullable();
             $table->timestamps();
         });
     }

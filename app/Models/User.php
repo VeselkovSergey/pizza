@@ -14,6 +14,8 @@ use Eloquent;
  *
  * @property integer id
  * @property string phone
+ * @property string telegram_chat_id
+ * @property string role_id
  */
 class User extends Authenticatable
 {
@@ -35,6 +37,7 @@ class User extends Authenticatable
         'phone_verified_at',
         'password',
         'role_id',
+        'telegram_chat_id',
     ];
 
     /**

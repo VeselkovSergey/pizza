@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('phone_verified_at')->nullable();
             $table->string('password');
             $table->integer('role_id')->default(1);
+            $table->string('telegram_chat_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
