@@ -112,7 +112,7 @@ class ManagerARMController extends Controller
         $message .= '<i>Итого:</i> ' . $orderSum . ' ₽' . PHP_EOL;
 
         $telegram = new Telegram();
-        $telegram->sendMessage($message, '-605714221');
+        $telegram->sendMessage($message, '-1001606894202');
         if (!empty($chatId)) {
             $telegram->sendMessage($message, $chatId);
         }
