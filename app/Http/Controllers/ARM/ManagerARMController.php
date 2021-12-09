@@ -114,6 +114,8 @@ class ManagerARMController extends Controller
         $telegram = new Telegram();
         $telegram->sendMessage($message, '-1001606894202');
         if (!empty($chatId)) {
+            $telegram->addButton('Доставлен', 'Delivered');
+            $telegram->addButton('Отказ', 'Refused');
             $telegram->sendMessage($message, $chatId);
         }
     }
