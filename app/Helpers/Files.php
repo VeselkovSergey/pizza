@@ -98,10 +98,12 @@ class Files
         $file = FilesDB::where($columnName, $fileIdOrName)->first();
 
         if ($file) {
-            return (object)[
-                'modelFile' => $file,
-                'contentFile' => Storage::disk($file->disk)->get($file->path . '/' . $file->hash_name . '.' . $file->extension),
-            ];
+            if (Storage::disk($file->disk)->exists($file->path . '/' . $file->hash_name . '.' . $file->extension)) {
+                return (object)[
+                    'modelFile' => $file,
+                    'contentFile' => Storage::disk($file->disk)->get($file->path . '/' . $file->hash_name . '.' . $file->extension),
+                ];
+            }
         }
         return false;
     }
