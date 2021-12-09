@@ -81,7 +81,7 @@ class ManagerARMController extends Controller
         $order = OrdersController::Order($orderId);
         $order->courier_id = $user->id;
         $order->save();
-        $this->SendTelegram($user, $order);
+//        $this->SendTelegram($user, $order);
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['courier']);
     }
 
