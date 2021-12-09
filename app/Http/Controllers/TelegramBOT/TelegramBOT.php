@@ -13,6 +13,8 @@ class TelegramBOT extends Controller
     {
         $telegram = new Telegram();
 
+        $telegram->sendMessage(json_encode($telegram->incomingMessage()), '267236435');
+
         switch ($telegram->incomingMessage()) {
 
             case '/start':
