@@ -88,6 +88,11 @@
 
         <script>
             eval({{session('execFunction')}});
+            if (localStorage.getItem('execFunction') !== null) {
+                let execFunction = localStorage.getItem('execFunction');
+                localStorage.removeItem('execFunction');
+                eval(execFunction);
+            }
         </script>
 
     </body>

@@ -30,21 +30,38 @@ class OrdersController extends Controller
 
         $clientInformation->clientPhone = preg_replace("/[^0-9]/", '', $clientInformation->clientPhone);
 
+        $orderId = $request->orderId !== 'null' ? (int)$request->orderId : false;
+
         $user = User::where('phone', $clientInformation->clientPhone)->first();
 
         if (!$user) {
             $user = AuthController::FastRegistrationUserByPhone($clientInformation->clientPhone);
         }
 
-        $newOrder = Orders::create([
-            'user_id' => $user->id,
-            'status_id' => Orders::STATUS_TEXT['clientCreateOrder'],
-            'client_raw_data' => json_encode($clientInformation),
-            'products_raw_data' => json_encode($basket),
-            'all_information_raw_data' => json_encode($request->all()),
-        ]);
-        $orderId = $newOrder->id;
-        self::ChangeStatus($newOrder, Orders::STATUS_TEXT['newOrder']);
+        if (!empty($orderId)) {
+            $order = Orders::find($orderId);
+            if (empty($order)) {
+                return ResultGenerate::Error('Произошла ошибка! Создайте новый заказ. Этот переведите в статус ОТКАЗ');
+            }
+            $order->user_id = $user->id;
+            $order->client_raw_data = json_encode($clientInformation);
+            $order->products_raw_data = json_encode($basket);
+            $order->all_information_raw_data = json_encode($request->all());
+            $order->save();
+            ProductsModificationsInOrders::where('order_id', $orderId)->delete();
+            $flashMessage = 'Заказ обновлен. Не забудь обновить страницу с заказом.';
+        } else {
+            $newOrder = Orders::create([
+                'user_id' => $user->id,
+                'status_id' => Orders::STATUS_TEXT['clientCreateOrder'],
+                'client_raw_data' => json_encode($clientInformation),
+                'products_raw_data' => json_encode($basket),
+                'all_information_raw_data' => json_encode($request->all()),
+            ]);
+            $orderId = $newOrder->id;
+            self::ChangeStatus($newOrder, Orders::STATUS_TEXT['newOrder']);
+            $flashMessage = 'Заказ принят. Мы скоро свяжемся с вами.';
+        }
 
         $modificationsId = [];
         $amountProductModificationInOrder = [];
@@ -59,6 +76,7 @@ class OrdersController extends Controller
 
         $orderFullInformationAboutOrderedProduct = [];
         $orderSum = 0;
+
         foreach ($productsModifications as $productsModification) {
 
             $dataModification = (object)[
@@ -89,7 +107,7 @@ class OrdersController extends Controller
 
         AuthController::UpdateUserName($user, $clientInformation->clientName);
 
-        return ResultGenerate::Success('Заказ принят. Мы скоро свяжемся с вами.');
+        return ResultGenerate::Success($flashMessage);
     }
 
     private function SendTelegram($orderFullInformation)

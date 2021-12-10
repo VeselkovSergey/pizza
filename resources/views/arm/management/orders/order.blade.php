@@ -13,7 +13,7 @@
             <a class="clear-a" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
         </button>
         @if($order->status_id === \App\Models\Orders::STATUS_TEXT['managerProcesses'])
-        <button class="hide mb-10 cp order-edit-button">Редактировать заказ</button>
+        <button class="mb-10 cp order-edit-button">Редактировать заказ</button>
         @endif
 
         <div class="mb-10">
@@ -23,7 +23,7 @@
                     <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-9" data-url="{{route('manager-arm-change-status-order-to-canceled-page')}}">Отказ</button>
                     @break
                 @case(\App\Models\Orders::STATUS_TEXT['managerProcesses'])
-                    <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-1" data-url="{{route('manager-arm-change-status-order-to-new-order-page')}}">Вернуть в статус: Новый</button>
+{{--                    <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-1" data-url="{{route('manager-arm-change-status-order-to-new-order-page')}}">Вернуть в статус: Новый</button>--}}
                     <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-3" data-url="{{route('manager-arm-transfer-order-to-kitchen-page')}}">Передать на кухню</button>
                     <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-9" data-url="{{route('manager-arm-change-status-order-to-canceled-page')}}">Отказ</button>
                     @break
@@ -97,14 +97,20 @@
         let buttonsOrderChangeStatus = document.body.querySelectorAll('.order-change-status');
         buttonsOrderChangeStatus.forEach((button) => {
             button.addEventListener('click', () => {
+                localStorage.removeItem('orderId');
                 let url = button.dataset.url;
                 if (url === "{{route('manager-arm-transfer-order-to-delivery-page')}}") {
                     CreateModalWindowForCourierSelection(url);
                 } else {
                     Ajax(url, 'post', {orderId: {{$order->id}}}).then(() => {
-                        location.reload();
+                        if (url === "{{route('manager-arm-change-status-order-to-manager-processes-page')}}") {
+                            location.reload();
+                        } else {
+                            window.close();
+                        }
                     });
                 }
+
             });
         });
 
@@ -112,11 +118,12 @@
 
             let container =
                 '<div class="flex-column-center selector-courier">' +
-                '<div class="mb-15">Выберите курьера</div>' +
+                    '<div class="mb-15">Выберите курьера</div>' +
+                    '<label class="p-5 cp"><input type="radio" name="courier" checked  value="0">Курьера нет в списке</label>' +
                 @foreach($couriers as $courier)
-                    '<label class="p-5 cp"><input type="radio" name="courier" @if($loop->first) checked @endif value="{{$courier->id}}">{{$courier->name}}</label>' +
+                    '<label class="p-5 cp"><input type="radio" name="courier" value="{{$courier->id}}">{{$courier->name}}</label>' +
                 @endforeach
-                '<button class="mt-15 select-courier-button">Подтвердить</button>' +
+                    '<button class="mt-15 select-courier-button">Подтвердить</button>' +
                 '</div>';
 
             let modalWindow = ModalWindow(container);
@@ -150,39 +157,40 @@
         localStorage.setItem('orderStatuses', JSON.stringify(orderStatuses));
 
         let orderEditButton = document.body.querySelector('.order-edit-button');
-        orderEditButton.addEventListener('click', () => {
+        if (orderEditButton) {
+            orderEditButton.addEventListener('click', () => {
 
-            DeleteAllProductsInBasket();
+                DeleteAllProductsInBasket();
 
-            Object.keys(productsAndModificationsInOrderForOrderEdit).forEach((key) => {
+                Object.keys(productsAndModificationsInOrderForOrderEdit).forEach((key) => {
 
-                let modification = {
-                    product: allProducts['product-'+productsAndModificationsInOrderForOrderEdit[key].productId],
-                    modification: allProducts['product-'+productsAndModificationsInOrderForOrderEdit[key].productId]['modifications']['modification-type-'+productsAndModificationsInOrderForOrderEdit[key].modificationTypeId]['modification-'+productsAndModificationsInOrderForOrderEdit[key].modificationId],
-                }
+                    let modification = {
+                        product: allProducts['product-'+productsAndModificationsInOrderForOrderEdit[key].productId],
+                        modification: allProducts['product-'+productsAndModificationsInOrderForOrderEdit[key].productId]['modifications']['modification-type-'+productsAndModificationsInOrderForOrderEdit[key].modificationTypeId]['modification-'+productsAndModificationsInOrderForOrderEdit[key].modificationId],
+                    }
 
-                for (let i = 0; i < productsAndModificationsInOrderForOrderEdit[key].amount; i++) {
-                    AddProductInBasket(modification);
-                }
+                    for (let i = 0; i < productsAndModificationsInOrderForOrderEdit[key].amount; i++) {
+                        AddProductInBasket(modification);
+                    }
+
+                });
+
+                localStorage.setItem('lastClientName', '{{$clientInfo->clientName}}');
+                localStorage.setItem('lastClientPhone', '{{$clientInfo->clientPhone}}');
+                localStorage.setItem('lastClientAddressDelivery', '{{$clientInfo->clientAddressDelivery}}');
+                localStorage.setItem('lastClientComment', '{{$clientInfo->clientComment}}');
+                localStorage.setItem('lastTypePayment', '{{$clientInfo->typePayment[0] === true ? 'card' : 'cash'}}');
+                localStorage.setItem('orderId', orderId);
+
+                localStorage.setItem('execFunction', 'BasketWindow()');
+
+                window.open(
+                    "{{route('catalog')}}",
+                    '_blank'
+                );
 
             });
-
-            let lastClientName = '{{$clientInfo->clientName}}';
-            let lastClientPhone = '{{$clientInfo->clientPhone}}';
-            let lastClientAddressDelivery = '{{$clientInfo->clientAddressDelivery}}';
-            let lastClientComment = '{{$clientInfo->clientComment}}';
-            let lastTypePayment = '{{$clientInfo->typePayment[0] === true ? 'card' : 'cash'}}';
-
-            localStorage.setItem('lastClientName', lastClientName);
-            localStorage.setItem('lastClientPhone', lastClientPhone);
-            localStorage.setItem('lastClientAddressDelivery', lastClientAddressDelivery);
-            localStorage.setItem('lastClientComment', lastClientComment);
-            localStorage.setItem('lastTypePayment', lastTypePayment);
-
-            BasketWindow(true);
-
-        });
-
+        }
 
     </script>
 

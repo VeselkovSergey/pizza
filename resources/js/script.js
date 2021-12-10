@@ -406,11 +406,12 @@ function triggerEvent(elem, event) {
 
 let basketWindow;
 
-function BasketWindow(orderWasEdited = false) {
+function BasketWindow() {
+    let orderId = localStorage.getItem('orderId');
     let basketContent = document.createElement('div');
     basketContent.innerHTML =
         ProductsInBasketGenerationHTML() +
-        OrderInfoGenerationHTML(orderWasEdited);
+        OrderInfoGenerationHTML(orderId);
 
     basketWindow = ModalWindow(basketContent);
 
@@ -486,8 +487,21 @@ function BasketWindow(orderWasEdited = false) {
                 LoginWindow('BasketWindow()');
                 basketWindow.slowRemove();
             } else {
-                CreateOrder(orderWasEdited);
+                CreateOrder(orderId);
             }
+        });
+    }
+
+    let cleanBasketButton = document.body.querySelector('.clean-basket');
+    if (cleanBasketButton !== null) {
+        cleanBasketButton.addEventListener('click', () => {
+            DeleteAllProductsInBasket();
+            localStorage.removeItem('lastClientName');
+            localStorage.removeItem('lastClientPhone');
+            localStorage.removeItem('lastClientAddressDelivery');
+            localStorage.removeItem('lastClientComment');
+            localStorage.removeItem('lastTypePayment');
+            localStorage.removeItem('orderId');
         });
     }
 
@@ -515,7 +529,7 @@ function BasketWindow(orderWasEdited = false) {
 
 }
 
-function CreateOrder(orderWasEdited) {
+function CreateOrder(orderId) {
     if (CheckingFieldForEmptiness('client-information') === false) {
         return;
     }
@@ -537,7 +551,7 @@ function CreateOrder(orderWasEdited) {
         screenWidth: screenWidth,
         screenHeight: screenHeight,
         userAgent: userAgent,
-        orderWasEdited: orderWasEdited,
+        orderId: orderId,
     };
 
     Ajax(routeOrderCreate, 'POST', data).then((response) => {
@@ -546,6 +560,14 @@ function CreateOrder(orderWasEdited) {
             basketWindow.slowRemove();
             document.body.classList.remove('scroll-off');
             DeleteAllProductsInBasket();
+            if (orderId) {
+                localStorage.removeItem('lastClientName');
+                localStorage.removeItem('lastClientPhone');
+                localStorage.removeItem('lastClientAddressDelivery');
+                localStorage.removeItem('lastClientComment');
+                localStorage.removeItem('lastTypePayment');
+                localStorage.removeItem('orderId');
+            }
         }
     });
 }
@@ -592,7 +614,7 @@ function ProductsInBasketGenerationHTML() {
     return productsInBasketGenerationHTML;
 }
 
-function OrderInfoGenerationHTML(orderWasEdited) {
+function OrderInfoGenerationHTML(orderId) {
 
     let lastClientName = localStorage.getItem('lastClientName') !== null ? localStorage.getItem('lastClientName') : '';
     let lastClientPhone = localStorage.getItem('lastClientPhone') !== null ? localStorage.getItem('lastClientPhone') : '';
@@ -642,7 +664,7 @@ function OrderInfoGenerationHTML(orderWasEdited) {
                         '</div>' +
                     '</div>' +
                     '<div class="text-center mt-10">Бесплатная доставка от 500 рублей иначе 50 рублей по городу</div>' +
-                    '<div class="order-create w-100 flex-center mt-25"><button class="cp button-put-in-basket btn first mt-25">' + (orderWasEdited ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button></div>' +
+                    '<div class="w-100 flex-center mt-25"><button class="cp order-create btn first mt-25">' + (orderId ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button>' + (orderId ? '<button class="cp clean-basket btn first mt-25 ml-10">Очистить данные</button>'  : '') + '</div>' +
                 '</div>';
     } else {
         return '';

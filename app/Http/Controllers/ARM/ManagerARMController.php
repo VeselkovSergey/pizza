@@ -31,6 +31,9 @@ class ManagerARMController extends Controller
     {
         $orderId = request()->orderId;
         $order = OrdersController::Order($orderId);
+        if ($order->status_id === Orders::STATUS_TEXT['newOrder']) {
+            self::ChangeStatusOrderToManagerProcesses($order);
+        }
         $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
         $orderStatuses = OrdersController::OrderStatuses($order);
         $clientInfo = json_decode($order->client_raw_data);
@@ -65,10 +68,15 @@ class ManagerARMController extends Controller
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['newOrder']);
     }
 
-    public function ChangeStatusOrderToManagerProcesses()
+    public function ChangeStatusOrderToManagerProcessesRequest()
     {
         $orderId = request()->orderId;
         $order = OrdersController::Order($orderId);
+        return self::ChangeStatusOrderToManagerProcesses($order);
+    }
+
+    public static function ChangeStatusOrderToManagerProcesses(Orders $order): bool
+    {
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['managerProcesses']);
     }
 
@@ -83,11 +91,19 @@ class ManagerARMController extends Controller
     {
         $orderId = request()->orderId;
         $courierId = (int)request()->courierId;
-        $user = User::find($courierId);
+
+        if ($courierId !== 0) {
+            $user = User::find($courierId);
+            $courierId = $user->id;
+        }
+
         $order = OrdersController::Order($orderId);
-        $order->courier_id = $user->id;
+        $order->courier_id = $courierId;
         $order->save();
-//        $this->SendTelegram($user, $order);
+
+        if ($courierId !== 0) {
+//            $this->SendTelegram($user, $order);
+        }
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['courier']);
     }
 

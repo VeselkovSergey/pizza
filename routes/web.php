@@ -111,7 +111,7 @@ Route::group(['prefix' => 'arm'], function () {
         Route::post('/order/search-by-phone', [Controllers\ARM\ManagerARMController::class, 'SearchByPhone'])->name('manager-arm-order-search-bu-phone');
 
         Route::post('/change-status-order-to-new-order', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToNewOrder'])->name('manager-arm-change-status-order-to-new-order-page');
-        Route::post('/change-status-order-to-manager-processes', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToManagerProcesses'])->name('manager-arm-change-status-order-to-manager-processes-page');
+        Route::post('/change-status-order-to-manager-processes', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToManagerProcessesRequest'])->name('manager-arm-change-status-order-to-manager-processes-page');
         Route::post('/transfer-order-to-kitchen', [Controllers\ARM\ManagerARMController::class, 'TransferOrderToKitchen'])->name('manager-arm-transfer-order-to-kitchen-page');
         Route::post('/transfer-order-to-delivery', [Controllers\ARM\ManagerARMController::class, 'TransferOrderToDelivery'])->name('manager-arm-transfer-order-to-delivery-page');
         Route::post('/change-status-order-to-completed', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToCompleted'])->name('manager-arm-change-status-order-to-completed-page');

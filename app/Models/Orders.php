@@ -4,6 +4,7 @@ namespace App\Models;
 
 /**
  * @property integer courier_id
+ * @property integer status_id
  */
 class Orders extends BaseModel
 {
