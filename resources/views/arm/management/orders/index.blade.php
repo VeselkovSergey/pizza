@@ -30,6 +30,7 @@ $orderStatuses = [];
                         <div>Имя: {{$clientData->clientName}}</div>
                         <div>Номер: {{$clientData->clientPhone}}</div>
                         <div>Адрес: {{$clientData->clientAddressDelivery}}</div>
+                        <div>Комментарий: {{$clientData->clientComment}}</div>
                         <div>{{$order->created_at}}</div>
                     </div>
                     <div class="order-alert-icon hide">
