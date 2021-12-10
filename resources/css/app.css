@@ -362,6 +362,18 @@ header {
         bottom: calc(-70vh);
     }
 
+    .alarm-container {
+        position: absolute;
+        right: 33px;
+        bottom: calc(-58vh);
+    }
+
+    .all-routes-link {
+        position: absolute;
+        right: 32px;
+        bottom: calc(-48vh);
+    }
+
     .footer-container {
         flex-wrap: wrap;
     }

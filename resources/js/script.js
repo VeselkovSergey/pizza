@@ -1055,7 +1055,7 @@ function ManagerArmCheckOrderStatusChange() {
             localStorage.setItem('newOrderStatuses', JSON.stringify(newOrderStatuses));
 
             let amountAlarmItem = document.body.querySelector('.amount-alarm-item');
-            let alarmContainer = document.body.querySelector('.alarm');
+            let alarmContainer = document.body.querySelector('.alarm-container');
             amountAlarmItem.innerHTML = Object.keys(changedOrderStatus).length;
             if (Object.keys(changedOrderStatus).length > 0) {
                 alarmContainer.classList.add('motion');
