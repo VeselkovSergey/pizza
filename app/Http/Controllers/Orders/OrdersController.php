@@ -24,7 +24,7 @@ class OrdersController extends Controller
     public function Create(Request $request)
     {
         $basket = json_decode($request->basket);
-        $clientInformation = json_decode($request->clientInformation);
+        $clientInformation = self::CleanClientInformation(json_decode($request->clientInformation));
         $orderSumFront = $request->orderSum;
         $clientInformation->clientPhone = auth()->user()->IsAdmin() ? $clientInformation->clientPhone : auth()->user()->phone;
 
@@ -108,6 +108,15 @@ class OrdersController extends Controller
         AuthController::UpdateUserName($user, $clientInformation->clientName);
 
         return ResultGenerate::Success($flashMessage);
+    }
+
+    private static function CleanClientInformation($clientInformation)
+    {
+        $clientInformation->clientName = str_replace(['\'', '\n', '\r'], '', $clientInformation->clientName);
+        $clientInformation->clientPhone = str_replace(['\'', '\n', '\r'], '', $clientInformation->clientPhone);
+        $clientInformation->clientAddressDelivery = str_replace(['\'', '\n', '\r'], '', $clientInformation->clientAddressDelivery);
+        $clientInformation->clientComment = str_replace(['\'', '\n', '\r'], '', $clientInformation->clientComment);
+        return $clientInformation;
     }
 
     private function SendTelegram($orderFullInformation)
