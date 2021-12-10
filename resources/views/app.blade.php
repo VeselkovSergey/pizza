@@ -113,10 +113,9 @@
             let moskowUtc = 3;
             let time = new Date();
             let hour = time.getUTCHours() + moskowUtc;
-            console.log(hour, endHour)
             if (hour < startHour || hour >= endHour) {
-                let modalTime = ModalWindow('<div class="text-center mb-10">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div><div class="text-center">До открытия: <span class="dynamic-time">00:00:00</span></div>');
-                calcLostTime(modalTime.querySelector('.dynamic-time'), startHour, startMints)
+                let modalTime = ModalWindow('<div class="text-center mb-10">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div></div>');
+                // calcLostTime(modalTime.querySelector('.dynamic-time'), startHour, startMints)
             }
 
         </script>
