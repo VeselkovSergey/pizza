@@ -59,6 +59,15 @@ class User extends Authenticatable
         'phone_verified_at' => 'datetime',
     ];
 
+    const PERMISSIONS = [
+        777 => [        // менеджер
+            'ARM' => [
+                'management' => [],
+                'chef' => [],
+            ],
+        ],
+    ];
+
     public function Orders()
     {
         return $this->hasMany(Orders::class, 'user_id', 'id');
@@ -68,6 +77,42 @@ class User extends Authenticatable
     {
         if (auth()->check() && auth()->user()->role_id === 999) {
             return true;
+        }
+        return false;
+    }
+
+    public function checkAccess($permissionCategory, $permission = null, $subPermission = null)
+    {
+        $roleId = $this->role_id;
+
+        $isAdmin = $this->IsAdmin();
+        if ($isAdmin) {
+            return true;
+        }
+
+        $permissionCategory = trim($permissionCategory);
+        if (isset(self::PERMISSIONS[$roleId][$permissionCategory])) {
+
+            if (isset($permission)) {
+                $permission = trim($permission);
+
+                if (isset(self::PERMISSIONS[$roleId][$permissionCategory][$permission])) {
+
+                    if (isset($subPermission)) {
+                        $subPermission = trim($subPermission);
+
+                        if (isset(self::PERMISSIONS[$roleId][$permissionCategory][$permission][$subPermission])) {
+                            return true;
+                        }
+
+                    } else {
+                        return true;
+                    }
+                }
+
+            } else {
+                return true;
+            }
         }
         return false;
     }

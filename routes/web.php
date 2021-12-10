@@ -13,6 +13,10 @@ use App\Http\Controllers;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
+|   Использование доступов в рутах
+| ->middleware('permissions:UsersAndRoles, Users, permission')
+| Route::group(['middleware' => 'permissions:UsersAndRoles, Users, permission'], function () {
+|
 */
 
 //Route::get('/', function () {
@@ -20,8 +24,6 @@ use App\Http\Controllers;
 //})->name('home-page');
 
 Route::get('/', [Controllers\Catalog\CatalogController::class, 'Index'])->name('home-page');
-
-Route::get('all-routes', [Controllers\ARM\ARMController::class, 'AllRoutes'])->name('all-routes');
 
 Route::get('resources/{directory}/{fileName}', [Controllers\Resources\ResourceController::class, 'GetResources']);
 
@@ -92,8 +94,9 @@ Route::group(['prefix' => 'auth'], function () {
 
 });
 
-Route::group(['prefix' => 'arm'], function () {
+Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () {
 
+    Route::get('all-routes', [Controllers\ARM\ARMController::class, 'AllRoutes'])->name('all-routes');
 
     Route::group(['prefix' => 'administration'], function () {
 
