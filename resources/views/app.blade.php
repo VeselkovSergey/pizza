@@ -95,6 +95,32 @@
             }
         </script>
 
+        <script>
+
+            function calcLostTime(container, startHour, startMints) {
+                let timerId = setInterval(function() {
+                    let time = new Date();
+                    let hour = time.getUTCHours() + moskowUtc;
+                    container.innerHTML = ((hour > 24 ? "0" : "") + (((startHour - 1) - hour) < 10 ? '0' : '') + ((startHour - 1) - hour)) + ":" + (((60 - startMints) - time.getMinutes()) < 10 ? '0' : '') + ((60 - startMints) - time.getMinutes()) + ":" + ((60 - time.getSeconds()) < 10 ? '0' : '') + (60 - time.getSeconds());
+                }, 1000);
+            }
+
+            let startHour = 11;
+            let startMints = 0;
+            let endHour = 23;
+            let endMints = 0;
+
+            let moskowUtc = 3;
+            let time = new Date();
+            let hour = time.getUTCHours() + moskowUtc;
+            if (hour < startHour || hour > endHour) {
+                let modalTime = ModalWindow('<div class="text-center mb-10">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div><div class="text-center">До открытия: <span class="dynamic-time">00:00:00</span></div>');
+                calcLostTime(modalTime.querySelector('.dynamic-time'), startHour, startMints)
+            }
+
+        </script>
+
+
     </body>
 
 </html>
