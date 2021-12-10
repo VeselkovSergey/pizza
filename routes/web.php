@@ -142,12 +142,6 @@ Route::group(['prefix' => 'arm'], function () {
 
 });
 
-/**
- * для теста
- */
-
-
-
 /*
  *  test routes
  */
