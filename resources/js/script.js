@@ -128,7 +128,7 @@ function ModalWindow(content, closingCallback, flash) {
 
     let modalWindowComponent = CreateElement('div', {attr: {class: 'modal-window-component'}}, modalWindowComponentContainer);
 
-    let modalWindowShadow = CreateElement('div', {
+    CreateElement('div', {
         attr: {class: 'modal-window-shadow'}, events: {
             click: () => {
                 closingCallback ? closingCallback() : '';
@@ -144,7 +144,7 @@ function ModalWindow(content, closingCallback, flash) {
         }
     }, modalWindowComponent);
 
-    let modalWindowCloseButton = CreateElement('div', {
+    CreateElement('div', {
         attr: {
             class: 'modal-window-close-button',
         },
@@ -214,8 +214,7 @@ function CloseByScroll(modalWindowComponentContainer, container, content, closin
 
         let heightClientScreen = document.documentElement.clientHeight;
 
-        containerModalWindow.addEventListener('touchend', (event) => {
-            //console.log(heightClientScreen)
+        containerModalWindow.addEventListener('touchend', () => {
             containerModalWindow.style.transition = '';
             if (lengthSwipe < (heightClientScreen / 3)) {
                 containerModalWindow.style.transform = 'translateY(0px)';
@@ -835,6 +834,8 @@ function ContainerSuggestionsGeneration(result, inputSuggestions, callback) {
 function LoginWindow(callback) {
     let phoneContainer;
     let phoneField;
+    let authButton;
+    let approveButton;
     let confirmationContainer;
     let confirmationCodeInput;
     let loginWindowContent = CreateElement('div', {
@@ -854,12 +855,19 @@ function LoginWindow(callback) {
                             placeholder: '+7(999)000-11-22',
                             class: 'clear-input p-5 border-radius-5 border w-a text-center phone-mask',
                             maxlength: '16',
-                            type: 'tel'
+                            type: 'tel',
+                        },
+                        events: {
+                            keyup: (event) => {
+                                if (event.key === 'Enter') {
+                                    triggerEvent( authButton, 'click' );
+                                }
+                            }
                         }
                     }),
                     CreateElement('div', {
                         childs: [
-                            CreateElement('button', {
+                            authButton = CreateElement('button', {
                                 content: 'Авторизоваться',
                                 class: 'btn first',
                                 events: {
@@ -890,11 +898,18 @@ function LoginWindow(callback) {
                             class: 'clear-input p-5 border-radius-5 border w-a text-center',
                             maxlength: 4,
                             type: 'tel',
+                        },
+                        events: {
+                            keyup: (event) => {
+                                if (event.key === 'Enter') {
+                                    triggerEvent( approveButton, 'click' );
+                                }
+                            }
                         }
                     }),
                     CreateElement('div', {
                         childs: [
-                            CreateElement('button', {
+                            approveButton = CreateElement('button', {
                                 content: 'Подтвердить',
                                 class: 'btn first',
                                 events: {
@@ -965,7 +980,7 @@ function LoginWindow(callback) {
 }
 
 function Logout() {
-    Ajax(routeLogout).then((response) => {
+    Ajax(routeLogout).then(() => {
         location.reload();
     });
 }
@@ -994,7 +1009,7 @@ function Profile() {
         ]
     });
 
-    let ProfileWindow = ModalWindow(profileContent);
+    ModalWindow(profileContent);
 }
 
 let mainMenu = document.body.querySelector('.button-menu');
