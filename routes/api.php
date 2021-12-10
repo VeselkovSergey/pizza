@@ -26,3 +26,5 @@ Route::group(['prefix' => 'github'], function () {
     Route::get('/test', [\App\Http\Controllers\Api\GitHubController::class, 'test']);
 
 });
+
+Route::get('telegram-bot-webhook', [App\Http\Controllers\TelegramBOT\TelegramBOT::class, 'Index'])->name('telegram-bot-webhook');
