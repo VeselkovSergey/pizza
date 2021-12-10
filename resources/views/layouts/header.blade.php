@@ -70,7 +70,7 @@
         </div>
     </div>
     @if(auth()->check() && auth()->user()->IsAdmin())
-        <div class="alarm-container flex-column-center text-center cp p-5">
+        <a href="{{route('manager-arm-orders-page')}}" class="clear-a color-white alarm-container flex-column-center text-center cp p-5">
             <div class="pos-rel">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-alarm" viewBox="0 0 16 16">
                     <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9V5.5z"/>
@@ -80,7 +80,7 @@
                     0
                 </div>
             </div>
-        </div>
+        </a>
         <a href="{{route('all-routes')}}" class="all-routes-link flex-column-center text-center cp p-5">
             <div class="pos-rel">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
