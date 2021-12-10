@@ -11,7 +11,7 @@ class TelegramBOT extends Controller
 {
     function Index()
     {
-        $telegram = new Telegram();
+        $telegram = new Telegram('1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0');
 
         switch ($telegram->incomingMessage()) {
 
