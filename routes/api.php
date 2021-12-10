@@ -27,4 +27,4 @@ Route::group(['prefix' => 'github'], function () {
 
 });
 
-Route::post('telegram-bot-webhook', [App\Http\Controllers\TelegramBOT\TelegramBOT::class, 'Index'])->name('telegram-bot-webhook');
+Route::post('telegram-bot-webhook', [App\Http\Controllers\TelegramBOT\TelegramBotController::class, 'Index'])->name('telegram-bot-webhook');

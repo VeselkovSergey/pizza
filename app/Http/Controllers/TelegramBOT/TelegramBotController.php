@@ -7,7 +7,7 @@ namespace App\Http\Controllers\TelegramBOT;
 use App\Http\Controllers\Controller;
 use App\Services\Telegram\Telegram;
 
-class TelegramBOT extends Controller
+class TelegramBotController extends Controller
 {
     function Index()
     {
