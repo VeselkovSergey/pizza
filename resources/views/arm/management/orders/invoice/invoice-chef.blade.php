@@ -30,7 +30,7 @@
 <div id="print" style="width: 70mm;">
     <div class="flex-column-center">
         @php($orderSumOriginal = 0)
-        <div class="mb-10" style="font-weight: 600;">{{date('Y-m-d H:i:s', time())}}</div>
+        <div class="mb-10" style="font-weight: 600;"># {{$order->id}} {{date('Y-m-d H:i:s', time())}}</div>
         @foreach($productsModificationsInOrder as $productModificationInOrder)
             @php($orderSumOriginal += ($productModificationInOrder->ProductModifications->selling_price * $productModificationInOrder->product_modification_amount))
             <div class="w-100 mb-10">

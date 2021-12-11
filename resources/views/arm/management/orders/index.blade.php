@@ -39,7 +39,7 @@ $orderStatuses = [];
                 @php($clientData = json_decode($order->client_raw_data))
                 <a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}" data-order-id="{{$order->id}}" data-order-status-id="{{$order->status_id}}" class="order flex-space-between clear-a border p-10 m-5 order-status-{{$order->status_id}}">
                     <div>
-                        <div>{{\App\Models\Orders::STATUS[$order->status_id]}}</div>
+                        <div># {{$order->id}} {{\App\Models\Orders::STATUS[$order->status_id]}}</div>
                         <div class="order-info @if((\App\Models\Orders::STATUS_TEXT['cancelled'] === $order->status_id) || \App\Models\Orders::STATUS_TEXT['completed'] === $order->status_id) hover-show @endif">
                             <div>Имя: {{$clientData->clientName}}</div>
                             <div>Номер: {{$clientData->clientPhone}}</div>
