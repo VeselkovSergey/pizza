@@ -101,6 +101,10 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
     Route::group(['prefix' => 'administration'], function () {
 
         Route::get('/', [Controllers\ARM\AdministratorARMController::class, 'Index'])->name('administrator-arm-page');
+        Route::get('/users', [Controllers\ARM\AdministratorARMController::class, 'Users'])->name('administrator-arm-users-page');
+        Route::get('/user/{userId}/orders', [Controllers\ARM\AdministratorARMController::class, 'UserOrders'])->name('administrator-arm-user-orders-page');
+
+        Route::get('/orders', [Controllers\ARM\AdministratorARMController::class, 'Orders'])->name('administrator-arm-orders-page');
 
     });
 
