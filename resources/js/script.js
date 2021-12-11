@@ -995,7 +995,7 @@ function Profile() {
         childs: [
             CreateElement('div', {
                 content: 'Личный кабинет находится в разработке <br /> Ваш номер телефона: +' + userPhone,
-                class: 'mb-10'
+                class: 'mb-10 text-center'
             }),
             CreateElement('div', {
                 childs: [
