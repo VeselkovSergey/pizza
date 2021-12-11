@@ -152,13 +152,20 @@ class OrdersController extends Controller
         return Orders::query()->orderBy('id', 'desc')->get();
     }
 
-    public static function OrdersByDate($requiredDate = null)
+    public static function OrdersByDate($requiredDate, $allOrders = false)
     {
-        $date = isset($requiredDate) ? strtotime($requiredDate) : time();
-        $startDate = date('Y-m-d 00:00:00', $date);
-        $endDate = date('Y-m-d 23:59:59', $date);
-//        dd(Orders::query()->where('created_at', '>=', $startDate)->where('created_at', '<=', $endDate)->orderBy('id', 'desc')->toSql());
-        return Orders::query()->where('created_at', '>=', $startDate)->where('created_at', '<=', $endDate)->orderBy('id', 'desc')->get();
+        $requiredDate = strtotime($requiredDate);
+        $startDate = date('Y-m-d 00:00:00', $requiredDate);
+        $endDate = date('Y-m-d 23:59:59', $requiredDate);
+        $orders = new Orders();
+        $orders = $orders->where('created_at', '>=', $startDate);
+        $orders = $orders->where('created_at', '<=', $endDate);
+        $orders = $orders->where('created_at', '<=', $endDate);
+        if (!$allOrders) {
+            $orders = $orders->whereNotIn('status_id', [Orders::STATUS_TEXT['completed'], Orders::STATUS_TEXT['cancelled']]);
+        }
+        $orders = $orders->orderBy('id', 'desc');
+        return $orders->get();;
     }
 
     public static function KitchenOrdersOnly()
