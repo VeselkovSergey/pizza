@@ -152,10 +152,13 @@ class OrdersController extends Controller
         return Orders::query()->orderBy('id', 'desc')->get();
     }
 
-    public static function TodayOrders()
+    public static function OrdersByDate($requiredDate = null)
     {
-        $today = date('Y-m-d 00:00:00', time());
-        return Orders::query()->where('created_at', '>=', $today)->orderBy('id', 'desc')->get();
+        $date = isset($requiredDate) ? strtotime($requiredDate) : time();
+        $startDate = date('Y-m-d 00:00:00', $date);
+        $endDate = date('Y-m-d 23:59:59', $date);
+//        dd(Orders::query()->where('created_at', '>=', $startDate)->where('created_at', '<=', $endDate)->orderBy('id', 'desc')->toSql());
+        return Orders::query()->where('created_at', '>=', $startDate)->where('created_at', '<=', $endDate)->orderBy('id', 'desc')->get();
     }
 
     public static function KitchenOrdersOnly()
