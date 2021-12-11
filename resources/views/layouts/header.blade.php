@@ -20,7 +20,7 @@
     </div>
 </div>
 
-<div class="container-profile-and-basket flex-center p-5">
+<div class="container-profile-and-basket flex-center pr-5">
     <div onclick="{{$actionConditionAuth}}" class="container-profile flex-column-center text-center cp p-5 {{$authCheck ? 'color-green' : ''}}">
         <div>
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
@@ -77,6 +77,6 @@
         </a>
     @endif
 </div>
-<div class="phone-container-header flex-center p-5">
+<div class="phone-container-header flex-center">
     <a class="text-center color-white" style="text-decoration: none;" href="tel:+7(926)585-36-21">+7(926)585-36-21</a>
 </div>
