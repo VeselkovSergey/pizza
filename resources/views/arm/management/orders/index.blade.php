@@ -28,6 +28,7 @@ $orderStatuses = [];
             <label>
                 На какое число заказы
                 <input class="required-date" type="date" value="{{$requiredDate}}">
+                <button class="cp"><a class="clear-a" href="{{route('manager-arm-orders-page')}}">Сегодняшние</a></button>
                 <button class="cp all-orders-required-date">+ выполненные/отказанные</button>
             </label>
         </div>
