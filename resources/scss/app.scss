@@ -1,3 +1,11 @@
+.amount-item-in-basket,
+.amount-alarm-item {
+    border-radius: 100px;
+    top: -13px;
+    right: -13px;
+    min-width: 20px;
+}
+
 .flash-message-container {
     top: 100px;
     right: 25px;
@@ -19,10 +27,270 @@ header {
 }
 
 .logo-container {
+    max-width: 100px;
     .logo {
         img {
             transform: rotate(45deg);
             animation: lds-ring 2.5s cubic-bezier(0.5, 0, 0.5, 1) infinite;
         }
+    }
+}
+
+main {
+    margin: 25px;
+}
+
+.invalid-value {
+    border-color: red !important;
+    border-width: 2px !important;
+}
+
+.product-window-shadow, .basket-window-shadow {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+}
+
+.container-suggestions-pos-abs {
+    border: 1px solid #cbcdd1;
+    background-color: #FFFFFF;
+    width: calc(100% - 2px); /* - border */
+    color: black;
+}
+
+.suggestion-item:hover {
+    cursor: pointer;
+    background-color: rgb(243, 243, 247);
+}
+
+.clear-product-button {
+    display: none;
+}
+
+
+/* ADAPTIVE*/
+
+.button-open-product {
+    width: 20%;
+}
+
+header {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.product-content {
+    width: 25vw;
+    flex-direction: column;
+}
+
+.container-img-and-about-product, .container-modification-product {
+    width: 100%;
+}
+
+.container-product-img-and-description {
+    display: block;
+}
+
+/* модальное окно */
+.modal-window-component-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.modal-window-component-container .modal-window-component {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-window-component-container .modal-window-component .modal-window-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #00000030;
+}
+
+.modal-window-component-container .modal-window-component .modal-window-content-container {
+    z-index: 1;
+    position: relative;
+    border-radius: 10px;
+    /*background-color: white;*/
+    padding: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    display: flex;
+}
+
+.modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-close-button path {
+    fill: white;
+}
+
+.modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-content {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 80vh;
+}
+
+.buttons-edit-amount-product:active {
+    transform: scale(0.95);
+}
+
+.pre-text {
+
+    animation: pre-text-hide 5s;
+    animation-fill-mode: forwards;
+}
+
+.pre-text>div {
+    font-style: italic;
+    font-size: 50px;
+    word-break: break-all;
+    padding: 50px;
+    text-align: center;
+}
+
+@keyframes pre-text-hide {
+    50% {
+        opacity: 1;
+    }
+    99% {
+        height: 100vh;
+    }
+    100% {
+        opacity: 0;
+        height: 0;
+    }
+}
+
+/* цвета */
+.order-status-1 {
+    background-color: #dc3545;
+    color: #FFFFFF;
+}
+.order-status-2 {
+    background-color: #0dcaf0;
+    color: #000000;
+}
+.order-status-3 {
+    background-color: #ff6e07;
+    color: #000000;
+}
+.order-status-4 {
+    background-color: #ffc107;
+    color: #000000;
+}
+.order-status-5 {
+    background-color: #198754;
+    color: #FFFFFF;
+}
+.order-status-6 {
+    background-color: #0d6efd;
+    color: #FFFFFF;
+}
+.order-status-7 {
+    background-color: #6c757d;
+    color: #FFFFFF;
+}
+.order-status-8 {
+    background-color: #f8f9fa;
+    color: #000000;
+    border: 1px solid #000000;
+}
+.order-status-9 {
+    background-color: #212529;
+    color: #FFFFFF;
+}
+
+.product-in-order-status-1 {
+    background-color: #dc3545;
+    color: #FFFFFF;
+}
+
+.product-in-order-status-2 {
+    background-color: #ffc107;
+    color: #000000;
+}
+
+.product-in-order-status-3 {
+    background-color: #198754;
+    color: #FFFFFF;
+}
+
+.button-menu {
+    display: none;
+}
+
+.close-menu-button > svg {
+    transition: transform 500ms;
+}
+
+.left-menu:not(.hide) .close-menu-button > svg {
+    animation: rotate 1s;
+}
+
+.close-menu-button > svg:hover {
+    transform: rotate(360deg);
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+@font-face {
+    font-family: 'Arkhip';
+    src: url('/fonts/arkhip.eot'); /* IE 9 Compatibility Mode */
+    src: url('/fonts/arkhip.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+    url('/fonts/arkhip.woff2') format('woff2'), /* Super Modern Browsers */
+    url('/fonts/arkhip.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+    url('/fonts/arkhip.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('/fonts/arkhip.svg#arkhip') format('svg'); /* Chrome < 4, Legacy iOS */
+}
+
+* {
+    font-family: 'Arkhip', serif;
+    font-weight: 600;
+}
+
+.ingredient label {
+    font-weight: normal;
+}
+
+.modal-window-content-container {
+    background-color: #101010;
+    border: 1px solid #ff7300;
+}
+
+.motion {
+    animation: motion-animation 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes motion-animation {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.5);
     }
 }

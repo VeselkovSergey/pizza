@@ -12,13 +12,11 @@
         <title>Пицца Дубна. БроПицца!</title>
         <meta name="description" content="Привет БРО! Говорят в Дубне давненько никто не делал вкусную пиццу. Этому городу определенно нужен был спасатель! Классно что в Дубне открылись мы (БРОпицца)! Теперь вкусная пицца будет у каждого на столе!">
         <meta name="keywords" content="Пицца, Дубна, Бропицца, BROпицца, bro пицца, бро пицца, вкусная пицца, пицца Дубна, новая пиццерия Дубна">
-        <link href="{{asset('resources/css/reset.css')}}" rel="stylesheet">
-        <link href="{{asset('resources/css/helpers.css')}}" rel="stylesheet">
-        <link href="{{asset('resources/css/loaders.css')}}" rel="stylesheet">
-
-        <link href="{{asset('resources/css/app.css')}}" rel="stylesheet">
-
+        <link href="{{asset('resources/scss/reset.scss')}}" rel="stylesheet">
+        <link href="{{asset('resources/scss/helpers.scss')}}" rel="stylesheet">
+        <link href="{{asset('resources/scss/loaders.scss')}}" rel="stylesheet">
         <link href="{{asset('resources/scss/app.scss')}}" rel="stylesheet">
+        <link href="{{asset('resources/scss/adaptive.scss')}}" rel="stylesheet">
 
 {{--        <link href="{{asset('fonts/fonts.css')}}" rel="stylesheet">--}}
 
@@ -97,13 +95,13 @@
 
         <script>
 
-            function calcLostTime(container, startHour, startMints) {
-                let timerId = setInterval(function() {
-                    let time = new Date();
-                    let hour = time.getUTCHours() + moskowUtc;
-                    container.innerHTML = ((hour > 24 ? "0" : "") + (((startHour - 1) - hour) < 10 ? '0' : '') + ((startHour - 1) - hour)) + ":" + (((60 - startMints) - time.getMinutes()) < 10 ? '0' : '') + ((60 - startMints) - time.getMinutes()) + ":" + ((60 - time.getSeconds()) < 10 ? '0' : '') + (60 - time.getSeconds());
-                }, 1000);
-            }
+            // function calcLostTime(container, startHour, startMints) {
+            //     let timerId = setInterval(function() {
+            //         let time = new Date();
+            //         let hour = time.getUTCHours() + moskowUtc;
+            //         container.innerHTML = ((hour > 24 ? "0" : "") + (((startHour - 1) - hour) < 10 ? '0' : '') + ((startHour - 1) - hour)) + ":" + (((60 - startMints) - time.getMinutes()) < 10 ? '0' : '') + ((60 - startMints) - time.getMinutes()) + ":" + ((60 - time.getSeconds()) < 10 ? '0' : '') + (60 - time.getSeconds());
+            //     }, 1000);
+            // }
 
             let startHour = 11;
             let startMints = 0;
@@ -114,7 +112,7 @@
             let time = new Date();
             let hour = time.getUTCHours() + moskowUtc;
             if (hour < startHour || hour >= endHour) {
-                let modalTime = ModalWindow('<div class="text-center mb-10">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div></div>');
+                ModalWindow('<div class="text-center mb-10">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div></div>');
                 // calcLostTime(modalTime.querySelector('.dynamic-time'), startHour, startMints)
             }
 

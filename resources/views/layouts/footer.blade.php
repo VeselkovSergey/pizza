@@ -1,6 +1,6 @@
 <div class="bg-violet flex-space-between py-10 footer-container" style="background-color: black; justify-content: space-evenly;">
 
-    <div class="flex-center social-link-container">
+    <div class="flex-center vk-insta-container">
         <a target="_blank" href="https://vk.com/bropizza_dubna " class="mr-10">
             <svg width="32" height="32" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <defs>

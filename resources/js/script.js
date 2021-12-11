@@ -386,6 +386,11 @@ function PriceSumProductsInBasket() {
 
 function UpdateBasketCounter(value) {
     let basketCounter = document.body.querySelector('.amount-item-in-basket');
+    if (value > 0) {
+        basketCounter.show();
+    } else {
+        basketCounter.hide();
+    }
     basketCounter.innerHTML = value;
 }
 
