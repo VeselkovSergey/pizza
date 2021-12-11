@@ -20,7 +20,8 @@ class ManagerARMController extends Controller
 
     public function Orders()
     {
-        $orders = OrdersController::TodayOrders();
+        $requiredDate = request()->get('required-date');
+        $orders = OrdersController::OrdersByDate($requiredDate);
 //        $orders = OrdersController::AllOrders();
         return view('arm.management.orders.index', [
             'orders' => $orders
