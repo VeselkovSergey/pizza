@@ -20,11 +20,12 @@ class ManagerARMController extends Controller
 
     public function Orders()
     {
-        $requiredDate = request()->get('required-date');
-        $orders = OrdersController::OrdersByDate($requiredDate);
-//        $orders = OrdersController::AllOrders();
+        $requiredDate = (request()->get('required-date') === null) ? date('Y-m-d', time()) : request()->get('required-date');
+        $allOrders = !empty(request()->get('all-orders'));
+        $orders = OrdersController::OrdersByDate($requiredDate, $allOrders);
         return view('arm.management.orders.index', [
-            'orders' => $orders
+            'orders' => $orders,
+            'requiredDate' => $requiredDate,
         ]);
     }
 

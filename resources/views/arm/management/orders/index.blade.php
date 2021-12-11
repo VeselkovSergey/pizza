@@ -27,9 +27,8 @@ $orderStatuses = [];
             </label>
             <label>
                 На какое число заказы
-                <input class="required-date" type="date">
-                <button class="cp orders-other-date">Показать</button>
-                <button class="cp orders-today"><a class="clear-a" href="{{route('manager-arm-orders-page')}}">Сегодняшние</a></button>
+                <input class="required-date" type="date" value="{{$requiredDate}}">
+                <button class="cp all-orders-required-date">+ выполненные/отказанные</button>
             </label>
         </div>
         <div class="orders-container">
@@ -160,12 +159,18 @@ $orderStatuses = [];
         //     orderAlertIcon.classList.remove('motion');
         // }
 
-        let ordersOtherDateButton = document.body.querySelector('.orders-other-date');
-        ordersOtherDateButton.addEventListener('click', () => {
-            let requiredDate = document.body.querySelector('.required-date');
-            if (requiredDate.value) {
-                location.href = "{{route('manager-arm-orders-page')}}?required-date=" + requiredDate.value;
+        let changeRequiredDateInput = document.body.querySelector('.required-date');
+        changeRequiredDateInput.addEventListener('change', (event) => {
+            let requiredDate = event.target.value;
+            if (requiredDate) {
+                location.href = "{{route('manager-arm-orders-page')}}?required-date=" + requiredDate;
             }
+        });
+
+        let allOrdersRequiredDateButton = document.body.querySelector('.all-orders-required-date');
+        allOrdersRequiredDateButton.addEventListener('click', () => {
+            let requiredDate = document.body.querySelector('.required-date');
+            location.href = "{{route('manager-arm-orders-page')}}?all-orders=true&required-date=" + requiredDate.value;
         });
 
     </script>
