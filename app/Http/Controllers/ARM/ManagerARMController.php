@@ -61,6 +61,26 @@ class ManagerARMController extends Controller
         return ['orders' => $orders, 'statuses' => Orders::STATUS];
     }
 
+    public function InvoicePage()
+    {
+        $orderId = request()->orderId;
+        $order = OrdersController::Order($orderId);
+        $clientInfo = json_decode($order->client_raw_data);
+        $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
+        $rawData = json_decode($order->all_information_raw_data);
+
+        return view('arm.management.orders.invoice.invoice', compact('order', 'clientInfo', 'productsModificationsInOrder', 'rawData'));
+    }
+
+    public function InvoiceChefPage()
+    {
+        $orderId = request()->orderId;
+        $order = OrdersController::Order($orderId);
+        $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
+
+        return view('arm.management.orders.invoice.invoice-chef', compact('productsModificationsInOrder'));
+    }
+
     public function ChangeStatusOrderToNewOrder()
     {
         $orderId = request()->orderId;
