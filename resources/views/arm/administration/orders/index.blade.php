@@ -127,7 +127,7 @@
             <div class="mb-10">Кол-во заказов: {{$orders->count()}} (Сайт: {{$ordersCreatorWeb}} / Менеджер {{$ordersCreatorManager}})</div>
             <div class="mb-10">Средний чек: {{$sum / $orders->count()}}</div>
             <div class="mb-10">
-                <div class="toggle-button cp" data-toogle="amount-orders-in-days-container">Кол-во заказов в день (нал/банк/всего)</div>
+                <div class="toggle-button cp" data-toogle="amount-orders-in-days-container">Кол-во заказов в день (нал/банк/всего) (нажать. раскроется.)</div>
                 <div class="amount-orders-in-days-container">
                     @foreach($amountOrdersInDays as $date => $amountOrdersInDay)
                         <div>Дата: {{date('Y-m-d', strtotime($date))}} - Кол-во: {{$amountOrdersInDay['cash']}}/{{$amountOrdersInDay['bank']}}/{{$amountOrdersInDay['cash'] + $amountOrdersInDay['bank']}} - сумма: {{$sumOrdersInDays[$date]['cash']}}/{{$sumOrdersInDays[$date]['bank']}}/{{$sumOrdersInDays[$date]['cash'] + $sumOrdersInDays[$date]['bank']}}</div>
