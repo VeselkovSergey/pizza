@@ -26,7 +26,7 @@ class OrdersController extends Controller
         $basket = json_decode($request->basket);
         $clientInformation = self::CleanClientInformation(json_decode($request->clientInformation));
         $orderSumFront = $request->orderSum;
-        $clientInformation->clientPhone = auth()->user()->IsAdmin() ? $clientInformation->clientPhone : auth()->user()->phone;
+        $clientInformation->clientPhone = auth()->user()->IsManager() ? $clientInformation->clientPhone : auth()->user()->phone;
 
         $clientInformation->clientPhone = preg_replace("/[^0-9]/", '', $clientInformation->clientPhone);
 
@@ -165,7 +165,7 @@ class OrdersController extends Controller
             $orders = $orders->whereNotIn('status_id', [Orders::STATUS_TEXT['completed'], Orders::STATUS_TEXT['cancelled']]);
         }
         $orders = $orders->orderBy('id', 'desc');
-        return $orders->get();;
+        return $orders->get();
     }
 
     public static function KitchenOrdersOnly()

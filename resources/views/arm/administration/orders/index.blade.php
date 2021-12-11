@@ -43,11 +43,11 @@
                     @php($rawData = json_decode($order->all_information_raw_data))
                     @php($sum += $rawData->orderSum)
                     <tr>
-                        <td>{{$order->id}}</td>
+                        <td><a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}">{{$order->id}}</a></td>
                         <td>{{\App\Models\Orders::STATUS[$order->status_id]}}</td>
                         <td>{{$order->created_at}}</td>
                         <td>{{$order->updated_at}}</td>
-                        <td>{{date_diff($order->created_at, $order->updated_at)->format('%h:%i:%s')}}</td>
+                        <td>{{date_diff($order->created_at, $order->updated_at)->format('%H:%I:%S')}}</td>
                         <td>{{$productsModificationsInOrder->count()}}</td>
                         <td>{{$order->courier_id}}</td>
                         <td>{{$rawData->orderSum}}</td>

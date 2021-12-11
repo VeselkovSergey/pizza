@@ -69,7 +69,7 @@
 
         <script>
             const auth = {{auth()->check() ? 'true' : 'false'}};
-            const admin = {{(auth()->check() && auth()->user()->IsAdmin()) ? 'true' : 'false'}};
+            const admin = {{(auth()->check() && auth()->user()->IsManager()) ? 'true' : 'false'}};
             const userPhone = "{{auth()->check() ? auth()->user()->phone : ''}}";
 
             const routeOrderCreate = "{{route('order-create')}}";
@@ -112,7 +112,9 @@
             let time = new Date();
             let hour = time.getUTCHours() + moskowUtc;
             if (hour < startHour || hour >= endHour) {
-                ModalWindow('<div class="text-center mb-10">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div></div>');
+                if (!admin) {
+                    ModalWindow('<div class="text-center mb-10">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div></div>');
+                }
                 // calcLostTime(modalTime.querySelector('.dynamic-time'), startHour, startMints)
             }
 
