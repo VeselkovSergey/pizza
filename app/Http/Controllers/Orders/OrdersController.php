@@ -112,9 +112,9 @@ class OrdersController extends Controller
 
     private static function CleanClientInformation($clientInformation)
     {
-        $clientInformation->clientName = str_replace(['\'', '\n', '\r'], '', $clientInformation->clientName);
-        $clientInformation->clientAddressDelivery = str_replace(['\'', '\n', '\r'], '', $clientInformation->clientAddressDelivery);
-        $clientInformation->clientComment = str_replace(['\'', '\n', '\r'], '', $clientInformation->clientComment);
+        $clientInformation->clientName = str_replace(["'", "\n", "\r", "\r\n"], '', $clientInformation->clientName);
+        $clientInformation->clientAddressDelivery = str_replace(["'", "\n", "\r", "\r\n"], '', $clientInformation->clientAddressDelivery);
+        $clientInformation->clientComment = str_replace(["'", "\n", "\r", "\r\n"], '', $clientInformation->clientComment);
         return $clientInformation;
     }
 
