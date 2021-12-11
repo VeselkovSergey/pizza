@@ -29,7 +29,8 @@ $orderStatuses = [];
                 На какое число заказы
                 <input class="required-date" type="date" value="{{$requiredDate}}">
                 <button class="cp"><a class="clear-a" href="{{route('manager-arm-orders-page')}}">Заказы за сегодня</a></button>
-                <button class="cp all-orders-required-date">+ выполненные/отказанные</button>
+                <button class="cp all-orders-required-date">показать выполненные/отказанные</button>
+                <button class="cp order-without-cancelled-and-completed-required-date">скрыть выполненные/отказанные</button>
             </label>
         </div>
         <div class="orders-container">
@@ -172,6 +173,12 @@ $orderStatuses = [];
         allOrdersRequiredDateButton.addEventListener('click', () => {
             let requiredDate = document.body.querySelector('.required-date');
             location.href = "{{route('manager-arm-orders-page')}}?all-orders=true&required-date=" + requiredDate.value;
+        });
+
+        let ordersWithoutCancelledAndCompletedRequiredDateButton = document.body.querySelector('.order-without-cancelled-and-completed-required-date');
+        ordersWithoutCancelledAndCompletedRequiredDateButton.addEventListener('click', () => {
+            let requiredDate = document.body.querySelector('.required-date');
+            location.href = "{{route('manager-arm-orders-page')}}?&required-date=" + requiredDate.value;
         });
 
     </script>
