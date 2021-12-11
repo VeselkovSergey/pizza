@@ -113,6 +113,9 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::get('/order/{orderId?}', [Controllers\ARM\ManagerARMController::class, 'Order'])->name('manager-arm-order-page');
         Route::post('/order/search-by-phone', [Controllers\ARM\ManagerARMController::class, 'SearchByPhone'])->name('manager-arm-order-search-bu-phone');
 
+        Route::get('/order/{orderId}/invoice', [Controllers\ARM\ManagerARMController::class, 'InvoicePage'])->name('manager-arm-order-invoice-page');
+        Route::get('/order/{orderId}/invoice-chef', [Controllers\ARM\ManagerARMController::class, 'InvoiceChefPage'])->name('manager-arm-order-invoice-chef-page');
+
         Route::post('/change-status-order-to-new-order', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToNewOrder'])->name('manager-arm-change-status-order-to-new-order-page');
         Route::post('/change-status-order-to-manager-processes', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToManagerProcessesRequest'])->name('manager-arm-change-status-order-to-manager-processes-page');
         Route::post('/transfer-order-to-kitchen', [Controllers\ARM\ManagerARMController::class, 'TransferOrderToKitchen'])->name('manager-arm-transfer-order-to-kitchen-page');

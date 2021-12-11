@@ -112,9 +112,9 @@ class OrdersController extends Controller
 
     private static function CleanClientInformation($clientInformation)
     {
-        $clientInformation->clientName = str_replace(['\'', '\n', '\r'], '', $clientInformation->clientName);
-        $clientInformation->clientAddressDelivery = str_replace(['\'', '\n', '\r'], '', $clientInformation->clientAddressDelivery);
-        $clientInformation->clientComment = str_replace(['\'', '\n', '\r'], '', $clientInformation->clientComment);
+        $clientInformation->clientName = str_replace(["'", "\n", "\r", "\r\n"], '', $clientInformation->clientName);
+        $clientInformation->clientAddressDelivery = str_replace(["'", "\n", "\r", "\r\n"], '', $clientInformation->clientAddressDelivery);
+        $clientInformation->clientComment = str_replace(["'", "\n", "\r", "\r\n"], '', $clientInformation->clientComment);
         return $clientInformation;
     }
 
@@ -152,10 +152,20 @@ class OrdersController extends Controller
         return Orders::query()->orderBy('id', 'desc')->get();
     }
 
-    public static function TodayOrders()
+    public static function OrdersByDate($requiredDate, $allOrders = false)
     {
-        $today = date('Y-m-d 00:00:00', time());
-        return Orders::query()->where('created_at', '>=', $today)->orderBy('id', 'desc')->get();
+        $requiredDate = strtotime($requiredDate);
+        $startDate = date('Y-m-d 00:00:00', $requiredDate);
+        $endDate = date('Y-m-d 23:59:59', $requiredDate);
+        $orders = new Orders();
+        $orders = $orders->where('created_at', '>=', $startDate);
+        $orders = $orders->where('created_at', '<=', $endDate);
+        $orders = $orders->where('created_at', '<=', $endDate);
+        if (!$allOrders) {
+            $orders = $orders->whereNotIn('status_id', [Orders::STATUS_TEXT['completed'], Orders::STATUS_TEXT['cancelled']]);
+        }
+        $orders = $orders->orderBy('id', 'desc');
+        return $orders->get();;
     }
 
     public static function KitchenOrdersOnly()

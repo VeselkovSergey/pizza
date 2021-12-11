@@ -20,10 +20,12 @@ class ManagerARMController extends Controller
 
     public function Orders()
     {
-        $orders = OrdersController::TodayOrders();
-//        $orders = OrdersController::AllOrders();
+        $requiredDate = (request()->get('required-date') === null) ? date('Y-m-d', time()) : request()->get('required-date');
+        $allOrders = !empty(request()->get('all-orders'));
+        $orders = OrdersController::OrdersByDate($requiredDate, $allOrders);
         return view('arm.management.orders.index', [
-            'orders' => $orders
+            'orders' => $orders,
+            'requiredDate' => $requiredDate,
         ]);
     }
 
@@ -59,6 +61,26 @@ class ManagerARMController extends Controller
         $phone = request()->phone;
         $orders = OrdersController::SearchByPhone($phone);
         return ['orders' => $orders, 'statuses' => Orders::STATUS];
+    }
+
+    public function InvoicePage()
+    {
+        $orderId = request()->orderId;
+        $order = OrdersController::Order($orderId);
+        $clientInfo = json_decode($order->client_raw_data);
+        $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
+        $rawData = json_decode($order->all_information_raw_data);
+
+        return view('arm.management.orders.invoice.invoice', compact('order', 'clientInfo', 'productsModificationsInOrder', 'rawData'));
+    }
+
+    public function InvoiceChefPage()
+    {
+        $orderId = request()->orderId;
+        $order = OrdersController::Order($orderId);
+        $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
+
+        return view('arm.management.orders.invoice.invoice-chef', compact('productsModificationsInOrder'));
     }
 
     public function ChangeStatusOrderToNewOrder()

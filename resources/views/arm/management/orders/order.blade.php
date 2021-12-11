@@ -9,12 +9,25 @@
     </style>
 
     <div>
-        <button class="mb-10 cp back-to-orders">
-            <a class="clear-a" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
-        </button>
-        @if($order->status_id === \App\Models\Orders::STATUS_TEXT['managerProcesses'])
-        <button class="mb-10 cp order-edit-button">Редактировать заказ</button>
-        @endif
+        <div class="flex-space-between">
+            <div>
+                <button class="mb-10 cp back-to-orders">
+                    <a class="clear-a" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
+                </button>
+                @if($order->status_id === \App\Models\Orders::STATUS_TEXT['managerProcesses'])
+                    <button class="mb-10 cp order-edit-button">Редактировать заказ</button>
+                @endif
+            </div>
+            <div>
+                <button class="mb-10 cp stack-invoices">Печать комплекта чеков</button>
+                <button class="mb-10 cp full-invoice">
+                    <a class="clear-a" target="_blank" href="{{route('manager-arm-order-invoice-page', $order->id)}}">Печать полного чека</a>
+                </button>
+                <button class="mb-10 cp chef-invoice">
+                    <a class="clear-a" target="_blank" href="{{route('manager-arm-order-invoice-chef-page', $order->id)}}">Печать чека для повара</a>
+                </button>
+            </div>
+        </div>
 
         <div class="mb-10">
             @switch($order->status_id)
@@ -119,7 +132,7 @@
             let container =
                 '<div class="flex-column-center selector-courier">' +
                     '<div class="mb-15">Выберите курьера</div>' +
-                    '<label class="p-5 cp"><input type="radio" name="courier" checked  value="0">Курьера нет в списке</label>' +
+                    '<label class="p-5 cp"><input type="radio" name="courier" checked  value="0">Самовывоз</label>' +
                 @foreach($couriers as $courier)
                     '<label class="p-5 cp"><input type="radio" name="courier" value="{{$courier->id}}">{{$courier->name}}</label>' +
                 @endforeach
@@ -191,6 +204,23 @@
 
             });
         }
+
+        let stackInvoicesButton = document.body.querySelector('.stack-invoices');
+        stackInvoicesButton.addEventListener('click', () => {
+            window.open(
+                "{{route('manager-arm-order-invoice-chef-page', $order->id)}}",
+                '_blank'
+            );
+            window.open(
+                "{{route('manager-arm-order-invoice-page', $order->id)}}",
+                '_blank'
+            );
+            window.open(
+                "{{route('manager-arm-order-invoice-page', $order->id)}}",
+                '_blank'
+            );
+        });
+
 
     </script>
 

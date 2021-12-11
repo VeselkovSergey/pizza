@@ -10,14 +10,27 @@ $orderStatuses = [];
         .order:hover {
             transform: scale(1.01);
         }
+        .hover-show {
+            display: none;
+        }
+        .order:hover .hover-show {
+            display: block;
+        }
     </style>
 
     <div>
         <div>Заказы</div>
         <div>
-            <label>
+            <label class="mb-5">
                 Поиск по номеру телефона:
                 <input class="search-orders-by-phone" type="text" placeholder="79991112233" maxlength="11">
+            </label>
+            <label>
+                На какое число заказы
+                <input class="required-date" type="date" value="{{$requiredDate}}">
+                <button class="cp"><a class="clear-a" href="{{route('manager-arm-orders-page')}}">Заказы за сегодня</a></button>
+                <button class="cp all-orders-required-date">показать выполненные/отказанные</button>
+                <button class="cp order-without-cancelled-and-completed-required-date">скрыть выполненные/отказанные</button>
             </label>
         </div>
         <div class="orders-container">
@@ -27,11 +40,15 @@ $orderStatuses = [];
                 <a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}" data-order-id="{{$order->id}}" data-order-status-id="{{$order->status_id}}" class="order flex-space-between clear-a border p-10 m-5 order-status-{{$order->status_id}}">
                     <div>
                         <div>{{\App\Models\Orders::STATUS[$order->status_id]}}</div>
-                        <div>Имя: {{$clientData->clientName}}</div>
-                        <div>Номер: {{$clientData->clientPhone}}</div>
-                        <div>Адрес: {{$clientData->clientAddressDelivery}}</div>
-                        <div>Комментарий: {{$clientData->clientComment}}</div>
-                        <div>{{$order->created_at}}</div>
+                        <div class="order-info @if((\App\Models\Orders::STATUS_TEXT['cancelled'] === $order->status_id) || \App\Models\Orders::STATUS_TEXT['completed'] === $order->status_id) hover-show @endif">
+                            <div>Имя: {{$clientData->clientName}}</div>
+                            <div>Номер: {{$clientData->clientPhone}}</div>
+                            <div>Адрес: {{$clientData->clientAddressDelivery}}</div>
+                            <div>Комментарий: {{$clientData->clientComment}}</div>
+                            <div>Сумма: {{json_decode($order->all_information_raw_data)->orderSum}}</div>
+                            <div>Оплата: {{($clientData->typePayment[0] === true ? 'Карта' : 'Наличные')}}</div>
+                            <div>{{$order->created_at}}</div>
+                        </div>
                     </div>
                     <div class="order-alert-icon hide">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
@@ -143,6 +160,26 @@ $orderStatuses = [];
         //     orderAlertIcon.hide();
         //     orderAlertIcon.classList.remove('motion');
         // }
+
+        let changeRequiredDateInput = document.body.querySelector('.required-date');
+        changeRequiredDateInput.addEventListener('change', (event) => {
+            let requiredDate = event.target.value;
+            if (requiredDate) {
+                location.href = "{{route('manager-arm-orders-page')}}?required-date=" + requiredDate;
+            }
+        });
+
+        let allOrdersRequiredDateButton = document.body.querySelector('.all-orders-required-date');
+        allOrdersRequiredDateButton.addEventListener('click', () => {
+            let requiredDate = document.body.querySelector('.required-date');
+            location.href = "{{route('manager-arm-orders-page')}}?all-orders=true&required-date=" + requiredDate.value;
+        });
+
+        let ordersWithoutCancelledAndCompletedRequiredDateButton = document.body.querySelector('.order-without-cancelled-and-completed-required-date');
+        ordersWithoutCancelledAndCompletedRequiredDateButton.addEventListener('click', () => {
+            let requiredDate = document.body.querySelector('.required-date');
+            location.href = "{{route('manager-arm-orders-page')}}?&required-date=" + requiredDate.value;
+        });
 
     </script>
 
