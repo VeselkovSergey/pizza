@@ -10,6 +10,12 @@
         table, th, td {
             border: 1px solid black;
         }
+        .modal-window-component-container .modal-window-component .modal-window-content-container {
+            background-color: white;
+        }
+        .modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-close-button path {
+            fill: black;
+        }
     </style>
 
     <div class="mb-10">
@@ -17,31 +23,35 @@
     </div>
 
     <div>
-        <div>Пользователи</div>
         <div>
             <table class="w-100 border">
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Имя</th>
-                    <th>Номер</th>
-                    <th>Роль</th>
-                    <th>Кол-во заказов</th>
+                    <th>Категория</th>
+                    <th>Наиминование</th>
+                    <th>Кол-во</th>
+                    <th>Стоимость</th>
+                    <th>Себестоимость</th>
+                    <th>Наценка</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($users as $user)
-                    <tr>
-                        <td>{{$user->id}}</td>
-                        <td>{{$user->name}}</td>
-                        <td>{{$user->phone}}</td>
-                        <td>{{$user->role_id}}</td>
-                        <td><a href="{{route('administrator-arm-user-orders-page', $user->id)}}">{{$user->Orders->count()}}</a></td>
-                    </tr>
+                @foreach($productsModifications as $id => $productModification)
+                <tr>
+                    <td>#{{$id}}</td>
+                    <td>{{$productModification->categoryTitle}}</td>
+                    <td>{{$productModification->title}}</td>
+                    <td>{{$productModification->amount}}</td>
+                    <td>{{$productModification->price}}</td>
+                    <td>{{$productModification->costPrice}}</td>
+                    <td>{{number_format(((($productModification->price - $productModification->costPrice ) / $productModification->costPrice) * 100), 2)}} %</td>
+                </tr>
                 @endforeach
                 </tbody>
             </table>
         </div>
+
     </div>
 
 
@@ -82,6 +92,17 @@
         }
 
         makeAllSortable();
+    </script>
+
+    <script>
+        let orderDetailInfoButtons = document.body.querySelectorAll('.order-detail-info');
+        orderDetailInfoButtons.forEach((orderDetailInfoButton) => {
+            orderDetailInfoButton.addEventListener('click', (event) => {
+                let orderDetailInfoContent = event.target.nextElementSibling.innerHTML;
+                let modal = ModalWindow(orderDetailInfoContent);
+                modal.querySelector('.order-detail-info-content').show();
+            });
+        });
     </script>
 
 @stop

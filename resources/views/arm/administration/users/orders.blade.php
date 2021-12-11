@@ -18,6 +18,10 @@
         }
     </style>
 
+    <div class="mb-10">
+        <a href="{{route('administrator-arm-users-page')}}">назад к пользователям</a>
+    </div>
+
     <div>
         <div>Пользователь:</div>
         <div>

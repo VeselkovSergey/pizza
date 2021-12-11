@@ -43,6 +43,11 @@ class Orders extends BaseModel
         'cancelled' => 9,
     ];
 
+    public function User()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
     public function ProductsModifications()
     {
         return $this->hasMany(ProductsModificationsInOrders::class, 'order_id', 'id');
@@ -56,5 +61,10 @@ class Orders extends BaseModel
     public function Statuses()
     {
         return $this->hasMany(OrdersStatusLogs::class, 'order_id', 'id');
+    }
+
+    public function Creator()
+    {
+        return $this->hasOne(OrdersStatusLogs::class, 'order_id', 'id')->first();
     }
 }

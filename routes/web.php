@@ -106,6 +106,8 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
         Route::get('/orders', [Controllers\ARM\AdministratorARMController::class, 'Orders'])->name('administrator-arm-orders-page');
 
+        Route::get('/products-modifications', [Controllers\ARM\AdministratorARMController::class, 'ProductsModification'])->name('administrator-arm-products-modifications-page');
+
     });
 
     Route::group(['prefix' => 'management'], function () {

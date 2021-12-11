@@ -89,6 +89,14 @@ class User extends Authenticatable
         return false;
     }
 
+    public function UserIsManager()
+    {
+        if ($this->role_id >= 777) {
+            return true;
+        }
+        return false;
+    }
+
     public function checkAccess($permissionCategory, $permission = null, $subPermission = null)
     {
         $roleId = $this->role_id;
