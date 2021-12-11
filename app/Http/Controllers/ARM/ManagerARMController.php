@@ -80,7 +80,7 @@ class ManagerARMController extends Controller
         $order = OrdersController::Order($orderId);
         $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
 
-        return view('arm.management.orders.invoice.invoice-chef', compact('productsModificationsInOrder'));
+        return view('arm.management.orders.invoice.invoice-chef', compact('order', 'productsModificationsInOrder'));
     }
 
     public function ChangeStatusOrderToNewOrder()

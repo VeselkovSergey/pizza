@@ -48,7 +48,7 @@
             <div>г.Дубна, ул Вернова, д 9</div>
         </div>
         <div class="w-100 mb-5" style="font-style: italic; padding-left: 10px;">Заказ:</div>
-
+        <div class="w-100 mb-5">{{$order->created_at}}</div>
         @php($orderSumOriginal = 0)
         @foreach($productsModificationsInOrder as $productModificationInOrder)
             @php($orderSumOriginal += ($productModificationInOrder->ProductModifications->selling_price * $productModificationInOrder->product_modification_amount))
