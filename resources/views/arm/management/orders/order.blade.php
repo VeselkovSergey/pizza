@@ -21,10 +21,10 @@
             <div>
                 <button class="mb-10 cp stack-invoices">Печать комплекта чеков</button>
                 <button class="mb-10 cp full-invoice">
-                    <a class="clear-a" href="{{route('manager-arm-order-invoice-page', $order->id)}}">Печать полного чека</a>
+                    <a class="clear-a" target="_blank" href="{{route('manager-arm-order-invoice-page', $order->id)}}">Печать полного чека</a>
                 </button>
                 <button class="mb-10 cp chef-invoice">
-                    <a class="clear-a" href="{{route('manager-arm-order-invoice-chef-page', $order->id)}}">Печать чека для повара</a>
+                    <a class="clear-a" target="_blank" href="{{route('manager-arm-order-invoice-chef-page', $order->id)}}">Печать чека для повара</a>
                 </button>
             </div>
         </div>
