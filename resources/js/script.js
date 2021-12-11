@@ -6,7 +6,7 @@ const SvgTrashButton = '<svg xmlns="http://www.w3.org/2000/svg" width="16" heigh
 function LoaderShow() {
     let loader = document.createElement("div");
     loader.className = 'loader';
-    loader.innerHTML = '<div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
+    loader.innerHTML = '<div class="lds-ring"><div></div><div></div><div></div><div></div></div>';
     document.body.prepend(loader);
 }
 
