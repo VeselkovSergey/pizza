@@ -40,8 +40,8 @@ class TelegramBotController extends Controller
             case '/test':
 
                 $message = '<b>Команды:</b>' . PHP_EOL;
-                $message .= '<i>Показать все команды: /all<i>' . PHP_EOL;
-                $message .= '<i>Получить ID чата /chatId<i>' . PHP_EOL;
+                $message .= '<i>Показать все команды: all<i>' . PHP_EOL;
+                $message .= '<i>Получить ID чата chatId<i>' . PHP_EOL;
 
                 $telegram->sendMessage($message);
                 break;
