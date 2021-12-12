@@ -173,6 +173,7 @@
                         modificationSelected = {
                             product: allProducts['product-'+productId],
                             modification: modificationType[modificationId],
+                            stopList: modification.stop_list,
                         }
                     }
 
