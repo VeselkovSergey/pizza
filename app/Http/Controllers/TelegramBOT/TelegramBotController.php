@@ -33,9 +33,9 @@ class TelegramBotController extends Controller
                 $telegram->sendMessage('Отлично! Ты молодец!');
                 break;
 
-            default:
-                $telegram->sendMessage('Ничего не понял!!');
-
+            case '/chatId':
+                $telegram->sendMessage('Твой id чата: ' . $telegram->ChatId());
+                break;
         }
     }
 }

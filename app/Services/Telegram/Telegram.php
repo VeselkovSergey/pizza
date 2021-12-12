@@ -172,6 +172,11 @@ class Telegram
         ];
     }
 
+    public function ChatId()
+    {
+        return $this->chatId;
+    }
+
 }
 
 //$token = '1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0';
