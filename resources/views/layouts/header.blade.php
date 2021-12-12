@@ -20,9 +20,9 @@
     </div>
 </div>
 
-<div class="flex-column-center">
+<div class="flex-column-center @if(auth()->check() && auth()->user()->IsManager()) ml-a @endif">
 
-    <div class="container-profile-and-basket flex-center pr-5 @if(auth()->check() && auth()->user()->IsManager()) ml-a @endif">
+    <div class="container-profile-and-basket flex-center pr-5">
         <div onclick="{{$actionConditionAuth}}" class="container-profile flex-column-center text-center cp p-5 {{$authCheck ? 'color-green' : ''}}">
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
