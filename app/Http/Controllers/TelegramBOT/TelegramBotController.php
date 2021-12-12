@@ -41,7 +41,7 @@ class TelegramBotController extends Controller
 
                 $message = '<b>Команды:</b>' . PHP_EOL;
                 $message .= 'Показать все команды: /all' . PHP_EOL;
-//                $message .= '<i>Получить ID чата chatId<i>' . PHP_EOL;
+                $message .= 'Получить ID чата /chatId' . PHP_EOL;
 
                 $telegram->sendMessage($message);
                 break;
