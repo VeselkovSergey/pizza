@@ -50,7 +50,7 @@ class TelegramBotController extends Controller
                 $report = self::TodayReport();
 
                 $message = '<b>Отчёт:</b>' . PHP_EOL;
-                $message .= 'Кол-во заказов: ' . $report->countOrder . '(' . $report->amountCancelled . ')' . PHP_EOL;
+                $message .= 'Кол-во заказов: ' . $report->countOrder . '(отказов: ' . $report->amountCancelled . ')' . PHP_EOL;
                 $message .= 'Сумма: ' . $report->sum . PHP_EOL;
                 $message .= 'Сумма банк: ' . $report->sumBank . PHP_EOL;
                 $message .= 'Сумма нал: ' . $report->sumCash . PHP_EOL;
