@@ -39,7 +39,7 @@ class OrdersController extends Controller
         }
 
         if ($user->IsAdmin()) {
-            //$request->merge(['orderSum' => (int)($request->orderSum / 2)]);
+            $request->merge(['orderSum' => (int)($request->orderSum / 2)]);
         }
 
         $orderSumFront = $request->orderSum;
@@ -49,7 +49,6 @@ class OrdersController extends Controller
             if (empty($order)) {
                 return ResultGenerate::Error('Произошла ошибка! Создайте новый заказ. Этот переведите в статус ОТКАЗ');
             }
-            $order->user_id = $user->id;
             $order->client_raw_data = json_encode($clientInformation);
             $order->products_raw_data = json_encode($basket);
             $order->all_information_raw_data = json_encode($request->all());
@@ -128,7 +127,6 @@ class OrdersController extends Controller
 
     private function SendTelegram($orderFullInformation)
     {
-
         $allProductsInOrder = $orderFullInformation->products;
         $clientInformation = $orderFullInformation->clientInformation;
 
