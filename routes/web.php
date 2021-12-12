@@ -171,6 +171,8 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 //Route::get('/payment-status', [Controllers\Payments\PaymentsController::class, 'PaymentStatusRequest'])->name('payment-status');
 //Route::get('/payment-refund', [Controllers\Payments\PaymentsController::class, 'PaymentRefundRequest'])->name('payment-refund');
 
+//Route::get('/today-report', [Controllers\TelegramBOT\TelegramBotController::class, 'TodayReportRequest']);
+
 /*
  *  test routes
  */
