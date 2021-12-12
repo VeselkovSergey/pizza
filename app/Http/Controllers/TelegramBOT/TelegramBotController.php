@@ -48,10 +48,6 @@ class TelegramBotController extends Controller
                 $telegram->sendMessage($message);
                 break;
 
-            case '/request':
-                $telegram->sendMessage(json_decode($telegram->fullRequest()));
-                break;
-
             case '/todayReport':
             case '/fullReport':
 
