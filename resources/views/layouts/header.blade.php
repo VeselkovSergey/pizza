@@ -6,7 +6,7 @@
     </a>
 </div>
 
-<a class="flex-center mx-a clear-a color-white" href="{{route('home-page')}}">
+<a class="flex-center mx-a clear-a color-white @if(auth()->check() && auth()->user()->IsManager()) hide @endif" href="{{route('home-page')}}">
     <div style="font-style: italic;font-weight: bold;font-size: large;">
         BROпицца
     </div>
@@ -20,7 +20,7 @@
     </div>
 </div>
 
-<div class="container-profile-and-basket flex-center pr-5">
+<div class="container-profile-and-basket flex-center pr-5 @if(auth()->check() && auth()->user()->IsManager()) ml-a @endif">
     <div onclick="{{$actionConditionAuth}}" class="container-profile flex-column-center text-center cp p-5 {{$authCheck ? 'color-green' : ''}}">
         <div>
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
