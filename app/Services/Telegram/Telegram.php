@@ -147,10 +147,10 @@ class Telegram
         return $this->messageText;
     }
 
-    public function fullRequest()
-    {
-        return $this->request;
-    }
+//    public function fullRequest()
+//    {
+//        return $this->request;
+//    }
 
     public function addButton($textOrArrayButton, $action = null)
     {
