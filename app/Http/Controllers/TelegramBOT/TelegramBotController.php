@@ -51,10 +51,10 @@ class TelegramBotController extends Controller
 
                 $message = '<b>Отчёт:</b>' . PHP_EOL;
                 $message .= 'Кол-во заказов: ' . $report->countOrder . '(отказов: ' . $report->amountCancelled . ')' . PHP_EOL;
-                $message .= 'Сумма: ' . $report->sum . ' ₽' . PHP_EOL;
-                $message .= 'Сумма банк: ' . $report->sumBank . ' ₽' . PHP_EOL;
-                $message .= 'Сумма нал: ' . $report->sumCash . ' ₽' . PHP_EOL;
-                $message .= 'Средний чек: ' . $report->averageCheck . ' ₽' . PHP_EOL;
+                $message .= 'Сумма: ' . number_format($report->sum, 2, ',', "'") . ' ₽' . PHP_EOL;
+                $message .= 'Сумма банк: ' . number_format($report->sumBank, 2, ',', "'") . ' ₽' . PHP_EOL;
+                $message .= 'Сумма нал: ' . number_format($report->sumCash, 2, ',', "'") . ' ₽' . PHP_EOL;
+                $message .= 'Средний чек: ' . number_format($report->averageCheck, 2, ',', "'") . ' ₽' . PHP_EOL;
                 $telegram->sendMessage($message);
                 break;
         }
