@@ -51,6 +51,11 @@ class Orders extends BaseModel
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    public function Courier()
+    {
+        return $this->hasOne(User::class, 'id', 'courier_id');
+    }
+
     public function ProductsModifications()
     {
         return $this->hasMany(ProductsModificationsInOrders::class, 'order_id', 'id');

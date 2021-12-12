@@ -30,8 +30,13 @@ class AdministratorARMController extends Controller
 
     public function Orders()
     {
-        $orders = Orders::all();
-        return view('arm.administration.orders.index', compact('orders'));
+        $requiredDate = (request()->get('required-date') === null) ? date('Y-m-d', time()) : request()->get('required-date');
+        if (request()->get('all')) {
+            $orders = OrdersController::AllOrders('asc');
+        } else {
+            $orders = OrdersController::OrdersByDate($requiredDate, true, 'asc');
+        }
+        return view('arm.administration.orders.index', compact('orders', 'requiredDate'));
     }
 
     public function ProductsModification()

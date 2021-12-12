@@ -25,6 +25,17 @@
         <a href="{{route('administrator-arm-page')}}">назад в ARM админа</a>
     </div>
 
+    <div class="flex mb-10">
+        <div class="mr-10">
+            <label>
+                На какое число
+                <input class="required-date" type="date" value="{{$requiredDate}}">
+            </label>
+        </div>
+        <button class="cp all-orders mr-10">Заказы за всё время</button>
+        <button class="cp all-orders-today">Заказы за сегодня</button>
+    </div>
+
     @php($sum = 0)
     @php($sumCash = 0)
     @php($sumBank = 0)
@@ -32,6 +43,7 @@
     @php($ordersCreatorWeb = 0)
     @php($ordersCreatorManager = 0)
     @php($ordersCreatorAdmin = 0)
+    @php($amountOrdersCancelled = 0)
     @php($amountOrdersInDays = [])
     @php($sumOrdersInDays = [])
 
@@ -58,6 +70,7 @@
                     @php($productsModificationsInOrder = \App\Http\Controllers\Orders\OrdersController::OrderProductsModifications($order))
                     @php($rawData = json_decode($order->all_information_raw_data))
                     @php($sum += $rawData->orderSum)
+                    @php($longTime = false)
                     @if($clientInfo->typePayment[0] === false)
                         @php($sumCash += $rawData->orderSum)
 
@@ -78,13 +91,21 @@
 
                     @if($order->Creator()->User->UserIsAdmin())
                         @php($orderCreator = 'Собственник')
-                        @php($ordersCreatorAdmin += 1)
+                        @php($ordersCreatorAdmin++)
                     @elseif($order->Creator()->User->UserIsManager())
                         @php($orderCreator = 'Менеджер')
-                        @php($ordersCreatorManager += 1)
+                        @php($ordersCreatorManager++)
                     @else
                         @php($orderCreator = 'Сайт')
-                        @php($ordersCreatorWeb += 1)
+                        @php($ordersCreatorWeb++)
+                    @endif
+
+                    @if($order->status_id === \App\Models\Orders::STATUS_TEXT['cancelled'])
+                        @php($amountOrdersCancelled++)
+                    @endif
+
+                    @if(date_diff($order->created_at, $order->updated_at)->format('%H') !== '00')
+                        @php($longTime = true)
                     @endif
 
                     <tr class="order">
@@ -92,9 +113,9 @@
                         <td class="order-status-{{$order->status_id}}">{{\App\Models\Orders::STATUS[$order->status_id]}}</td>
                         <td>{{$order->created_at}}</td>
                         <td>{{$order->updated_at}}</td>
-                        <td>{{date_diff($order->created_at, $order->updated_at)->format('%H:%I:%S')}}</td>
+                        <td @if($longTime) style="background-color: #e37e7e;" @endif>{{date_diff($order->created_at, $order->updated_at)->format('%H:%I:%S')}}</td>
                         <td>{{$productsModificationsInOrder->count()}}</td>
-                        <td>{{$order->courier_id}}</td>
+                        <td>{{$order->courier_id}} {{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
                         <td>{{$orderCreator}}</td>
                         <td>{{$rawData->orderSum}}</td>
                         <td class="text-center">
@@ -131,7 +152,7 @@
         <div style="order: 1;">
             <div class="mb-10">Итого: {{$sum}} (Наличные: {{$sumCash}} / Банк: {{$sumBank}})</div>
             <div class="mb-10">Себестоимость: {{$sumCost}}</div>
-            <div class="mb-10">Кол-во заказов: {{$orders->count()}} (Сайт: {{$ordersCreatorWeb}} / Менеджер {{$ordersCreatorManager}} / Собственник {{$ordersCreatorAdmin}})</div>
+            <div class="mb-10">Кол-во заказов: {{$orders->count()}} (Сайт: {{$ordersCreatorWeb}} / Менеджер {{$ordersCreatorManager}} / Собственник {{$ordersCreatorAdmin}} / Отказ {{$amountOrdersCancelled}})</div>
             <div class="mb-10">Средний чек: {{$sum / $orders->count()}}</div>
             <div class="mb-10">
                 <div class="toggle-button cp" data-toogle="amount-orders-in-days-container">Кол-во заказов в день (нал/банк/всего) (нажать. раскроется.)</div>
@@ -196,6 +217,25 @@
         });
 
         ToggleShow();
+
+        let changeRequiredDateInput = document.body.querySelector('.required-date');
+        changeRequiredDateInput.addEventListener('change', (event) => {
+            let requiredDate = event.target.value;
+            if (requiredDate) {
+                location.href = "{{route('administrator-arm-orders-page')}}?required-date=" + requiredDate;
+            }
+        });
+
+        let allOrdersTodayButton = document.body.querySelector('.all-orders-today');
+        allOrdersTodayButton.addEventListener('click', () => {
+            location.href = "{{route('administrator-arm-orders-page')}}?required-date={{date('Y-m-d', time())}}";
+        });
+
+        let allOrdersButton = document.body.querySelector('.all-orders');
+        allOrdersButton.addEventListener('click', () => {
+            location.href = "{{route('administrator-arm-orders-page')}}?all=true";
+        });
+
     </script>
 
 @stop

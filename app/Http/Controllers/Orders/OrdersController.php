@@ -174,12 +174,12 @@ class OrdersController extends Controller
 //        $telegram->sendMessage($message, '267236435');
     }
 
-    public static function AllOrders()
+    public static function AllOrders($direction = 'desc')
     {
-        return Orders::query()->orderBy('id', 'desc')->get();
+        return Orders::query()->orderBy('id', $direction)->get();
     }
 
-    public static function OrdersByDate($requiredDate, $allOrders = false)
+    public static function OrdersByDate($requiredDate, $allOrdersByDate = false, $direction = 'desc')
     {
         $requiredDate = strtotime($requiredDate);
         $startDate = date('Y-m-d 00:00:00', $requiredDate);
@@ -188,10 +188,10 @@ class OrdersController extends Controller
         $orders = $orders->where('created_at', '>=', $startDate);
         $orders = $orders->where('created_at', '<=', $endDate);
         $orders = $orders->where('created_at', '<=', $endDate);
-        if (!$allOrders) {
+        if (!$allOrdersByDate) {
             $orders = $orders->whereNotIn('status_id', [Orders::STATUS_TEXT['completed'], Orders::STATUS_TEXT['cancelled']]);
         }
-        $orders = $orders->orderBy('id', 'desc');
+        $orders = $orders->orderBy('id', $direction);
         return $orders->get();
     }
 
