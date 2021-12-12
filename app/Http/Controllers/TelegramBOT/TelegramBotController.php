@@ -108,7 +108,7 @@ class TelegramBotController extends Controller
             'sum' => $sum,
             'sumBank' => $sumBank,
             'sumCash' => $sumCash,
-            'averageCheck' => ($sum / $ordersCount),
+            'averageCheck' => $ordersCount !== 0 ? ($sum / $ordersCount) : 0,
             'amountCancelled' => $amountCancelled,
         ];
     }
