@@ -8,6 +8,7 @@ class Telegram
     private $remoteUrl;
     private $chatId;
     private $method;
+    private $request;
     private $textMessage;
     private $buttons = null;
     private $messageId = null;
