@@ -39,7 +39,7 @@ class OrdersController extends Controller
         }
 
         if ($user->IsAdmin()) {
-            $request->merge(['orderSum' => (int)($request->orderSum / 2)]);
+            //$request->merge(['orderSum' => (int)($request->orderSum / 2)]);
         }
 
         $orderSumFront = $request->orderSum;
