@@ -171,7 +171,7 @@ class Telegram
 
     }
 
-    public function RequestContact($text = 'Отправить номер для получения статусов заказа')
+    public function RequestContact($text = 'Отправить номер для связывания аккаунта на сайте и в телеграм')
     {
         $this->inlineKeyboard = [
             'keyboard' => [[[
