@@ -25,7 +25,6 @@ class OrdersController extends Controller
     {
         $basket = json_decode($request->basket);
         $clientInformation = self::CleanClientInformation(json_decode($request->clientInformation));
-        $orderSumFront = $request->orderSum;
         $clientInformation->clientPhone = auth()->user()->IsManager() ? $clientInformation->clientPhone : auth()->user()->phone;
 
         if (auth()->user()->IsAdmin()) {
