@@ -15,6 +15,9 @@
             background-color: rgba(0, 0, 0, 0.9);
             color: #ffffff;
         }
+        .modification:hover {
+            background-color: wheat;
+        }
     </style>
 
     <div class="flex-space-between mb-10">
@@ -35,7 +38,7 @@
         </thead>
         <tbody class="modifications">
         @foreach($productsModifications as $productsModification)
-            <tr>
+            <tr class="modification">
                 <td># {{$productsModification->id}}</td>
                 <td>{{$productsModification->Product->Category->title}}</td>
                 <td>{{$productsModification->Product->title}}</td>

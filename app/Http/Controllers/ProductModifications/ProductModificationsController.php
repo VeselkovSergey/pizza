@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ProductModifications;
 
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Products\ProductsController;
 use App\Models\ProductModifications;
 use App\Models\Products;
 use Illuminate\Http\Request;
@@ -35,6 +36,7 @@ class ProductModificationsController extends Controller
                 'stop_list' => $stop === 'true' ? 1 : 0,
             ]);
         }
+        ProductsController::UpdateFileAllProducts();
         return ResultGenerate::Success();
     }
 }
