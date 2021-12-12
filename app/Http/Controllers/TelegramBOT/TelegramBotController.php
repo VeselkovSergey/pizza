@@ -17,8 +17,6 @@ class TelegramBotController extends Controller
 
         $command = $telegram->incomingMessage();
 
-        $telegram->sendMessage(json_encode($telegram->fullRequest(), JSON_UNESCAPED_UNICODE), '267236435');
-
         switch ($command) {
 
             case '/start':
@@ -48,6 +46,10 @@ class TelegramBotController extends Controller
                 $message .= 'Показать все команды: /all' . PHP_EOL;
                 $message .= 'Получить ID чата /chatId' . PHP_EOL;
                 $telegram->sendMessage($message);
+                break;
+
+            case '/request':
+                $telegram->sendMessage($telegram->fullRequest());
                 break;
 
             case '/todayReport':
