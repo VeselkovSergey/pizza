@@ -126,6 +126,8 @@
                     let productId = el.dataset.productId;
                     let modificationType = el.dataset.modificationType;
                     let modificationId = el.dataset.modificationId;
+                    let stopList = el.dataset.stopList;
+
                     let modification = allProducts[productId]['modifications'][modificationType][modificationId];
                     let sellingPriceModification = modification.sellingPrice;
                     let ingredients = IngredientsGenerator(null, modification);
@@ -135,11 +137,16 @@
                     modificationSelected = {
                         product: allProducts[productId],
                         modification: allProducts[productId]['modifications'][modificationType][modificationId],
+                        stopList: stopList,
                     }
                 });
             });
 
             buttonPutInBasket.addEventListener('click', () => {
+                if (modificationSelected.stopList == 1) {
+                    ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
+                    return;
+                }
                 FlashMessage('Добавлено: <br/>' + modificationSelected.product.title + (modificationSelected.modification.value !== 'Отсутствует' ? (', ' + modificationSelected.modification.title + ' ' + modificationSelected.modification.value) : ''));
                 AddProductInBasket(modificationSelected);
                 modalWindow.slowRemove();
@@ -172,12 +179,18 @@
                         disableModificationContainer = true;
                     }
 
+                    setTimeout(() => {
+                        if (modification.stop_list == 1) {
+                            ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
+                        }
+                    }, 200);
+
                     let buttonWidth = 'width:' + (100 / modification.modificationTypeCount) + '%;';
                     let modificationIdHTML =
                         '<div class="text-center flex" style="' + buttonWidth + '">' +
                             '<input name="' + modificationTypeId + '" class="hide modification-input" id="' + modificationId + '" type="radio" ' + checkedInput + '/>' +
                             // '<label class="modification-button"data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.title + ' - ' + modification.value + '</label>' +
-                            '<label class="modification-button" data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.value + '</label>' +
+                            '<label class="modification-button" data-stop-list="' + modification.stop_list + '" data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.value + '</label>' +
                         '</div>';
                     modificationTypeHTML += modificationIdHTML;
                     i++;
