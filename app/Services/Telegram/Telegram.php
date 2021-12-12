@@ -132,6 +132,7 @@ class Telegram
             $this->incomingMessage = $request->message;
             $this->chatId = $this->incomingMessage->from->id;
             $this->messageId = $this->incomingMessage->message_id;
+            $this->checkContact();
         } else if (!empty($request->callback_query)) {
             $this->callbackQuery = $request->callback_query;
             $this->chatId = $this->callbackQuery->from->id;
@@ -149,9 +150,11 @@ class Telegram
         return $this->messageText;
     }
 
-    public function fullRequest()
+    public function checkContact()
     {
-        return $this->request;
+        if (isset($this->incomingMessage->contact)) {
+            $this->sendMessage('Номер: ' . $this->incomingMessage->contact->phone_number . 'ID чата: ' . $this->incomingMessage->contact->user_id);
+        }
     }
 
     public function addButton($textOrArrayButton, $action = null)
