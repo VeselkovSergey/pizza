@@ -22,13 +22,13 @@ class TelegramBotController extends Controller
             case '/start':
 
                 // Несколько кнопок в ряд
-                $telegram->addButton([
-                    'Доставлен' => 'Delivered',
-                    'Отказ' => 'Refused',
-                ]);
+//                $telegram->addButton([
+//                    'Доставлен' => 'Delivered',
+//                    'Отказ' => 'Refused',
+//                ]);
 
                 // текст сообщения
-                $telegram->sendMessage('Тестовое сообщение!');
+                $telegram->sendMessage('BROпицца!');
                 break;
 
             case 'Delivered':
