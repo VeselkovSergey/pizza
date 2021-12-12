@@ -21,8 +21,20 @@ class ProductModificationsController extends Controller
         return view('products.createOrUpdate');
     }
 
+    public function Edit()
+    {
+        $productsModifications = ProductModifications::all();
+        return view('products.modifications.index', compact('productsModifications'));
+    }
+
     public function Save(Request $request)
     {
-        return ResultGenerate::Error();
+        $modifications = $request->stopList;
+        foreach ($modifications as $id => $stop) {
+            ProductModifications::find($id)->update([
+                'stop_list' => $stop === 'true' ? 1 : 0,
+            ]);
+        }
+        return ResultGenerate::Success();
     }
 }

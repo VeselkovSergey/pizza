@@ -134,6 +134,18 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         #todo на курьера
         Route::post('/change-status-order-to-delivered', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToDelivered'])->name('manager-arm-change-status-order-to-delivered');
 
+        Route::group(['prefix' => 'products'], function () {
+
+            Route::group(['prefix' => 'modifications'], function () {
+
+                Route::get('/', [Controllers\ProductModifications\ProductModificationsController::class, 'Edit'])->name('manager-arm-products-modifications-page');
+                Route::post('/save', [Controllers\ProductModifications\ProductModificationsController::class, 'Save'])->name('manager-arm-products-modifications-save');
+
+            });
+
+        });
+
+
     });
 
     Route::group(['prefix' => 'chef'], function () {
