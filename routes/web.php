@@ -154,6 +154,11 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
 });
 
+//Route::get('/payment-paid', [Controllers\Payments\PaymentsController::class, 'PaymentPaidRequest'])->name('payment-paid');
+//Route::get('/payment-error', [Controllers\Payments\PaymentsController::class, 'PaymentErrorRequest'])->name('payment-error');
+//Route::get('/payment-status', [Controllers\Payments\PaymentsController::class, 'PaymentStatusRequest'])->name('payment-status');
+//Route::get('/payment-refund', [Controllers\Payments\PaymentsController::class, 'PaymentRefundRequest'])->name('payment-refund');
+
 /*
  *  test routes
  */

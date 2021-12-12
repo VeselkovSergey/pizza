@@ -572,20 +572,32 @@ function CreateOrder(orderId) {
     LoaderShow();
     Ajax(routeOrderCreate, 'POST', data).then((response) => {
         LoaderHide();
-        FlashMessage(response.message);
-        if (response.status === true) {
-            basketWindow.slowRemove();
-            document.body.classList.remove('scroll-off');
-            DeleteAllProductsInBasket();
-            if (orderId) {
-                localStorage.removeItem('lastClientName');
-                localStorage.removeItem('lastClientPhone');
-                localStorage.removeItem('lastClientAddressDelivery');
-                localStorage.removeItem('lastClientComment');
-                localStorage.removeItem('lastTypePayment');
-                localStorage.removeItem('orderId');
+
+        // if (ObjectClientInformation.typePayment[0] && false) {
+        //
+        //     if (response.status === true) {
+        //         window.open(
+        //             response.result.paymentLink,
+        //             '_blank'
+        //         );
+        //     }
+        //
+        // } else {
+            FlashMessage(response.message);
+            if (response.status === true) {
+                basketWindow.slowRemove();
+                document.body.classList.remove('scroll-off');
+                DeleteAllProductsInBasket();
+                if (orderId) {
+                    localStorage.removeItem('lastClientName');
+                    localStorage.removeItem('lastClientPhone');
+                    localStorage.removeItem('lastClientAddressDelivery');
+                    localStorage.removeItem('lastClientComment');
+                    localStorage.removeItem('lastTypePayment');
+                    localStorage.removeItem('orderId');
+                }
             }
-        }
+        // }
     });
 }
 

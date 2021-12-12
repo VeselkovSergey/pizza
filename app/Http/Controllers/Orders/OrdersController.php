@@ -7,14 +7,17 @@ use App\Helpers\ArrayHelper;
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Payments\PaymentsController;
 use App\Http\Controllers\Products\ProductsController;
 use App\Models\Orders;
 use App\Models\OrdersProductsStatusLogs;
 use App\Models\OrdersStatusLogs;
+use App\Models\Payments;
 use App\Models\ProductModifications;
 use App\Models\Products;
 use App\Models\ProductsModificationsInOrders;
 use App\Models\User;
+use App\Services\SberBank\SberBank;
 use App\Services\Telegram\Telegram;
 use Illuminate\Http\Request;
 use Monolog\Handler\TelegramBotHandler;
@@ -113,6 +116,23 @@ class OrdersController extends Controller
         $this->SendTelegram($orderFullInformation);
 
         AuthController::UpdateUserName($user, $clientInformation->clientName);
+
+//        $paymentTypeString = $paymentType ? 'bank' : 'cash';
+//
+//        $payment = PaymentsController::CreatePayment($order, $orderSumFront, $paymentTypeString);
+//
+//        if ($paymentType) {
+//            $paymentService = new SberBank();
+//            $paymentService = $paymentService->Register($payment, $orderSumFront, route('payment-paid'), route('payment-error'));
+//
+//            if ($paymentService->status) {
+//                return ResultGenerate::Success($flashMessage, [
+//                    'paymentLink' => $paymentService->paymentLink,
+//                ]);
+//            }
+//
+//            return ResultGenerate::Error($flashMessage);
+//        }
 
         return ResultGenerate::Success($flashMessage);
     }

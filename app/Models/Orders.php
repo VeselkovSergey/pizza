@@ -6,6 +6,7 @@ namespace App\Models;
  * @property integer id
  * @property integer courier_id
  * @property integer status_id
+ * @property integer payment_id
  */
 class Orders extends BaseModel
 {
@@ -16,6 +17,7 @@ class Orders extends BaseModel
         'products_raw_data',
         'all_information_raw_data',
         'courier_id',
+        'payment_id',
     ];
 
     const STATUS = [
