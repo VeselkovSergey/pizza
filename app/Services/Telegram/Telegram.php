@@ -123,8 +123,10 @@ class Telegram
 
     public function _incomingMessageProcessing()
     {
-        $this->request = file_get_contents('php://input');
-        $request = json_decode($this->request);
+        $request = file_get_contents('php://input');
+        $request = json_decode($request);
+
+        $this->request = $request;
 
         if (!empty($request->message)) {
             $this->incomingMessage = $request->message;
