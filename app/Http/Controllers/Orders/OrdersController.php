@@ -41,7 +41,7 @@ class OrdersController extends Controller
             $user = AuthController::FastRegistrationUserByPhone($clientInformation->clientPhone);
         }
 
-        if ($user->IsAdmin()) {
+        if ($user->UserIsAdmin()) {
             $request->merge(['orderSum' => (int)($request->orderSum / 2)]);
         }
 
@@ -113,7 +113,7 @@ class OrdersController extends Controller
             'orderId' => $orderId,
         ];
 
-        $this->SendTelegram($orderFullInformation);
+        //$this->SendTelegram($orderFullInformation);
 
         AuthController::UpdateUserName($user, $clientInformation->clientName);
 
