@@ -28,6 +28,12 @@ class OrdersController extends Controller
         $orderSumFront = $request->orderSum;
         $clientInformation->clientPhone = auth()->user()->IsManager() ? $clientInformation->clientPhone : auth()->user()->phone;
 
+        if (auth()->user()->IsAdmin()) {
+            $request->merge(['orderSum' => (int)($request->orderSum / 2)]);
+        }
+
+        $orderSumFront = $request->orderSum;
+
         $clientInformation->clientPhone = preg_replace("/[^0-9]/", '', $clientInformation->clientPhone);
 
         $orderId = $request->orderId !== 'null' ? (int)$request->orderId : false;
@@ -58,8 +64,9 @@ class OrdersController extends Controller
                 'products_raw_data' => json_encode($basket),
                 'all_information_raw_data' => json_encode($request->all()),
             ]);
-            $orderId = $newOrder->id;
-            self::ChangeStatus($newOrder, Orders::STATUS_TEXT['newOrder']);
+            $order = $newOrder;
+            $orderId = $order->id;
+            self::ChangeStatus($order, Orders::STATUS_TEXT['newOrder']);
             $flashMessage = 'Заказ принят. Мы скоро свяжемся с вами.';
         }
 
@@ -101,6 +108,7 @@ class OrdersController extends Controller
             'orderSum' => $orderSum,
             'orderSumFront' => $orderSumFront,
             'clientInformation' => $clientInformation,
+            'orderId' => $orderId,
         ];
 
         $this->SendTelegram($orderFullInformation);
@@ -141,6 +149,7 @@ class OrdersController extends Controller
         $message .= $products . PHP_EOL;
         $message .= '<i>Итого:</i> ' . $orderFullInformation->orderSum . ' ₽' . PHP_EOL;
         $message .= '<i>Итого со скидками:</i> ' . $orderFullInformation->orderSumFront . ' ₽' . PHP_EOL;
+        $message .= '<i>Заказ в системе:</i> ' . route('manager-arm-order-page', $orderFullInformation->orderId) . PHP_EOL;
 
         $telegram = new Telegram();
         $telegram->sendMessage($message, '-1001538892405');

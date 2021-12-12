@@ -3,6 +3,7 @@
 namespace App\Models;
 
 /**
+ * @property integer id
  * @property integer courier_id
  * @property integer status_id
  */

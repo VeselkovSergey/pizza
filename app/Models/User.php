@@ -83,7 +83,19 @@ class User extends Authenticatable
 
     public function IsManager()
     {
-        if (auth()->check() && auth()->user()->role_id >= 777) {
+        if ($this->IsAdmin()) {
+            return true;
+        }
+
+        if (auth()->check() && auth()->user()->role_id === 777) {
+            return true;
+        }
+        return false;
+    }
+
+    public function UserIsAdmin()
+    {
+        if ($this->role_id === 999) {
             return true;
         }
         return false;
@@ -91,7 +103,7 @@ class User extends Authenticatable
 
     public function UserIsManager()
     {
-        if ($this->role_id >= 777) {
+        if ($this->role_id === 777) {
             return true;
         }
         return false;
@@ -101,8 +113,7 @@ class User extends Authenticatable
     {
         $roleId = $this->role_id;
 
-        $isAdmin = $this->IsAdmin();
-        if ($isAdmin) {
+        if ($this->IsAdmin()) {
             return true;
         }
 

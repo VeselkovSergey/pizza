@@ -28,6 +28,7 @@
     @php($sumCost = 0)
     @php($ordersCreatorWeb = 0)
     @php($ordersCreatorManager = 0)
+    @php($ordersCreatorAdmin = 0)
     @php($amountOrdersInDays = [])
     @php($sumOrdersInDays = [])
 
@@ -72,7 +73,10 @@
                         @php($sumOrdersInDays[$order->created_at->format('Ymd')]['bank'] += $rawData->orderSum)
                     @endif
 
-                    @if($order->Creator()->User->UserIsManager())
+                    @if($order->Creator()->User->UserIsAdmin())
+                        @php($orderCreator = 'Собственник')
+                        @php($ordersCreatorAdmin += 1)
+                    @elseif($order->Creator()->User->UserIsManager())
                         @php($orderCreator = 'Менеджер')
                         @php($ordersCreatorManager += 1)
                     @else
@@ -124,7 +128,7 @@
         <div style="order: 1;">
             <div class="mb-10">Итого: {{$sum}} (Наличные: {{$sumCash}} / Банк: {{$sumBank}})</div>
             <div class="mb-10">Себестоимость: {{$sumCost}}</div>
-            <div class="mb-10">Кол-во заказов: {{$orders->count()}} (Сайт: {{$ordersCreatorWeb}} / Менеджер {{$ordersCreatorManager}})</div>
+            <div class="mb-10">Кол-во заказов: {{$orders->count()}} (Сайт: {{$ordersCreatorWeb}} / Менеджер {{$ordersCreatorManager}} / Собственник {{$ordersCreatorAdmin}})</div>
             <div class="mb-10">Средний чек: {{$sum / $orders->count()}}</div>
             <div class="mb-10">
                 <div class="toggle-button cp" data-toogle="amount-orders-in-days-container">Кол-во заказов в день (нал/банк/всего) (нажать. раскроется.)</div>
