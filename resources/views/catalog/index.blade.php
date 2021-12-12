@@ -25,24 +25,11 @@
 
         }
 
-        .black-t {
-            background-color: black;
-            color: white;
-        }
-
         .ingredient:not(:last-child):after {
             content: ', ';
         }
 
     </style>
-
-{{--    <div class="pos-fix w-100 bg-black">--}}
-{{--        <div class="pos-abs top-0 w-100 p-5 bg-black">--}}
-{{--            @foreach($allCategory as $category)--}}
-{{--                <a class="clear-a color-orange" href="#category-{{$category->id}}">{{$category->title}}</a>--}}
-{{--            @endforeach--}}
-{{--        </div>--}}
-{{--    </div>--}}
 
     <div class="flex-wrap pt-10">
 
@@ -57,7 +44,7 @@
 
                 <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}" data-product-img="{{url($imgFile)}}">
 
-                <div class="m-10 flex-column p-5 border-radius-10 border-orange p-10 {{isset(request()->black) ? 'black-t' : ''}}">
+                <div class="m-10 flex-column p-5 border-radius-10 border-orange p-10">
 
                     <div class="container-product-img-and-description">
                         <div class="container-product-img mb-10">
@@ -72,7 +59,7 @@
 
 {{--                    <div class="text-center mb-10">от {{$product->minimumPrice}} ₽</div>--}}
 
-                    <button class="w-100 h-100 bg-grey color-white border-radius-5 clear-button p-10 cp">от {{$product->minimumPrice}} ₽</button>
+                    <button class="w-100 h-100 bg-orange color-white border-radius-5 clear-button p-10 cp">от {{$product->minimumPrice}} ₽</button>
 
 
                 </div>
