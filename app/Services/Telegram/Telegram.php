@@ -122,8 +122,8 @@ class Telegram
 
     public function _incomingMessageProcessing()
     {
-        $request = file_get_contents('php://input');
-        $request = json_decode($request);
+        $this->request = file_get_contents('php://input');
+        $request = json_decode($this->request);
 
         if (!empty($request->message)) {
             $this->incomingMessage = $request->message;
@@ -144,6 +144,11 @@ class Telegram
             $this->messageText = $this->callbackQuery->data;
         }
         return $this->messageText;
+    }
+
+    public function fullRequest()
+    {
+        return $this->request;
     }
 
     public function addButton($textOrArrayButton, $action = null)

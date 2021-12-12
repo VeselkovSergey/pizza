@@ -17,7 +17,7 @@ class TelegramBotController extends Controller
 
         $command = $telegram->incomingMessage();
 
-        $telegram->sendMessage(json_encode($command, JSON_UNESCAPED_UNICODE), '267236435');
+        $telegram->sendMessage(json_encode($telegram->fullRequest(), JSON_UNESCAPED_UNICODE), '267236435');
 
         switch ($command) {
 
