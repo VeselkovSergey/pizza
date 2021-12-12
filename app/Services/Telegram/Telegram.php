@@ -149,7 +149,7 @@ class Telegram
 
     public function fullRequest()
     {
-        return $this->request;
+        return json_decode($this->request)->message;
     }
 
     public function addButton($textOrArrayButton, $action = null)
