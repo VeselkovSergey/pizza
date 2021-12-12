@@ -160,6 +160,7 @@
         function ModificationsGenerate(productId) {
             let containerAllModificationsTemp = '';
             let disableModificationContainer = false;
+            let stopList = false;
             Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
                 let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
                 let modificationTypeHTML = '<div class="container-modification">';
@@ -179,11 +180,9 @@
                         disableModificationContainer = true;
                     }
 
-                    setTimeout(() => {
-                        if (modification.stop_list == 1) {
-                            ModalWindowFlash('Позиция находится в стоп листе. Приносим свои извинения.');
-                        }
-                    }, 200);
+                    if (modification.stop_list == 1) {
+                        stopList = true;
+                    }
 
                     let buttonWidth = 'width:' + (100 / modification.modificationTypeCount) + '%;';
                     let modificationIdHTML =
@@ -204,6 +203,13 @@
             } else {
                 containerAllModifications = '<div>'+ containerAllModificationsTemp +'</div>';
             }
+
+            if (stopList) {
+                setTimeout(() => {
+                    ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
+                }, 200);
+            }
+
             return containerAllModifications;
         }
 
