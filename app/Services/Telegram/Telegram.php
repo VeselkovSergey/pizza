@@ -53,10 +53,10 @@ class Telegram
         ));
 
         $server_output = curl_exec($curl);
-//        $this->execLog(json_encode($server_output));
+        $this->execLog(json_encode($server_output));
 
         $server_error = curl_error($curl);
-//        $this->errorLog(json_encode($server_error));
+        $this->errorLog(json_encode($server_error));
 
         curl_close($curl);
     }
