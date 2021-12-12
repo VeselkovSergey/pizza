@@ -89,16 +89,16 @@ class TelegramBotController extends Controller
             $rawData = json_decode($order->all_information_raw_data);
             $clientInfo = json_decode($order->client_raw_data);
 
-            $sum += $rawData->orderSum;
-
-            if ($clientInfo->typePayment[0] === true) {
-                $sumBank +=  $rawData->orderSum;
-            } else {
-                $sumCash += $rawData->orderSum;
-            }
-
             if ($order->IsCancelled()) {
                 $amountCancelled++;
+            } else {
+                $sum += $rawData->orderSum;
+
+                if ($clientInfo->typePayment[0] === true) {
+                    $sumBank +=  $rawData->orderSum;
+                } else {
+                    $sumCash += $rawData->orderSum;
+                }
             }
 
         }
@@ -127,16 +127,16 @@ class TelegramBotController extends Controller
             $rawData = json_decode($order->all_information_raw_data);
             $clientInfo = json_decode($order->client_raw_data);
 
-            $sum += $rawData->orderSum;
-
-            if ($clientInfo->typePayment[0] === true) {
-                $sumBank +=  $rawData->orderSum;
-            } else {
-                $sumCash += $rawData->orderSum;
-            }
-
             if ($order->IsCancelled()) {
                 $amountCancelled++;
+            } else {
+                $sum += $rawData->orderSum;
+
+                if ($clientInfo->typePayment[0] === true) {
+                    $sumBank +=  $rawData->orderSum;
+                } else {
+                    $sumCash += $rawData->orderSum;
+                }
             }
 
         }
