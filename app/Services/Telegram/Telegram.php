@@ -8,6 +8,7 @@ class Telegram
     private $remoteUrl;
     private $chatId;
     private $method;
+    private $request;
     private $textMessage;
     private $buttons = null;
     private $messageId = null;
@@ -125,7 +126,7 @@ class Telegram
         $request = file_get_contents('php://input');
         $request = json_decode($request);
 
-//        $this->request = $request;
+        $this->request = $request;
 
         if (!empty($request->message)) {
             $this->incomingMessage = $request->message;
@@ -148,10 +149,10 @@ class Telegram
         return $this->messageText;
     }
 
-//    public function fullRequest()
-//    {
-//        return $this->request;
-//    }
+    public function fullRequest()
+    {
+        return $this->request;
+    }
 
     public function addButton($textOrArrayButton, $action = null)
     {
