@@ -113,7 +113,7 @@ class OrdersController extends Controller
             'orderId' => $orderId,
         ];
 
-        //$this->SendTelegram($orderFullInformation);
+        $this->SendTelegram($orderFullInformation);
 
         AuthController::UpdateUserName($user, $clientInformation->clientName);
 
