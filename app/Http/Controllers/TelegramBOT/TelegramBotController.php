@@ -50,7 +50,7 @@ class TelegramBotController extends Controller
                 $report = self::TodayReport();
 
                 $message = '<b>Отчёт:</b>' . PHP_EOL;
-                $message .= 'Кол-во заказов: ' . $report->countOrder . PHP_EOL;
+                $message .= 'Кол-во заказов: ' . $report->countOrder . '(' . $report->amountCancelled . ')' . PHP_EOL;
                 $message .= 'Сумма: ' . $report->sum . PHP_EOL;
                 $message .= 'Сумма банк: ' . $report->sumBank . PHP_EOL;
                 $message .= 'Сумма нал: ' . $report->sumCash . PHP_EOL;
@@ -73,6 +73,7 @@ class TelegramBotController extends Controller
         $sum = 0;
         $sumCash = 0;
         $sumBank = 0;
+        $amountCancelled = 0;
 
         foreach ($orders as $order) {
             $rawData = json_decode($order->all_information_raw_data);
@@ -86,6 +87,10 @@ class TelegramBotController extends Controller
                 $sumCash += $rawData->orderSum;
             }
 
+            if ($order->IsCancelled()) {
+                $amountCancelled++;
+            }
+
         }
 
         return (object)[
@@ -94,6 +99,7 @@ class TelegramBotController extends Controller
             'sumBank' => $sumBank,
             'sumCash' => $sumCash,
             'averageCheck' => ($sum / $ordersCount),
+            'amountCancelled' => $amountCancelled,
         ];
     }
 }

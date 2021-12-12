@@ -75,4 +75,12 @@ class Orders extends BaseModel
     {
         return $this->hasOne(OrdersStatusLogs::class, 'order_id', 'id')->first();
     }
+
+    public function IsCancelled()
+    {
+        if ($this->status_id === self::STATUS_TEXT['cancelled']) {
+            return true;
+        }
+        return false;
+    }
 }
