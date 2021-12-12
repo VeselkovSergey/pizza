@@ -126,7 +126,7 @@ class Telegram
         $request = file_get_contents('php://input');
         $request = json_decode($request);
 
-        $this->request = $request;
+//        $this->request = $request;
 
         if (!empty($request->message)) {
             $this->incomingMessage = $request->message;
