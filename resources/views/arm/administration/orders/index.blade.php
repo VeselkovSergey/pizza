@@ -161,7 +161,7 @@
             <div class="mb-10">Итого: {{$sum}} (Наличные: {{$sumCash}} / Банк: {{$sumBank}})</div>
             <div class="mb-10">Себестоимость: {{$sumCost}}</div>
             <div class="mb-10">Кол-во заказов: {{$orders->count()}} (Сайт: {{$ordersCreatorWeb}} / Менеджер {{$ordersCreatorManager}} / Собственник {{$ordersCreatorAdmin}} / Отказ {{$amountOrdersCancelled}})</div>
-            <div class="mb-10">Средний чек: {{$sum / ($orders->count() - $amountOrdersCancelled)}}</div>
+            <div class="mb-10">Средний чек: {{$orders->count() !== 0 ? ($sum / ($orders->count() - $amountOrdersCancelled)) : 0}}</div>
             <div class="mb-10">
                 <div class="toggle-button cp" data-toogle="amount-orders-in-days-container">Кол-во заказов в день (нал/банк/всего) (нажать. раскроется.)</div>
                 <div class="amount-orders-in-days-container">
