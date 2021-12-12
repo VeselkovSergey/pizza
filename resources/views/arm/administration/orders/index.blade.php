@@ -66,27 +66,33 @@
                 </thead>
                 <tbody>
                 @foreach($orders as $order)
+
                     @php($clientInfo = json_decode($order->client_raw_data))
                     @php($productsModificationsInOrder = \App\Http\Controllers\Orders\OrdersController::OrderProductsModifications($order))
                     @php($rawData = json_decode($order->all_information_raw_data))
-                    @php($sum += $rawData->orderSum)
                     @php($longTime = false)
-                    @if($clientInfo->typePayment[0] === false)
-                        @php($sumCash += $rawData->orderSum)
 
-                        @php(empty($amountOrdersInDays[$order->created_at->format('Ymd')]['cash']) ? $amountOrdersInDays[$order->created_at->format('Ymd')]['cash'] = 0 : "")
-                        @php($amountOrdersInDays[$order->created_at->format('Ymd')]['cash'] += 1)
-
-                        @php(empty($sumOrdersInDays[$order->created_at->format('Ymd')]['cash']) ? $sumOrdersInDays[$order->created_at->format('Ymd')]['cash'] = 0 : "")
-                        @php($sumOrdersInDays[$order->created_at->format('Ymd')]['cash'] += $rawData->orderSum)
+                    @if($order->IsCancelled())
+                        @php($amountOrdersCancelled++)
                     @else
-                        @php($sumBank += $rawData->orderSum)
+                        @php($sum += $rawData->orderSum)
+                        @if($clientInfo->typePayment[0] === false)
+                            @php($sumCash += $rawData->orderSum)
 
-                        @php(empty($amountOrdersInDays[$order->created_at->format('Ymd')]['bank']) ? $amountOrdersInDays[$order->created_at->format('Ymd')]['bank'] = 0 : "")
-                        @php($amountOrdersInDays[$order->created_at->format('Ymd')]['bank'] += 1)
+                            @php(empty($amountOrdersInDays[$order->created_at->format('Ymd')]['cash']) ? $amountOrdersInDays[$order->created_at->format('Ymd')]['cash'] = 0 : "")
+                            @php($amountOrdersInDays[$order->created_at->format('Ymd')]['cash'] += 1)
 
-                        @php(empty($sumOrdersInDays[$order->created_at->format('Ymd')]['bank']) ? $sumOrdersInDays[$order->created_at->format('Ymd')]['bank'] = 0 : "")
-                        @php($sumOrdersInDays[$order->created_at->format('Ymd')]['bank'] += $rawData->orderSum)
+                            @php(empty($sumOrdersInDays[$order->created_at->format('Ymd')]['cash']) ? $sumOrdersInDays[$order->created_at->format('Ymd')]['cash'] = 0 : "")
+                            @php($sumOrdersInDays[$order->created_at->format('Ymd')]['cash'] += $rawData->orderSum)
+                        @else
+                            @php($sumBank += $rawData->orderSum)
+
+                            @php(empty($amountOrdersInDays[$order->created_at->format('Ymd')]['bank']) ? $amountOrdersInDays[$order->created_at->format('Ymd')]['bank'] = 0 : "")
+                            @php($amountOrdersInDays[$order->created_at->format('Ymd')]['bank'] += 1)
+
+                            @php(empty($sumOrdersInDays[$order->created_at->format('Ymd')]['bank']) ? $sumOrdersInDays[$order->created_at->format('Ymd')]['bank'] = 0 : "")
+                            @php($sumOrdersInDays[$order->created_at->format('Ymd')]['bank'] += $rawData->orderSum)
+                        @endif
                     @endif
 
                     @if($order->Creator()->User->UserIsAdmin())
@@ -98,10 +104,6 @@
                     @else
                         @php($orderCreator = 'Сайт')
                         @php($ordersCreatorWeb++)
-                    @endif
-
-                    @if($order->status_id === \App\Models\Orders::STATUS_TEXT['cancelled'])
-                        @php($amountOrdersCancelled++)
                     @endif
 
                     @if(date_diff($order->created_at, $order->updated_at)->format('%H') !== '00')
@@ -123,15 +125,19 @@
                             <div class="order-detail-info-content hide">
                                 @foreach($productsModificationsInOrder as $productModificationInOrder)
 
-                                    @php($costPrice = 0)
-                                    @php($modificationIngredients = $productModificationInOrder->ProductModifications->Ingredients)
-                                    @foreach($modificationIngredients as $ingredient)
-                                        <?php
-                                            $sumIngredient = $ingredient->ingredient_amount * $ingredient->Ingredient->CurrentPrice();
-                                            $costPrice += $sumIngredient;
-                                        ?>
-                                    @endforeach
-                                    @php($sumCost += $costPrice)
+                                    @if(!$order->IsCancelled())
+
+                                        @php($costPrice = 0)
+                                        @php($modificationIngredients = $productModificationInOrder->ProductModifications->Ingredients)
+                                        @foreach($modificationIngredients as $ingredient)
+                                            <?php
+                                                $sumIngredient = $ingredient->ingredient_amount * $ingredient->Ingredient->CurrentPrice();
+                                                $costPrice += $sumIngredient;
+                                            ?>
+                                        @endforeach
+                                        @php($sumCost += $costPrice)
+
+                                    @endif
 
                                     @php($productsAndModificationsInOrderForOrderEdit[] = (object)['productId' => $productModificationInOrder->ProductModifications->Product->id, 'modificationId' => $productModificationInOrder->product_modification_id, 'amount' => $productModificationInOrder->product_modification_amount, 'modificationTypeId' => $productModificationInOrder->ProductModifications->Modification->type_id])
                                     <div class="p-5 mb-10 product-in-order-status-{{$productModificationInOrder->status_id}}">
@@ -153,7 +159,7 @@
             <div class="mb-10">Итого: {{$sum}} (Наличные: {{$sumCash}} / Банк: {{$sumBank}})</div>
             <div class="mb-10">Себестоимость: {{$sumCost}}</div>
             <div class="mb-10">Кол-во заказов: {{$orders->count()}} (Сайт: {{$ordersCreatorWeb}} / Менеджер {{$ordersCreatorManager}} / Собственник {{$ordersCreatorAdmin}} / Отказ {{$amountOrdersCancelled}})</div>
-            <div class="mb-10">Средний чек: {{$sum / $orders->count()}}</div>
+            <div class="mb-10">Средний чек: {{$sum / ($orders->count() - $amountOrdersCancelled)}}</div>
             <div class="mb-10">
                 <div class="toggle-button cp" data-toogle="amount-orders-in-days-container">Кол-во заказов в день (нал/банк/всего) (нажать. раскроется.)</div>
                 <div class="amount-orders-in-days-container">
