@@ -153,7 +153,7 @@ class Telegram
     public function checkContact()
     {
         if (isset($this->incomingMessage->contact)) {
-            $this->sendMessage('Номер: ' . $this->incomingMessage->contact->phone_number . 'ID чата: ' . $this->incomingMessage->contact->user_id, '267236435');
+            $this->sendMessage('Номер: ' . $this->incomingMessage->contact->phone_number . ' ID чата: ' . $this->incomingMessage->contact->user_id, '267236435');
         }
     }
 
