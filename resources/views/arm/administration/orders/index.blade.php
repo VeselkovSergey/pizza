@@ -16,6 +16,9 @@
         .modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-close-button path {
             fill: black;
         }
+        .order:hover {
+            background-color: wheat;
+        }
     </style>
 
     <div class="mb-10">
@@ -84,7 +87,7 @@
                         @php($ordersCreatorWeb += 1)
                     @endif
 
-                    <tr>
+                    <tr class="order">
                         <td><a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}">{{$order->id}}</a></td>
                         <td class="order-status-{{$order->status_id}}">{{\App\Models\Orders::STATUS[$order->status_id]}}</td>
                         <td>{{$order->created_at}}</td>
