@@ -80,7 +80,7 @@
         @endif
     </div>
 
-    @if(!auth()->user()->IsManager())
+    @if(auth()->check() && !auth()->user()->IsManager())
         <div class="phone-container-header flex-center">
         <a class="text-center color-white" style="text-decoration: none;" href="tel:+7(926)585-36-21">+7(926)585-36-21</a>
     </div>
