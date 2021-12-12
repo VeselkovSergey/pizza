@@ -60,6 +60,7 @@
                     <th>Кол-во позиций</th>
                     <th>Курьер</th>
                     <th>Номер заказавшего</th>
+                    <th>Комментарий</th>
                     <th>Тип заказа</th>
                     <th>Сумма</th>
                     <th></th>
@@ -120,6 +121,7 @@
                         <td>{{$productsModificationsInOrder->count()}}</td>
                         <td>{{$order->courier_id}} {{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
                         <td>{{$order->User->phone}}</td>
+                        <td>{{$clientInfo->clientComment}}</td>
                         <td>{{$orderCreator}}</td>
                         <td>{{$rawData->orderSum}}</td>
                         <td class="text-center">
