@@ -59,6 +59,7 @@
                     <th>Потрачено времени</th>
                     <th>Кол-во позиций</th>
                     <th>Курьер</th>
+                    <th>Номер заказавшего</th>
                     <th>Тип заказа</th>
                     <th>Сумма</th>
                     <th></th>
@@ -118,6 +119,7 @@
                         <td @if($longTime) style="background-color: #e37e7e;" @endif>{{date_diff($order->created_at, $order->updated_at)->format('%H:%I:%S')}}</td>
                         <td>{{$productsModificationsInOrder->count()}}</td>
                         <td>{{$order->courier_id}} {{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
+                        <td>{{$order->User->phone}}</td>
                         <td>{{$orderCreator}}</td>
                         <td>{{$rawData->orderSum}}</td>
                         <td class="text-center">
