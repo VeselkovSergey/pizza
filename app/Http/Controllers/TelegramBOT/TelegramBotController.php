@@ -14,7 +14,9 @@ class TelegramBotController extends Controller
     {
         $telegram = new Telegram('1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0');
 
-        switch ($telegram->incomingMessage()) {
+        $command = $telegram->incomingMessage();
+
+        switch ($command) {
 
             case '/start':
 
@@ -46,23 +48,17 @@ class TelegramBotController extends Controller
                 break;
 
             case '/todayReport':
-
-                $report = self::TodayReport();
-
-                $message = '<b>Отчёт за сегодня:</b>' . PHP_EOL;
-                $message .= 'Кол-во заказов: ' . $report->countOrder . '(отказов: ' . $report->amountCancelled . ')' . PHP_EOL;
-                $message .= 'Сумма: ' . number_format($report->sum, 2, ',', "'") . ' ₽' . PHP_EOL;
-                $message .= 'Сумма банк: ' . number_format($report->sumBank, 2, ',', "'") . ' ₽' . PHP_EOL;
-                $message .= 'Сумма нал: ' . number_format($report->sumCash, 2, ',', "'") . ' ₽' . PHP_EOL;
-                $message .= 'Средний чек: ' . number_format($report->averageCheck, 2, ',', "'") . ' ₽' . PHP_EOL;
-                $telegram->sendMessage($message);
-                break;
-
             case '/fullReport':
 
-                $report = self::FullReport();
+                if ($command === '/todayReport') {
+                    $report = self::TodayReport();
+                    $text = '<b>Отчёт за сегодня:</b>';
+                } else {
+                    $report = self::FullReport();
+                    $text = '<b>Отчёт за всё время:</b>';
+                }
 
-                $message = '<b>Отчёт за всё время:</b>' . PHP_EOL;
+                $message = $text . PHP_EOL;
                 $message .= 'Кол-во заказов: ' . $report->countOrder . '(отказов: ' . $report->amountCancelled . ')' . PHP_EOL;
                 $message .= 'Сумма: ' . number_format($report->sum, 2, ',', "'") . ' ₽' . PHP_EOL;
                 $message .= 'Сумма банк: ' . number_format($report->sumBank, 2, ',', "'") . ' ₽' . PHP_EOL;
