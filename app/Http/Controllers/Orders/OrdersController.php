@@ -26,12 +26,7 @@ class OrdersController extends Controller
         $basket = json_decode($request->basket);
         $clientInformation = self::CleanClientInformation(json_decode($request->clientInformation));
         $clientInformation->clientPhone = auth()->user()->IsManager() ? $clientInformation->clientPhone : auth()->user()->phone;
-
-        if (auth()->user()->IsAdmin()) {
-            $request->merge(['orderSum' => (int)($request->orderSum / 2)]);
-        }
-
-        $orderSumFront = $request->orderSum;
+        $paymentType = $clientInformation->typePayment[0];
 
         $clientInformation->clientPhone = preg_replace("/[^0-9]/", '', $clientInformation->clientPhone);
 
@@ -42,6 +37,12 @@ class OrdersController extends Controller
         if (!$user) {
             $user = AuthController::FastRegistrationUserByPhone($clientInformation->clientPhone);
         }
+
+        if ($user->IsAdmin()) {
+            $request->merge(['orderSum' => (int)($request->orderSum / 2)]);
+        }
+
+        $orderSumFront = $request->orderSum;
 
         if (!empty($orderId)) {
             $order = Orders::find($orderId);
