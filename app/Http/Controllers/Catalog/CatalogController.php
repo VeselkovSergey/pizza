@@ -22,7 +22,7 @@ class CatalogController extends Controller
         if (empty($allProducts) || $forceUpdate) {
             $allProducts = new ProductsController();
             $allProducts = $allProducts->GetAllProducts($forceUpdate);
-            \Cache::put('allProducts', $allProducts, now()->addMinutes(10));
+            \Cache::put('allProducts', $allProducts, now()->addMinutes(60));
         }
         $allCategory = Categories::all();
         return view('catalog.index', [
