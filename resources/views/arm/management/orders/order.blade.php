@@ -14,7 +14,7 @@
                 <button class="mb-10 cp back-to-orders">
                     <a class="clear-a" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
                 </button>
-                @if($order->status_id === \App\Models\Orders::STATUS_TEXT['managerProcesses'])
+                @if($order->status_id === \App\Models\Orders::STATUS_TEXT['managerProcesses'] || auth()->user()->IsAdmin())
                     <button class="mb-10 cp order-edit-button">Редактировать заказ</button>
                 @endif
             </div>

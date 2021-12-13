@@ -572,20 +572,32 @@ function CreateOrder(orderId) {
     LoaderShow();
     Ajax(routeOrderCreate, 'POST', data).then((response) => {
         LoaderHide();
-        FlashMessage(response.message);
-        if (response.status === true) {
-            basketWindow.slowRemove();
-            document.body.classList.remove('scroll-off');
-            DeleteAllProductsInBasket();
-            if (orderId) {
-                localStorage.removeItem('lastClientName');
-                localStorage.removeItem('lastClientPhone');
-                localStorage.removeItem('lastClientAddressDelivery');
-                localStorage.removeItem('lastClientComment');
-                localStorage.removeItem('lastTypePayment');
-                localStorage.removeItem('orderId');
+
+        // if (ObjectClientInformation.typePayment[0] && false) {
+        //
+        //     if (response.status === true) {
+        //         window.open(
+        //             response.result.paymentLink,
+        //             '_blank'
+        //         );
+        //     }
+        //
+        // } else {
+            FlashMessage(response.message);
+            if (response.status === true) {
+                basketWindow.slowRemove();
+                document.body.classList.remove('scroll-off');
+                DeleteAllProductsInBasket();
+                if (orderId) {
+                    localStorage.removeItem('lastClientName');
+                    localStorage.removeItem('lastClientPhone');
+                    localStorage.removeItem('lastClientAddressDelivery');
+                    localStorage.removeItem('lastClientComment');
+                    localStorage.removeItem('lastTypePayment');
+                    localStorage.removeItem('orderId');
+                }
             }
-        }
+        // }
     });
 }
 
@@ -680,7 +692,7 @@ function OrderInfoGenerationHTML(orderId) {
                             '</div>' +
                         '</div>' +
                     '</div>' +
-                    '<div class="text-center mt-10">Бесплатная доставка от 500 рублей иначе 50 рублей по городу</div>' +
+                    '<div class="text-center mt-10">Бесплатная доставка от 500 рублей, иначе 50 рублей по городу</div>' +
                     '<div class="w-100 flex-center mt-25"><button class="cp order-create btn first mt-25">' + (orderId ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button>' + (orderId ? '<button class="cp clean-basket btn first mt-25 ml-10">Очистить данные</button>'  : '') + '</div>' +
                 '</div>';
     } else {

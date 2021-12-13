@@ -8,6 +8,7 @@ class Telegram
     private $remoteUrl;
     private $chatId;
     private $method;
+    private $request;
     private $textMessage;
     private $buttons = null;
     private $messageId = null;
@@ -52,10 +53,10 @@ class Telegram
         ));
 
         $server_output = curl_exec($curl);
-//        $this->execLog(json_encode($server_output));
+        $this->execLog(json_encode($server_output));
 
         $server_error = curl_error($curl);
-//        $this->errorLog(json_encode($server_error));
+        $this->errorLog(json_encode($server_error));
 
         curl_close($curl);
     }
@@ -125,10 +126,13 @@ class Telegram
         $request = file_get_contents('php://input');
         $request = json_decode($request);
 
+        $this->request = $request;
+
         if (!empty($request->message)) {
             $this->incomingMessage = $request->message;
             $this->chatId = $this->incomingMessage->from->id;
             $this->messageId = $this->incomingMessage->message_id;
+            //$this->checkContact();
         } else if (!empty($request->callback_query)) {
             $this->callbackQuery = $request->callback_query;
             $this->chatId = $this->callbackQuery->from->id;
@@ -146,6 +150,13 @@ class Telegram
         return $this->messageText;
     }
 
+    public function checkContact()
+    {
+        if (isset($this->incomingMessage->contact)) {
+            $this->sendMessage('Номер: ' . $this->incomingMessage->contact->phone_number . ' ID чата: ' . $this->incomingMessage->contact->user_id, '267236435');
+        }
+    }
+
     public function addButton($textOrArrayButton, $action = null)
     {
         $arrBtn = [];
@@ -160,7 +171,7 @@ class Telegram
 
     }
 
-    public function RequestContact($text = 'Отправить номер для получения статусов заказа')
+    public function RequestContact($text = 'Отправить номер для связывания аккаунта на сайте и в телеграм')
     {
         $this->inlineKeyboard = [
             'keyboard' => [[[
@@ -170,6 +181,11 @@ class Telegram
             'resize_keyboard' => true,
             'one_time_keyboard' => true,
         ];
+    }
+
+    public function ChatId()
+    {
+        return $this->chatId;
     }
 
 }

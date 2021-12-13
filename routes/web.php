@@ -134,6 +134,18 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         #todo на курьера
         Route::post('/change-status-order-to-delivered', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToDelivered'])->name('manager-arm-change-status-order-to-delivered');
 
+        Route::group(['prefix' => 'products'], function () {
+
+            Route::group(['prefix' => 'modifications'], function () {
+
+                Route::get('/', [Controllers\ProductModifications\ProductModificationsController::class, 'Edit'])->name('manager-arm-products-modifications-page');
+                Route::post('/save', [Controllers\ProductModifications\ProductModificationsController::class, 'Save'])->name('manager-arm-products-modifications-save');
+
+            });
+
+        });
+
+
     });
 
     Route::group(['prefix' => 'chef'], function () {
@@ -153,6 +165,13 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
     });
 
 });
+
+//Route::get('/payment-paid', [Controllers\Payments\PaymentsController::class, 'PaymentPaidRequest'])->name('payment-paid');
+//Route::get('/payment-error', [Controllers\Payments\PaymentsController::class, 'PaymentErrorRequest'])->name('payment-error');
+//Route::get('/payment-status', [Controllers\Payments\PaymentsController::class, 'PaymentStatusRequest'])->name('payment-status');
+//Route::get('/payment-refund', [Controllers\Payments\PaymentsController::class, 'PaymentRefundRequest'])->name('payment-refund');
+
+Route::get('/today-report', [Controllers\TelegramBOT\TelegramBotController::class, 'TodayReportRequest']);
 
 /*
  *  test routes
@@ -175,10 +194,13 @@ Route::get('/ucaller-balance', function () {
 
 Route::get('/test-bot', function () {
 //    return ;
-//    $message = 'Приветствуем. Вы сможете получать уведомления о статусе вашего заказа в этом боте. Осталось только поделиться номером телефона для синхронизации ваших заказов' . PHP_EOL;
-    $telegram = new Telegram('2081173182:AAEuKyhCNybjJTiZD-NQAxbhUj0YBNmopXk');
-//    $telegram->RequestContact();
+    $message = 'Приветствуем. Вы сможете получать уведомления о статусе вашего заказа в этом боте. Осталось только поделиться номером телефона для синхронизации ваших заказов' . PHP_EOL;
+    $message = 'Отправьте номер для связывания аккаунта на сайте и в телеграм' . PHP_EOL;
+//    $telegram = new Telegram('2081173182:AAEuKyhCNybjJTiZD-NQAxbhUj0YBNmopXk');
+    $telegram = new Telegram('1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0');
+    $telegram->RequestContact();
 //    $telegram->sendMessage($message, '267236435');
+    $telegram->sendMessage($message, '267236435');
 });
 
 Route::get('/test-parse', function () {

@@ -3,8 +3,10 @@
 namespace App\Models;
 
 /**
+ * @property integer id
  * @property integer courier_id
  * @property integer status_id
+ * @property integer payment_id
  */
 class Orders extends BaseModel
 {
@@ -15,6 +17,7 @@ class Orders extends BaseModel
         'products_raw_data',
         'all_information_raw_data',
         'courier_id',
+        'payment_id',
     ];
 
     const STATUS = [
@@ -48,6 +51,11 @@ class Orders extends BaseModel
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    public function Courier()
+    {
+        return $this->hasOne(User::class, 'id', 'courier_id');
+    }
+
     public function ProductsModifications()
     {
         return $this->hasMany(ProductsModificationsInOrders::class, 'order_id', 'id');
@@ -66,5 +74,13 @@ class Orders extends BaseModel
     public function Creator()
     {
         return $this->hasOne(OrdersStatusLogs::class, 'order_id', 'id')->first();
+    }
+
+    public function IsCancelled()
+    {
+        if ($this->status_id === self::STATUS_TEXT['cancelled']) {
+            return true;
+        }
+        return false;
     }
 }

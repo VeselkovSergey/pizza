@@ -7,14 +7,17 @@ use App\Helpers\ArrayHelper;
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Payments\PaymentsController;
 use App\Http\Controllers\Products\ProductsController;
 use App\Models\Orders;
 use App\Models\OrdersProductsStatusLogs;
 use App\Models\OrdersStatusLogs;
+use App\Models\Payments;
 use App\Models\ProductModifications;
 use App\Models\Products;
 use App\Models\ProductsModificationsInOrders;
 use App\Models\User;
+use App\Services\SberBank\SberBank;
 use App\Services\Telegram\Telegram;
 use Illuminate\Http\Request;
 use Monolog\Handler\TelegramBotHandler;
@@ -25,8 +28,8 @@ class OrdersController extends Controller
     {
         $basket = json_decode($request->basket);
         $clientInformation = self::CleanClientInformation(json_decode($request->clientInformation));
-        $orderSumFront = $request->orderSum;
         $clientInformation->clientPhone = auth()->user()->IsManager() ? $clientInformation->clientPhone : auth()->user()->phone;
+        $paymentType = $clientInformation->typePayment[0];
 
         $clientInformation->clientPhone = preg_replace("/[^0-9]/", '', $clientInformation->clientPhone);
 
@@ -38,12 +41,17 @@ class OrdersController extends Controller
             $user = AuthController::FastRegistrationUserByPhone($clientInformation->clientPhone);
         }
 
+        if ($user->UserIsAdmin()) {
+            $request->merge(['orderSum' => (int)($request->orderSum / 2)]);
+        }
+
+        $orderSumFront = $request->orderSum;
+
         if (!empty($orderId)) {
             $order = Orders::find($orderId);
             if (empty($order)) {
                 return ResultGenerate::Error('Произошла ошибка! Создайте новый заказ. Этот переведите в статус ОТКАЗ');
             }
-            $order->user_id = $user->id;
             $order->client_raw_data = json_encode($clientInformation);
             $order->products_raw_data = json_encode($basket);
             $order->all_information_raw_data = json_encode($request->all());
@@ -58,8 +66,9 @@ class OrdersController extends Controller
                 'products_raw_data' => json_encode($basket),
                 'all_information_raw_data' => json_encode($request->all()),
             ]);
-            $orderId = $newOrder->id;
-            self::ChangeStatus($newOrder, Orders::STATUS_TEXT['newOrder']);
+            $order = $newOrder;
+            $orderId = $order->id;
+            self::ChangeStatus($order, Orders::STATUS_TEXT['newOrder']);
             $flashMessage = 'Заказ принят. Мы скоро свяжемся с вами.';
         }
 
@@ -101,11 +110,29 @@ class OrdersController extends Controller
             'orderSum' => $orderSum,
             'orderSumFront' => $orderSumFront,
             'clientInformation' => $clientInformation,
+            'orderId' => $orderId,
         ];
 
         $this->SendTelegram($orderFullInformation);
 
         AuthController::UpdateUserName($user, $clientInformation->clientName);
+
+//        $paymentTypeString = $paymentType ? 'bank' : 'cash';
+//
+//        $payment = PaymentsController::CreatePayment($order, $orderSumFront, $paymentTypeString);
+//
+//        if ($paymentType) {
+//            $paymentService = new SberBank();
+//            $paymentService = $paymentService->Register($payment, $orderSumFront, route('payment-paid'), route('payment-error'));
+//
+//            if ($paymentService->status) {
+//                return ResultGenerate::Success($flashMessage, [
+//                    'paymentLink' => $paymentService->paymentLink,
+//                ]);
+//            }
+//
+//            return ResultGenerate::Error($flashMessage);
+//        }
 
         return ResultGenerate::Success($flashMessage);
     }
@@ -120,7 +147,6 @@ class OrdersController extends Controller
 
     private function SendTelegram($orderFullInformation)
     {
-
         $allProductsInOrder = $orderFullInformation->products;
         $clientInformation = $orderFullInformation->clientInformation;
 
@@ -141,18 +167,19 @@ class OrdersController extends Controller
         $message .= $products . PHP_EOL;
         $message .= '<i>Итого:</i> ' . $orderFullInformation->orderSum . ' ₽' . PHP_EOL;
         $message .= '<i>Итого со скидками:</i> ' . $orderFullInformation->orderSumFront . ' ₽' . PHP_EOL;
+        $message .= '<i>Заказ в системе:</i> ' . route('manager-arm-order-page', $orderFullInformation->orderId) . PHP_EOL;
 
         $telegram = new Telegram();
         $telegram->sendMessage($message, '-1001538892405');
 //        $telegram->sendMessage($message, '267236435');
     }
 
-    public static function AllOrders()
+    public static function AllOrders($direction = 'desc')
     {
-        return Orders::query()->orderBy('id', 'desc')->get();
+        return Orders::query()->orderBy('id', $direction)->get();
     }
 
-    public static function OrdersByDate($requiredDate, $allOrders = false)
+    public static function OrdersByDate($requiredDate, $allOrdersByDate = false, $direction = 'desc')
     {
         $requiredDate = strtotime($requiredDate);
         $startDate = date('Y-m-d 00:00:00', $requiredDate);
@@ -161,10 +188,10 @@ class OrdersController extends Controller
         $orders = $orders->where('created_at', '>=', $startDate);
         $orders = $orders->where('created_at', '<=', $endDate);
         $orders = $orders->where('created_at', '<=', $endDate);
-        if (!$allOrders) {
+        if (!$allOrdersByDate) {
             $orders = $orders->whereNotIn('status_id', [Orders::STATUS_TEXT['completed'], Orders::STATUS_TEXT['cancelled']]);
         }
-        $orders = $orders->orderBy('id', 'desc');
+        $orders = $orders->orderBy('id', $direction);
         return $orders->get();
     }
 

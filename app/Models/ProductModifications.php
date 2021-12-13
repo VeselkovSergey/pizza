@@ -8,6 +8,7 @@ class ProductModifications extends BaseModel
         'product_id',
         'modification_id',
         'selling_price',
+        'stop_list',
     ];
 
     public function Product()

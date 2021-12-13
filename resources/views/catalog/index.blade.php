@@ -25,24 +25,11 @@
 
         }
 
-        .black-t {
-            background-color: black;
-            color: white;
-        }
-
         .ingredient:not(:last-child):after {
             content: ', ';
         }
 
     </style>
-
-{{--    <div class="pos-fix w-100 bg-black">--}}
-{{--        <div class="pos-abs top-0 w-100 p-5 bg-black">--}}
-{{--            @foreach($allCategory as $category)--}}
-{{--                <a class="clear-a color-orange" href="#category-{{$category->id}}">{{$category->title}}</a>--}}
-{{--            @endforeach--}}
-{{--        </div>--}}
-{{--    </div>--}}
 
     <div class="flex-wrap pt-10">
 
@@ -57,7 +44,7 @@
 
                 <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}" data-product-img="{{url($imgFile)}}">
 
-                <div class="m-10 flex-column p-5 border-radius-10 border-orange p-10 {{isset(request()->black) ? 'black-t' : ''}}">
+                <div class="m-10 flex-column p-5 border-radius-10 border-orange p-10 h-100">
 
                     <div class="container-product-img-and-description">
                         <div class="container-product-img mb-10">
@@ -72,7 +59,7 @@
 
 {{--                    <div class="text-center mb-10">от {{$product->minimumPrice}} ₽</div>--}}
 
-                    <button class="w-100 h-100 bg-grey color-white border-radius-5 clear-button p-10 cp">от {{$product->minimumPrice}} ₽</button>
+                    <button class="w-100 bg-orange color-white border-radius-5 clear-button p-10 cp mt-a">от {{$product->minimumPrice}} ₽</button>
 
 
                 </div>
@@ -139,6 +126,8 @@
                     let productId = el.dataset.productId;
                     let modificationType = el.dataset.modificationType;
                     let modificationId = el.dataset.modificationId;
+                    let stopList = el.dataset.stopList;
+
                     let modification = allProducts[productId]['modifications'][modificationType][modificationId];
                     let sellingPriceModification = modification.sellingPrice;
                     let ingredients = IngredientsGenerator(null, modification);
@@ -148,11 +137,16 @@
                     modificationSelected = {
                         product: allProducts[productId],
                         modification: allProducts[productId]['modifications'][modificationType][modificationId],
+                        stopList: stopList,
                     }
                 });
             });
 
             buttonPutInBasket.addEventListener('click', () => {
+                if (modificationSelected.stopList == 1) {
+                    ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
+                    return;
+                }
                 FlashMessage('Добавлено: <br/>' + modificationSelected.product.title + (modificationSelected.modification.value !== 'Отсутствует' ? (', ' + modificationSelected.modification.title + ' ' + modificationSelected.modification.value) : ''));
                 AddProductInBasket(modificationSelected);
                 modalWindow.slowRemove();
@@ -166,6 +160,7 @@
         function ModificationsGenerate(productId) {
             let containerAllModificationsTemp = '';
             let disableModificationContainer = false;
+            let stopList = false;
             Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
                 let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
                 let modificationTypeHTML = '<div class="container-modification">';
@@ -178,6 +173,7 @@
                         modificationSelected = {
                             product: allProducts['product-'+productId],
                             modification: modificationType[modificationId],
+                            stopList: modification.stop_list,
                         }
                     }
 
@@ -185,12 +181,16 @@
                         disableModificationContainer = true;
                     }
 
+                    if (modification.stop_list == 1) {
+                        stopList = true;
+                    }
+
                     let buttonWidth = 'width:' + (100 / modification.modificationTypeCount) + '%;';
                     let modificationIdHTML =
                         '<div class="text-center flex" style="' + buttonWidth + '">' +
                             '<input name="' + modificationTypeId + '" class="hide modification-input" id="' + modificationId + '" type="radio" ' + checkedInput + '/>' +
                             // '<label class="modification-button"data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.title + ' - ' + modification.value + '</label>' +
-                            '<label class="modification-button" data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.value + '</label>' +
+                            '<label class="modification-button" data-stop-list="' + modification.stop_list + '" data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.value + '</label>' +
                         '</div>';
                     modificationTypeHTML += modificationIdHTML;
                     i++;
@@ -204,6 +204,13 @@
             } else {
                 containerAllModifications = '<div>'+ containerAllModificationsTemp +'</div>';
             }
+
+            if (stopList) {
+                setTimeout(() => {
+                    ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
+                }, 200);
+            }
+
             return containerAllModifications;
         }
 
