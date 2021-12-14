@@ -21,12 +21,13 @@ class ProductsController extends Controller
 
     public function GetAllProducts($forceUpdate = false)
     {
-        $allProductsJSON = Files::GetFile('allProduct');
-        if ($allProductsJSON !== false && $forceUpdate === false) {
-            return $allProductsJSON->contentFile;
-        } else {
-            return self::UpdateFileAllProducts()->contentFile;
-        }
+//        $allProductsJSON = Files::GetFile('allProduct');
+//        if ($allProductsJSON !== false && $forceUpdate === false) {
+//            return $allProductsJSON->contentFile;
+//        } else {
+//            return self::UpdateFileAllProducts()->contentFile;
+//        }
+        return self::UpdateFileAllProducts()->contentFile;
     }
 
     public static function UpdateFileAllProducts()
