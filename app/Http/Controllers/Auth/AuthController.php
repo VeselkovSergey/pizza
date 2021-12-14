@@ -20,15 +20,10 @@ class AuthController extends Controller
     {
         $phone = $request->phone;
 
-        $admins = User::select('phone')->where('role_id', 999)->get();
-        $adminsPhones = [];
-        foreach ($admins as $admin) {
-            /** @var $admin User */
-            $adminsPhones[] = $admin->phone;
-        }
+        $isPersonal = User::where('phone', $phone)->whereIn('role_id', [999, 777])->first();
 
-        if (in_array($phone, $adminsPhones)) {
-            $code = '1111';
+        if ($isPersonal) {
+            $code = $isPersonal->role_id === 999 ? '9999' : '1111';
         } else {
             $ucaller = new Ucaller();
             $initCall = $ucaller->InitCall($phone);
