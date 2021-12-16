@@ -168,7 +168,11 @@
                 <div class="toggle-button cp" data-toogle="amount-orders-in-days-container">Кол-во заказов в день (нал/банк/всего) (нажать. раскроется.)</div>
                 <div class="amount-orders-in-days-container">
                     @foreach($amountOrdersInDays as $date => $amountOrdersInDay)
-                        <div>Дата: {{date('Y-m-d', strtotime($date))}} - Кол-во: {{$amountOrdersInDay['cash']}}/{{$amountOrdersInDay['bank']}}/{{$amountOrdersInDay['cash'] + $amountOrdersInDay['bank']}} - сумма: {{$sumOrdersInDays[$date]['cash']}}/{{$sumOrdersInDays[$date]['bank']}}/{{$sumOrdersInDays[$date]['cash'] + $sumOrdersInDays[$date]['bank']}}</div>
+                        @php($amountOrdersInDayCash = $amountOrdersInDay['cash'] ?? 0)
+                        @php($amountOrdersInDayBank = $amountOrdersInDay['bank'] ?? 0)
+                        @php($amountOrdersInDayDateCash = $sumOrdersInDays[$date]['cash'] ?? 0)
+                        @php($amountOrdersInDayDateBank = $sumOrdersInDays[$date]['bank'] ?? 0)
+                        <div>Дата: {{date('Y-m-d', strtotime($date))}} - Кол-во: {{$amountOrdersInDayCash}}/{{$amountOrdersInDayBank}}/{{$amountOrdersInDayCash + $amountOrdersInDayBank}} - сумма: {{$amountOrdersInDayDateCash}}/{{$amountOrdersInDayDateBank}}/{{$amountOrdersInDayDateCash + $amountOrdersInDayDateBank}}</div>
                     @endforeach
                 </div>
             </div>
