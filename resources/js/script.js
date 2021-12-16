@@ -684,7 +684,7 @@ function OrderInfoGenerationHTML(orderId) {
                         '<div class="flex w-100"">' +
                             '<div class="flex">' +
                                 '<input ' + ((lastTypePayment === 'card' || lastTypePayment === '') ? 'checked' : '') + ' name="typePayment" value="card" type="radio" class="last-data">' +
-                                '<label for="">Карта (перевод)</label>' +
+                                '<label for="">Карта</label>' +
                             '</div>' +
                             '<div class="flex ml-25">' +
                                 '<input ' + (lastTypePayment === 'cash' ? 'checked' : '') + '  name="typePayment" type="radio" value="cash" class="last-data">' +

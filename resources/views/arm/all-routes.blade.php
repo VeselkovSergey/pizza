@@ -7,7 +7,7 @@
                 <a class="color-white" href="{{$route->link}}">{{$route->title}}</a>
             @endif
         @endforeach
-        <a class="color-white" href=""></a>
+        <a class="color-white" href="{{route('home-page')}}?force-update=true">Обновление системного кэша</a>
     </div>
 @stop
 
