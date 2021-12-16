@@ -116,7 +116,7 @@
             if ((hour === startHour && mints >= startMints) || (startHour < hour > endHour) || (hour === endHour && mints <= endMints)) {
                 //
             } else {
-                ModalWindow('<div class="text-center mb-10">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div></div>');
+                ModalWindow('<div class="text-center">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div></div>');
             }
 
         </script>
