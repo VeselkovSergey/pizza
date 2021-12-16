@@ -105,17 +105,18 @@
 
             let startHour = 11;
             let startMints = 0;
-            let endHour = 23;
-            let endMints = 0;
+            let endHour = 22;
+            let endMints = 45;
 
             let moskowUtc = 3;
             let time = new Date();
             let hour = time.getUTCHours() + moskowUtc;
-            if (hour < startHour || hour >= endHour) {
-                if (!admin) {
-                    ModalWindow('<div class="text-center mb-10">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div></div>');
-                }
-                // calcLostTime(modalTime.querySelector('.dynamic-time'), startHour, startMints)
+            let mints = time.getMinutes() + moskowUtc;
+
+            if ((hour === startHour && mints >= startMints) || (startHour < hour > endHour) || (hour === endHour && mints <= endMints)) {
+                //
+            } else {
+                ModalWindow('<div class="text-center mb-10">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div></div>');
             }
 
         </script>
