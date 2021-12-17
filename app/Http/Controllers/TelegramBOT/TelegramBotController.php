@@ -33,9 +33,11 @@ class TelegramBotController extends Controller
 
             case 'Delivered':
                 // Одна кнопка
+                $messageId = $telegram->MessageId();
                 $telegram->deleteMessage();
                 $telegram->sendMessage('Отлично! Ты молодец!');
                 $telegram->sendMessage($telegram->MessageRaw(), '267236435');
+                $telegram->sendMessage($messageId, '267236435');
                 break;
 
             case '/chatId':

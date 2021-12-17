@@ -21,6 +21,7 @@ class CreateOrdersTable extends Migration
             $table->jsonb('products_raw_data');
             $table->jsonb('all_information_raw_data');
             $table->integer('courier_id')->nullable();
+            $table->integer('telegram_message_id')->nullable();
             $table->integer('payment_id')->default(0);
             $table->timestamps();
         });

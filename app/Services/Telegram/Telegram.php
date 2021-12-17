@@ -197,6 +197,11 @@ class Telegram
         return $this->messageRaw;
     }
 
+    public function MessageId()
+    {
+        return $this->messageId;
+    }
+
 }
 
 //$token = '1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0';
