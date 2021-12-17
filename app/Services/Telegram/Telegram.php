@@ -18,6 +18,7 @@ class Telegram
     private $inlineKeyboard = null;
     private $type = 'inline_keyboard';
     private $permissionToMessageId = false;
+    private string|false $messageRaw;
 
     public function __construct($token = '')
     {
@@ -124,6 +125,7 @@ class Telegram
     public function _incomingMessageProcessing()
     {
         $request = file_get_contents('php://input');
+        $this->messageRaw = $request;
         $request = json_decode($request);
 
         $this->request = $request;
@@ -186,6 +188,11 @@ class Telegram
     public function ChatId()
     {
         return $this->chatId;
+    }
+
+    public function MessageRaw()
+    {
+        return $this->messageRaw;
     }
 
 }
