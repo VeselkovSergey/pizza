@@ -121,11 +121,16 @@ class ManagerARMController extends Controller
 
         $order = OrdersController::Order($orderId);
         $order->courier_id = $courierId;
-        $order->save();
 
         if ($courierId !== 0) {
-//            $this->SendTelegram($user, $order);
+            $result = $this->SendTelegram($user, $order);
+            $result = json_decode($result);
+            if ($result && $result->ok === true) {
+                $order->telegram_message_id = $result->result->message_id;
+            }
         }
+        $order->save();
+
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['courier']);
     }
 
@@ -156,12 +161,12 @@ class ManagerARMController extends Controller
         $message .= '<i>Итого:</i> ' . $orderSum . ' ₽' . PHP_EOL;
 
         $telegram = new Telegram();
-        $telegram->sendMessage($message, '-1001606894202');
         if (!empty($chatId)) {
             $telegram->addButton('Доставлен', 'Delivered');
             $telegram->addButton('Отказ', 'Refused');
-            $telegram->sendMessage($message, $chatId);
+            return $telegram->sendMessage($message, $chatId);
         }
+        return false;
     }
 
     public function ChangeStatusOrderToCompleted()

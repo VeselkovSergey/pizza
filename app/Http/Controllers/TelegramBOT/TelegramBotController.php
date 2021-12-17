@@ -4,6 +4,8 @@
 namespace App\Http\Controllers\TelegramBOT;
 
 
+use App\Http\Controllers\ARM\CourierARMController;
+use App\Http\Controllers\ARM\ManagerARMController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Orders\OrdersController;
 use App\Services\Telegram\Telegram;
@@ -36,8 +38,15 @@ class TelegramBotController extends Controller
                 $messageId = $telegram->MessageId();
                 $telegram->deleteMessage();
                 $telegram->sendMessage('Отлично! Ты молодец!');
-                $telegram->sendMessage($telegram->MessageRaw(), '267236435');
-                $telegram->sendMessage($messageId, '267236435');
+                CourierARMController::ChangeStatusOrderToDelivered($messageId);
+                break;
+
+            case 'Refused':
+                // Одна кнопка
+                $messageId = $telegram->MessageId();
+                $telegram->deleteMessage();
+                $telegram->sendMessage('Жаль! Надеюсь ты старался ;)');
+                CourierARMController::ChangeStatusOrderToCanceled($messageId);
                 break;
 
             case '/chatId':

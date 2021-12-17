@@ -170,8 +170,7 @@ class OrdersController extends Controller
         $message .= '<i>Заказ в системе:</i> ' . route('manager-arm-order-page', $orderFullInformation->orderId) . PHP_EOL;
 
         $telegram = new Telegram();
-        $telegram->sendMessage($message, '-1001538892405');
-//        $telegram->sendMessage($message, '267236435');
+        $telegram->sendMessage($message, env('TELEGRAM_BOT_ORDERS_CHAT'));
     }
 
     public static function AllOrders($direction = 'desc')
@@ -207,6 +206,15 @@ class OrdersController extends Controller
     public static function Order(int $orderId)
     {
         return Orders::find($orderId);
+    }
+
+    /**
+     * @param int $messageId
+     * @return Orders
+     */
+    public static function OrderByMessageTelegram(int $messageId)
+    {
+        return Orders::where('telegram_message_id', $messageId)->first();
     }
 
     public static function OrderStatuses(Orders $order)
