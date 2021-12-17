@@ -2,6 +2,12 @@
 
 namespace App\Models;
 
+/**
+ * @property integer order_id
+ * @property integer old_status_id
+ * @property integer new_status_id
+ * @property integer user_id
+ */
 class OrdersStatusLogs extends BaseModel
 {
     protected $fillable = [

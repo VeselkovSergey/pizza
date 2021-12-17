@@ -48,15 +48,21 @@
     @php($sumOrdersInDays = [])
 
     <div class="flex-column">
-        <div style="order: 2;">
-            <table class="w-100 border">
+        <div style="order: 2; overflow-x: auto;">
+            <table class="w-100 border" style="width: max-content;">
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>Статус</th>
                     <th>Дата создания</th>
                     <th>Дата изменения последнего статуса</th>
-                    <th>Потрачено времени</th>
+                    <th>Потрачено времени всего</th>
+                    <th>Менеджер зашел в заказ</th>
+                    <th>Менеджер передал на кухню</th>
+                    <th>Кухня приготовила</th>
+                    <th>Передан в доставку</th>
+                    <th>Доставлен</th>
+                    <th>Деньги в кассе</th>
                     <th>Кол-во позиций</th>
                     <th>Курьер</th>
                     <th>Номер заказавшего</th>
@@ -68,6 +74,7 @@
                 </thead>
                 <tbody>
                 @foreach($orders as $order)
+                    <?php /** @var $order \App\Models\Orders */ ?>
 
                     @php($clientInfo = json_decode($order->client_raw_data))
                     @php($productsModificationsInOrder = \App\Http\Controllers\Orders\OrdersController::OrderProductsModifications($order))
@@ -118,6 +125,12 @@
                         <td>{{$order->created_at}}</td>
                         <td>{{$order->updated_at}}</td>
                         <td @if($longTime) style="background-color: #e37e7e;" @endif>{{date_diff($order->created_at, $order->updated_at)->format('%H:%I:%S')}}</td>
+                        <td>{{$order->TimeManagerProcesses()}}</td>
+                        <td>{{$order->TimeTransferOnKitchen()}}</td>
+                        <td>{{$order->TimeCooked()}}</td>
+                        <td>{{$order->TimeCourier()}}</td>
+                        <td>{{$order->TimeDelivered()}}</td>
+                        <td>{{$order->TimeCompleted()}}</td>
                         <td>{{$productsModificationsInOrder->count()}}</td>
                         <td>{{$order->courier_id}} {{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
                         <td>{{$order->User->phone}}</td>

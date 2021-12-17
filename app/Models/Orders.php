@@ -83,4 +83,51 @@ class Orders extends BaseModel
         }
         return false;
     }
+
+    private static function TimeBetweenStatuses($orderId, $oldStatus, $newStatus)
+    {
+        $oldStatusLog = OrdersStatusLogs::where('order_id', $orderId)
+            ->where('new_status_id', $oldStatus)
+            ->first();
+
+        $newStatusLog = OrdersStatusLogs::where('order_id', $orderId)
+            ->where('new_status_id', $newStatus)
+            ->first();
+
+        if (!$oldStatusLog || !$newStatusLog) {
+            return '-';
+        }
+
+        return date_diff($oldStatusLog->created_at, $newStatusLog->created_at)->format('%H:%I:%S');
+    }
+
+    public function TimeManagerProcesses()
+    {
+        return self::TimeBetweenStatuses($this->id, Orders::STATUS_TEXT['newOrder'], Orders::STATUS_TEXT['managerProcesses']);
+    }
+
+    public function TimeTransferOnKitchen()
+    {
+        return self::TimeBetweenStatuses($this->id, Orders::STATUS_TEXT['managerProcesses'], Orders::STATUS_TEXT['kitchen']);
+    }
+
+    public function TimeCooked()
+    {
+        return self::TimeBetweenStatuses($this->id, Orders::STATUS_TEXT['kitchen'], Orders::STATUS_TEXT['cooked']);
+    }
+
+    public function TimeCourier()
+    {
+        return self::TimeBetweenStatuses($this->id, Orders::STATUS_TEXT['cooked'], Orders::STATUS_TEXT['courier']);
+    }
+
+    public function TimeDelivered()
+    {
+        return self::TimeBetweenStatuses($this->id, Orders::STATUS_TEXT['courier'], Orders::STATUS_TEXT['delivered']);
+    }
+
+    public function TimeCompleted()
+    {
+        return self::TimeBetweenStatuses($this->id, Orders::STATUS_TEXT['delivered'], Orders::STATUS_TEXT['completed']);
+    }
 }
