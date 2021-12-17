@@ -7,6 +7,10 @@ namespace App\Models;
  * @property integer courier_id
  * @property integer status_id
  * @property integer payment_id
+ * @property string products_raw_data
+ * @property string all_information_raw_data
+ * @property string client_raw_data
+ * @property ProductsModificationsInOrders ProductsModifications
  */
 class Orders extends BaseModel
 {

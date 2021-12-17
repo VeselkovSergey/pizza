@@ -2,6 +2,12 @@
 
 namespace App\Models;
 
+/**
+ * @property string title
+ * @property ProductModifications Modifications
+ * @property string MinimumPrice
+ * @property Categories Category
+ */
 class Products extends BaseModel
 {
     protected $fillable = [

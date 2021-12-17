@@ -7,6 +7,7 @@ namespace App\Models;
  * @property integer ingredient_id
  * @property float ingredient_amount
  * @property integer visible
+ * @property Ingredients Ingredient
  */
 class ProductModificationsIngredients extends BaseModel
 {

@@ -2,6 +2,14 @@
 
 namespace App\Models;
 
+/**
+ * @property ProductModifications ProductModifications
+ * @property OrdersProductsStatusLogs Statusses
+ * @property integer product_modification_amount
+ * @property integer order_id
+ * @property integer status_id
+ * @property integer product_modification_id
+ */
 class ProductsModificationsInOrders extends BaseModel
 {
 
