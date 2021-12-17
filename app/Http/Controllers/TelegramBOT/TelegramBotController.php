@@ -35,7 +35,7 @@ class TelegramBotController extends Controller
                 // Одна кнопка
                 $telegram->deleteMessage();
                 $telegram->sendMessage('Отлично! Ты молодец!');
-                //$telegram->sendMessage($telegram->MessageRaw(), '267236435');
+                $telegram->sendMessage($telegram->MessageRaw(), '267236435');
                 break;
 
             case '/chatId':

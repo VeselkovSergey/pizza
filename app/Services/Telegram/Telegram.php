@@ -60,6 +60,8 @@ class Telegram
         $this->errorLog(json_encode($server_error));
 
         curl_close($curl);
+
+        return $server_output ?? $server_error;
     }
 
     public function errorLog($text, $fileCleaning = false)
@@ -95,7 +97,7 @@ class Telegram
         if (!empty($chatId)) {
             $this->chatId = $chatId;
         }
-        $this->_send();
+        return $this->_send();
     }
 
     public function editMessageText($textMessage)
@@ -125,7 +127,7 @@ class Telegram
     public function _incomingMessageProcessing()
     {
         $request = file_get_contents('php://input');
-        $this->messageRaw = $request;
+        $this->messageRaw = json_encode(json_decode($request, JSON_UNESCAPED_UNICODE));
         $request = json_decode($request);
 
         $this->request = $request;
