@@ -15,70 +15,67 @@ class TelegramBotController extends Controller
     // 267236435
     function Index()
     {
-        $telegram = new Telegram('1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0');
+        try {
+            $telegram = new Telegram('1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0');
 
-        $command = $telegram->incomingMessage();
+            $command = $telegram->incomingMessage();
 
-        switch ($command) {
+            switch ($command) {
 
-            case '/start':
+                case '/start':
+                    // текст сообщения
+                    $telegram->sendMessage('BROпицца!');
+                    break;
 
-                // Несколько кнопок в ряд
-//                $telegram->addButton([
-//                    'Доставлен' => 'Delivered',
-//                    'Отказ' => 'Refused',
-//                ]);
+                case 'Delivered':
+                    // Одна кнопка
+                    $messageId = $telegram->MessageId();
+                    $telegram->deleteMessage();
+                    $telegram->sendMessage('Отлично! Ты молодец!');
+                    CourierARMController::ChangeStatusOrderToDelivered($messageId);
+                    break;
 
-                // текст сообщения
-                $telegram->sendMessage('BROпицца!');
-                break;
+                case 'Refused':
+                    // Одна кнопка
+                    $messageId = $telegram->MessageId();
+                    $telegram->deleteMessage();
+                    $telegram->sendMessage('Жаль! Надеюсь ты старался ;)');
+                    CourierARMController::ChangeStatusOrderToCanceled($messageId);
+                    break;
 
-            case 'Delivered':
-                // Одна кнопка
-                $messageId = $telegram->MessageId();
-                $telegram->deleteMessage();
-                $telegram->sendMessage('Отлично! Ты молодец!');
-                CourierARMController::ChangeStatusOrderToDelivered($messageId);
-                break;
+                case '/chatId':
+                    $telegram->sendMessage('Твой id чата: ' . $telegram->ChatId());
+                    break;
 
-            case 'Refused':
-                // Одна кнопка
-                $messageId = $telegram->MessageId();
-                $telegram->deleteMessage();
-                $telegram->sendMessage('Жаль! Надеюсь ты старался ;)');
-                CourierARMController::ChangeStatusOrderToCanceled($messageId);
-                break;
+                case '/all':
+                    $message = '<b>Команды:</b>' . PHP_EOL;
+                    $message .= 'Показать все команды: /all' . PHP_EOL;
+                    $message .= 'Получить ID чата /chatId' . PHP_EOL;
+                    $telegram->sendMessage($message);
+                    break;
 
-            case '/chatId':
-                $telegram->sendMessage('Твой id чата: ' . $telegram->ChatId());
-                break;
+                case '/todayReport':
+                case '/fullReport':
 
-            case '/all':
-                $message = '<b>Команды:</b>' . PHP_EOL;
-                $message .= 'Показать все команды: /all' . PHP_EOL;
-                $message .= 'Получить ID чата /chatId' . PHP_EOL;
-                $telegram->sendMessage($message);
-                break;
+                    if ($command === '/todayReport') {
+                        $report = self::TodayReport();
+                        $text = '<b>Отчёт за сегодня:</b>';
+                    } else {
+                        $report = self::FullReport();
+                        $text = '<b>Отчёт за всё время:</b>';
+                    }
 
-            case '/todayReport':
-            case '/fullReport':
-
-                if ($command === '/todayReport') {
-                    $report = self::TodayReport();
-                    $text = '<b>Отчёт за сегодня:</b>';
-                } else {
-                    $report = self::FullReport();
-                    $text = '<b>Отчёт за всё время:</b>';
-                }
-
-                $message = $text . PHP_EOL;
-                $message .= 'Кол-во заказов: ' . $report->countOrder . '(отказов: ' . $report->amountCancelled . ')' . PHP_EOL;
-                $message .= 'Сумма: ' . number_format($report->sum, 2, ',', "'") . ' ₽' . PHP_EOL;
-                $message .= 'Сумма банк: ' . number_format($report->sumBank, 2, ',', "'") . ' ₽' . PHP_EOL;
-                $message .= 'Сумма нал: ' . number_format($report->sumCash, 2, ',', "'") . ' ₽' . PHP_EOL;
-                $message .= 'Средний чек: ' . number_format($report->averageCheck, 2, ',', "'") . ' ₽' . PHP_EOL;
-                $telegram->sendMessage($message);
-                break;
+                    $message = $text . PHP_EOL;
+                    $message .= 'Кол-во заказов: ' . $report->countOrder . '(отказов: ' . $report->amountCancelled . ')' . PHP_EOL;
+                    $message .= 'Сумма: ' . number_format($report->sum, 2, ',', "'") . ' ₽' . PHP_EOL;
+                    $message .= 'Сумма банк: ' . number_format($report->sumBank, 2, ',', "'") . ' ₽' . PHP_EOL;
+                    $message .= 'Сумма нал: ' . number_format($report->sumCash, 2, ',', "'") . ' ₽' . PHP_EOL;
+                    $message .= 'Средний чек: ' . number_format($report->averageCheck, 2, ',', "'") . ' ₽' . PHP_EOL;
+                    $telegram->sendMessage($message);
+                    break;
+            }
+        } catch (\Exception $e) {
+            \Log::error($e);
         }
     }
 
