@@ -13,6 +13,9 @@
         <div>
             <a class="color-white" href="{{route('administrator-arm-products-modifications-page')}}">Модификаторы товаров</a>
         </div>
+        <div>
+            <a class="color-white" href="{{route('administrator-arm-device-used-page')}}">Используемые устройства</a>
+        </div>
     </div>
 
 @stop

@@ -108,6 +108,8 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
         Route::get('/products-modifications', [Controllers\ARM\AdministratorARMController::class, 'ProductsModification'])->name('administrator-arm-products-modifications-page');
 
+        Route::get('/device-used', [Controllers\ARM\AdministratorARMController::class, 'DeviceUsed'])->name('administrator-arm-device-used-page');
+
     });
 
     Route::group(['prefix' => 'management'], function () {

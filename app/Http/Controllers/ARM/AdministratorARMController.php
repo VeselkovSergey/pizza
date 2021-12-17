@@ -46,9 +46,7 @@ class AdministratorARMController extends Controller
         $productsModifications = [];
 
         foreach($orders as $order) {
-//        $clientInfo = json_decode($order->client_raw_data);
-//        $rawData = json_decode($order->all_information_raw_data);
-            $productsModificationsInOrder = \App\Http\Controllers\Orders\OrdersController::OrderProductsModifications($order);
+            $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
             foreach($productsModificationsInOrder as $productModificationInOrder) {
 
                 $costPrice = 0;
@@ -78,5 +76,54 @@ class AdministratorARMController extends Controller
         }
 
         return view('arm.administration.products.index', compact('productsModifications'));
+    }
+
+    public function DeviceUsed()
+    {
+        $orders = OrdersController::AllOrders();
+        $devicesInfo = [];
+        $typeDevice = [
+            'iphone' => 0,
+            'android' => 0,
+            'pc' => 0,
+        ];
+        foreach ($orders as $order) {
+            $clientRawData = json_decode($order->client_raw_data);
+
+            $user = User::where('phone', $clientRawData->clientPhone)->first();
+            if ($user->UserIsManager()) {
+                continue;
+            }
+
+            $allInformationRawData = json_decode($order->all_information_raw_data);
+            $userAgent = $allInformationRawData->userAgent ?? '-';
+            $screenWidth = $allInformationRawData->screenWidth ?? '-';
+            $screenHeight = $allInformationRawData->screenHeight ?? '-';
+            $typeDeviceName = 'Unknown';
+
+            if ($userAgent !== '-') {
+                if ($screenWidth < 900) {
+                    if (!str_contains($userAgent, 'iPhone')) {
+                        $typeDevice['android']++;
+                        $typeDeviceName = 'Android';
+                    } else {
+                        $typeDevice['iphone']++;
+                        $typeDeviceName = 'iPhone';
+                    }
+                } else {
+                    $typeDevice['pc']++;
+                    $typeDeviceName = 'PC';
+                }
+            }
+
+            $devicesInfo[] = (object)[
+                'userAgent' => $userAgent,
+                'screenWidth' => $screenWidth,
+                'screenHeight' => $screenHeight,
+                'typeDeviceName' => $typeDeviceName,
+            ];
+
+        }
+        return view('arm.administration.device-used.index', compact('devicesInfo', 'typeDevice'));
     }
 }
