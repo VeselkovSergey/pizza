@@ -237,16 +237,16 @@ class OrdersController extends Controller
         return $orders;
     }
 
-    public static function ChangeStatus(Orders $order, $status_id)
+    public static function ChangeStatus(Orders $order, $statusId, $userId = 0)
     {
-        if ($order->status_id !== $status_id) {
+        if ($order->status_id !== $statusId) {
             OrdersStatusLogs::create([
                 'order_id' => $order->id,
                 'old_status_id' => $order->status_id,
-                'new_status_id' => $status_id,
-                'user_id' => auth()->user()->id,
+                'new_status_id' => $statusId,
+                'user_id' => $userId === 0 ? auth()->user()->id : $userId,
             ]);
-            $order->status_id = $status_id;
+            $order->status_id = $statusId;
         }
         return $order->save();
     }
