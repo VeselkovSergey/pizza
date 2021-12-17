@@ -33,7 +33,7 @@ class ManagerARMController extends Controller
     {
         $orderId = request()->orderId;
         $order = OrdersController::Order($orderId);
-        if ($order->status_id === Orders::STATUS_TEXT['newOrder']) {
+        if ($order->status_id === Orders::STATUS_TEXT['newOrder'] && !auth()->user()->IsAdmin()) {
             self::ChangeStatusOrderToManagerProcesses($order);
         }
         $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
