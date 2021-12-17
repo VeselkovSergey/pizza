@@ -121,7 +121,7 @@
                 }
             }
 
-            document.querySelectorAll('.table-sort').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
+            document.querySelectorAll('.table-sort > thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
 
         </script>
 
