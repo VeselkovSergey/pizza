@@ -113,7 +113,7 @@
             let hour = time.getUTCHours() + moskowUtc;
             let mints = time.getMinutes() + moskowUtc;
 
-            if ((hour === startHour && mints >= startMints) || (startHour < hour > endHour) || (hour === endHour && mints <= endMints)) {
+            if ((hour === startHour && mints >= startMints) || (startHour < hour && hour < endHour) || (hour === endHour && mints <= endMints)) {
                 //
             } else {
                 if (!admin) {
