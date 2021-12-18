@@ -14,7 +14,7 @@ $orderStatuses = [];
             display: none;
         }
         .order:hover .hover-show {
-            display: block;
+            display: flex;
         }
     </style>
 
