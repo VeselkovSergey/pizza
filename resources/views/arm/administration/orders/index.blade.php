@@ -46,6 +46,7 @@
     @php($amountOrdersCancelled = 0)
     @php($amountOrdersInDays = [])
     @php($sumOrdersInDays = [])
+    @php($sumOrdersInHour = [])
 
     <div class="flex-column">
         <div style="order: 2; overflow-x: auto;">
@@ -85,6 +86,7 @@
                         @php($amountOrdersCancelled++)
                     @else
                         @php($sum += $rawData->orderSum)
+                        @php(empty($sumOrdersInHour[(int)$order->created_at->format('H')]) ? $sumOrdersInHour[(int)$order->created_at->format('H')] = 1 : $sumOrdersInHour[(int)$order->created_at->format('H')] += 1)
                         @if($clientInfo->typePayment[0] === false)
                             @php($sumCash += $rawData->orderSum)
 
@@ -194,6 +196,10 @@
 
     </div>
 
+    <div style="width: 1500px; height: 1500px">
+        <canvas id="canvas" width="1500" height="1500"></canvas>
+    </div>
+
 
 @stop
 
@@ -228,6 +234,43 @@
         allOrdersButton.addEventListener('click', () => {
             location.href = "{{route('administrator-arm-orders-page')}}?all=true";
         });
+
+        // Получаем canvas элемент
+        let canvas = document.getElementById('canvas');
+
+        // Указываем элемент для 2D рисования
+        let ctx = canvas.getContext('2d');
+
+        ctx.fillStyle = "black"; // Задаём чёрный цвет для линий
+        ctx.lineWidth = 1.0; // Ширина линии
+        ctx.beginPath(); // Запускает путь
+        ctx.moveTo(0, 0); // Указываем начальный путь
+        ctx.lineTo(0, 500); // Перемешаем указатель
+        ctx.lineTo(1350, 500); // Ещё раз перемешаем указатель
+        ctx.stroke(); // Делаем контур
+
+        // Цвет для рисования
+        ctx.fillStyle = "black";
+        // Цикл для отображения значений по Y
+        for(let i = 0; i <= 20; i++) {
+            ctx.fillText(i, 0, 500 - (i * 25));
+        }
+
+        // Выводим меток
+        for(let i = 0; i <= 13; i++) {
+            ctx.fillText(i + 10, ((i * 100) - 5), 510);
+        }
+
+        let data = JSON.parse('{!! json_encode($sumOrdersInHour) !!}');
+
+        // Назначаем зелёный цвет для графика
+        ctx.fillStyle = "green";
+        // Цикл для от рисовки графиков
+        for(let i = 0; i < 23; i++) {
+            let dp = data[i+10];
+            ctx.fillRect(i*100, 500-dp*5 , 5, dp*5);
+            ctx.fillText(data[i+10], ((i * 100) - 5), 490-dp*5);
+        }
     </script>
 
 @stop
