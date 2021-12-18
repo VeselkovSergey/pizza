@@ -51,8 +51,8 @@ $orderStatuses = [];
 
                     <a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}" data-order-id="{{$order->id}}" data-order-status-id="{{$order->status_id}}" class="order flex-space-between clear-a border p-10 m-5 order-status-{{$order->status_id}}">
                         <div>
-                            <div class="mb-10"># {{$order->id}} {{\App\Models\Orders::STATUS[$order->status_id]}} {{$order->CurrentStatus()->created_at}}</div>
-                            <div class="order-info flex-wrap @if((\App\Models\Orders::STATUS_TEXT['cancelled'] === $order->status_id) || \App\Models\Orders::STATUS_TEXT['completed'] === $order->status_id) hover-show @endif">
+                            <div># {{$order->id}} {{\App\Models\Orders::STATUS[$order->status_id]}} {{$order->CurrentStatus()->created_at}}</div>
+                            <div class="order-info flex-wrap mt-10 @if((\App\Models\Orders::STATUS_TEXT['cancelled'] === $order->status_id) || \App\Models\Orders::STATUS_TEXT['completed'] === $order->status_id) hover-show @endif">
                                 <div class="mb-10 px-25" style="border-right: 1px solid">
                                     <div>Имя: {{$clientInfo->clientName}}</div>
                                     <div>Номер: {{$clientInfo->clientPhone}}</div>
