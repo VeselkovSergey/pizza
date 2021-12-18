@@ -37,8 +37,8 @@ Route::group(['prefix' => 'products'], function () {
 
     Route::get('/all-admin', [Controllers\Products\ProductsController::class, 'IndexAdmin'])->name('all-products-admin-page');
     Route::get('/all-products', [Controllers\Products\ProductsController::class, 'GetAllProducts'])->name('all-products');
-    Route::get('/create', [Controllers\Products\ProductsController::class, 'Create'])->name('product-create');
-    Route::post('/save', [Controllers\Products\ProductsController::class, 'Save'])->name('product-save');
+    Route::get('/create-page', [Controllers\Products\ProductsController::class, 'CreatePage'])->name('product-create-page');
+    Route::post('/create', [Controllers\Products\ProductsController::class, 'Create'])->name('product-create');
 
 });
 
@@ -105,6 +105,11 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::get('/user/{userId}/orders', [Controllers\ARM\AdministratorARMController::class, 'UserOrders'])->name('administrator-arm-user-orders-page');
 
         Route::get('/orders', [Controllers\ARM\AdministratorARMController::class, 'Orders'])->name('administrator-arm-orders-page');
+
+        Route::group(['prefix' => 'products'], function () {
+            Route::get('/all', [Controllers\ARM\AdministratorARMController::class, 'Products'])->name('administrator-arm-products-page');
+            Route::post('/product-save-changes', [Controllers\ARM\AdministratorARMController::class, 'ProductSaveChanges'])->name('administrator-arm-product-save-changes');
+        });
 
         Route::get('/products-modifications', [Controllers\ARM\AdministratorARMController::class, 'ProductsModification'])->name('administrator-arm-products-modifications-page');
 

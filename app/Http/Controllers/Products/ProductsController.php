@@ -108,7 +108,7 @@ class ProductsController extends Controller
         ]);
     }
 
-    public function Create()
+    public function CreatePage()
     {
         $modifications = Modifications::all();
         $ingredients = Ingredients::all();
@@ -118,7 +118,7 @@ class ProductsController extends Controller
         ]);
     }
 
-    public function Save(Request $request)
+    public function Create(Request $request)
     {
         $title = $request->title;
         $modifications = $request->modifications;
@@ -191,5 +191,24 @@ class ProductsController extends Controller
         ProductsController::UpdateFileAllProducts();
 
         return ResultGenerate::Success();
+    }
+
+    public static function GetProductById($productId)
+    {
+        return Products::find($productId);
+    }
+
+    public static function SaveChanges(Products $product, array|object $data)
+    {
+        foreach ($data as $title => $value) {
+            $product->$title = $value;
+        }
+        $product->save();
+        return $product;
+    }
+
+    public static function ALlProducts()
+    {
+        return Products::all();
     }
 }

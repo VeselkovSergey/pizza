@@ -16,6 +16,19 @@
         .modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-close-button path {
             fill: black;
         }
+
+        .flash-message-container .flash-message-text {
+            background-color: black;
+            color: white;
+        }
+
+        .edit-field {
+            cursor: pointer;
+            width: -webkit-fill-available;
+        }
+        .edit-field:not(:read-only) {
+            transform: scale(1.2);
+        }
     </style>
 
     <div class="mb-10">
@@ -28,25 +41,20 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Категория</th>
                     <th>Наименование</th>
-                    <th>Кол-во</th>
-                    <th>Стоимость</th>
-                    <th>Себестоимость</th>
-                    <th>Наценка</th>
+                    <th>Категория</th>
+                    <th>Описание</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($productsModifications as $id => $productModification)
-                <tr>
-                    <td>#{{$id}}</td>
-                    <td>{{$productModification->categoryTitle}}</td>
-                    <td>{{$productModification->title}}</td>
-                    <td>{{$productModification->amount}}</td>
-                    <td>{{$productModification->price}}</td>
-                    <td>{{$productModification->costPrice}}</td>
-                    <td>{{number_format(((($productModification->price - $productModification->costPrice ) / $productModification->costPrice) * 100), 2)}} %</td>
-                </tr>
+                @foreach($products as $product)
+                    <?php /** @var \App\Models\Products $product */ ?>
+                    <tr class="product-container" data-product-id="{{$product->id}}">
+                        <td>#{{$product->id}}</td>
+                        <td><input name="title" class="edit-field" readonly type="text" value="{{$product->title}}"></td>
+                        <td>{{$product->Category->title}}</td>
+                        <td><input name="description" class="edit-field w-100" readonly type="text" value="{{$product->description}}"></td>
+                    </tr>
                 @endforeach
                 </tbody>
             </table>
@@ -60,14 +68,28 @@
 @section('js')
 
     <script>
-        let orderDetailInfoButtons = document.body.querySelectorAll('.order-detail-info');
-        orderDetailInfoButtons.forEach((orderDetailInfoButton) => {
-            orderDetailInfoButton.addEventListener('click', (event) => {
-                let orderDetailInfoContent = event.target.nextElementSibling.innerHTML;
-                let modal = ModalWindow(orderDetailInfoContent);
-                modal.querySelector('.order-detail-info-content').show();
+
+        document.body.querySelectorAll('.edit-field').forEach((field) => {
+            field.addEventListener('dblclick', (event) => {
+                event.target.removeAttribute('readonly');
+            });
+
+            field.addEventListener('blur', (event) => {
+                event.target.setAttribute('readonly', 'readonly');
+                let productContainer = event.target.closest('.product-container');
+                let productId = productContainer.dataset.productId;
+                let value = {};
+                value[event.target.name] = event.target.value;
+                SaveChanges (productId, value);
             });
         });
+
+        function SaveChanges (productId, data) {
+            Ajax("{{route('administrator-arm-product-save-changes')}}", "POST", {productId: productId, data: JSON.stringify(data)}).then((response) => {
+                FlashMessage(response.message);
+            });
+        }
+
     </script>
 
 @stop

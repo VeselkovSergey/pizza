@@ -51,7 +51,7 @@
                 return;
             }
 
-            Ajax("{{route('product-save')}}", 'POST', data).then((response) => {
+            Ajax("{{route('product-create')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
                 if (response.status === true) {
                     location.reload();

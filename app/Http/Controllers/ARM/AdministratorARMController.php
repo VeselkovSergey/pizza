@@ -3,8 +3,10 @@
 
 namespace App\Http\Controllers\ARM;
 
+use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Orders\OrdersController;
+use App\Http\Controllers\Products\ProductsController;
 use App\Models\Orders;
 use App\Models\User;
 
@@ -37,6 +39,20 @@ class AdministratorARMController extends Controller
             $orders = OrdersController::OrdersByDate($requiredDate, true, 'asc');
         }
         return view('arm.administration.orders.index', compact('orders', 'requiredDate'));
+    }
+
+    public function Products()
+    {
+        $products = ProductsController::ALlProducts();
+        return view('arm.administration.products.index', compact('products'));
+    }
+    public function ProductSaveChanges()
+    {
+        $productId = request()->productId;
+        $data = json_decode(request()->data);
+        $product = ProductsController::GetProductById($productId);
+        ProductsController::SaveChanges($product, $data);
+        return ResultGenerate::Success();
     }
 
     public function ProductsModification()
@@ -75,7 +91,7 @@ class AdministratorARMController extends Controller
             }
         }
 
-        return view('arm.administration.products.index', compact('productsModifications'));
+        return view('arm.administration.products-modifications.index', compact('productsModifications'));
     }
 
     public function DeviceUsed()

@@ -44,7 +44,7 @@ class ARMController
             ],
             [
                 'title' => '6 Новый продукт',
-                'link' => route('product-create'),
+                'link' => route('product-create-page'),
                 'role' => 999,
             ],
             [

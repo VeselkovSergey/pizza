@@ -8,12 +8,14 @@ namespace App\Models;
  * @property string MinimumPrice
  * @property Categories Category
  * @property string description
+ * @property integer category_id
  */
 class Products extends BaseModel
 {
     protected $fillable = [
         'title',
         'description',
+        'category_id',
     ];
 
     public function Modifications()

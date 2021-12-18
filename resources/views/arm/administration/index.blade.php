@@ -11,6 +11,9 @@
             <a class="color-white" href="{{route('administrator-arm-orders-page')}}">Заказы</a>
         </div>
         <div>
+            <a class="color-white" href="{{route('administrator-arm-products-page')}}">Продукты</a>
+        </div>
+        <div>
             <a class="color-white" href="{{route('administrator-arm-products-modifications-page')}}">Модификаторы товаров</a>
         </div>
         <div>

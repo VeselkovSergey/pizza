@@ -263,6 +263,10 @@ function FlashMessage(message, autoClose = true, timeout = 3000) {
                 flashMessageContainer.remove();
             }
         }, timeout);
+    } else {
+        flashMessageContainer.addEventListener('click', () => {
+            flashMessageContainer.remove();
+        });
     }
 }
 
