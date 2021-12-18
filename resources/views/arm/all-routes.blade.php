@@ -4,10 +4,10 @@
     <div class="flex-column">
         @foreach($allRoutes as $route)
             @if(auth()->user()->role_id >= $route->role)
-                <a class="color-white" href="{{$route->link}}">{{$route->title}}</a>
+                <a href="{{$route->link}}">{{$route->title}}</a>
             @endif
         @endforeach
-        <a class="color-white" href="{{route('home-page')}}?force-update=true">Обновление системного кэша</a>
+        <a href="{{route('home-page')}}?force-update=true">Обновление системного кэша</a>
     </div>
 @stop
 

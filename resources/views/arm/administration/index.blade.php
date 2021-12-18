@@ -5,19 +5,19 @@
     <div>
         <div>ARM администратора</div>
         <div>
-            <a class="color-white" href="{{route('administrator-arm-users-page')}}">Пользователи</a>
+            <a href="{{route('administrator-arm-users-page')}}">Пользователи</a>
         </div>
         <div>
-            <a class="color-white" href="{{route('administrator-arm-orders-page')}}">Заказы</a>
+            <a href="{{route('administrator-arm-orders-page')}}">Заказы</a>
         </div>
         <div>
-            <a class="color-white" href="{{route('administrator-arm-products-page')}}">Продукты</a>
+            <a href="{{route('administrator-arm-products-page')}}">Продукты</a>
         </div>
         <div>
-            <a class="color-white" href="{{route('administrator-arm-products-modifications-page')}}">Модификаторы товаров</a>
+            <a href="{{route('administrator-arm-products-modifications-page')}}">Модификаторы товаров</a>
         </div>
         <div>
-            <a class="color-white" href="{{route('administrator-arm-device-used-page')}}">Используемые устройства</a>
+            <a href="{{route('administrator-arm-device-used-page')}}">Используемые устройства</a>
         </div>
     </div>
 

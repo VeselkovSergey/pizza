@@ -24,7 +24,14 @@
 
     </head>
 
-    <body class="bg-black-custom color-white">
+    @php
+        $disableBlack = false;
+        if(str_contains(url()->current(), 'arm') && auth()->check() && auth()->user()->IsManager()) {
+            $disableBlack = true;
+        }
+    @endphp
+
+    <body class="@if(!$disableBlack) bg-black-custom color-white @endif">
 
 
         @php
