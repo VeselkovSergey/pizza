@@ -186,7 +186,6 @@ class OrdersController extends Controller
         $orders = new Orders();
         $orders = $orders->where('created_at', '>=', $startDate);
         $orders = $orders->where('created_at', '<=', $endDate);
-        $orders = $orders->where('created_at', '<=', $endDate);
         if (!$allOrdersByDate) {
             $orders = $orders->whereNotIn('status_id', [Orders::STATUS_TEXT['completed'], Orders::STATUS_TEXT['cancelled']]);
         }
