@@ -39,6 +39,7 @@ class ProductsController extends Controller
             $allProducts['product-' . $product->id] = [
                 'id' => $product->id,
                 'title' => $product->title,
+                'description' => $product->description,
                 'categoryId' => $product->category_id,
                 'categoryTitle' => $product->Category->title,
                 'minimumPrice' => $product->MinimumPrice(),

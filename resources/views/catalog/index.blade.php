@@ -53,7 +53,7 @@
 
                         <div class="container-product-description p-10">
                             <div class="text-center mb-10">{{$product->title}}</div>
-{{--                            <div>Описание</div>--}}
+                            <div style="font-weight: 400; font-size: 12px;">{{$product->description}}</div>
                         </div>
                     </div>
 
