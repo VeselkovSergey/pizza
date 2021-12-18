@@ -65,7 +65,6 @@ $orderStatuses = [];
                                     <div>Сумма: {{$allInformationRawData->orderSum}} ₽</div>
                                     <div>Оплата: {{($clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные')}}</div>
                                 </div>
-                                <div class="w-100">Заказ создан: {{$order->created_at}}</div>
                             </div>
                         </div>
                         <div class="order-alert-icon hide">
