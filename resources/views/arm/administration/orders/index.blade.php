@@ -196,9 +196,7 @@
 
     </div>
 
-    <div style="width: 1500px; height: 1500px">
-        <canvas id="canvas" width="1500" height="1500"></canvas>
-    </div>
+    <canvas id="canvas" width="1350" height="520"></canvas>
 
 
 @stop
@@ -244,21 +242,21 @@
         ctx.fillStyle = "black"; // Задаём чёрный цвет для линий
         ctx.lineWidth = 1.0; // Ширина линии
         ctx.beginPath(); // Запускает путь
-        ctx.moveTo(0, 0); // Указываем начальный путь
-        ctx.lineTo(0, 500); // Перемешаем указатель
+        ctx.moveTo(0, 500); // Указываем начальный путь
+        // ctx.lineTo(0, 500); // Перемешаем указатель
         ctx.lineTo(1350, 500); // Ещё раз перемешаем указатель
         ctx.stroke(); // Делаем контур
 
         // Цвет для рисования
         ctx.fillStyle = "black";
         // Цикл для отображения значений по Y
-        for(let i = 0; i <= 20; i++) {
-            ctx.fillText(i, 0, 500 - (i * 25));
-        }
+        // for(let i = 0; i <= 20; i++) {
+        //     ctx.fillText(i, 0, 500 - (i * 25));
+        // }
 
         // Выводим меток
         for(let i = 0; i <= 13; i++) {
-            ctx.fillText(i + 10, ((i * 100) - 5), 510);
+            ctx.fillText(i + 10, ((i * 100)), 510);
         }
 
         let data = JSON.parse('{!! json_encode($sumOrdersInHour) !!}');
@@ -269,7 +267,7 @@
         for(let i = 0; i < 23; i++) {
             let dp = data[i+10];
             ctx.fillRect(i*100, 500-dp*5 , 5, dp*5);
-            ctx.fillText(data[i+10], ((i * 100) - 5), 490-dp*5);
+            ctx.fillText(data[i+10], ((i * 100)), 490-dp*5);
         }
     </script>
 
