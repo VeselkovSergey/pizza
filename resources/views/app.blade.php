@@ -6,19 +6,17 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+
         @yield('meta')
 
-{{--        <title>{{ isset($title_page) ? $title_page : env('APP_NAME') }}</title>--}}
         <title>Пицца Дубна. БроПицца!</title>
-        <meta name="description" content="Привет БРО! Говорят в Дубне давненько никто не делал вкусную пиццу. Этому городу определенно нужен был спасатель! Классно что в Дубне открылись мы (БРОпицца)! Теперь вкусная пицца будет у каждого на столе!">
-        <meta name="keywords" content="Пицца, Дубна, Бропицца, BROпицца, bro пицца, бро пицца, вкусная пицца, пицца Дубна, новая пиццерия Дубна">
+        <meta name="description" content="Привет БРО! Это БРОпицца, доставка пиццы Дубна. Говорят в Дубне давненько никто не делал вкусную пиццу. Этому городу определенно нужен был спасатель! Классно что в Дубне открылись мы (БРОпицца)! Теперь вкусная пицца будет доставлена каждому на стол!">
+        <meta name="keywords" content="Пицца, Дубна, Бропицца, BROпицца, bro пицца, бро пицца, вкусная пицца, пицца Дубна, новая пиццерия Дубна, доставка Дубна, доставка пиццы дубна">
         <link href="{{asset('resources/scss/reset.scss')}}" rel="stylesheet">
         <link href="{{asset('resources/scss/helpers.scss')}}" rel="stylesheet">
         <link href="{{asset('resources/scss/loaders.scss')}}" rel="stylesheet">
         <link href="{{asset('resources/scss/app.scss')}}" rel="stylesheet">
         <link href="{{asset('resources/scss/adaptive.scss')}}" rel="stylesheet">
-
-{{--        <link href="{{asset('fonts/fonts.css')}}" rel="stylesheet">--}}
 
         @yield('css')
 
