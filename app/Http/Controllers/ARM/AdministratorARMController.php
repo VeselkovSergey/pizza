@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ARM;
 
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Ingredients\IngredientsController;
 use App\Http\Controllers\Orders\OrdersController;
 use App\Http\Controllers\Products\ProductsController;
 use App\Models\Orders;
@@ -46,6 +47,7 @@ class AdministratorARMController extends Controller
         $products = ProductsController::ALlProducts();
         return view('arm.administration.products.index', compact('products'));
     }
+
     public function ProductSaveChanges()
     {
         $productId = request()->productId;
@@ -141,5 +143,11 @@ class AdministratorARMController extends Controller
 
         }
         return view('arm.administration.device-used.index', compact('devicesInfo', 'typeDevice'));
+    }
+
+    public function Ingredients()
+    {
+        $ingredients = IngredientsController::AllIngredients();
+        return view('arm.administration.ingredients.index', compact('ingredients'));
     }
 }

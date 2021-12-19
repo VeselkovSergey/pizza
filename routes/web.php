@@ -61,7 +61,7 @@ Route::group(['prefix' => 'ingredients'], function () {
 
     Route::get('/create', [Controllers\Ingredients\IngredientsController::class, 'Create'])->name('ingredients-create');
     Route::post('/save', [Controllers\Ingredients\IngredientsController::class, 'Save'])->name('ingredients-save');
-    Route::get('/all', [Controllers\Ingredients\IngredientsController::class, 'GetAllIngredients'])->name('all-ingredients');
+    Route::get('/all', [Controllers\Ingredients\IngredientsController::class, 'AllIngredients'])->name('all-ingredients');
 
 });
 
@@ -109,6 +109,11 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::group(['prefix' => 'products'], function () {
             Route::get('/all', [Controllers\ARM\AdministratorARMController::class, 'Products'])->name('administrator-arm-products-page');
             Route::post('/product-save-changes', [Controllers\ARM\AdministratorARMController::class, 'ProductSaveChanges'])->name('administrator-arm-product-save-changes');
+        });
+
+        Route::group(['prefix' => 'ingredients'], function () {
+            Route::get('/all', [Controllers\ARM\AdministratorARMController::class, 'Ingredients'])->name('administrator-arm-ingredients-page');
+//            Route::post('/product-save-changes', [Controllers\ARM\AdministratorARMController::class, 'ProductSaveChanges'])->name('administrator-arm-product-save-changes');
         });
 
         Route::get('/products-modifications', [Controllers\ARM\AdministratorARMController::class, 'ProductsModification'])->name('administrator-arm-products-modifications-page');
