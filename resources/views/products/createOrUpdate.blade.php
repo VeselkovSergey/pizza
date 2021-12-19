@@ -252,7 +252,7 @@
 
         let allIngredients = null;
         Ajax("{{route('all-ingredients')}}").then((response) => {
-            allIngredients = response.result;
+            allIngredients = response;
             GenerateIngredientsSelector();
         });
 
