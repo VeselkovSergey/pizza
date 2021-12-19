@@ -3,6 +3,7 @@
 namespace App\Models;
 
 /**
+ * @property integer id
  * @property integer supply_id
  * @property integer ingredient_id
  * @property float amount_ingredient

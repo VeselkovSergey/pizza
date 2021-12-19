@@ -3,6 +3,7 @@
 namespace App\Models;
 
 /**
+ * @property integer id
  * @property string title
  * @property integer type_id
  * @property string value

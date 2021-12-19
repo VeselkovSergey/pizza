@@ -3,10 +3,13 @@
 namespace App\Models;
 
 /**
+ * @property integer id
+ * @property integer modification_id
+ * @property float selling_price
+ * @property integer stop_list
  * @property Products Product
  * @property Modifications Modification
  * @property ProductModificationsIngredients Ingredients
- * @property integer selling_price
  */
 class ProductModifications extends BaseModel
 {
