@@ -169,4 +169,40 @@ class AdministratorARMController extends Controller
         $ingredients = IngredientsController::AllIngredients();
         return view('arm.administration.ingredients.index', compact('ingredients'));
     }
+
+    public function SpentIngredients()
+    {
+        $ingredientsRaw = IngredientsController::AllIngredients();
+        $ingredients = [];
+        foreach ($ingredientsRaw as $ingredient) {
+            $ingredient->sent = 0;
+            $ingredients[$ingredient->id] = $ingredient;
+        }
+
+        $orders = OrdersController::AllOrders('ASC');
+        $amountSpent = 0;
+        foreach($orders as $order) {
+            if ($order->IsCancelled()) {
+                continue;
+            }
+
+            $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
+            foreach($productsModificationsInOrder as $productModificationInOrder) {
+                /** @var ProductsModificationsInOrders $productModificationInOrder */
+
+                $amount = $productModificationInOrder->product_modification_amount;
+
+                $modificationIngredients = $productModificationInOrder->ProductModifications->Ingredients;
+                foreach($modificationIngredients as $ingredient) {
+                    /** @var ProductModificationsIngredients $ingredient */
+
+                    $ingredientAmount = $ingredient->ingredient_amount;
+                    $priceIngredient = $ingredientAmount * $amount;
+                    $amountSpent += $priceIngredient * $ingredients[$ingredient->ingredient_id]->last_price_ingredient;
+                    $ingredients[$ingredient->ingredient_id]->sent += $priceIngredient;
+                }
+            }
+        }
+        return view('arm.administration.ingredients.spent', compact('ingredients', 'amountSpent'));
+    }
 }

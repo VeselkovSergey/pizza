@@ -113,6 +113,7 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
         Route::group(['prefix' => 'ingredients'], function () {
             Route::get('/all', [Controllers\ARM\AdministratorARMController::class, 'Ingredients'])->name('administrator-arm-ingredients-page');
+            Route::get('/spent', [Controllers\ARM\AdministratorARMController::class, 'SpentIngredients'])->name('administrator-arm-spent-ingredients-page');
 //            Route::post('/product-save-changes', [Controllers\ARM\AdministratorARMController::class, 'ProductSaveChanges'])->name('administrator-arm-product-save-changes');
         });
 

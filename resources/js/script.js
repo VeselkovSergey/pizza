@@ -1088,7 +1088,7 @@ function ManagerArmCheckOrderStatusChange() {
                     let requestOrders = requestOrderStatuses[key];
 
                     if (responseOrders.orderId === requestOrders.orderId) {
-                        if (responseOrders.newStatus !== requestOrders.oldStatus) {    // заменить === на !===
+                        if (responseOrders.newStatus !== requestOrders.oldStatus) {
                             changedOrderStatus[requestOrders.orderId] = responseOrders.newStatus;
                         }
                         newOrderStatuses[requestOrders.orderId] = {

@@ -22,6 +22,9 @@
         <div>
             <a href="{{route('administrator-arm-ingredients-page')}}">Ингредиенты</a>
         </div>
+        <div>
+            <a href="{{route('administrator-arm-spent-ingredients-page')}}">Расход ингредиентов</a>
+        </div>
     </div>
 
 @stop
