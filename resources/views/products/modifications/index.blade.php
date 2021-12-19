@@ -3,18 +3,6 @@
 @section('content')
 
     <style>
-        body {
-            background-color: whitesmoke!important;
-            color: black!important;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        .flash-message-container .flash-message-text {
-            border-radius: 5px;
-            background-color: rgba(0, 0, 0, 0.9);
-            color: #ffffff;
-        }
         .modification:hover {
             background-color: wheat;
         }

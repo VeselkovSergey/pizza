@@ -38,7 +38,6 @@ function Ajax(url, method, formDataRAW) {
             });
         }
 
-
         let xhr = new XMLHttpRequest();
         xhr.open(method, url, true);
 
@@ -116,14 +115,6 @@ function FieldCorrection(element) {
         element.classList.remove('invalid-value');
         element.removeEventListener('input', null);
     }
-}
-
-function ShowElement(element) {
-    element.classList.remove('hide')
-}
-
-function HideElement(element) {
-    element.classList.add('hide');
 }
 
 function ModalWindow(content, closingCallback, flash) {
@@ -211,7 +202,6 @@ function CloseByScroll(modalWindowComponentContainer, container, content, closin
 
         let lengthSwipe = 0;
         containerModalWindow.addEventListener('touchmove', (event) => {
-            //console.log(lengthSwipe, startTouch, content.getBoundingClientRect().top)
             let correctionCoefficient = 50;     // padding +
             if (content.getBoundingClientRect().top >= (-1 + correctionCoefficient)) {
                 lengthSwipe = event.changedTouches[0].clientY - startTouch;
@@ -418,11 +408,6 @@ basketButton.addEventListener('click', () => {
     BasketWindow();
 });
 
-// triggerEvent( basketButton, 'click' );
-function triggerEvent(elem, event) {
-    elem.dispatchEvent(new Event(event));
-}
-
 let basketWindow;
 
 function BasketWindow() {
@@ -624,7 +609,6 @@ function ProductsInBasketGenerationHTML() {
                     '<div class="p-10 mr-a">' +
                         '<div>' + product.categoryTitle + ': ' + product.title + '</div>' +
                         '<div>' + (modification.title !== 'Соло-продукт' ? modification.title + ': ' : '') + (modification.value !== 'Отсутствует' ? modification.value : '') + '</div>' +
-                        // '<div>' + (modification.value !== 'Отсутствует' ? modification.value : '') + '</div>' +
                     '</div>' +
                     '<div class="flex-column-center">' +
                         '<div class="buttons-edit-amount-product border-radius-25 flex-center" style="background-color: rgb(243, 243, 247);">' +
@@ -672,7 +656,7 @@ function OrderInfoGenerationHTML(orderId) {
                         phoneInput +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Адрес для доставки (улица, дом, кв.)</label>' +
-                        '<input name="clientAddressDelivery" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '">' +
+                        '<input name="clientAddressDelivery" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '">' +
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Комментарий</label>' +
@@ -763,10 +747,10 @@ function startTrackingNumberInput() {
 
 let timerSuggestionsAddress = null;
 
-function SuggestionsAddress(query, inputSuggestions, callback) {
+function SuggestionsAddress(query, inputSuggestions) {
 
     if (query.length < 4) {
-        return
+        return;
     }
 
     clearTimeout(timerSuggestionsAddress)
@@ -799,12 +783,12 @@ function SuggestionsAddress(query, inputSuggestions, callback) {
 
         fetch(url, options)
             .then(response => response.text())
-            .then(result => ContainerSuggestionsGeneration(result, inputSuggestions, callback))
+            .then(result => ContainerSuggestionsGeneration(result, inputSuggestions))
             .catch(error => console.log("error", error));
     }, 500)
 }
 
-function ContainerSuggestionsGeneration(result, inputSuggestions, callback) {
+function ContainerSuggestionsGeneration(result, inputSuggestions) {
     result = JSON.parse(result).suggestions;
 
     let parentInputSuggestions = inputSuggestions.parentNode;
@@ -1046,26 +1030,12 @@ function Profile() {
     ModalWindow(profileContent);
 }
 
-let mainMenu = document.body.querySelector('.button-menu');
-if (mainMenu) {
-    mainMenu.addEventListener('click', () => {
+let leftMenuButtons = document.body.querySelectorAll('.button-menu, .shadow-menu, .close-menu-button');
+leftMenuButtons.forEach((button) => {
+    button.addEventListener('click', () => {
         document.body.querySelector('.left-menu').showToggle();
     });
-}
-
-let mainMenuShadow = document.body.querySelector('.shadow-menu');
-if (mainMenuShadow) {
-    mainMenuShadow.addEventListener('click', () => {
-        document.body.querySelector('.left-menu').showToggle();
-    });
-}
-
-let mainMenuCloseButton = document.body.querySelector('.close-menu-button')
-if (mainMenuCloseButton) {
-    mainMenuCloseButton.addEventListener('click', () => {
-        document.body.querySelector('.left-menu').showToggle();
-    });
-}
+});
 
 ManagerArmCheckOrderStatusChange();
 function ManagerArmCheckOrderStatusChange() {
@@ -1115,5 +1085,3 @@ function ManagerArmCheckOrderStatusChange() {
         setTimeout(ManagerArmCheckOrderStatusChange, 10000);
     });
 }
-
-

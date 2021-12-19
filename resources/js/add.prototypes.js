@@ -49,16 +49,6 @@ function CreateElement(tag, params, parent) {
         })
     }
     return element;
-
-    // let buttonAnswerDelete = CreateElement('button', {
-    //     class: 'px-15 py-5 ml-10 cp',
-    //     content: 'Удалить ответ',
-    //     events: {
-    //         click: (e) => {
-    //             containerFieldsAdditionalAnswer.remove();
-    //         }
-    //     }
-    // }, containerAdditionalAnswer);
 }
 
 function ToggleShow() {
@@ -73,6 +63,11 @@ function ToggleShow() {
     });
 }
 
+// triggerEvent( basketButton, 'click' );
+function triggerEvent(elem, event) {
+    elem.dispatchEvent(new Event(event));
+}
+
 const getSort = ({ target }) => {
     const order = (target.dataset.order = -(target.dataset.order || -1));
     const index = [...target.parentNode.cells].indexOf(target);
@@ -82,9 +77,11 @@ const getSort = ({ target }) => {
         b.children[index].innerHTML
     );
 
-    for(const tBody of target.closest('table').tBodies)
+    for(const tBody of target.closest('table').tBodies) {
         tBody.append(...[...tBody.rows].sort(comparator(index, order)));
+    }
 
-    for(const cell of target.parentNode.cells)
+    for(const cell of target.parentNode.cells) {
         cell.classList.toggle('sorted', cell === target);
+    }
 };
