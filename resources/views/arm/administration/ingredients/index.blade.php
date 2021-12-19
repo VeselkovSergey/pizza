@@ -15,6 +15,7 @@
                     <th>Наименование</th>
                     <th>Актуальная цена за кг/шт</th>
                     <th>Кол-во в последней поставке</th>
+                    <th>Дата</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -24,6 +25,7 @@
                         <td>{{$ingredient->title}}</td>
                         <td>{{$ingredient->last_price_ingredient}} ₽</td>
                         <td>{{$ingredient->last_amount_ingredient}}</td>
+                        <td>{{$ingredient->created_at}}</td>
                     </tr>
                 @endforeach
                 </tbody>
