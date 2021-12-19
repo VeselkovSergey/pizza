@@ -2,16 +2,6 @@
 
 @section('content')
 
-    <style>
-        body {
-            background-color: whitesmoke!important;
-            color: black!important;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-    </style>
-
     <div class="mb-10">
         <a href="{{route('administrator-arm-page')}}">назад в ARM админа</a>
     </div>

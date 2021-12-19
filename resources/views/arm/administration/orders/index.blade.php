@@ -3,19 +3,6 @@
 @section('content')
 
     <style>
-        body {
-            background-color: whitesmoke!important;
-            color: black!important;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        .modal-window-component-container .modal-window-component .modal-window-content-container {
-            background-color: white;
-        }
-        .modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-close-button path {
-            fill: black;
-        }
         .order:hover {
             background-color: wheat;
         }
