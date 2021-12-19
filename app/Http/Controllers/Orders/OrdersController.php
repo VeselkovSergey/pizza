@@ -175,7 +175,7 @@ class OrdersController extends Controller
 
     public static function AllOrders($direction = 'desc')
     {
-        return Orders::query()->orderBy('id', $direction)->get();
+        return Orders::orderBy('id', $direction)->get();
     }
 
     public static function OrdersByDate($requiredDate, $allOrdersByDate = false, $direction = 'desc')

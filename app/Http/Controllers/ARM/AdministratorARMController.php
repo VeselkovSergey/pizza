@@ -9,6 +9,8 @@ use App\Http\Controllers\Ingredients\IngredientsController;
 use App\Http\Controllers\Orders\OrdersController;
 use App\Http\Controllers\Products\ProductsController;
 use App\Models\Orders;
+use App\Models\ProductModificationsIngredients;
+use App\Models\ProductsModificationsInOrders;
 use App\Models\User;
 
 class AdministratorARMController extends Controller
@@ -62,22 +64,39 @@ class AdministratorARMController extends Controller
         $orders = Orders::all();
 
         $productsModifications = [];
+        $sumOrders = 0;
+        $costOrders = 0;
 
         foreach($orders as $order) {
+            if ($order->IsCancelled()) {
+                continue;
+            }
+
+            $allInformationRawDta = json_decode($order->all_information_raw_data);
+            $orderSum = $allInformationRawDta->orderSum;
+
+            $sumOrders += $orderSum;
+
             $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
             foreach($productsModificationsInOrder as $productModificationInOrder) {
-
-                $costPrice = 0;
-                $modificationIngredients = $productModificationInOrder->ProductModifications->Ingredients;
-                foreach($modificationIngredients as $ingredient) {
-                    $sumIngredient = $ingredient->ingredient_amount * $ingredient->Ingredient->CurrentPrice();
-                    $costPrice += $sumIngredient;
-                }
+                /** @var ProductsModificationsInOrders $productModificationInOrder */
 
                 $title = $productModificationInOrder->ProductModifications->Product->title . ' ' . $productModificationInOrder->ProductModifications->Modification->title . ' ' . $productModificationInOrder->ProductModifications->Modification->value;
                 $price = $productModificationInOrder->ProductModifications->selling_price;
                 $amount = $productModificationInOrder->product_modification_amount;
                 $categoryTitle = $productModificationInOrder->ProductModifications->Product->Category->title;
+
+                $costPrice = 0;
+                $modificationIngredients = $productModificationInOrder->ProductModifications->Ingredients;
+                foreach($modificationIngredients as $ingredient) {
+                    /** @var ProductModificationsIngredients $ingredient */
+                    $ingredientAmount = $ingredient->ingredient_amount;
+                    $ingredientPrice = $ingredient->Ingredient->CurrentPrice();
+                    $sumIngredient = $ingredientAmount * $ingredientPrice;
+                    $costPrice += $sumIngredient;
+                }
+
+                $costOrders += ($amount * $costPrice);
 
                 if (isset($productsModifications[$productModificationInOrder->product_modification_id])) {
                     $productsModifications[$productModificationInOrder->product_modification_id]->amount += $amount;
@@ -93,7 +112,7 @@ class AdministratorARMController extends Controller
             }
         }
 
-        return view('arm.administration.products-modifications.index', compact('productsModifications'));
+        return view('arm.administration.products-modifications.index', compact('productsModifications', 'sumOrders', 'costOrders'));
     }
 
     public function DeviceUsed()

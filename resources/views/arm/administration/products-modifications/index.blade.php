@@ -8,6 +8,10 @@
 
     <div>
         <div>
+            <div>Стоимость заказов : {{$sumOrders}}</div>
+            <div>Себестоимость заказов : {{$costOrders}}</div>
+        </div>
+        <div>
             <table class="w-100 border table-sort">
                 <thead>
                 <tr>
@@ -15,8 +19,8 @@
                     <th>Категория</th>
                     <th>Наименование</th>
                     <th>Кол-во</th>
-                    <th>Стоимость</th>
-                    <th>Себестоимость</th>
+                    <th>Стоимость одной</th>
+                    <th>Себестоимость одной</th>
                     <th>Наценка</th>
                 </tr>
                 </thead>
@@ -35,7 +39,6 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 
 

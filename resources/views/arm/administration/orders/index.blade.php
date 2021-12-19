@@ -58,6 +58,7 @@
                     <th>Тип заказа</th>
                     <th>Сумма</th>
                     <th></th>
+                    <th>Себестоимость заказа</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -129,6 +130,7 @@
                         <td class="text-center">
                             <div class="order-detail-info">Подробно</div>
                             <div class="order-detail-info-content hide">
+                                @php($orderCost = 0)
                                 @foreach($productsModificationsInOrder as $productModificationInOrder)
 
                                     @if(!$order->IsCancelled())
@@ -142,7 +144,7 @@
                                             ?>
                                                 @php($costPrice += $sumIngredient)
                                         @endforeach
-                                        @php($sumCost += $costPrice)
+                                        @php($orderCost += $costPrice * $productModificationInOrder->product_modification_amount)
 
                                     @endif
 
@@ -154,8 +156,10 @@
                                         <div>Кол-во: {{$productModificationInOrder->product_modification_amount}}</div>
                                     </div>
                                 @endforeach
+                                @php($sumCost += $orderCost)
                             </div>
                         </td>
+                        <td>{{$orderCost}}</td>
                     </tr>
                     @endforeach
                 </tbody>
