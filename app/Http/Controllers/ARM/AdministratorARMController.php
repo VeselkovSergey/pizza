@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\ARM;
 
 use App\Helpers\ResultGenerate;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Ingredients\IngredientsController;
 use App\Http\Controllers\Orders\OrdersController;
@@ -56,6 +57,15 @@ class AdministratorARMController extends Controller
         $data = json_decode(request()->data);
         $product = ProductsController::GetProductById($productId);
         ProductsController::SaveChanges($product, $data);
+        return ResultGenerate::Success();
+    }
+
+    public function UserSaveChanges()
+    {
+        $userId = request()->userId;
+        $data = json_decode(request()->data);
+        $user = AuthController::GetUserById($userId);
+        AuthController::SaveChanges($user, $data);
         return ResultGenerate::Success();
     }
 

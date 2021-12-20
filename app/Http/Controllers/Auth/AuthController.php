@@ -77,4 +77,18 @@ class AuthController extends Controller
         $user->name = $newName;
         $user->save();
     }
+
+    public static function GetUserById($userId)
+    {
+        return User::find($userId);
+    }
+
+    public static function SaveChanges(User $user, array|object $data)
+    {
+        foreach ($data as $title => $value) {
+            $user->$title = $value;
+        }
+        $user->save();
+        return $user;
+    }
 }
