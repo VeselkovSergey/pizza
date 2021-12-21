@@ -202,6 +202,7 @@
                             <div class="mr-10">{{\App\Models\User::find($courierId)->name}}</div>
                             <div class="mr-10">{{\App\Models\User::find($courierId)->phone}}</div>
                             <div class="mr-10">{{$amountOrder}} шт.</div>
+                            <div class="mr-10">{{$amountOrder * 70}} сумма</div>
                         </div>
                     @endforeach
                 </div>
