@@ -197,14 +197,17 @@
             <div class="mb-10">
                 <div class="toggle-button cp" data-toogle="orders-by-couriers">Распределение по курьерам</div>
                 <div class="orders-by-couriers">
+                    @php($sumCourier = 0)
                     @foreach($ordersByCouriers as $courierId => $amountOrder)
                         <div class="flex">
                             <div class="mr-10">{{\App\Models\User::find($courierId)->name}}</div>
                             <div class="mr-10">{{\App\Models\User::find($courierId)->phone}}</div>
                             <div class="mr-10">{{$amountOrder}} шт.</div>
                             <div class="mr-10">{{$amountOrder * 70}} сумма</div>
+                            @php($sumCourier += $amountOrder * 70)
                         </div>
                     @endforeach
+                    <div>{{$sumCourier}}</div>
                 </div>
             </div>
         </div>
