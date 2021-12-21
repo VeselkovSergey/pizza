@@ -95,7 +95,7 @@
                             @php($sumOrdersInDays[$order->created_at->format('Ymd')]['bank'] += $rawData->orderSum)
                         @endif
 
-                        @if($order->courier_id !== 0)
+                        @if(isset($order->courier_id) && $order->courier_id !== 0)
                             @php(empty($ordersByCouriers[$order->courier_id]) ? $ordersByCouriers[$order->courier_id] = 0 : "")
                             @php($ordersByCouriers[$order->courier_id] += 1)
                         @endif
