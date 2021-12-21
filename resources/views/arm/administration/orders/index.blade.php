@@ -189,7 +189,7 @@
                         <div class="flex">
                             <div class="mr-10" style="width: 170px;">Дата: {{date('Y-m-d', strtotime($date))}}</div>
                             <div class="mr-10" style="width: 170px;">Кол-во: {{$amountOrdersInDayCash}}/{{$amountOrdersInDayBank}}/{{$amountOrdersInDayCash + $amountOrdersInDayBank}}</div>
-                            <div class="mr-10">Cумма: {{$amountOrdersInDayDateCash}}/{{$amountOrdersInDayDateBank}}/{{$amountOrdersInDayDateCash + $amountOrdersInDayDateBank}}</div>
+                            <div class="mr-10">Cумма: {{$amountOrdersInDayDateCash}} ₽ /{{$amountOrdersInDayDateBank}} ₽ /{{$amountOrdersInDayDateCash + $amountOrdersInDayDateBank}} ₽</div>
                         </div>
                     @endforeach
                 </div>
@@ -203,11 +203,11 @@
                             <div class="mr-10">{{\App\Models\User::find($courierId)->name}}</div>
                             <div class="mr-10">{{\App\Models\User::find($courierId)->phone}}</div>
                             <div class="mr-10">{{$amountOrder}} шт.</div>
-                            <div class="mr-10">{{$amountOrder * 70}} сумма</div>
+                            <div class="mr-10">{{$amountOrder * 70}} ₽</div>
                             @php($sumCourier += $amountOrder * 70)
                         </div>
                     @endforeach
-                    <div>Итого: {{$sumCourier}}</div>
+                    <div>Итого: {{$sumCourier}} ₽</div>
                 </div>
             </div>
         </div>
