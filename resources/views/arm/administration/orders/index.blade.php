@@ -207,7 +207,7 @@
                             @php($sumCourier += $amountOrder * 70)
                         </div>
                     @endforeach
-                    <div>{{$sumCourier}}</div>
+                    <div>Итого: {{$sumCourier}}</div>
                 </div>
             </div>
         </div>
