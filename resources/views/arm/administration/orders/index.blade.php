@@ -35,6 +35,7 @@
     @php($amountOrdersInDays = [])
     @php($sumOrdersInDays = [])
     @php($sumOrdersInHour = [])
+    @php($ordersByCouriers = [])
 
     <div class="flex-column">
         <div style="order: 2; overflow-x: auto;">
@@ -92,6 +93,11 @@
 
                             @php(empty($sumOrdersInDays[$order->created_at->format('Ymd')]['bank']) ? $sumOrdersInDays[$order->created_at->format('Ymd')]['bank'] = 0 : "")
                             @php($sumOrdersInDays[$order->created_at->format('Ymd')]['bank'] += $rawData->orderSum)
+                        @endif
+
+                        @if($order->courier_id !== 0)
+                            @php(empty($ordersByCouriers[$order->courier_id]) ? $ordersByCouriers[$order->courier_id] = 0 : "")
+                            @php($ordersByCouriers[$order->courier_id] += 1)
                         @endif
                     @endif
 
@@ -184,6 +190,18 @@
                             <div class="mr-10" style="width: 170px;">Дата: {{date('Y-m-d', strtotime($date))}}</div>
                             <div class="mr-10" style="width: 170px;">Кол-во: {{$amountOrdersInDayCash}}/{{$amountOrdersInDayBank}}/{{$amountOrdersInDayCash + $amountOrdersInDayBank}}</div>
                             <div class="mr-10">Cумма: {{$amountOrdersInDayDateCash}}/{{$amountOrdersInDayDateBank}}/{{$amountOrdersInDayDateCash + $amountOrdersInDayDateBank}}</div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="mb-10">
+                <div class="toggle-button cp" data-toogle="orders-by-couriers">Распределение по курьерам</div>
+                <div class="orders-by-couriers">
+                    @foreach($ordersByCouriers as $courierId => $amountOrder)
+                        <div class="flex">
+                            <div class="mr-10">{{\App\Models\User::find($courierId)->name}}</div>
+                            <div class="mr-10">{{\App\Models\User::find($courierId)->phone}}</div>
+                            <div class="mr-10">{{$amountOrder}} шт.</div>
                         </div>
                     @endforeach
                 </div>
