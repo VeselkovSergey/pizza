@@ -178,11 +178,12 @@ class OrdersController extends Controller
         return Orders::orderBy('id', $direction)->get();
     }
 
-    public static function OrdersByDate($requiredDate, $allOrdersByDate = false, $direction = 'desc')
+    public static function OrdersByDate($startDate, $endDate, $allOrdersByDate = false, $direction = 'desc')
     {
-        $requiredDate = strtotime($requiredDate);
-        $startDate = date('Y-m-d 00:00:00', $requiredDate);
-        $endDate = date('Y-m-d 23:59:59', $requiredDate);
+        $startDate = strtotime($startDate);
+        $endDate = strtotime($endDate);
+        $startDate = date('Y-m-d 00:00:00', $startDate);
+        $endDate = date('Y-m-d 23:59:59', $endDate);
         $orders = new Orders();
         $orders = $orders->where('created_at', '>=', $startDate);
         $orders = $orders->where('created_at', '<=', $endDate);

@@ -86,7 +86,8 @@ class TelegramBotController extends Controller
 
     public static function TodayReport()
     {
-        $orders = OrdersController::OrdersByDate(date('Y-m-d', time()), true);
+        $today = now()->format('Y-m-d');
+        $orders = OrdersController::OrdersByDate($today, $today, true);
         $ordersCount = $orders->count();
 
         $sum = 0;

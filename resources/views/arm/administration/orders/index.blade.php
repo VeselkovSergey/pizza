@@ -16,7 +16,8 @@
         <div class="mr-10">
             <label>
                 На какое число
-                <input class="required-date" type="date" value="{{$requiredDate}}">
+                <input class="start-date" type="date" value="{{$startDate}}">
+                <input class="end-date" type="date" value="{{$endDate}}">
             </label>
         </div>
         <button class="cp all-orders mr-10">Заказы за всё время</button>
@@ -179,7 +180,11 @@
                         @php($amountOrdersInDayBank = $amountOrdersInDay['bank'] ?? 0)
                         @php($amountOrdersInDayDateCash = $sumOrdersInDays[$date]['cash'] ?? 0)
                         @php($amountOrdersInDayDateBank = $sumOrdersInDays[$date]['bank'] ?? 0)
-                        <div>Дата: {{date('Y-m-d', strtotime($date))}} - Кол-во: {{$amountOrdersInDayCash}}/{{$amountOrdersInDayBank}}/{{$amountOrdersInDayCash + $amountOrdersInDayBank}} - сумма: {{$amountOrdersInDayDateCash}}/{{$amountOrdersInDayDateBank}}/{{$amountOrdersInDayDateCash + $amountOrdersInDayDateBank}}</div>
+                        <div class="flex">
+                            <div class="mr-10" style="width: 170px;">Дата: {{date('Y-m-d', strtotime($date))}}</div>
+                            <div class="mr-10" style="width: 170px;">Кол-во: {{$amountOrdersInDayCash}}/{{$amountOrdersInDayBank}}/{{$amountOrdersInDayCash + $amountOrdersInDayBank}}</div>
+                            <div class="mr-10">Cумма: {{$amountOrdersInDayDateCash}}/{{$amountOrdersInDayDateBank}}/{{$amountOrdersInDayDateCash + $amountOrdersInDayDateBank}}</div>
+                        </div>
                     @endforeach
                 </div>
             </div>
@@ -206,17 +211,20 @@
 
         ToggleShow();
 
-        let changeRequiredDateInput = document.body.querySelector('.required-date');
-        changeRequiredDateInput.addEventListener('change', (event) => {
-            let requiredDate = event.target.value;
-            if (requiredDate) {
-                location.href = "{{route('administrator-arm-orders-page')}}?required-date=" + requiredDate;
-            }
+        let changeDateFields = document.body.querySelectorAll('.start-date, .end-date');
+        changeDateFields.forEach((changeDateField) => {
+            changeDateField.addEventListener('change', (event) => {
+                let startDate = document.body.querySelector('.start-date').value;
+                let endDate = document.body.querySelector('.end-date').value;
+                if (startDate && endDate) {
+                    location.href = "{{route('administrator-arm-orders-page')}}?start-date=" + startDate + "&end-date=" + endDate;
+                }
+            });
         });
 
         let allOrdersTodayButton = document.body.querySelector('.all-orders-today');
         allOrdersTodayButton.addEventListener('click', () => {
-            location.href = "{{route('administrator-arm-orders-page')}}?required-date={{date('Y-m-d', time())}}";
+            location.href = "{{route('administrator-arm-orders-page')}}??start-date={{date('Y-m-d', time())}}&end-date={{date('Y-m-d', time())}}";
         });
 
         let allOrdersButton = document.body.querySelector('.all-orders');
