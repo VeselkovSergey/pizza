@@ -143,7 +143,7 @@
             });
 
             buttonPutInBasket.addEventListener('click', () => {
-                if (modificationSelected.stopList == 1) {
+                if (modificationSelected.stopList === 1) {
                     ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
                     return;
                 }
@@ -181,7 +181,7 @@
                         disableModificationContainer = true;
                     }
 
-                    if (modification.stop_list == 1) {
+                    if (modification.stop_list === 1) {
                         stopList = true;
                     }
 
@@ -251,6 +251,8 @@
 
     </script>
 
+    @if(!(auth()->check() && auth()->user()->IsManager()))
+
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript" >
         (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -265,5 +267,7 @@
         });
     </script>
     <!-- /Yandex.Metrika counter -->
+
+    @endif
 
 @stop
