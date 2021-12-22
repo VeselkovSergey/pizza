@@ -10,24 +10,29 @@
         <form class="supply-create-or-edit-form" action="" onsubmit="return false;">
 
             <div>
-                <label for="">Поставщик</label>
-                <select name="supplier">
-                    @foreach($suppliers as $supplier)
-                        <option value="{{$supplier->id}}">{{$supplier->title}}</option>
-                    @endforeach
-                </select>
+                <label for="">Поставщик
+                    <select name="supplier">
+                        @foreach($suppliers as $supplier)
+                            <option value="{{$supplier->id}}">{{$supplier->title}}</option>
+                        @endforeach
+                    </select>
+                </label>
+
             </div>
             <div>
-                <label for="">Дата</label>
-                <input class="need-validate" name="dateSupply" type="datetime-local" value="{{date('Y-m-d\TH:i', time())}}">
+                <label for="">Дата
+                    <input class="need-validate" name="dateSupply" type="datetime-local" value="{{date('Y-m-d\TH:i', time())}}">
+                </label>
             </div>
             <div>
-                <label for="">Тип оплаты</label>
-                <select name="paymentType">
-                    <option value="1">Наличные</option>
-                    <option value="2">Безналичные</option>
-                    <option value="3">Перевод</option>
-                </select>
+                <label for="">Тип оплаты
+                    <select name="paymentType">
+                        <option value="1">Наличные</option>
+                        <option value="2">Безналичные</option>
+                        <option value="3">Перевод</option>
+                    </select>
+                </label>
+
             </div>
 
             <div class="container-for-ingredients">
@@ -35,8 +40,9 @@
             </div>
 
             <div>
-                <label>Сумма</label>
-                <input name="totalSumSupply" type="text" readonly value="0">
+                <label>Сумма
+                    <input name="totalSumSupply" type="text" readonly value="0">
+                </label>
             </div>
 
             <div>

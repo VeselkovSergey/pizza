@@ -7,20 +7,24 @@
         <form class="modifications-create-or-edit-form" action="" onsubmit="return false;">
 
             <div>
-                <label for="">Название</label>
-                <input class="need-validate" name="title" type="text">
+                <label for="">Название
+                    <input class="need-validate" name="title" type="text">
+                </label>
             </div>
             <div>
-                <label for="">Тип</label>
-                <select name="modificationType">
-                    @foreach($typeModifications as $typeModification)
-                        <option value="{{$typeModification->id}}">{{$typeModification->title . ' - ' . $typeModification->value_unit}}</option>
-                    @endforeach
-                </select>
+                <label for="">Тип
+                    <select name="modificationType">
+                        @foreach($typeModifications as $typeModification)
+                            <option value="{{$typeModification->id}}">{{$typeModification->title . ' - ' . $typeModification->value_unit}}</option>
+                        @endforeach
+                    </select>
+                </label>
+
             </div>
             <div>
-                <label for="">Значение</label>
-                <input class="need-validate" name="modificationValue" type="text">
+                <label for="">Значение
+                    <input class="need-validate" name="modificationValue" type="text">
+                </label>
             </div>
             <div>
                 <button class="save-button">Создать</button>

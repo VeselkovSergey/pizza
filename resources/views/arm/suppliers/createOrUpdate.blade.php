@@ -4,11 +4,12 @@
 
     <div>
 
-        <form class="ingredients-create-or-edit-form" action="" onsubmit="return false;">
+        <form class="supplier-create-or-edit-form" action="" onsubmit="return false;">
 
             <div>
-                <label for="">Название</label>
-                <input class="need-validate" name="title" type="text">
+                <label for="">Название
+                    <input class="need-validate" name="title" type="text">
+                </label>
             </div>
             <div>
                 <button class="save-button">Создать</button>
@@ -33,11 +34,11 @@
                 title: titleValue,
             }
 
-            if (!CheckingFieldForEmptiness('ingredients-create-or-edit-form', true)) {
+            if (!CheckingFieldForEmptiness('supplier-create-or-edit-form', true)) {
                 return;
             }
 
-            Ajax("{{route('ingredients-save')}}", 'POST', data).then((response) => {
+            Ajax("{{route('supplier-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
                 if (response.status === true) {
                     title.value = '';

@@ -13,8 +13,9 @@
         <form class="product-create-or-edit-form" action="" onsubmit="return false;">
 
             <div>
-                <label for="">Название</label>
-                <input class="need-validate" name="title" type="text">
+                <label for="">Название
+                    <input class="need-validate" name="title" type="text">
+                </label>
             </div>
 
             <div>
