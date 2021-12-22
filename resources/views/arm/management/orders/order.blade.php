@@ -77,7 +77,7 @@
                 <div class="ml-10">
                     <div>Имя: {{$clientInfo->clientName}}</div>
                     <div>Номер телефона: {{$clientInfo->clientPhone}}</div>
-                    <div>Сумма к оплате: {{$rawData->orderSum}} ₽</div>
+                    <div>Сумма к оплате: {{$order->order_amount}} ₽</div>
                     <div>Оплата: {{$clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные'}}</div>
                     <div>Адрес доставки: {{$clientInfo->clientAddressDelivery}}</div>
                     <div>Комментарий: {{$clientInfo->clientComment}}</div>

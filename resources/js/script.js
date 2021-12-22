@@ -551,7 +551,7 @@ function CreateOrder(orderId) {
     let data = {
         basket: JSON.stringify(GetAllProductsInBasket()),
         clientInformation: JSON.stringify(ObjectClientInformation),
-        orderSum: PriceSumProductsInBasket(),
+        orderAmount: PriceSumProductsInBasket(),
         screenWidth: screenWidth,
         screenHeight: screenHeight,
         userAgent: userAgent,

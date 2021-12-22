@@ -23,6 +23,8 @@ class CreateOrdersTable extends Migration
             $table->integer('courier_id')->nullable();
             $table->integer('telegram_message_id')->nullable();
             $table->integer('payment_id')->default(0);
+            $table->integer('order_amount');
+            $table->integer('total_order_amount');
             $table->timestamps();
         });
     }

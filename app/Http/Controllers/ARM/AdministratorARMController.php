@@ -83,10 +83,7 @@ class AdministratorARMController extends Controller
                 continue;
             }
 
-            $allInformationRawDta = json_decode($order->all_information_raw_data);
-            $orderSum = $allInformationRawDta->orderSum;
-
-            $sumOrders += $orderSum;
+            $sumOrders += $order->order_amount;
 
             $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
             foreach($productsModificationsInOrder as $productModificationInOrder) {

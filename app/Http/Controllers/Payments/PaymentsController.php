@@ -9,13 +9,13 @@ use App\Services\SberBank\SberBank;
 
 class PaymentsController extends Controller
 {
-    public static function CreatePayment(Orders $order, $orderSumFront, $paymentType = 'cash')
+    public static function CreatePayment(Orders $order, $orderAmount, $paymentType = 'cash')
     {
         $newPayment = Payments::create([
             'order_id' => $order->id,
             'status' => Payments::STATUS_TEXT['newPayment'],
             'type' => Payments::TYPE_TEXT[$paymentType],
-            'amount' => $orderSumFront,
+            'amount' => $orderAmount,
         ]);
         $order->payment_id = $newPayment->id;
         $order->save();

@@ -16,6 +16,7 @@ use App\Models\Payments;
 use App\Models\ProductModifications;
 use App\Models\Products;
 use App\Models\ProductsModificationsInOrders;
+use App\Models\UsedDevices;
 use App\Models\User;
 use App\Services\SberBank\SberBank;
 use App\Services\Telegram\Telegram;
@@ -29,6 +30,9 @@ class OrdersController extends Controller
         $basket = json_decode($request->basket);
         $clientInformation = self::CleanClientInformation(json_decode($request->clientInformation));
         $clientInformation->clientPhone = auth()->user()->IsManager() ? $clientInformation->clientPhone : auth()->user()->phone;
+
+        $orderAmount = $request->orderAmount;
+
         $paymentType = $clientInformation->typePayment[0];
 
         $clientInformation->clientPhone = preg_replace("/[^0-9]/", '', $clientInformation->clientPhone);
@@ -42,10 +46,8 @@ class OrdersController extends Controller
         }
 
         if ($user->UserIsAdmin()) {
-            $request->merge(['orderSum' => (int)($request->orderSum / 2)]);
+            $orderAmount = (int)($orderAmount / 2);
         }
-
-        $orderSumFront = $request->orderSum;
 
         if (!empty($orderId)) {
             $order = Orders::find($orderId);
@@ -55,6 +57,7 @@ class OrdersController extends Controller
             $order->client_raw_data = json_encode($clientInformation);
             $order->products_raw_data = json_encode($basket);
             $order->all_information_raw_data = json_encode($request->all());
+            $order->order_amount = $orderAmount;
             $order->save();
             ProductsModificationsInOrders::where('order_id', $orderId)->delete();
             $flashMessage = 'Заказ обновлен. Не забудь обновить страницу с заказом.';
@@ -65,10 +68,28 @@ class OrdersController extends Controller
                 'client_raw_data' => json_encode($clientInformation),
                 'products_raw_data' => json_encode($basket),
                 'all_information_raw_data' => json_encode($request->all()),
+                'order_amount' => $orderAmount,
             ]);
             $order = $newOrder;
             $orderId = $order->id;
             self::ChangeStatus($order, Orders::STATUS_TEXT['newOrder']);
+
+            if (!auth()->user()->IsManager()) {
+                $screenWidth = $request->screenWidth;
+                $screenHeight = $request->screenHeight;
+                $userAgent = $request->userAgent;
+                $deviceInfo = (object)[
+                    'screenWidth' => $screenWidth,
+                    'screenHeight' => $screenHeight,
+                    'userAgent' => $userAgent,
+                ];
+
+                UsedDevices::create([
+                    'device_info' => json_encode($deviceInfo),
+                    'order_id' => $orderId,
+                ]);
+            }
+
             $flashMessage = 'Заказ принят. Мы скоро свяжемся с вами.';
         }
 
@@ -84,7 +105,7 @@ class OrdersController extends Controller
         $productsModifications = ProductModifications::whereIn('id', $modificationsId)->get();
 
         $orderFullInformationAboutOrderedProduct = [];
-        $orderSum = 0;
+        $totalOrderAmount = 0;
 
         foreach ($productsModifications as $productsModification) {
 
@@ -93,7 +114,7 @@ class OrdersController extends Controller
                 'title' => $productsModification->Product->title . ' - ' . $productsModification->Modification->title . ' - ' . $productsModification->Modification->value . ' - ' . $productsModification->selling_price . ' ₽',
                 'amount' => $amountProductModificationInOrder[$productsModification->id],
             ];
-            $orderSum = $orderSum + ($productsModification->selling_price * $amountProductModificationInOrder[$productsModification->id]);
+            $totalOrderAmount += ($productsModification->selling_price * $amountProductModificationInOrder[$productsModification->id]);
             $orderFullInformationAboutOrderedProduct[] = $dataModification;
 
             $newProductModificationInNewOrder = ProductsModificationsInOrders::create([
@@ -105,10 +126,13 @@ class OrdersController extends Controller
             self::OrderProductChangeStatus($newProductModificationInNewOrder, ProductsModificationsInOrders::STATUS_TEXT['new']);
         }
 
+        $order->total_order_amount = $totalOrderAmount;
+        $order->save();
+
         $orderFullInformation = (object)[
             'products' => $orderFullInformationAboutOrderedProduct,
-            'orderSum' => $orderSum,
-            'orderSumFront' => $orderSumFront,
+            'orderAmount' => $orderAmount,
+            'totalOrderAmount' => $totalOrderAmount,
             'clientInformation' => $clientInformation,
             'orderId' => $orderId,
         ];
@@ -119,11 +143,11 @@ class OrdersController extends Controller
 
 //        $paymentTypeString = $paymentType ? 'bank' : 'cash';
 //
-//        $payment = PaymentsController::CreatePayment($order, $orderSumFront, $paymentTypeString);
+//        $payment = PaymentsController::CreatePayment($order, $orderAmount, $paymentTypeString);
 //
 //        if ($paymentType) {
 //            $paymentService = new SberBank();
-//            $paymentService = $paymentService->Register($payment, $orderSumFront, route('payment-paid'), route('payment-error'));
+//            $paymentService = $paymentService->Register($payment, $orderAmount, route('payment-paid'), route('payment-error'));
 //
 //            if ($paymentService->status) {
 //                return ResultGenerate::Success($flashMessage, [
@@ -165,8 +189,8 @@ class OrdersController extends Controller
         $message .= PHP_EOL;
         $message .= '<b>Заказ:</b>' . PHP_EOL;
         $message .= $products . PHP_EOL;
-        $message .= '<i>Итого:</i> ' . $orderFullInformation->orderSum . ' ₽' . PHP_EOL;
-        $message .= '<i>Итого со скидками:</i> ' . $orderFullInformation->orderSumFront . ' ₽' . PHP_EOL;
+        $message .= '<i>Итого:</i> ' . $orderFullInformation->totalOrderAmount . ' ₽' . PHP_EOL;
+        $message .= '<i>Итого со скидками:</i> ' . $orderFullInformation->orderAmount . ' ₽' . PHP_EOL;
         $message .= '<i>Заказ в системе:</i> ' . route('manager-arm-order-page', $orderFullInformation->orderId) . PHP_EOL;
 
         $telegram = new Telegram();

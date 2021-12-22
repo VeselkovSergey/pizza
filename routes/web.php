@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Orders\OrdersController;
 use App\Services\Telegram\Telegram;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
@@ -33,7 +34,7 @@ Route::group(['prefix' => 'catalog'], function () {
 
 });
 
-Route::group(['prefix' => 'order'], function () {
+Route::group(['prefix' => 'orders'], function () {
 
     Route::post('/create', [Controllers\Orders\OrdersController::class, 'Create'])->name('order-create');
 
@@ -317,3 +318,26 @@ Route::get('/test-parse', function () {
 });
 
 Route::view('test-maps', 'debag.test');
+
+Route::get('/rebuild-order', function () {
+
+    $orders = \App\Models\Orders::all();
+    foreach ($orders as $order) {
+        $rawData = json_decode($order->all_information_raw_data);
+        $orderAmount = $rawData->orderSum;
+        $rawData->orderAmount = $orderAmount;
+        unset($rawData->orderSum);
+        $order->all_information_raw_data = json_encode($rawData);
+        $order->order_amount = $orderAmount;
+
+        $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
+        $orderSumOriginal = 0;
+        foreach($productsModificationsInOrder as $productModificationInOrder) {
+            $orderSumOriginal += ($productModificationInOrder->ProductModifications->selling_price * $productModificationInOrder->product_modification_amount);
+        }
+        $order->total_order_amount = $orderSumOriginal;
+        $order->save();
+    }
+    return \App\Helpers\ResultGenerate::Success();
+
+});

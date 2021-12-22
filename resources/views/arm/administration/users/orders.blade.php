@@ -41,7 +41,7 @@
                         <td>{{date_diff($order->created_at, $order->updated_at)->format('%h:%i:%s')}}</td>
                         <td>{{$productsModificationsInOrder->count()}}</td>
                         <td>{{$order->courier_id}}</td>
-                        <td>{{json_decode($order->all_information_raw_data)->orderSum}}</td>
+                        <td>{{$order->order_amount}}</td>
                         <td class="text-center">
                             <div class="order-detail-info">Подробно</div>
                             <div class="order-detail-info-content hide">

@@ -41,11 +41,11 @@ $orderStatuses = [];
                     @php($allInformationRawData = json_decode($order->all_information_raw_data))
 
                     @if(!$order->IsCancelled())
-                        @php($sum += $allInformationRawData->orderSum)
+                        @php($sum += $order->order_amount)
                         @if($clientInfo->typePayment[0] === false)
-                            @php($sumCash += $allInformationRawData->orderSum)
+                            @php($sumCash += $order->order_amount)
                         @else
-                            @php($sumBank += $allInformationRawData->orderSum)
+                            @php($sumBank += $order->order_amount)
                         @endif
                     @endif
 
@@ -62,7 +62,7 @@ $orderStatuses = [];
                                     <div>Комментарий: {{$clientInfo->clientComment}}</div>
                                 </div>
                                 <div class="mb-10 px-25" style="border-right: 1px solid">
-                                    <div>Сумма: {{$allInformationRawData->orderSum}} ₽</div>
+                                    <div>Сумма: {{$order->order_amount}} ₽</div>
                                     <div>Оплата: {{($clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные')}}</div>
                                 </div>
                             </div>

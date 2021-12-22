@@ -75,24 +75,24 @@
                     @if($order->IsCancelled())
                         @php($amountOrdersCancelled++)
                     @else
-                        @php($sum += $rawData->orderSum)
+                        @php($sum += $order->order_amount)
                         @php(empty($sumOrdersInHour[(int)$order->created_at->format('H')]) ? $sumOrdersInHour[(int)$order->created_at->format('H')] = 1 : $sumOrdersInHour[(int)$order->created_at->format('H')] += 1)
                         @if($clientInfo->typePayment[0] === false)
-                            @php($sumCash += $rawData->orderSum)
+                            @php($sumCash += $order->order_amount)
 
                             @php(empty($amountOrdersInDays[$order->created_at->format('Ymd')]['cash']) ? $amountOrdersInDays[$order->created_at->format('Ymd')]['cash'] = 0 : "")
                             @php($amountOrdersInDays[$order->created_at->format('Ymd')]['cash'] += 1)
 
                             @php(empty($sumOrdersInDays[$order->created_at->format('Ymd')]['cash']) ? $sumOrdersInDays[$order->created_at->format('Ymd')]['cash'] = 0 : "")
-                            @php($sumOrdersInDays[$order->created_at->format('Ymd')]['cash'] += $rawData->orderSum)
+                            @php($sumOrdersInDays[$order->created_at->format('Ymd')]['cash'] += $order->order_amount)
                         @else
-                            @php($sumBank += $rawData->orderSum)
+                            @php($sumBank += $order->order_amount)
 
                             @php(empty($amountOrdersInDays[$order->created_at->format('Ymd')]['bank']) ? $amountOrdersInDays[$order->created_at->format('Ymd')]['bank'] = 0 : "")
                             @php($amountOrdersInDays[$order->created_at->format('Ymd')]['bank'] += 1)
 
                             @php(empty($sumOrdersInDays[$order->created_at->format('Ymd')]['bank']) ? $sumOrdersInDays[$order->created_at->format('Ymd')]['bank'] = 0 : "")
-                            @php($sumOrdersInDays[$order->created_at->format('Ymd')]['bank'] += $rawData->orderSum)
+                            @php($sumOrdersInDays[$order->created_at->format('Ymd')]['bank'] += $order->order_amount)
                         @endif
 
                         @if(isset($order->courier_id) && $order->courier_id !== 0)
@@ -133,7 +133,7 @@
                         <td>{{$order->User->phone}}</td>
                         <td>{{$clientInfo->clientComment}}</td>
                         <td>{{$orderCreator}}</td>
-                        <td>{{$rawData->orderSum}}</td>
+                        <td>{{$order->order_amount}}</td>
                         <td class="text-center">
                             <div class="order-detail-info">Подробно</div>
                             <div class="order-detail-info-content hide">

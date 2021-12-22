@@ -137,8 +137,6 @@ class ManagerARMController extends Controller
 
         $clientData = json_decode($order->client_raw_data);
 
-        $orderSum = json_decode($order->all_information_raw_data)->orderSum;
-
         $clientName = $clientData->clientName;
         $clientPhone = $clientData->clientPhone;
         $typePayment = ($clientData->typePayment[0] === true ? 'Карта' : 'Наличные') ;
@@ -155,7 +153,7 @@ class ManagerARMController extends Controller
         $message .= '<i>Оплата:</i> ' . $typePayment . PHP_EOL;
         $message .= '<i>Адрес:</i> ' . $clientAddressDelivery . PHP_EOL;
         $message .= '<i>Комментарий:</i> ' . $clientComment . PHP_EOL;
-        $message .= '<i>Итого:</i> ' . $orderSum . ' ₽' . PHP_EOL;
+        $message .= '<i>Итого:</i> ' . $order->order_amount . ' ₽' . PHP_EOL;
 
         $telegram = new Telegram();
         if (!empty($chatId)) {

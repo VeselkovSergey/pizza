@@ -49,9 +49,7 @@
         </div>
         <div class="w-100 mb-5" style="font-style: italic; padding-left: 10px;">Заказ:</div>
         <div class="w-100 mb-5">{{$order->created_at}}</div>
-        @php($orderSumOriginal = 0)
         @foreach($productsModificationsInOrder as $productModificationInOrder)
-            @php($orderSumOriginal += ($productModificationInOrder->ProductModifications->selling_price * $productModificationInOrder->product_modification_amount))
             <div class="w-100 mb-10">
                 <div>{{$loop->iteration . '. ' . $productModificationInOrder->ProductModifications->Product->title . ' ' . ($productModificationInOrder->ProductModifications->Modification->title !== 'Соло-продукт' ? $productModificationInOrder->ProductModifications->Modification->title . ' ' . $productModificationInOrder->ProductModifications->Modification->value : '')}}</div>
                 <div class="w-100 text-right">{{$productModificationInOrder->ProductModifications->selling_price}} ₽ * {{$productModificationInOrder->product_modification_amount}} шт</div>
@@ -59,11 +57,11 @@
         @endforeach
 
         <div class="w-100 mb-10">
-            <div class="w-100 text-right">Сумма заказа: {{$orderSumOriginal}} ₽</div>
-            @if(($orderSumOriginal - $rawData->orderSum) > 0)
-                <div class="w-100 text-right">Скидка: {{$orderSumOriginal - $rawData->orderSum}} ₽</div>
+            <div class="w-100 text-right">Сумма заказа: {{$order->total_order_amount}} ₽</div>
+            @if(($order->total_order_amount - $order->order_amount) > 0)
+                <div class="w-100 text-right">Скидка: {{$order->total_order_amount - $order->order_amount}} ₽</div>
             @endif
-            <div class="w-100 text-right">Итого: {{$rawData->orderSum}} ₽</div>
+            <div class="w-100 text-right">Итого: {{$order->order_amount}} ₽</div>
         </div>
         <div class="w-100 mb-10">
             <div class="w-100 mb-5" style="font-style: italic; padding-left: 10px;">Информация о клиенте:</div>

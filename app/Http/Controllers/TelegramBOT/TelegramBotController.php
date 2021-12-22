@@ -102,12 +102,12 @@ class TelegramBotController extends Controller
             if ($order->IsCancelled()) {
                 $amountCancelled++;
             } else {
-                $sum += $rawData->orderSum;
+                $sum += $order->order_amount;
 
                 if ($clientInfo->typePayment[0] === true) {
-                    $sumBank +=  $rawData->orderSum;
+                    $sumBank +=  $order->order_amount;
                 } else {
-                    $sumCash += $rawData->orderSum;
+                    $sumCash += $order->order_amount;
                 }
             }
 
@@ -140,12 +140,12 @@ class TelegramBotController extends Controller
             if ($order->IsCancelled()) {
                 $amountCancelled++;
             } else {
-                $sum += $rawData->orderSum;
+                $sum += $order->order_amount;
 
                 if ($clientInfo->typePayment[0] === true) {
-                    $sumBank +=  $rawData->orderSum;
+                    $sumBank +=  $order->order_amount;
                 } else {
-                    $sumCash += $rawData->orderSum;
+                    $sumCash += $order->order_amount;
                 }
             }
 

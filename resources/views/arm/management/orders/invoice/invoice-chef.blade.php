@@ -32,10 +32,8 @@
     <div>*</div>
     <div>*</div>
     <div class="flex-column-center">
-        @php($orderSumOriginal = 0)
         <div class="mb-10" style="font-weight: 600;"># {{$order->id}} {{date('Y-m-d H:i:s', time())}}</div>
         @foreach($productsModificationsInOrder as $productModificationInOrder)
-            @php($orderSumOriginal += ($productModificationInOrder->ProductModifications->selling_price * $productModificationInOrder->product_modification_amount))
             <div class="w-100 mb-10" style="font-size: 20px">
                 <div>{{$loop->iteration . '. ' . $productModificationInOrder->ProductModifications->Product->title . ' ' . ($productModificationInOrder->ProductModifications->Modification->title !== 'Соло-продукт' ? $productModificationInOrder->ProductModifications->Modification->title . ' ' . $productModificationInOrder->ProductModifications->Modification->value : '')}}</div>
                 <div class="w-100 text-right">{{$productModificationInOrder->product_modification_amount}} шт</div>

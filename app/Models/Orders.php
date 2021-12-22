@@ -11,6 +11,8 @@ namespace App\Models;
  * @property string all_information_raw_data
  * @property string telegram_message_id
  * @property string client_raw_data
+ * @property integer order_amount
+ * @property integer total_order_amount
  * @property ProductsModificationsInOrders ProductsModifications
  */
 class Orders extends BaseModel
@@ -24,6 +26,8 @@ class Orders extends BaseModel
         'courier_id',
         'payment_id',
         'telegram_message_id',
+        'order_amount',
+        'total_order_amount',
     ];
 
     const STATUS = [
