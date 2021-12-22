@@ -14,6 +14,7 @@ namespace App\Models;
  * @property integer order_amount
  * @property integer total_order_amount
  * @property ProductsModificationsInOrders ProductsModifications
+ * @property OrdersStatusLogs LatestStatus
  */
 class Orders extends BaseModel
 {
@@ -79,6 +80,11 @@ class Orders extends BaseModel
     public function Statuses()
     {
         return $this->hasMany(OrdersStatusLogs::class, 'order_id', 'id');
+    }
+
+    public function LatestStatus()
+    {
+        return $this->hasOne(OrdersStatusLogs::class, 'order_id', 'id')->limit(1)->latest('id');
     }
 
     public function Creator()

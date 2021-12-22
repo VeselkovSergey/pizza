@@ -112,7 +112,7 @@
                         @php($ordersCreatorWeb++)
                     @endif
 
-                    @if(date_diff($order->created_at, $order->updated_at)->format('%H') !== '00')
+                    @if(date_diff($order->created_at, $order->LatestStatus->updated_at)->format('%H') !== '00')
                         @php($longTime = true)
                     @endif
 
@@ -120,8 +120,8 @@
                         <td><a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}">{{$order->id}}</a></td>
                         <td class="order-status-{{$order->status_id}}">{{\App\Models\Orders::STATUS[$order->status_id]}}</td>
                         <td>{{$order->created_at}}</td>
-                        <td>{{$order->updated_at}}</td>
-                        <td @if($longTime) style="background-color: #e37e7e;" @endif>{{date_diff($order->created_at, $order->updated_at)->format('%H:%I:%S')}}</td>
+                        <td>{{$order->LatestStatus->updated_at}}</td>
+                        <td @if($longTime) style="background-color: #e37e7e;" @endif>{{date_diff($order->created_at, $order->LatestStatus->updated_at)->format('%H:%I:%S')}}</td>
                         <td>{{$order->TimeManagerProcesses()}}</td>
                         <td>{{$order->TimeTransferOnKitchen()}}</td>
                         <td>{{$order->TimeCooked()}}</td>

@@ -37,8 +37,8 @@
                         <td>{{$order->id}}</td>
                         <td>{{\App\Models\Orders::STATUS[$order->status_id]}}</td>
                         <td>{{$order->created_at}}</td>
-                        <td>{{$order->updated_at}}</td>
-                        <td>{{date_diff($order->created_at, $order->updated_at)->format('%h:%i:%s')}}</td>
+                        <td>{{$order->LatestStatus->updated_at}}</td>
+                        <td>{{date_diff($order->created_at, $order->LatestStatus->updated_at)->format('%h:%i:%s')}}</td>
                         <td>{{$productsModificationsInOrder->count()}}</td>
                         <td>{{$order->courier_id}}</td>
                         <td>{{$order->order_amount}}</td>
