@@ -20,7 +20,7 @@ class ModificationsController extends Controller
     public function Create()
     {
         $typeModifications = TypesModifications::all();
-        return view('modifications.createOrUpdate', [
+        return view('arm.modifications.createOrUpdate', [
             'typeModifications' => $typeModifications
         ]);
     }

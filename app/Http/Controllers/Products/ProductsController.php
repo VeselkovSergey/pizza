@@ -103,7 +103,7 @@ class ProductsController extends Controller
     public function IndexAdmin()
     {
         $allProducts = Products::all();
-        return view('products.indexAdmin', [
+        return view('arm.products.indexAdmin', [
             'allProducts' => $allProducts,
         ]);
     }
@@ -112,7 +112,7 @@ class ProductsController extends Controller
     {
         $modifications = Modifications::all();
         $ingredients = Ingredients::all();
-        return view('products.createOrUpdate', [
+        return view('arm.products.createOrUpdate', [
             'modifications' => $modifications,
             'ingredients' => $ingredients,
         ]);

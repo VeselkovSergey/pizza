@@ -21,7 +21,7 @@ class SuppliersController extends Controller
 
     public function Create()
     {
-        return view('suppliers.createOrUpdate');
+        return view('arm.suppliers.createOrUpdate');
     }
 
     public function Save(Request $request)

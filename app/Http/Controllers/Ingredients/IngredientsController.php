@@ -16,7 +16,7 @@ class IngredientsController extends Controller
 {
     public function Create()
     {
-        return view('ingredients.createOrUpdate');
+        return view('arm.ingredients.createOrUpdate');
     }
 
     public function Save(Request $request)

@@ -19,7 +19,7 @@ class TypesModificationsController extends Controller
 
     public function Create()
     {
-        return view('typesModifications.createOrUpdate');
+        return view('arm.typesModifications.createOrUpdate');
     }
 
     public function Save(Request $request)

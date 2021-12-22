@@ -24,7 +24,7 @@ class SupplyController extends Controller
     {
         $suppliers = Suppliers::all();
         $ingredients = Ingredients::all();
-        return view('supply.createOrUpdate', [
+        return view('arm.supply.createOrUpdate', [
             'suppliers' => $suppliers,
             'ingredients' => $ingredients,
         ]);
