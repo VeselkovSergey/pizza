@@ -1,7 +1,3 @@
-@php
-$orderStatuses = [];
-@endphp
-
 @extends('app')
 
 @section('content')
@@ -25,10 +21,8 @@ $orderStatuses = [];
                 Поиск по номеру телефона:
                 <input class="search-orders-by-phone" type="text" placeholder="79991112233" maxlength="11">
             </label>
-            <label>
-                <button class="cp all-orders-required-date">показать выполненные/отказанные</button>
-                <button class="cp order-without-cancelled-and-completed-required-date">скрыть выполненные/отказанные</button>
-            </label>
+            <button class="cp"><a href="{{route('manager-arm-orders-page')}}?all-orders=true">показать выполненные/отказанные</a></button>
+            <button class="cp"><a href="{{route('manager-arm-orders-page')}}">скрыть выполненные/отказанные</a></button>
         </div>
         <div class="flex-column">
             <div class="orders-container" style="order: 2">
@@ -36,7 +30,6 @@ $orderStatuses = [];
                 @php($sumCash = 0)
                 @php($sumBank = 0)
                 @foreach($orders as $order)
-                    @php($orderStatuses[] = (object)['orderId' => $order->id, 'oldStatus' => $order->status_id])
                     @php($clientInfo = json_decode($order->client_raw_data))
                     @php($allInformationRawData = json_decode($order->all_information_raw_data))
 
@@ -88,8 +81,6 @@ $orderStatuses = [];
 
     <script>
 
-        localStorage.setItem('orderStatuses', JSON.stringify(@json((object)$orderStatuses)));
-
         let foundOrdersContainer = document.body.querySelector('.found-orders-container');
         let ordersContainer = document.body.querySelector('.orders-container');
         let buttonSearchOrdersByPhone = document.body.querySelector('.search-orders-by-phone');
@@ -137,53 +128,21 @@ $orderStatuses = [];
             });
         }
 
-        UpdateOrderStatuses();
-        function UpdateOrderStatuses() {
-            let newOrderStatuses = JSON.parse(localStorage.getItem('newOrderStatuses'));
-            if (newOrderStatuses !== null) {
-                let orders = document.body.querySelectorAll('.order');
+        function MarkOrderNewStatus(orderId, oldStatusId, newStatusId) {
+            let orderContainer = ordersContainer.querySelector('[data-order-id="' + orderId + '"]');
+            if (orderContainer) {
 
-                Object.keys(newOrderStatuses).forEach((key) => {
+                let orderAlertIcon = orderContainer.querySelector('.order-alert-icon');
+                orderAlertIcon.classList.add('motion');
+                orderAlertIcon.show();
 
-                    let orderStorage = newOrderStatuses[key];
-
-                    orders.forEach((order) => {
-
-                        let orderId = parseInt(order.dataset.orderId);
-                        let orderStatusId = parseInt(order.dataset.orderStatusId);
-
-                        if (orderStorage.orderId === orderId) {
-
-                            let orderAlertIcon = order.querySelector('.order-alert-icon');
-
-                            if (orderStorage.oldStatus === orderStatusId) {
-                                // orderAlertIcon.hide();
-                                // orderAlertIcon.classList.remove('motion');
-                            } else {
-                                order.dataset.orderStatusId = orderStorage.oldStatus;
-                                orderAlertIcon.show();
-                                orderAlertIcon.classList.add('motion');
-                            }
-
-                        }
-
-                    });
-
+                orderContainer.addEventListener('click', () => {
+                    orderAlertIcon.classList.remove('motion');
+                    orderAlertIcon.hide();
+                    ManagerArmCheckOrderStatusChange();
                 });
             }
-
-            setTimeout(UpdateOrderStatuses, 10000);
         }
-
-        let allOrdersRequiredDateButton = document.body.querySelector('.all-orders-required-date');
-        allOrdersRequiredDateButton.addEventListener('click', () => {
-            location.href = "{{route('manager-arm-orders-page')}}?all-orders=true";
-        });
-
-        let ordersWithoutCancelledAndCompletedRequiredDateButton = document.body.querySelector('.order-without-cancelled-and-completed-required-date');
-        ordersWithoutCancelledAndCompletedRequiredDateButton.addEventListener('click', () => {
-            location.href = "{{route('manager-arm-orders-page')}}";
-        });
 
     </script>
 

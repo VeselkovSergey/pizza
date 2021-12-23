@@ -18,6 +18,7 @@ use App\Models\Products;
 use App\Models\ProductsModificationsInOrders;
 use App\Models\UsedDevices;
 use App\Models\User;
+use App\Services\Pusher\Pusher;
 use App\Services\SberBank\SberBank;
 use App\Services\Telegram\Telegram;
 use Illuminate\Http\Request;
@@ -270,9 +271,16 @@ class OrdersController extends Controller
                 'new_status_id' => $statusId,
                 'user_id' => $userId === 0 ? auth()->user()->id : $userId,
             ]);
+
+            $oldStatusId = $order->status_id;
+
             $order->status_id = $statusId;
+            $order->save();
+
+            event(new Pusher($order->id, $oldStatusId, $statusId));
+
         }
-        return $order->save();
+        return true;
     }
 
     public static function OrderProduct($productId)

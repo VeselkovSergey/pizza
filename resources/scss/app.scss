@@ -285,6 +285,9 @@ header {
 }
 
 .motion {
+    &.alarm-container {
+        color: red;
+    }
     animation: motion-animation 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 }
 

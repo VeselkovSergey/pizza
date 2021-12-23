@@ -191,7 +191,7 @@ Route::get('/today-report', [Controllers\TelegramBOT\TelegramBotController::clas
 Route::view('/pusher', 'arm.test-view.pusher');
 
 Route::get('/test-pusher-event', function () {
-    event(new App\Services\Pusher\Pusher('hello world'));
+    event(new App\Services\Pusher\Pusher(1, 1, 1));
 });
 
 

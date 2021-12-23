@@ -12,20 +12,24 @@ class Pusher implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public $orderId;
+    public $newStatusId;
+    public $oldStatusId;
 
-    public function __construct($message)
+    public function __construct($orderId, $oldStatusId, $newStatusId)
     {
-        $this->message = $message;
+        $this->orderId = $orderId;
+        $this->oldStatusId = $oldStatusId;
+        $this->newStatusId = $newStatusId;
     }
 
     public function broadcastOn()
     {
-        return ['my-channel'];
+        return ['manager-channel'];
     }
 
     public function broadcastAs()
     {
-        return 'my-event';
+        return 'updateStatuses';
     }
 }

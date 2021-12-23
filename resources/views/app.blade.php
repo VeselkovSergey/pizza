@@ -85,6 +85,24 @@
             const routeManagerArmCheckOrderStatusChange = "{{route('manager-arm-check-order-status-change')}}";
         </script>
 
+        @if(auth()->check() && auth()->user()->IsManager())
+        <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+        <script>
+
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+
+            const pusher = new Pusher("{{env('PUSHER_APP_KEY')}}", {
+                cluster: 'eu'
+            });
+
+            const channel = pusher.subscribe('manager-channel');
+            channel.bind('updateStatuses', function(data) {
+                ManagerArmCheckOrderStatusChange(data);
+            });
+        </script>
+        @endif
+
         <script src="{{ asset('resources/js/script.js') }}"></script>
 
         @yield('js')
@@ -127,6 +145,8 @@
             }
 
             document.querySelectorAll('.table-sort > thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
+
+            ManagerArmCheckOrderStatusChange();
 
         </script>
 
