@@ -188,6 +188,13 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
 Route::get('/today-report', [Controllers\TelegramBOT\TelegramBotController::class, 'TodayReportRequest']);
 
+Route::view('/pusher', 'arm.test-view.pusher');
+
+Route::get('/test-pusher-event', function () {
+    event(new App\Services\Pusher\Pusher('hello world'));
+});
+
+
 /*
  *  test routes
  */
@@ -316,3 +323,5 @@ Route::get('/test-parse', function () {
         dd($data, $resultYa);
     }
 });
+
+
