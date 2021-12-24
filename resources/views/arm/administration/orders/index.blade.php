@@ -6,16 +6,24 @@
         .order:hover {
             background-color: wheat;
         }
+        @media screen and (max-width: 540px) {
+            .start-date,
+            .end-date {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+
     </style>
 
     <div class="mb-10">
         <a href="{{route('administrator-arm-page')}}">назад в ARM админа</a>
     </div>
 
-    <div class="flex mb-10">
+    <div class="flex-wrap mb-10">
         <div class="mr-10 flex-center">
             <label>
-                На какое число
+                <span>На какое число</span>
                 <input class="start-date" type="date" value="{{$startDate}}">
                 <input class="end-date" type="date" value="{{$endDate}}">
             </label>
