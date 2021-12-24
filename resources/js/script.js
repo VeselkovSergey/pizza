@@ -538,6 +538,15 @@ function CreateOrder(orderId) {
         return;
     }
 
+    let clientPhone = document.body.querySelector('.client-information [name="clientPhone"]');
+    if (clientPhone) {
+        clientPhone = (clientPhone.value).replace(/[^\d;]/g, '');
+        if (clientPhone.length !== 11) {
+            ModalWindow('Не верный формат номера');
+            return;
+        }
+    }
+
     let clientInformation = GetDataFormContainer('client-information',);
     let ObjectClientInformation = {};
     for (let key in clientInformation) {
