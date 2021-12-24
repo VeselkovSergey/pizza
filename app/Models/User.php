@@ -95,6 +95,14 @@ class User extends Authenticatable
         return false;
     }
 
+    public function IsStaff()
+    {
+        if (auth()->check() && auth()->user()->role_id > 100) {
+            return true;
+        }
+        return false;
+    }
+
     public function UserIsAdmin()
     {
         if ($this->role_id === 999) {

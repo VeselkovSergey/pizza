@@ -1,5 +1,4 @@
-.amount-item-in-basket,
-.amount-alarm-item {
+.amount-item-in-basket {
     border-radius: 100px;
     top: -13px;
     right: -13px;
@@ -231,8 +230,8 @@ header {
     color: #FFFFFF;
 }
 
-.button-menu {
-    display: none;
+.left-menu-content-container {
+    max-width: calc(25% - 96px);
 }
 
 .close-menu-button > svg {
@@ -297,5 +296,11 @@ header {
     }
     100% {
         transform: scale(1.5);
+    }
+}
+
+.catalog {
+    .product-container {
+        margin: 10px;
     }
 }

@@ -31,41 +31,37 @@
 
     </style>
 
-    <div class="flex-wrap pt-10">
+    <div class="flex-wrap catalog">
 
         @foreach($allProducts as $product)
 
             @if(!isset($category) || $product->categoryId !== $category)
                 @php($category = $product->categoryId)
-                <div class="w-100 ml-10" id="category-{{$product->categoryId}}">{{$product->categoryTitle}}</div>
+                <div class="w-100 ml-10 mb-5" id="category-{{$product->categoryId}}">{{$product->categoryTitle}}</div>
             @endif
 
-                @php($imgFile = (file_exists(public_path() . '/img/' . $product->id . '.jpg') ? 'img/' . $product->id . '.jpg' : 'img-pizza.jpg'))
+                @php($imgFile = (file_exists(public_path() . '/img/' . $product->id . '.jpg') ? 'img/' . $product->id . '.jpg' : 'img-pizza.png'))
 
                 <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}" data-product-img="{{url($imgFile)}}">
 
-                <div class="m-10 flex-column p-5 border-radius-10 border-orange p-10 h-100">
+                    <div class="product-container flex-column p-5 border-radius-10 border-orange p-10 h-100">
 
-                    <div class="container-product-img-and-description">
-                        <div class="container-product-img mb-10">
-                            <img src="{{url($imgFile)}}" class="w-100" alt="">
+                        <div class="container-product-img-and-description">
+                            <div class="container-product-img mb-10">
+                                <img src="{{url($imgFile)}}" class="w-100" alt="">
+                            </div>
+
+                            <div class="container-product-description p-10">
+                                <div class="text-center mb-10">{{$product->title}}</div>
+                                <div style="font-weight: 400; font-size: 12px;">{{$product->description}}</div>
+                            </div>
                         </div>
 
-                        <div class="container-product-description p-10">
-                            <div class="text-center mb-10">{{$product->title}}</div>
-                            <div style="font-weight: 400; font-size: 12px;">{{$product->description}}</div>
-                        </div>
+                        <button class="w-100 bg-orange color-white border-radius-5 clear-button p-10 cp mt-a">от {{$product->minimumPrice}} ₽</button>
+
                     </div>
 
-{{--                    <div class="text-center mb-10">от {{$product->minimumPrice}} ₽</div>--}}
-
-                    <button class="w-100 bg-orange color-white border-radius-5 clear-button p-10 cp mt-a">от {{$product->minimumPrice}} ₽</button>
-
-
                 </div>
-
-            </div>
-
 
         @endforeach
 

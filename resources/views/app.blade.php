@@ -43,23 +43,30 @@
 
         <nav class="left-menu hide z-2 pos-fix top-0 left-0 w-100 h-100">
             <div class="shadow-menu w-100 h-100 bg-black pos-abs" style="opacity: 0.5"></div>
-            <div class="bg-white h-100 pos-rel" style="width: fit-content; max-width: calc(100% - 96px);">
+            <div class="left-menu-content-container bg-white h-100 pos-rel w-fit">
                 <div class="close-menu-button cp pos-abs top-0" style="right: -48px">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                         <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
                     </svg>
                 </div>
-                <div class="scroll-auto pr-25 h-100">
+                <div class="scroll-auto h-100">
                     <div class="fast-menu-in-left-menu">
                         <div class="flex-column p-10">
-                            <div class="mb-10 {{$authCheck ? 'color-green' : 'color-black'}}" onclick="{{$actionConditionAuth}}">
+                            <div class="mb-5 pb-5 {{$authCheck ? 'color-green' : 'color-black'}}" style="border-bottom: 1px solid gray;" onclick="{{$actionConditionAuth}}">
                                 @if($authCheck)
                                     Профиль
                                 @else
                                     Вход
                                 @endif
                             </div>
-                            <a class="color-black text-center" style="text-decoration: none;" href="tel:+7(926)585-36-21">+7(926)585-36-21</a>
+                            @if($authCheck && auth()->user()->IsStaff())
+                                @foreach(\App\Http\Controllers\ARM\ARMController::AllRoutes() as $route)
+                                    @if(in_array(auth()->user()->role_id, (array)$route->role))
+                                        <a class="mb-5 pb-5 color-black" style="text-decoration: none; border-bottom: 1px solid gray;" href="{{$route->link}}">{{$route->title}}</a>
+                                    @endif
+                                @endforeach
+                            @endif
+                            <a class="color-black" style="text-decoration: none;" href="tel:+7(926)585-36-21">+7(926)585-36-21</a>
                         </div>
                     </div>
                 </div>

@@ -21,7 +21,7 @@ use App\Http\Controllers;
 */
 
 //Route::get('/', function () {
-//    //return redirect('all-routes');
+//    //return redirect('all-routes-page');
 //})->name('home-page');
 
 Route::get('/', [Controllers\Catalog\CatalogController::class, 'Index'])->name('home-page');
@@ -51,7 +51,7 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () {
 
-    Route::get('all-routes', [Controllers\ARM\ARMController::class, 'AllRoutes'])->name('all-routes');
+    //Route::get('all-routes', [Controllers\ARM\ARMController::class, 'AllRoutesPage'])->name('all-routes-page');
 
     Route::group(['prefix' => 'products'], function () {
 
@@ -64,7 +64,7 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
     Route::group(['prefix' => 'modifications'], function () {
 
-        Route::get('/create', [Controllers\Modifications\ModificationsController::class, 'Create'])->name('modification-create');
+        Route::get('/create', [Controllers\Modifications\ModificationsController::class, 'Create'])->name('modification-create-page');
         Route::post('/save', [Controllers\Modifications\ModificationsController::class, 'Save'])->name('modification-save');
         Route::get('/all', [Controllers\Modifications\ModificationsController::class, 'GetAllModifications'])->name('all-modifications');
 
@@ -72,14 +72,14 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
     Route::group(['prefix' => 'types-modifications'], function () {
 
-        Route::get('/create', [Controllers\TypesModifications\TypesModificationsController::class, 'Create'])->name('modification-type-create');
+        Route::get('/create', [Controllers\TypesModifications\TypesModificationsController::class, 'Create'])->name('modification-type-create-page');
         Route::post('/save', [Controllers\TypesModifications\TypesModificationsController::class, 'Save'])->name('modification-type-save');
 
     });
 
     Route::group(['prefix' => 'ingredients'], function () {
 
-        Route::get('/create', [Controllers\Ingredients\IngredientsController::class, 'Create'])->name('ingredients-create');
+        Route::get('/create', [Controllers\Ingredients\IngredientsController::class, 'Create'])->name('ingredients-create-page');
         Route::post('/save', [Controllers\Ingredients\IngredientsController::class, 'Save'])->name('ingredients-save');
         Route::get('/all', [Controllers\Ingredients\IngredientsController::class, 'AllIngredients'])->name('all-ingredients');
 
@@ -87,14 +87,14 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
     Route::group(['prefix' => 'supply'], function () {
 
-        Route::get('/create', [Controllers\Supply\SupplyController::class, 'Create'])->name('supply-create');
+        Route::get('/create', [Controllers\Supply\SupplyController::class, 'Create'])->name('supply-create-page');
         Route::post('/save', [Controllers\Supply\SupplyController::class, 'Save'])->name('supply-save');
 
     });
 
     Route::group(['prefix' => 'suppliers'], function () {
 
-        Route::get('/create', [Controllers\Suppliers\SuppliersController::class, 'Create'])->name('supplier-create');
+        Route::get('/create', [Controllers\Suppliers\SuppliersController::class, 'Create'])->name('supplier-create-page');
         Route::post('/save', [Controllers\Suppliers\SuppliersController::class, 'Save'])->name('supplier-save');
 
     });

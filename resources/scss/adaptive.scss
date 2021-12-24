@@ -57,6 +57,10 @@
         height: 50px;
     }
 
+    main {
+        padding: 5px;
+    }
+
     .logo-container {
         max-width: 50px;
     }
@@ -68,6 +72,10 @@
     .button-menu {
         display: flex;
         height: 50px;
+    }
+
+    .left-menu-content-container {
+        max-width: calc(100% - 96px);
     }
 
     .phone-container-header {
@@ -113,8 +121,7 @@
         }
     }
 
-    .amount-item-in-basket,
-    .amount-alarm-item {
+    .amount-item-in-basket {
         top: -8px;
         right: -8px;
         font-size: 10px;
@@ -137,6 +144,12 @@
 
     .partner-container {
         order: 3;
+    }
+
+    .catalog {
+        .product-container {
+            margin: 0 0 10px 0;
+        }
     }
 
 }
