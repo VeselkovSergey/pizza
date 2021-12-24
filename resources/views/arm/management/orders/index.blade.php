@@ -4,7 +4,7 @@
 
     <style>
         .order:hover {
-            transform: scale(1.01);
+            transform: scale(1.005);
         }
         .hover-show {
             display: none;
