@@ -58,8 +58,11 @@
     }
 
     .flash-message-container {
-        top: 50px;
-        right: 5px;
+        top: unset;
+        right: 10%;
+        bottom: 20px;
+        width: 80%;
+
     }
 
     main {

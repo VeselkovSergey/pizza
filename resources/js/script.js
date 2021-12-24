@@ -238,7 +238,7 @@ function FlashMessage(message, autoClose = true, timeout = 3000) {
     let flashMessageContainer = document.body.querySelector('.flash-message-container');
     if (flashMessageContainer === null) {
         flashMessageContainer = document.createElement('div');
-        flashMessageContainer.className = 'flash-message-container pos-fix z-5 py-5';
+        flashMessageContainer.className = 'flash-message-container pos-fix z-5';
         document.body.prepend(flashMessageContainer);
     }
 
@@ -254,8 +254,8 @@ function FlashMessage(message, autoClose = true, timeout = 3000) {
             }
         }, timeout);
     } else {
-        flashMessageContainer.addEventListener('click', () => {
-            flashMessageContainer.remove();
+        newMessage.addEventListener('click', () => {
+            newMessage.remove();
         });
     }
 }
