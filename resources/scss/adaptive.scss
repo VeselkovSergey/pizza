@@ -7,12 +7,20 @@
     .product-content {
         width: 33vw;
     }
+
+    .left-menu-content-container {
+        max-width: calc(35% - 96px);
+    }
 }
 
 @media screen and (max-width: 1140px) {
 
     .button-open-product {
         width: 25%;
+    }
+
+    .left-menu-content-container {
+        max-width: calc(50% - 96px);
     }
 
 }
@@ -37,6 +45,10 @@
 
     .product-content {
         width: 50vw;
+    }
+
+    .left-menu-content-container {
+        max-width: calc(80% - 96px);
     }
 
 }
