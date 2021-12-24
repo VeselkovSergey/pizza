@@ -10,7 +10,7 @@
 
     <div class="flex-space-between mb-10">
         Редактирование модификаций
-        <button class="bg-orange save-modifications">Сохранить</button>
+        <button class="orange-button save-modifications">Сохранить</button>
     </div>
 
     <table class="w-100 border">

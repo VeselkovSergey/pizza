@@ -22,11 +22,12 @@
                         <div class="toggle-button cp" data-toogle="status-log-container">Изменения статуса:</div>
                         <div class="ml-10 status-log-container">
                             @foreach($productModificationInOrder->Statusses as $orderProductStatus)
-                                <div class="p-5 m-5">{{$orderProductStatus->created_at}}
-                                    <span class="p-5 product-in-order-status-{{$orderProductStatus->old_status_id}}">{{\App\Models\ProductsModificationsInOrders::STATUS[$orderProductStatus->old_status_id]}}</span>
-                                    >
-                                    <span class="p-5 product-in-order-status-{{$orderProductStatus->new_status_id}}">{{\App\Models\ProductsModificationsInOrders::STATUS[$orderProductStatus->new_status_id]}}</span>
-                                    ({{$orderProductStatus->User->surname . ' ' . $orderProductStatus->User->name. ' ' . $orderProductStatus->User->patronymic}})
+                                <div class="p-5 m-5 flex-center-vertical flex-wrap" style="border: 1px solid grey;">
+                                    <div class="mr-5" style="min-width: 200px">{{$orderProductStatus->created_at}}</div>
+                                    <div class="mr-5 p-5 product-in-order-status-{{$orderProductStatus->old_status_id}}">{{\App\Models\ProductsModificationsInOrders::STATUS[$orderProductStatus->old_status_id]}}</div>
+                                    <div class="mr-5">></div>
+                                    <div class="mr-5 p-5 product-in-order-status-{{$orderProductStatus->new_status_id}}">{{\App\Models\ProductsModificationsInOrders::STATUS[$orderProductStatus->new_status_id]}}</div>
+                                    <div class="mr-5">({{$orderProductStatus->User->surname . ' ' . $orderProductStatus->User->name. ' ' . $orderProductStatus->User->patronymic}})</div>
                                 </div>
                             @endforeach
                         </div>

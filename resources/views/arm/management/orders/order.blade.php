@@ -2,31 +2,15 @@
 
 @section('content')
 
-    <style>
-        .order-change-status:hover, .order-edit-button:hover, .back-to-orders:hover {
-            transform: scale(1.1);
-        }
-    </style>
-
     <div>
-        <div class="flex-space-between">
-            <div>
-                <button class="mb-10 cp back-to-orders">
-                    <a class="clear-a" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
-                </button>
-                @if($order->status_id === \App\Models\Orders::STATUS_TEXT['managerProcesses'] || auth()->user()->IsAdmin())
-                    <button class="mb-10 cp order-edit-button">Редактировать заказ</button>
-                @endif
-            </div>
-            <div>
-                <button class="mb-10 cp stack-invoices">Печать комплекта чеков</button>
-                <button class="mb-10 cp full-invoice">
-                    <a class="clear-a" target="_blank" href="{{route('manager-arm-order-invoice-page', $order->id)}}">Печать полного чека</a>
-                </button>
-                <button class="mb-10 cp chef-invoice">
-                    <a class="clear-a" target="_blank" href="{{route('manager-arm-order-invoice-chef-page', $order->id)}}">Печать чека для повара</a>
-                </button>
-            </div>
+        <div class="flex-wrap">
+            <a class="orange-button back-to-orders" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
+            @if($order->status_id === \App\Models\Orders::STATUS_TEXT['managerProcesses'] || auth()->user()->IsAdmin())
+            <button class=" mb-5 orange-button order-edit-button">Редактировать заказ</button>
+            @endif
+            <button class="ml-a orange-button stack-invoices">Печать комплекта чеков</button>
+            <a class="orange-button full-invoice" target="_blank" href="{{route('manager-arm-order-invoice-page', $order->id)}}">Печать полного чека</a>
+            <a class="chef-invoice orange-button" target="_blank" href="{{route('manager-arm-order-invoice-chef-page', $order->id)}}">Печать чека для повара</a>
         </div>
 
         <div class="mb-10">
@@ -61,11 +45,12 @@
             <div class="toggle-button cp" data-toogle="status-log-container">Изменения статуса:</div>
             <div class="ml-10 status-log-container">
                 @foreach($orderStatuses as $orderStatus)
-                    <div class="p-5 m-5">{{$orderStatus->created_at}}
-                        <span class="p-5 order-status-{{$orderStatus->old_status_id}}">{{\App\Models\Orders::STATUS[$orderStatus->old_status_id]}}</span>
-                        >
-                        <span class="p-5 order-status-{{$orderStatus->new_status_id}}">{{\App\Models\Orders::STATUS[$orderStatus->new_status_id]}}</span>
-                        ({{$orderStatus->User->surname . ' ' . $orderStatus->User->name. ' ' . $orderStatus->User->patronymic}})
+                    <div class="p-5 m-5 flex-center-vertical flex-wrap" style="border: 1px solid grey;">
+                        <div class="mr-5" style="min-width: 200px">{{$orderStatus->created_at}}</div>
+                        <div class="mr-5 p-5 order-status-{{$orderStatus->old_status_id}}">{{\App\Models\Orders::STATUS[$orderStatus->old_status_id]}}</div>
+                        <div class="mr-5">></div>
+                        <div class="mr-5 p-5 order-status-{{$orderStatus->new_status_id}}">{{\App\Models\Orders::STATUS[$orderStatus->new_status_id]}}</div>
+                        <div class="mr-5">({{$orderStatus->User->surname . ' ' . $orderStatus->User->name. ' ' . $orderStatus->User->patronymic}})</div>
                     </div>
                 @endforeach
             </div>

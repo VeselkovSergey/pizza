@@ -13,15 +13,15 @@
     </div>
 
     <div class="flex mb-10">
-        <div class="mr-10">
+        <div class="mr-10 flex-center">
             <label>
                 На какое число
                 <input class="start-date" type="date" value="{{$startDate}}">
                 <input class="end-date" type="date" value="{{$endDate}}">
             </label>
         </div>
-        <button class="cp all-orders mr-10">Заказы за всё время</button>
-        <button class="cp all-orders-today">Заказы за сегодня</button>
+        <button class="orange-button all-orders mr-10">Заказы за всё время</button>
+        <button class="orange-button all-orders-today">Заказы за сегодня</button>
     </div>
 
     @php($sum = 0)

@@ -12,6 +12,15 @@
         .order:hover .hover-show {
             display: flex;
         }
+        .order-info > div {
+            border-right: 1px solid;
+        }
+        @media screen and (max-width: 540px) {
+            .order-info > div {
+                border-right: unset;
+                width: 100%;
+            }
+        }
     </style>
 
     <div>
@@ -21,8 +30,8 @@
                 Поиск по номеру телефона:
                 <input class="search-orders-by-phone" type="text" placeholder="79991112233" maxlength="11">
             </label>
-            <button class="cp"><a href="{{route('manager-arm-orders-page')}}?all-orders=true">показать выполненные/отказанные</a></button>
-            <button class="cp"><a href="{{route('manager-arm-orders-page')}}">скрыть выполненные/отказанные</a></button>
+            <button class="orange-button"><a href="{{route('manager-arm-orders-page')}}?all-orders=true">показать выполненные/отказанные</a></button>
+            <button class="orange-button"><a href="{{route('manager-arm-orders-page')}}">скрыть выполненные/отказанные</a></button>
         </div>
         <div class="flex-column">
             <div class="orders-container" style="order: 2">
@@ -46,15 +55,15 @@
                         <div>
                             <div># {{$order->id}} {{\App\Models\Orders::STATUS[$order->status_id]}} {{$order->CurrentStatus()->created_at}}</div>
                             <div class="order-info flex-wrap mt-10 @if((\App\Models\Orders::STATUS_TEXT['cancelled'] === $order->status_id) || \App\Models\Orders::STATUS_TEXT['completed'] === $order->status_id) hover-show @endif">
-                                <div class="mb-10 px-25" style="border-right: 1px solid">
+                                <div class="mb-10 px-25">
                                     <div>Имя: {{$clientInfo->clientName}}</div>
                                     <div>Номер: {{$clientInfo->clientPhone}}</div>
                                 </div>
-                                <div class="mb-10 px-25" style="border-right: 1px solid">
+                                <div class="mb-10 px-25">
                                     <div>Адрес: {{$clientInfo->clientAddressDelivery}}</div>
                                     <div>Комментарий: {{$clientInfo->clientComment}}</div>
                                 </div>
-                                <div class="mb-10 px-25" style="border-right: 1px solid">
+                                <div class="mb-10 px-25">
                                     <div>Сумма: {{$order->order_amount}} ₽</div>
                                     <div>Оплата: {{($clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные')}}</div>
                                 </div>
