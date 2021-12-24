@@ -253,11 +253,11 @@ function FlashMessage(message, autoClose = true, timeout = 3000) {
                 flashMessageContainer.remove();
             }
         }, timeout);
-    } else {
-        newMessage.addEventListener('click', () => {
-            newMessage.remove();
-        });
     }
+
+    newMessage.addEventListener('click', () => {
+        newMessage.remove();
+    });
 }
 
 if (localStorage.getItem('basket') === null) {
