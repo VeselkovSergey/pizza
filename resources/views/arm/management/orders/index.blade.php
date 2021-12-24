@@ -25,8 +25,8 @@
 
     <div>
         <div>Заказы</div>
-        <div class="mb-10">
-            <label class="mb-5">
+        <div class="mb-10 flex-wrap">
+            <label class="mb-5 mr-5 w-fit">
                 Поиск по номеру телефона:
                 <input class="search-orders-by-phone" type="text" placeholder="79991112233" maxlength="11">
             </label>
