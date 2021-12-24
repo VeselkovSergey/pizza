@@ -926,6 +926,11 @@ function LoginWindow(callback) {
                                 if (event.key === 'Enter') {
                                     triggerEvent( approveButton, 'click' );
                                 }
+                            },
+                            input: (event) => {
+                                if (event.target.value.length === 4) {
+                                    triggerEvent( approveButton, 'click' );
+                                }
                             }
                         }
                     }),
@@ -938,7 +943,7 @@ function LoginWindow(callback) {
                                     click: () => {
                                         let confirmationCodeInputValue = confirmationCodeInput.value.replace(/[^\d;]/g, '');
                                         if (confirmationCodeInputValue.length !== 4) {
-                                            ModalWindowFlash('Нужно 4 цифры');
+                                            ModalWindow('Нужно 4 цифры');
                                         } else {
                                             let execFunction = '';
                                             if (callback) {
@@ -955,7 +960,7 @@ function LoginWindow(callback) {
                                                         location.reload();
                                                     }, 1500);
                                                 } else {
-                                                    ModalWindowFlash(response.message);
+                                                    ModalWindow(response.message);
                                                 }
                                             });
                                         }
