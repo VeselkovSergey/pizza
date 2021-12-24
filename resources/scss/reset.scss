@@ -32,8 +32,9 @@ label {
 
 input[type='text'], textarea {
     border: 1px solid #cbcdd1;
-    padding: 5px 10px;
+    padding: 10px 10px;
     border-radius: 5px;
+    font-size: 16px;
 }
 
 input[readonly] {
