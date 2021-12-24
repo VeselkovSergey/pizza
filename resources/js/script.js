@@ -605,20 +605,20 @@ function ProductsInBasketGenerationHTML() {
             let amount = basket[key].amount
 
             let modificationHTML =
-                '<div class="container-product-in-basket w-100 flex-center-vertical">' +
+                '<div class="container-product-in-basket w-100 ">' +
                     '<div class="p-10 mr-a">' +
                         '<div>' + product.categoryTitle + ': ' + product.title + '</div>' +
                         '<div>' + (modification.title !== 'Соло-продукт' ? modification.title + ': ' : '') + (modification.value !== 'Отсутствует' ? modification.value : '') + '</div>' +
                     '</div>' +
-                    '<div class="flex-column-center">' +
-                        '<div class="buttons-edit-amount-product border-radius-25 flex-center" style="background-color: rgb(243, 243, 247);">' +
-                            '<button class="delete-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgMinusButton + '</button>' +
-                            '<div class="m-5 amount-product flex-center color-black" style="min-width: 20px;" data-modification-id="' + modificationId + '">' + amount + '</div>' +
-                            '<button class="add-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgPlusButton + '</button>' +
-                        '</div>' +
+                    '<div class="flex-space-between">' +
                         '<div class="flex-center">' +
                             '<div class="p-10">' + modification.sellingPrice + ' ₽</div>' +
                             '<button class="clear-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgTrashButton + '</button>' +
+                        '</div>' +
+                        '<div class="buttons-edit-amount-product border-radius-25 flex-center" style="background-color: rgb(243, 243, 247);">' +
+                            '<button class="delete-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgMinusButton + '</button>' +
+                            '<div class="m-5 amount-product flex-center color-black" style="min-width: 20px; min-height: 20px;" data-modification-id="' + modificationId + '">' + amount + '</div>' +
+                            '<button class="add-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgPlusButton + '</button>' +
                         '</div>' +
                     '</div>' +
                 '</div>';
