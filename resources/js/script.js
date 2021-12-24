@@ -669,14 +669,18 @@ function OrderInfoGenerationHTML(orderId) {
                     // '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<div class="w-100">Способ оплаты</div>' +
-                        '<div class="flex w-100"">' +
-                            '<div class="flex">' +
-                                '<input ' + ((lastTypePayment === 'card' || lastTypePayment === '') ? 'checked' : '') + ' name="typePayment" value="card" type="radio" class="last-data">' +
-                                '<label for="">Карта</label>' +
+                        '<div class="flex w-100 px-5">' +
+                            '<div class="flex w-50">' +
+                                '<label for="bank-payment">' +
+                                    '<input ' + ((lastTypePayment === 'card' || lastTypePayment === '') ? 'checked' : '') + ' name="typePayment" value="card" type="radio" id="bank-payment" class="last-data hide">' +
+                                    '<span class="cp py-10 block text-center w-100">Карта</span>' +
+                                '</label>' +
                             '</div>' +
-                            '<div class="flex ml-25">' +
-                                '<input ' + (lastTypePayment === 'cash' ? 'checked' : '') + '  name="typePayment" type="radio" value="cash" class="last-data">' +
-                                '<label for="">Наличные</label>' +
+                            '<div class="flex w-50">' +
+                                '<label for="cash-payment">' +
+                                    '<input ' + (lastTypePayment === 'cash' ? 'checked' : '') + '  name="typePayment" type="radio" value="cash" id="cash-payment" class="last-data hide">' +
+                                    '<span class="cp py-10 block text-center w-100">Наличные</span>' +
+                                '</label>' +
                             '</div>' +
                         '</div>' +
                     '</div>' +
