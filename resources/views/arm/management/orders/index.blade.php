@@ -40,7 +40,6 @@
                 @php($sumBank = 0)
                 @foreach($orders as $order)
                     @php($clientInfo = json_decode($order->client_raw_data))
-                    @php($allInformationRawData = json_decode($order->all_information_raw_data))
 
                     @if(!$order->IsCancelled())
                         @php($sum += $order->order_amount)
@@ -51,7 +50,7 @@
                         @endif
                     @endif
 
-                    <a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}" data-order-id="{{$order->id}}" data-order-status-id="{{$order->status_id}}" class="order flex-space-between clear-a border p-10 m-5 order-status-{{$order->status_id}}">
+                    <a href="{{route('manager-arm-order-page', $order->id)}}" data-order-id="{{$order->id}}" data-order-status-id="{{$order->status_id}}" class="order flex-space-between clear-a border p-10 m-5 order-status-{{$order->status_id}}">
                         <div>
                             <div># {{$order->id}} {{\App\Models\Orders::STATUS[$order->status_id]}} {{$order->CurrentStatus()->created_at}}</div>
                             <div class="order-info flex-wrap mt-10 @if((\App\Models\Orders::STATUS_TEXT['cancelled'] === $order->status_id) || \App\Models\Orders::STATUS_TEXT['completed'] === $order->status_id) hover-show @endif">

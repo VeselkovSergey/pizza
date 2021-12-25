@@ -4,7 +4,7 @@
 
     <div>
         <div class="flex-wrap">
-            <a class="orange-button back-to-orders" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
+            <a class="orange-button" href="{{route('manager-arm-orders-page')}}">Назад к заказам</a>
             @if($order->status_id === \App\Models\Orders::STATUS_TEXT['managerProcesses'] || auth()->user()->IsAdmin())
             <button class=" mb-5 orange-button order-edit-button">Редактировать заказ</button>
             @endif
