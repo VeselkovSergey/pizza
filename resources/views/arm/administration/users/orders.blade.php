@@ -3,7 +3,8 @@
 @section('content')
 
     <div class="mb-10">
-        <a href="{{route('administrator-arm-users-page')}}">назад к пользователям</a>
+        <a class="orange-button" href="{{route('administrator-arm-users-page')}}">назад к пользователям</a>
+
     </div>
 
     <div>

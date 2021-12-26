@@ -13,7 +13,7 @@
     </style>
 
     <div class="mb-10">
-        <a href="{{route('administrator-arm-page')}}">назад в ARM админа</a>
+        <a class="orange-button" href="{{route('administrator-arm-page')}}">назад в ARM админа</a>
     </div>
 
     <div>
