@@ -25,7 +25,7 @@ class ProductModificationsController extends Controller
     public function Edit()
     {
         $productsModifications = ProductModifications::all();
-        return view('arm.products.modifications.index', compact('productsModifications'));
+        return view('arm.management.modifications.index', compact('productsModifications'));
     }
 
     public function Save(Request $request)

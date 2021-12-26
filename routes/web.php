@@ -149,14 +149,10 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         #todo на курьера
         Route::post('/change-status-order-to-delivered', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToDelivered'])->name('manager-arm-change-status-order-to-delivered');
 
-        Route::group(['prefix' => 'products'], function () {
+        Route::group(['prefix' => 'modifications'], function () {
 
-            Route::group(['prefix' => 'modifications'], function () {
-
-                Route::get('/', [Controllers\ProductModifications\ProductModificationsController::class, 'Edit'])->name('manager-arm-products-modifications-page');
-                Route::post('/save', [Controllers\ProductModifications\ProductModificationsController::class, 'Save'])->name('manager-arm-products-modifications-save');
-
-            });
+            Route::get('/', [Controllers\ProductModifications\ProductModificationsController::class, 'Edit'])->name('manager-arm-products-modifications-page');
+            Route::post('/save', [Controllers\ProductModifications\ProductModificationsController::class, 'Save'])->name('manager-arm-products-modifications-save');
 
         });
 
@@ -185,143 +181,143 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 //Route::get('/payment-error', [Controllers\Payments\PaymentsController::class, 'PaymentErrorRequest'])->name('payment-error');
 //Route::get('/payment-status', [Controllers\Payments\PaymentsController::class, 'PaymentStatusRequest'])->name('payment-status');
 //Route::get('/payment-refund', [Controllers\Payments\PaymentsController::class, 'PaymentRefundRequest'])->name('payment-refund');
-
-Route::get('/today-report', [Controllers\TelegramBOT\TelegramBotController::class, 'TodayReportRequest']);
-
-Route::view('/pusher', 'arm.test-view.pusher');
-
-Route::get('/test-pusher-event', function () {
-    event(new App\Services\Pusher\Pusher(1, 1, 1));
-});
-
-
-/*
- *  test routes
- */
-Route::get('/test-ucaller', function () {
-    return;
+//
+//Route::get('/today-report', [Controllers\TelegramBOT\TelegramBotController::class, 'TodayReportRequest']);
+//
+//Route::view('/pusher', 'arm.test-view.pusher');
+//
+//Route::get('/test-pusher-event', function () {
+//    event(new App\Services\Pusher\Pusher(1, 1, 1));
+//});
+//
+//
+///*
+// *  test routes
+// */
+//Route::get('/test-ucaller', function () {
+//    return;
+////    $ucaller = new App\Services\Ucaller\Ucaller();
+////    $balance = $ucaller->GetBalance();
+////    $info = $ucaller->GetInfo();
+////    $initCall = $ucaller->InitCall();
+////    dd($balance, $info, $initCall);
+//});
+//
+//Route::get('/ucaller-balance', function () {
+////    return;
 //    $ucaller = new App\Services\Ucaller\Ucaller();
 //    $balance = $ucaller->GetBalance();
-//    $info = $ucaller->GetInfo();
-//    $initCall = $ucaller->InitCall();
-//    dd($balance, $info, $initCall);
-});
-
-Route::get('/ucaller-balance', function () {
-//    return;
-    $ucaller = new App\Services\Ucaller\Ucaller();
-    $balance = $ucaller->GetBalance();
-    dd($balance);
-});
-
-Route::get('/test-bot', function () {
-//    return ;
-    $message = 'Приветствуем. Вы сможете получать уведомления о статусе вашего заказа в этом боте. Осталось только поделиться номером телефона для синхронизации ваших заказов' . PHP_EOL;
-    $message = 'Отправьте номер для связывания аккаунта на сайте и в телеграм' . PHP_EOL;
-//    $telegram = new Telegram('2081173182:AAEuKyhCNybjJTiZD-NQAxbhUj0YBNmopXk');
-    $telegram = new Telegram('1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0');
-    $telegram->RequestContact();
-//    $telegram->sendMessage($message, '267236435');
-    $telegram->sendMessage($message, '267236435');
-});
-
-Route::get('/test-parse', function () {
-
-    $adresses = [
-        'Дубна, Московская область, Россия, улица Вернова, 9',
-        'улица Попова, 3, Дубна, Московская область, Россия',
-        'улица Понтекорво, 2, Дубна, Московская область, Россия',
-        'Дубна, Московская область, Россия, улица Вернова, 9',
-    ];
-
-//    dd(implode(' ~ ', $adresses));
-
-//    $cookiesRaw = \App\Helpers\ArrayHelper::ObjectToArray(json_decode(file_get_contents('./cookie.json')));
-//    $cookies = '';
-//    if ($cookiesRaw !== null) {
-//        foreach ($cookiesRaw as $key => $cookie) {
-//            $lastSymbol = array_key_last($cookiesRaw) === $key ? '' : ';';
-//            $cookies .= $key . '=' . $cookie . $lastSymbol;
-//        }
-//    }
-
-    $param = http_build_query([
-        'll' => '37.15875'.rand(6, 8).',56.73777'.rand(6, 8).'',
-        'mode' => 'routes',
-        'rtext' => 'Дубна, Московская область, Россия, улица Вернова, 9  ~ улица Попова, 3, Дубна, Московская область, Россия ~ улица Понтекорво, 2, Дубна, Московская область, Россия ~ Дубна, Московская область, Россия, улица Вернова, 9',
-        'rtt' => 'auto',
-        'z' => ''.rand(10, 20),
-    ]);
-
-//    $url = 'https://yandex.ru/maps/?' . $param;
-    $url = 'https://yandex.ru/maps/215/dubna/?' . $param;
-
-    $headers = [
-        'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'accept-encoding' => 'gzip, deflate, br',
-        'accept-language' => 'ru',
-        'cache-control' => 'no-cache',
-        'pragma' => 'no-cache',
-        'preferanonymous' => '1',
-        'sec-ch-ua' => '"Chromium";v="94", "Microsoft Edge";v="94", ";Not A Brand";v="99"',
-        'sec-ch-ua-mobile' => '?0',
-        'sec-ch-ua-platform' => '"Windows"',
-        'sec-fetch-dest' => 'document',
-        'sec-fetch-mode' => 'navigate',
-        'sec-fetch-site' => 'none',
-        'sec-fetch-user' => '?1',
-        'upgrade-insecure-requests' => '1',
-        'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36 Edg/94.0.992.50',
-        'viewport-width' => '2560',
-//        'cookie' => $cookies,
-//        'postman-token' => Hash::make(\Illuminate\Support\Str::random()),
-    ]; // создаем заголовки
-
-    $curl = curl_init(); // создаем экземпляр curl
-
-//    curl_setopt($curl, CURLOPT_HEADER, 1);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($curl, CURLOPT_POST, false); //
-    curl_setopt($curl, CURLOPT_URL, $url);
-
-    curl_setopt($curl, CURLOPT_AUTOREFERER, true);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-    curl_setopt($curl, CURLOPT_VERBOSE, 1);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 1);
-
-    $result = curl_exec($curl);
-
-//    preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $result, $matches);
-//    $cookies = [];
-//    foreach($matches[1] as $item) {
-//        parse_str($item, $cookie);
-//        $cookies = array_merge($cookies, $cookie);
-//    }
+//    dd($balance);
+//});
 //
-//    file_put_contents('./cookie.json', json_encode($cookies));
-
-    preg_match('({"appVersion.+})', $result, $matches);
-    if (!sizeof($matches)) {
-        $result = str_replace('href="/captcha', 'href="https://yandex.ru/captcha', $result);
-        $result = str_replace('action="/checkcaptcha', 'action="https://yandex.ru/checkcaptcha', $result);
-        $result = str_replace('src="/captcha', 'src="https://yandex.ru/captcha', $result);
-        echo $result;
-        exit;
-    } else {
-        $resultYa = json_decode($matches[0]);
-        $distance = (float)(str_replace(',', '.', $resultYa->routerResponse->routes[0]->distance->text));
-        $startTime = $resultYa->routerResponse->routes[0]->paths[array_key_first($resultYa->routerResponse->routes[0]->paths)]->beginTime->value;
-        $endTime = $resultYa->routerResponse->routes[0]->paths[array_key_last($resultYa->routerResponse->routes[0]->paths)]->endTime->value;
-        $deliveryTime = ($endTime - $startTime) / 60;
-
-
-        $data = (object)[
-            'distance' => $distance,
-            'deliveryTime' => $deliveryTime,
-        ];
-        dd($data, $resultYa);
-    }
-});
+//Route::get('/test-bot', function () {
+////    return ;
+//    $message = 'Приветствуем. Вы сможете получать уведомления о статусе вашего заказа в этом боте. Осталось только поделиться номером телефона для синхронизации ваших заказов' . PHP_EOL;
+//    $message = 'Отправьте номер для связывания аккаунта на сайте и в телеграм' . PHP_EOL;
+////    $telegram = new Telegram('2081173182:AAEuKyhCNybjJTiZD-NQAxbhUj0YBNmopXk');
+//    $telegram = new Telegram('1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0');
+//    $telegram->RequestContact();
+////    $telegram->sendMessage($message, '267236435');
+//    $telegram->sendMessage($message, '267236435');
+//});
+//
+//Route::get('/test-parse', function () {
+//
+//    $adresses = [
+//        'Дубна, Московская область, Россия, улица Вернова, 9',
+//        'улица Попова, 3, Дубна, Московская область, Россия',
+//        'улица Понтекорво, 2, Дубна, Московская область, Россия',
+//        'Дубна, Московская область, Россия, улица Вернова, 9',
+//    ];
+//
+////    dd(implode(' ~ ', $adresses));
+//
+////    $cookiesRaw = \App\Helpers\ArrayHelper::ObjectToArray(json_decode(file_get_contents('./cookie.json')));
+////    $cookies = '';
+////    if ($cookiesRaw !== null) {
+////        foreach ($cookiesRaw as $key => $cookie) {
+////            $lastSymbol = array_key_last($cookiesRaw) === $key ? '' : ';';
+////            $cookies .= $key . '=' . $cookie . $lastSymbol;
+////        }
+////    }
+//
+//    $param = http_build_query([
+//        'll' => '37.15875'.rand(6, 8).',56.73777'.rand(6, 8).'',
+//        'mode' => 'routes',
+//        'rtext' => 'Дубна, Московская область, Россия, улица Вернова, 9  ~ улица Попова, 3, Дубна, Московская область, Россия ~ улица Понтекорво, 2, Дубна, Московская область, Россия ~ Дубна, Московская область, Россия, улица Вернова, 9',
+//        'rtt' => 'auto',
+//        'z' => ''.rand(10, 20),
+//    ]);
+//
+////    $url = 'https://yandex.ru/maps/?' . $param;
+//    $url = 'https://yandex.ru/maps/215/dubna/?' . $param;
+//
+//    $headers = [
+//        'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+//        'accept-encoding' => 'gzip, deflate, br',
+//        'accept-language' => 'ru',
+//        'cache-control' => 'no-cache',
+//        'pragma' => 'no-cache',
+//        'preferanonymous' => '1',
+//        'sec-ch-ua' => '"Chromium";v="94", "Microsoft Edge";v="94", ";Not A Brand";v="99"',
+//        'sec-ch-ua-mobile' => '?0',
+//        'sec-ch-ua-platform' => '"Windows"',
+//        'sec-fetch-dest' => 'document',
+//        'sec-fetch-mode' => 'navigate',
+//        'sec-fetch-site' => 'none',
+//        'sec-fetch-user' => '?1',
+//        'upgrade-insecure-requests' => '1',
+//        'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36 Edg/94.0.992.50',
+//        'viewport-width' => '2560',
+////        'cookie' => $cookies,
+////        'postman-token' => Hash::make(\Illuminate\Support\Str::random()),
+//    ]; // создаем заголовки
+//
+//    $curl = curl_init(); // создаем экземпляр curl
+//
+////    curl_setopt($curl, CURLOPT_HEADER, 1);
+//    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+//    curl_setopt($curl, CURLOPT_POST, false); //
+//    curl_setopt($curl, CURLOPT_URL, $url);
+//
+//    curl_setopt($curl, CURLOPT_AUTOREFERER, true);
+//    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+//    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+//    curl_setopt($curl, CURLOPT_VERBOSE, 1);
+//    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 1);
+//
+//    $result = curl_exec($curl);
+//
+////    preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $result, $matches);
+////    $cookies = [];
+////    foreach($matches[1] as $item) {
+////        parse_str($item, $cookie);
+////        $cookies = array_merge($cookies, $cookie);
+////    }
+////
+////    file_put_contents('./cookie.json', json_encode($cookies));
+//
+//    preg_match('({"appVersion.+})', $result, $matches);
+//    if (!sizeof($matches)) {
+//        $result = str_replace('href="/captcha', 'href="https://yandex.ru/captcha', $result);
+//        $result = str_replace('action="/checkcaptcha', 'action="https://yandex.ru/checkcaptcha', $result);
+//        $result = str_replace('src="/captcha', 'src="https://yandex.ru/captcha', $result);
+//        echo $result;
+//        exit;
+//    } else {
+//        $resultYa = json_decode($matches[0]);
+//        $distance = (float)(str_replace(',', '.', $resultYa->routerResponse->routes[0]->distance->text));
+//        $startTime = $resultYa->routerResponse->routes[0]->paths[array_key_first($resultYa->routerResponse->routes[0]->paths)]->beginTime->value;
+//        $endTime = $resultYa->routerResponse->routes[0]->paths[array_key_last($resultYa->routerResponse->routes[0]->paths)]->endTime->value;
+//        $deliveryTime = ($endTime - $startTime) / 60;
+//
+//
+//        $data = (object)[
+//            'distance' => $distance,
+//            'deliveryTime' => $deliveryTime,
+//        ];
+//        dd($data, $resultYa);
+//    }
+//});
 
 

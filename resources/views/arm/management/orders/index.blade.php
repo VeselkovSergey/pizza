@@ -24,6 +24,11 @@
     </style>
 
     <div>
+
+        <div class="mb-10">
+            <a class="orange-button" href="{{route('manager-arm-page')}}">назад в ARM менеджера</a>
+        </div>
+
         <div>Заказы</div>
         <div class="mb-10 flex-wrap">
             <label class="mb-5 mr-5 w-fit">

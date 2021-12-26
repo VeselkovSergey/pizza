@@ -8,6 +8,10 @@
         }
     </style>
 
+    <div class="mb-10">
+        <a class="orange-button" href="{{route('manager-arm-page')}}">назад в ARM менеджера</a>
+    </div>
+
     <div class="flex-space-between mb-10">
         Редактирование модификаций
         <button class="orange-button save-modifications">Сохранить</button>
