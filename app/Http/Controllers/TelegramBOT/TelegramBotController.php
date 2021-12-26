@@ -159,7 +159,7 @@ class TelegramBotController extends Controller
             'sumBank' => number_format($sumBank, 2, ',', "'"),
             'sumCash' => number_format($sumCash, 2, ',', "'"),
             'averageCheck' => number_format(($ordersCount !== 0 ? ($sum / $ordersCount) : 0), 2, ',', "'"),
-            'amountCancelled' => number_format($amountCancelled, 2, ',', "'"),
+            'amountCancelled' => $amountCancelled,
             'costPrice' => number_format($costPrice, 2, ',', "'"),
             'profit' => number_format(($sum - $costPrice), 2, ',', "'"),
         ];
