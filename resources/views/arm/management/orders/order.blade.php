@@ -51,6 +51,9 @@
                         <div class="mr-5">></div>
                         <div class="mr-5 p-5 order-status-{{$orderStatus->new_status_id}}">{{\App\Models\Orders::STATUS[$orderStatus->new_status_id]}}</div>
                         <div class="mr-5">({{$orderStatus->User->surname . ' ' . $orderStatus->User->name. ' ' . $orderStatus->User->patronymic}})</div>
+                        @if($orderStatus->new_status_id === \App\Models\Orders::STATUS_TEXT['courier'])
+                            {{$order->Courier ? $order->Courier->name . ' ' . $order->Courier->phone : 'Самовывоз'}}
+                        @endif
                     </div>
                 @endforeach
             </div>

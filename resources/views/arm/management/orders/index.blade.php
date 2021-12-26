@@ -66,6 +66,9 @@
                                     <div>Сумма: {{$order->order_amount}} ₽</div>
                                     <div>Оплата: {{($clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные')}}</div>
                                 </div>
+                                <div class="mb-10 px-25">
+                                    <div>Курьер: {{$order->Courier ? $order->Courier->name . ' ' . $order->Courier->phone : 'Не назначен'}}</div>
+                                </div>
                             </div>
                         </div>
                         <div class="order-alert-icon hide">

@@ -15,6 +15,7 @@ namespace App\Models;
  * @property integer total_order_amount
  * @property ProductsModificationsInOrders ProductsModifications
  * @property OrdersStatusLogs LatestStatus
+ * @property User Courier
  */
 class Orders extends BaseModel
 {
