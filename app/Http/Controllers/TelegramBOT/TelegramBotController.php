@@ -154,7 +154,7 @@ class TelegramBotController extends Controller
         }
 
         return (object)[
-            'countOrder' => number_format($ordersCount, 2, ',', "'"),
+            'countOrder' => $ordersCount,
             'sum' => number_format($sum, 2, ',', "'"),
             'sumBank' => number_format($sumBank, 2, ',', "'"),
             'sumCash' => number_format($sumCash, 2, ',', "'"),
