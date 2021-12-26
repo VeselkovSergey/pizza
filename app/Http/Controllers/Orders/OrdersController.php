@@ -247,6 +247,10 @@ class OrdersController extends Controller
         return $order->Statuses;
     }
 
+    /**
+     * @param Orders $order
+     * @return ProductsModificationsInOrders
+     */
     public static function OrderProductsModifications(Orders $order)
     {
         return $order->ProductsModifications;

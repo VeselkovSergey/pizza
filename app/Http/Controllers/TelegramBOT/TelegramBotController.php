@@ -8,6 +8,9 @@ use App\Http\Controllers\ARM\CourierARMController;
 use App\Http\Controllers\ARM\ManagerARMController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Orders\OrdersController;
+use App\Models\Ingredients;
+use App\Models\ProductModificationsIngredients;
+use App\Models\ProductsModificationsInOrders;
 use App\Services\Telegram\Telegram;
 
 class TelegramBotController extends Controller
@@ -58,19 +61,20 @@ class TelegramBotController extends Controller
                 case '/fullReport':
 
                     if ($command === '/todayReport') {
-                        $report = self::TodayReport();
+                        $report = self::Report(true);
                         $text = '<b>Отчёт за сегодня:</b>';
                     } else {
-                        $report = self::FullReport();
+                        $report = self::Report();
                         $text = '<b>Отчёт за всё время:</b>';
                     }
 
                     $message = $text . PHP_EOL;
                     $message .= 'Кол-во заказов: ' . $report->countOrder . '(отказов: ' . $report->amountCancelled . ')' . PHP_EOL;
-                    $message .= 'Сумма: ' . number_format($report->sum, 2, ',', "'") . ' ₽' . PHP_EOL;
-                    $message .= 'Сумма банк: ' . number_format($report->sumBank, 2, ',', "'") . ' ₽' . PHP_EOL;
-                    $message .= 'Сумма нал: ' . number_format($report->sumCash, 2, ',', "'") . ' ₽' . PHP_EOL;
-                    $message .= 'Средний чек: ' . number_format($report->averageCheck, 2, ',', "'") . ' ₽' . PHP_EOL;
+                    $message .= 'Сумма: ' . $report->sum . ' ₽' . PHP_EOL;
+                    $message .= 'Сумма банк: ' . $report->sumBank . ' ₽' . PHP_EOL;
+                    $message .= 'Сумма нал: ' . $report->sumCash . ' ₽' . PHP_EOL;
+                    $message .= 'Средний чек: ' . $report->averageCheck . ' ₽' . PHP_EOL;
+                    $message .= 'Себестоимость: ' . $report->costPrice . ' ₽' . PHP_EOL;
                     $telegram->sendMessage($message);
                     break;
             }
@@ -81,27 +85,62 @@ class TelegramBotController extends Controller
 
     public function TodayReportRequest()
     {
-        return self::TodayReport();
+        return self::Report(true);
     }
 
-    public static function TodayReport()
+    public function ReportRequest()
     {
-        $today = now()->format('Y-m-d');
-        $orders = OrdersController::OrdersByDate($today, $today, true);
+        return self::Report();
+    }
+
+    public static function Report($today = false)
+    {
+        if ($today) {
+            $today = now()->format('Y-m-d');
+            $orders = OrdersController::OrdersByDate($today, $today, true);
+        } else {
+            $orders = OrdersController::AllOrders('ASC');
+        }
+
         $ordersCount = $orders->count();
 
         $sum = 0;
         $sumCash = 0;
         $sumBank = 0;
         $amountCancelled = 0;
+        $costPrice = 0;
 
         foreach ($orders as $order) {
-            $rawData = json_decode($order->all_information_raw_data);
             $clientInfo = json_decode($order->client_raw_data);
+
+            $productsModifications = OrdersController::OrderProductsModifications($order);
+
+            $orderCostPrice = 0;
+
+            foreach ($productsModifications as $productModification) {
+                /** @var ProductsModificationsInOrders $productModification */
+
+                $productModificationCostPrice = 0;
+
+                $ingredientsInModification = $productModification->ProductModifications->Ingredients;
+                foreach ($ingredientsInModification as $ingredientInModification) {
+                    /** @var ProductModificationsIngredients $ingredientInModification */
+                    $amountIngredient = $ingredientInModification->ingredient_amount;
+                    $ingredient = $ingredientInModification->Ingredient;
+                    /** @var Ingredients $ingredient */
+                    $ingredientCurrentPrice = $ingredient->CurrentPrice();
+                    $productModificationCostPrice += $amountIngredient * $ingredientCurrentPrice;
+                }
+
+                $orderCostPrice += $productModificationCostPrice;
+            }
 
             if ($order->IsCancelled()) {
                 $amountCancelled++;
             } else {
+
+                $costPrice += $orderCostPrice;
+
                 $sum += $order->order_amount;
 
                 if ($clientInfo->typePayment[0] === true) {
@@ -114,50 +153,13 @@ class TelegramBotController extends Controller
         }
 
         return (object)[
-            'countOrder' => $ordersCount,
-            'sum' => $sum,
-            'sumBank' => $sumBank,
-            'sumCash' => $sumCash,
-            'averageCheck' => $ordersCount !== 0 ? ($sum / $ordersCount) : 0,
-            'amountCancelled' => $amountCancelled,
-        ];
-    }
-
-    public static function FullReport()
-    {
-        $orders = OrdersController::AllOrders();
-        $ordersCount = $orders->count();
-
-        $sum = 0;
-        $sumCash = 0;
-        $sumBank = 0;
-        $amountCancelled = 0;
-
-        foreach ($orders as $order) {
-            $rawData = json_decode($order->all_information_raw_data);
-            $clientInfo = json_decode($order->client_raw_data);
-
-            if ($order->IsCancelled()) {
-                $amountCancelled++;
-            } else {
-                $sum += $order->order_amount;
-
-                if ($clientInfo->typePayment[0] === true) {
-                    $sumBank +=  $order->order_amount;
-                } else {
-                    $sumCash += $order->order_amount;
-                }
-            }
-
-        }
-
-        return (object)[
-            'countOrder' => $ordersCount,
-            'sum' => $sum,
-            'sumBank' => $sumBank,
-            'sumCash' => $sumCash,
-            'averageCheck' => $ordersCount !== 0 ? ($sum / $ordersCount) : 0,
-            'amountCancelled' => $amountCancelled,
+            'countOrder' => number_format($ordersCount, 2, ',', "'"),
+            'sum' => number_format($sum, 2, ',', "'"),
+            'sumBank' => number_format($sumBank, 2, ',', "'"),
+            'sumCash' => number_format($sumCash, 2, ',', "'"),
+            'averageCheck' => number_format(($ordersCount !== 0 ? ($sum / $ordersCount) : 0), 2, ',', "'"),
+            'amountCancelled' => number_format($amountCancelled, 2, ',', "'"),
+            'costPrice' => number_format($costPrice, 2, ',', "'"),
         ];
     }
 }
