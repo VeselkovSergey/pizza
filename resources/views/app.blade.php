@@ -98,7 +98,7 @@
         <script>
 
             // Enable pusher logging - don't include this in production
-            Pusher.logToConsole = true;
+            // Pusher.logToConsole = true;
 
             const pusher = new Pusher("{{env('PUSHER_APP_KEY')}}", {
                 cluster: 'eu'
