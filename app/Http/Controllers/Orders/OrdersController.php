@@ -283,6 +283,14 @@ class OrdersController extends Controller
         return true;
     }
 
+    public static function ChangePaymentType(Orders $order, array $paymentType)
+    {
+        $clientRawData = json_decode($order->client_raw_data);
+        $clientRawData->typePayment = $paymentType;
+        $order->client_raw_data = json_encode($clientRawData);
+        return $order->save();
+    }
+
     public static function OrderProduct($productId)
     {
         return ProductsModificationsInOrders::find($productId);

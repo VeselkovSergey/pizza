@@ -133,6 +133,7 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
         Route::get('/order/{orderId?}', [Controllers\ARM\ManagerARMController::class, 'Order'])->name('manager-arm-order-page');
         Route::post('/order/search-by-phone', [Controllers\ARM\ManagerARMController::class, 'SearchByPhone'])->name('manager-arm-order-search-bu-phone');
+        Route::post('/order/change-payment-type', [Controllers\ARM\ManagerARMController::class, 'OrderChangePaymentType'])->name('manager-arm-order-change-payment-type');
 
         Route::get('/order/{orderId}/invoice', [Controllers\ARM\ManagerARMController::class, 'InvoicePage'])->name('manager-arm-order-invoice-page');
         Route::get('/order/{orderId}/invoice-chef', [Controllers\ARM\ManagerARMController::class, 'InvoiceChefPage'])->name('manager-arm-order-invoice-chef-page');

@@ -202,4 +202,14 @@ class ManagerARMController extends Controller
 
         return ResultGenerate::Success('', $orders->get());
     }
+
+    public function OrderChangePaymentType()
+    {
+        $orderId = request()->post('orderId');
+        $paymentType = request()->post('typePayment');
+        $paymentType = json_decode($paymentType);
+        $order = OrdersController::Order($orderId);
+        OrdersController::ChangePaymentType($order, $paymentType);
+        return ResultGenerate::Success();
+    }
 }

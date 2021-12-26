@@ -69,7 +69,14 @@
                     <div>Имя: {{$clientInfo->clientName}}</div>
                     <div>Номер телефона: {{$clientInfo->clientPhone}}</div>
                     <div>Сумма к оплате: {{$order->order_amount}} ₽</div>
-                    <div>Оплата: {{$clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные'}}</div>
+                    <div>
+                        <span>Оплата: {{$clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные'}}</span>
+                        <span class="cp edit-payment-type" data-payment-type="{{$clientInfo->typePayment[0] === true ? 'card' : 'cash'}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                              <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                            </svg>
+                        </span>
+                    </div>
                     <div>Адрес доставки: {{$clientInfo->clientAddressDelivery}}</div>
                     <div>Комментарий: {{$clientInfo->clientComment}}</div>
                 </div>
@@ -207,6 +214,47 @@
                 '_blank'
             );
         });
+
+        let editPaymentTypeButton = document.body.querySelector('.edit-payment-type');
+        editPaymentTypeButton.addEventListener('click', () => {
+            let paymentType = editPaymentTypeButton.dataset.paymentType;
+            EditPaymentTypeWindow({{$order->id}}, paymentType);
+        });
+
+        function EditPaymentTypeWindow(orderId, oldPaymentType) {
+
+            let container =
+                '<div class="w-100 flex-wrap">' +
+                    '<div class="w-100 mb-10">Изменить способ оплаты</div>' +
+                    '<div class="flex w-100 payment-types">' +
+                        '<div class="flex w-50">' +
+                            '<label for="bank-payment">' +
+                                '<input ' + ((oldPaymentType === 'card' || oldPaymentType === '' || oldPaymentType === undefined) ? 'checked' : '') + ' name="typePayment" value="card" type="radio" id="bank-payment" class="last-data hide">' +
+                                '<span class="cp py-10 block text-center w-100">Карта</span>' +
+                            '</label>' +
+                        '</div>' +
+                        '<div class="flex w-50">' +
+                            '<label for="cash-payment">' +
+                                '<input ' + (oldPaymentType === 'cash' ? 'checked' : '') + ' name="typePayment" type="radio" value="cash" id="cash-payment" class="last-data hide">' +
+                                '<span class="cp py-10 block text-center w-100">Наличные</span>' +
+                            '</label>' +
+                        '</div>' +
+                    '</div>' +
+                    '<button class="ml-a mt-10 orange-button save-payment-type">Применить изменения</button>' +
+                '</div>';
+
+            let modalWindow = ModalWindow(container);
+
+            let button = modalWindow.querySelector('.save-payment-type');
+            button.addEventListener('click', () => {
+                let data = GetDataFormContainer('payment-types');
+
+                Ajax("{{route('manager-arm-order-change-payment-type')}}", 'post', {orderId: orderId, typePayment: JSON.stringify(data.typePayment)}).then(() => {
+                    location.reload();
+                });
+
+            });
+        }
 
 
     </script>
