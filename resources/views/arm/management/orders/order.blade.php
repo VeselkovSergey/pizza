@@ -101,11 +101,7 @@
                     CreateModalWindowForCourierSelection(url);
                 } else {
                     Ajax(url, 'post', {orderId: {{$order->id}}}).then(() => {
-                        if (url === "{{route('manager-arm-change-status-order-to-manager-processes-page')}}") {
-                            location.reload();
-                        } else {
-                            window.close();
-                        }
+                        location.reload();
                     });
                 }
 
