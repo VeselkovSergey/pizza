@@ -133,7 +133,7 @@
                 let courierId = modalWindow.querySelector('.selector-courier input:checked').value;
 
                 Ajax(url, 'post', {orderId: {{$order->id}}, courierId: courierId}).then(() => {
-                    window.close();
+                    location.reload();
                 });
 
             });
