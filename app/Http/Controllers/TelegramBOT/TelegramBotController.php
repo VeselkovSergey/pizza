@@ -75,6 +75,7 @@ class TelegramBotController extends Controller
                     $message .= 'Сумма нал: ' . $report->sumCash . ' ₽' . PHP_EOL;
                     $message .= 'Средний чек: ' . $report->averageCheck . ' ₽' . PHP_EOL;
                     $message .= 'Себестоимость: ' . $report->costPrice . ' ₽' . PHP_EOL;
+                    $message .= 'Прибыль: ' . $report->profit . ' ₽' . PHP_EOL;
                     $telegram->sendMessage($message);
                     break;
             }
@@ -160,6 +161,7 @@ class TelegramBotController extends Controller
             'averageCheck' => number_format(($ordersCount !== 0 ? ($sum / $ordersCount) : 0), 2, ',', "'"),
             'amountCancelled' => number_format($amountCancelled, 2, ',', "'"),
             'costPrice' => number_format($costPrice, 2, ',', "'"),
+            'profit' => number_format(($sum - $costPrice), 2, ',', "'"),
         ];
     }
 }
