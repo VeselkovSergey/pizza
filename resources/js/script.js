@@ -687,7 +687,7 @@ function OrderInfoGenerationHTML(orderId) {
                             '</div>' +
                             '<div class="flex w-50">' +
                                 '<label for="cash-payment">' +
-                                    '<input ' + (lastTypePayment === 'cash' ? 'checked' : '') + '  name="typePayment" type="radio" value="cash" id="cash-payment" class="last-data hide">' +
+                                    '<input ' + (lastTypePayment === 'cash' ? 'checked' : '') + ' name="typePayment" type="radio" value="cash" id="cash-payment" class="last-data hide">' +
                                     '<span class="cp py-10 block text-center w-100">Наличные</span>' +
                                 '</label>' +
                             '</div>' +
