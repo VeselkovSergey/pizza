@@ -184,6 +184,11 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 //Route::get('/payment-refund', [Controllers\Payments\PaymentsController::class, 'PaymentRefundRequest'])->name('payment-refund');
 //
 //Route::get('/today-report', [Controllers\TelegramBOT\TelegramBotController::class, 'TodayReportRequest']);
+//Route::get('/yesterday-report', [Controllers\TelegramBOT\TelegramBotController::class, 'YesterdayReportRequest']);
+//Route::get('/week-report', [Controllers\TelegramBOT\TelegramBotController::class, 'WeekReportRequest']);
+//Route::get('/last-week-report', [Controllers\TelegramBOT\TelegramBotController::class, 'LastWeekReportRequest']);
+//Route::get('/month-report', [Controllers\TelegramBOT\TelegramBotController::class, 'MonthReportRequest']);
+//Route::get('/last-month-report', [Controllers\TelegramBOT\TelegramBotController::class, 'LastMonthReportRequest']);
 //Route::get('/report', [Controllers\TelegramBOT\TelegramBotController::class, 'ReportRequest']);
 //
 //Route::view('/pusher', 'arm.test-view.pusher');

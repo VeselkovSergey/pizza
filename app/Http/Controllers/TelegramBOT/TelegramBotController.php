@@ -58,14 +58,48 @@ class TelegramBotController extends Controller
                     break;
 
                 case '/todayReport':
+                case '/yesterdayReport':
+                case '/weekReport':
+                case '/lastWeekReport':
+                case '/monthReport':
+                case '/lastMonthReport':
                 case '/fullReport':
 
                     if ($command === '/todayReport') {
-                        $report = self::Report(true);
+
+                        $report = self::TodayReportRequest();
                         $text = '<b>Отчёт за сегодня:</b>';
+
+                    } elseif ($command === '/yesterdayReport') {
+
+                        $report = self::YesterdayReportRequest();
+                        $text = '<b>Отчёт за вчера:</b>';
+
+                    } elseif ($command === '/weekReport') {
+
+                        $report = self::WeekReportRequest();
+                        $text = '<b>Отчёт за неделю:</b>';
+
+                    } elseif ($command === '/lastWeekReport') {
+
+                        $report = self::LastWeekReportRequest();
+                        $text = '<b>Отчёт за прошлую неделю:</b>';
+
+                    } elseif ($command === '/monthReport') {
+
+                        $report = self::MonthReportRequest();
+                        $text = '<b>Отчёт за месяц:</b>';
+
+                    } elseif ($command === '/lastMonthReport') {
+
+                        $report = self::LastMonthReportRequest();
+                        $text = '<b>Отчёт за прошлый месяц:</b>';
+
                     } else {
+
                         $report = self::Report();
                         $text = '<b>Отчёт за всё время:</b>';
+
                     }
 
                     $message = $text . PHP_EOL;
@@ -84,21 +118,54 @@ class TelegramBotController extends Controller
         }
     }
 
-    public function TodayReportRequest()
+    public static function TodayReportRequest()
     {
-        return self::Report(true);
+        return self::Report(now());
     }
 
-    public function ReportRequest()
+    public static function YesterdayReportRequest()
+    {
+        return self::Report(date('Y-m-d',strtotime(now() . '-1 days')));
+    }
+
+    public static function WeekReportRequest()
+    {
+        $startDate = date('Y-m-d',strtotime('monday this week'));
+        $endDate = date('Y-m-d',strtotime('sunday this week'));
+        return self::Report($startDate, $endDate);
+    }
+
+    public static function LastWeekReportRequest()
+    {
+        $startDate = date('Y-m-d',strtotime('monday this week -1 week'));
+        $endDate = date('Y-m-d',strtotime('sunday this week -1 week'));
+        return self::Report($startDate, $endDate);
+    }
+
+    public static function MonthReportRequest()
+    {
+        $startDate = date('Y-m-01',strtotime(now()));
+        $endDate = date('Y-m-t',strtotime(now()));
+        return self::Report($startDate, $endDate);
+    }
+
+    public static function LastMonthReportRequest()
+    {
+        $startDate = date('Y-m-01',strtotime(now() . '-1 month'));
+        $endDate = date('Y-m-t',strtotime(now() . '-1 month'));
+        return self::Report($startDate, $endDate);
+    }
+
+    public static function ReportRequest()
     {
         return self::Report();
     }
 
-    public static function Report($today = false)
+    public static function Report($startDate = null, $endDate = null)
     {
-        if ($today) {
-            $today = now()->format('Y-m-d');
-            $orders = OrdersController::OrdersByDate($today, $today, true);
+        if ($startDate) {
+            $endDate = $endDate ?: $startDate;
+            $orders = OrdersController::OrdersByDate($startDate, $endDate, true);
         } else {
             $orders = OrdersController::AllOrders('ASC');
         }
