@@ -125,35 +125,27 @@ class TelegramBotController extends Controller
 
     public static function YesterdayReportRequest()
     {
-        return self::Report(date('Y-m-d',strtotime(now() . '-1 days')));
+        return self::Report(now()->addDays(-1));
     }
 
     public static function WeekReportRequest()
     {
-        $startDate = date('Y-m-d',strtotime('monday this week'));
-        $endDate = date('Y-m-d',strtotime('sunday this week'));
-        return self::Report($startDate, $endDate);
+        return self::Report(now()->startOfWeek(), now()->endOfWeek());
     }
 
     public static function LastWeekReportRequest()
     {
-        $startDate = date('Y-m-d',strtotime('monday this week -1 week'));
-        $endDate = date('Y-m-d',strtotime('sunday this week -1 week'));
-        return self::Report($startDate, $endDate);
+        return self::Report(now()->addWeek(-1)->startOfWeek(), now()->addWeek(-1)->endOfWeek());
     }
 
     public static function MonthReportRequest()
     {
-        $startDate = date('Y-m-01',strtotime(now()));
-        $endDate = date('Y-m-t',strtotime(now()));
-        return self::Report($startDate, $endDate);
+        return self::Report(now()->startOfMonth(), now()->endOfMonth());
     }
 
     public static function LastMonthReportRequest()
     {
-        $startDate = date('Y-m-01',strtotime(now() . '-1 month'));
-        $endDate = date('Y-m-t',strtotime(now() . '-1 month'));
-        return self::Report($startDate, $endDate);
+        return self::Report(now()->addMonth(-1)->startOfMonth(), now()->addMonth(-1)->endOfMonth());
     }
 
     public static function ReportRequest()
