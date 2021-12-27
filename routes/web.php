@@ -202,20 +202,19 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 // *  test routes
 // */
 //Route::get('/test-ucaller', function () {
-//    return;
-////    $ucaller = new App\Services\Ucaller\Ucaller();
-////    $balance = $ucaller->GetBalance();
-////    $info = $ucaller->GetInfo();
-////    $initCall = $ucaller->InitCall();
-////    dd($balance, $info, $initCall);
-//});
-//
-//Route::get('/ucaller-balance', function () {
-////    return;
 //    $ucaller = new App\Services\Ucaller\Ucaller();
 //    $balance = $ucaller->GetBalance();
-//    dd($balance);
+//    $info = $ucaller->GetInfo();
+//    $initCall = $ucaller->InitCall();
+//    dd($balance, $info, $initCall);
 //});
+//
+Route::get('/ucaller-balance', function () {
+//    return;
+    $ucaller = new App\Services\Ucaller\Ucaller();
+    $balance = $ucaller->GetBalance();
+    dd($balance);
+});
 //
 //Route::get('/test-bot', function () {
 ////    return ;
