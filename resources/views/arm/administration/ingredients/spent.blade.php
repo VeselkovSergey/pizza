@@ -12,6 +12,16 @@
         <a class="orange-button" href="{{route('administrator-arm-page')}}">назад в ARM админа</a>
     </div>
 
+    <div class="flex-wrap mb-10">
+        <div class="mr-10 flex-center">
+            <label>
+                <span>На какое число</span>
+                <input class="start-date" type="date" value="{{$startDate}}">
+                <input class="end-date" type="date" value="{{$endDate}}">
+            </label>
+        </div>
+    </div>
+
     <div>
         <div>
             <div>Потрачено в деньгах : {{$amountSpent}}</div>
@@ -51,5 +61,18 @@
 @stop
 
 @section('js')
+
+    <script>
+        let changeDateFields = document.body.querySelectorAll('.start-date, .end-date');
+        changeDateFields.forEach((changeDateField) => {
+            changeDateField.addEventListener('change', (event) => {
+                let startDate = document.body.querySelector('.start-date').value;
+                let endDate = document.body.querySelector('.end-date').value;
+                if (startDate && endDate) {
+                    location.href = "{{route('administrator-arm-spent-ingredients-page')}}?start-date=" + startDate + "&end-date=" + endDate;
+                }
+            });
+        });
+    </script>
 
 @stop

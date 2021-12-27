@@ -180,6 +180,9 @@ class AdministratorARMController extends Controller
 
     public function SpentIngredients()
     {
+        $startDate = (request()->get('start-date') === null) ? date('Y-m-d', time()) : request()->get('start-date');
+        $endDate = (request()->get('end-date') === null) ? date('Y-m-d', time()) : request()->get('end-date');
+
         $ingredientsRaw = IngredientsController::AllIngredients();
         $ingredients = [];
         foreach ($ingredientsRaw as $ingredient) {
@@ -187,7 +190,8 @@ class AdministratorARMController extends Controller
             $ingredients[$ingredient->id] = $ingredient;
         }
 
-        $orders = OrdersController::AllOrders('ASC');
+        $orders = OrdersController::OrdersByDate($startDate, $endDate, true, 'ASC');
+
         $amountSpent = 0;
         foreach($orders as $order) {
             if ($order->IsCancelled()) {
@@ -211,6 +215,6 @@ class AdministratorARMController extends Controller
                 }
             }
         }
-        return view('arm.administration.ingredients.spent', compact('ingredients', 'amountSpent'));
+        return view('arm.administration.ingredients.spent', compact('ingredients', 'amountSpent', 'startDate', 'endDate'));
     }
 }
