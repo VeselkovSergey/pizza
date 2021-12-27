@@ -31,13 +31,19 @@
 
     </style>
 
-    <div class="flex-wrap catalog">
+    <div class="fast-menu pos-fix w-100 py-5 flex scroll-x-auto left-0 bg-black-custom" style="top: 50px; box-shadow: 0 0 10px white;">
+        @foreach($allCategory as $category)
+            <a class="clear-a color-orange px-25 navigation" data-anchor-id="{{$category->id}}" href="#{{$category->title}}">{{$category->title}}</a>
+        @endforeach
+    </div>
+
+    <div class="flex-wrap catalog pt-30">
 
         @foreach($allProducts as $product)
 
             @if(!isset($category) || $product->categoryId !== $category)
                 @php($category = $product->categoryId)
-                <div class="w-100 ml-10 mb-5" id="category-{{$product->categoryId}}">{{$product->categoryTitle}}</div>
+                <div class="w-100 ml-10 mb-5" id="{{$product->categoryId}}">{{$product->categoryTitle}}</div>
             @endif
 
                 @php($imgFile = (file_exists(public_path() . '/img/' . $product->id . '.jpg') ? 'img/' . $product->id . '.jpg' : 'img-pizza.png'))
@@ -244,6 +250,17 @@
         }
 
         let allProducts = {!! json_encode($allProducts, JSON_UNESCAPED_UNICODE) !!};
+
+        document.body.querySelectorAll('.navigation').forEach((anchor) => {
+            anchor.addEventListener('click', (event) => {
+                document.getElementById(event.target.dataset.anchorId).style.paddingTop = "85px";
+                document.getElementById(event.target.dataset.anchorId).scrollIntoView({behavior: "smooth"});
+                setTimeout(() => {
+                    document.getElementById(event.target.dataset.anchorId).style.paddingTop = "0";
+                    window.scrollBy(0, -85);
+                }, 500);
+            });
+        });
 
     </script>
 
