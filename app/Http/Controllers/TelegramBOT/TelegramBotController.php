@@ -28,6 +28,7 @@ class TelegramBotController extends Controller
                 case '/start':
                     // текст сообщения
                     $telegram->sendMessage('BROпицца!');
+                    $telegram->sendMessage('Твой id чата: ' . $telegram->ChatId());
                     break;
 
                 case 'Delivered':
