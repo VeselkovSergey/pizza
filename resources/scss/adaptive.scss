@@ -105,6 +105,13 @@
     display: flex;
   }
 
+  input[name="clientName"],
+  input[name="clientComment"],
+  input[name="clientPhone"],
+  input[name="clientAddressDelivery"] {
+    text-align: center;
+  }
+
 }
 
 @media screen and (max-width: 540px) {
