@@ -43,7 +43,7 @@
 
             @if(!isset($category) || $product->categoryId !== $category)
                 @php($category = $product->categoryId)
-                <div class="w-100 ml-10 mb-5" style="padding-top: 95px;" id="{{$product->categoryId}}">{{$product->categoryTitle}}</div>
+                <div class="w-100 ml-10 mb-25" style="padding-top: 95px;" id="{{$product->categoryId}}">{{$product->categoryTitle}}</div>
             @endif
 
                 @php($imgFile = (file_exists(public_path() . '/img/' . $product->id . '.jpg') ? 'img/' . $product->id . '.jpg' : 'img-pizza.png'))
