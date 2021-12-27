@@ -43,7 +43,7 @@
 
             @if(!isset($category) || $product->categoryId !== $category)
                 @php($category = $product->categoryId)
-                <div class="w-100 ml-10 mb-5" id="{{$product->categoryId}}">{{$product->categoryTitle}}</div>
+                <div class="w-100 ml-10 mb-5" style="padding-top: 85px;" id="{{$product->categoryId}}">{{$product->categoryTitle}}</div>
             @endif
 
                 @php($imgFile = (file_exists(public_path() . '/img/' . $product->id . '.jpg') ? 'img/' . $product->id . '.jpg' : 'img-pizza.png'))
@@ -253,12 +253,12 @@
 
         document.body.querySelectorAll('.navigation').forEach((anchor) => {
             anchor.addEventListener('click', (event) => {
-                document.getElementById(event.target.dataset.anchorId).style.paddingTop = "85px";
+                // document.getElementById(event.target.dataset.anchorId).style.paddingTop = "85px";
                 document.getElementById(event.target.dataset.anchorId).scrollIntoView({behavior: "smooth"});
-                setTimeout(() => {
-                    document.getElementById(event.target.dataset.anchorId).style.paddingTop = "0";
-                    window.scrollBy(0, -85);
-                }, 500);
+                // setTimeout(() => {
+                //     document.getElementById(event.target.dataset.anchorId).style.paddingTop = "0";
+                //     window.scrollBy(0, -85);
+                // }, 500);
             });
         });
 
