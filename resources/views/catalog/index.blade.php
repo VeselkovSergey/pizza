@@ -33,7 +33,7 @@
 
     <div class="fast-menu pos-fix w-100 py-10 flex scroll-x-auto left-0 bg-black-custom" style="top: 50px; box-shadow: 0 0 10px white;">
         @foreach($allCategory as $category)
-            <a class="clear-a color-orange px-15 navigation" data-anchor-id="{{$category->id}}" href="#{{$category->title}}">{{$category->title}}</a>
+            <div class="clear-a color-orange px-15 navigation" data-anchor-id="{{$category->id}}">{{$category->title}}</div>
         @endforeach
     </div>
 
@@ -255,7 +255,7 @@
             anchor.addEventListener('click', (event) => {
                 let el = document.getElementById(event.target.dataset.anchorId);
                 window.scroll({
-                    top: el.offsetTop - 98,
+                    top: el.offsetTop - 99,
                     behavior: 'smooth'
                 });
             });
