@@ -31,7 +31,7 @@
 
     </style>
 
-    <div class="fast-menu pos-fix w-100 py-5 flex scroll-x-auto left-0 bg-black-custom" style="top: 50px; box-shadow: 0 0 10px white;">
+    <div class="fast-menu pos-fix w-100 py-10 flex scroll-x-auto left-0 bg-black-custom" style="top: 50px; box-shadow: 0 0 10px white;">
         @foreach($allCategory as $category)
             <a class="clear-a color-orange px-25 navigation" data-anchor-id="{{$category->id}}" href="#{{$category->title}}">{{$category->title}}</a>
         @endforeach
@@ -43,7 +43,7 @@
 
             @if(!isset($category) || $product->categoryId !== $category)
                 @php($category = $product->categoryId)
-                <div class="w-100 ml-10 mb-5" style="padding-top: 85px;" id="{{$product->categoryId}}">{{$product->categoryTitle}}</div>
+                <div class="w-100 ml-10 mb-5" style="padding-top: 95px;" id="{{$product->categoryId}}">{{$product->categoryTitle}}</div>
             @endif
 
                 @php($imgFile = (file_exists(public_path() . '/img/' . $product->id . '.jpg') ? 'img/' . $product->id . '.jpg' : 'img-pizza.png'))
