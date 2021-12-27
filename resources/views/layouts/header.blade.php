@@ -6,11 +6,9 @@
     </a>
 </div>
 
-<a class="flex-center mx-a clear-a color-white @if(auth()->check() && auth()->user()->IsManager()) hide @endif" href="{{route('home-page')}}">
-    <div style="font-style: italic;font-weight: bold;font-size: large;">
-        BROпицца
-    </div>
-</a>
+<div class="flex-center mx-a clear-a color-white @if(auth()->check() && auth()->user()->IsManager()) hide @endif"  style="font-style: italic;font-weight: bold;font-size: large;">
+    BROпицца
+</div>
 
 <div class="button-menu flex-center cp mr-10 @if(auth()->check() && auth()->user()->IsManager()) ml-a @endif">
     <div class="color-white flex-center border-radius-5 px-10 border-orange">
