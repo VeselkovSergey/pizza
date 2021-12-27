@@ -31,13 +31,13 @@
 
     </style>
 
-    <div class="fast-menu pos-fix w-100 py-10 flex scroll-x-auto left-0 bg-black-custom" style="top: 50px; box-shadow: 0 0 10px white;">
+    <div class="fast-menu pos-fix w-100 py-20 flex scroll-x-auto left-0 bg-black-custom" style="top: 50px; box-shadow: 0 0 10px white;">
         @foreach($allCategory as $category)
             <div class="clear-a color-orange px-15 navigation" data-anchor-id="{{$category->id}}">{{$category->title}}</div>
         @endforeach
     </div>
 
-    <div class="flex-wrap catalog" style="padding-top: 45px;">
+    <div class="flex-wrap catalog" style="padding-top: 65px;">
 
         @foreach($allProducts as $product)
 
@@ -255,7 +255,7 @@
             anchor.addEventListener('click', (event) => {
                 let el = document.getElementById(event.target.dataset.anchorId);
                 window.scroll({
-                    top: el.offsetTop - 99,
+                    top: el.offsetTop - 119,
                     behavior: 'smooth'
                 });
             });
