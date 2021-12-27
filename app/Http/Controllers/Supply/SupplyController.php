@@ -53,7 +53,7 @@ class SupplyController extends Controller
             ];
         }
         $newIngredientInSupply = IngredientsInSupply::insert($ingredientInSupply);
-        ProductsController::UpdateFileAllProducts();
+        \Cache::delete('allProducts');
 
         return ResultGenerate::Success();
     }

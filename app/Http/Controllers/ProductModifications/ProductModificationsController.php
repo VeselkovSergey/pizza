@@ -36,7 +36,7 @@ class ProductModificationsController extends Controller
                 'stop_list' => $stop === 'true' ? 1 : 0,
             ]);
         }
-        ProductsController::UpdateFileAllProducts();
+        \Cache::delete('allProducts');
         return ResultGenerate::Success();
     }
 }

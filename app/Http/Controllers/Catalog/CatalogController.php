@@ -17,16 +17,10 @@ class CatalogController extends Controller
 
     public function Index()
     {
-        $forceUpdate = request()->get('force-update') ?? false;
-        $allProducts = \Cache::get('allProducts');
-        if (empty($allProducts) || $forceUpdate) {
-            $allProducts = new ProductsController();
-            $allProducts = $allProducts->GetAllProducts($forceUpdate);
-            \Cache::put('allProducts', $allProducts, now()->addMinutes(60));
-        }
+        $allProducts = ProductsController::GetAllProducts();
         $allCategory = Categories::all();
         return view('catalog.index', [
-            'allProducts' => json_decode($allProducts),
+            'allProducts' => $allProducts,
             'allCategory' => $allCategory,
             'footer' => true,
         ]);

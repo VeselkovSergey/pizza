@@ -38,8 +38,7 @@ class ManagerARMController extends Controller
         $clientInfo = json_decode($order->client_raw_data);
         $rawData = json_decode($order->all_information_raw_data);
 
-        $allProducts = new ProductsController();
-        $allProducts = $allProducts->GetAllProducts();
+        $allProducts = ProductsController::GetAllProducts();
 
         $couriers = User::where('role_id', 111)->get();
         return view('arm.management.orders.order', [
@@ -49,7 +48,7 @@ class ManagerARMController extends Controller
             'clientInfo' => $clientInfo,
             'rawData' => $rawData,
             'couriers' => $couriers,
-            'allProducts' => json_decode($allProducts),
+            'allProducts' => $allProducts,
         ]);
     }
 

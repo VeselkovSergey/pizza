@@ -19,15 +19,15 @@ use function GuzzleHttp\Promise\all;
 class ProductsController extends Controller
 {
 
-    public function GetAllProducts($forceUpdate = false)
+    public static function GetAllProducts()
     {
-//        $allProductsJSON = Files::GetFile('allProduct');
-//        if ($allProductsJSON !== false && $forceUpdate === false) {
-//            return $allProductsJSON->contentFile;
-//        } else {
-//            return self::UpdateFileAllProducts()->contentFile;
-//        }
-        return self::UpdateFileAllProducts()->contentFile;
+        $forceUpdate = request()->get('force-update') ?? false;
+        $allProducts = \Cache::get('allProducts');
+        if (empty($allProducts) || $forceUpdate) {
+            $allProducts = self::UpdateFileAllProducts();
+            \Cache::put('allProducts', $allProducts, now()->addMinutes(3600));
+        }
+        return $allProducts;
     }
 
     public static function UpdateFileAllProducts()
@@ -79,15 +79,7 @@ class ProductsController extends Controller
             }
         }
 
-        $oldFileAllProducts = Files::GetFile('allProduct');
-
-        $fileAllProducts = Files::MakeFile(ArrayHelper::ArrayToObject($allProducts), 'allProduct', 'json');
-
-        if (!empty($oldFileAllProducts) && $fileAllProducts) {
-            Files::DeleteFiles($oldFileAllProducts->modelFile->id);
-        }
-
-        return $fileAllProducts;
+        return ArrayHelper::ArrayToObject($allProducts);
     }
 
     private static function DiscountSale($type)
@@ -188,7 +180,7 @@ class ProductsController extends Controller
             }
         }
 
-        ProductsController::UpdateFileAllProducts();
+        \Cache::delete('allProducts');
 
         return ResultGenerate::Success();
     }
