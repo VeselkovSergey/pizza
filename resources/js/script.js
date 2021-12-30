@@ -922,7 +922,7 @@ function LoginWindow(callback) {
                 childs: [
                     CreateElement('label', {
                         content: 'Для подтверждения номера Вам поступит звонок, введите последние 4 цифры входящего номера (если звонок не поступил, возможно вы запретили неизвестные входящие номера)',
-                        class: 'mb-5 text-center',
+                        class: 'mb-5 text-center confirmation-code-title',
                     }),
                     confirmationCodeInput = CreateElement('input', {
                         attr: {
