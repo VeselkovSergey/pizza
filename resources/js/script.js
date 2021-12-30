@@ -921,7 +921,7 @@ function LoginWindow(callback) {
             confirmationContainer = CreateElement('div', {
                 childs: [
                     CreateElement('label', {
-                        content: 'Для подтверждения номера Вам поступит звонок, введите последние 4 цифры входящего номера',
+                        content: 'Для подтверждения номера Вам поступит звонок, введите последние 4 цифры входящего номера (если звонок не поступил, возможно вы запретили неизвестные входящие номера)',
                         class: 'mb-5 text-center',
                     }),
                     confirmationCodeInput = CreateElement('input', {
