@@ -32,7 +32,8 @@
     <div>*</div>
     <div>*</div>
     <div class="flex-column-center">
-        <div class="mb-10" style="font-weight: 600;"># {{$order->id}} {{date('Y-m-d H:i:s', time())}}</div>
+        <div class="mb-10" style="font-weight: 600; font-size: 40px;">#{{date('d', time())}}{{$order->id}}</div>
+        <div class="mb-10" style="font-weight: 600;">{{date('Y-m-d H:i:s', time())}}</div>
         @foreach($productsModificationsInOrder as $productModificationInOrder)
             <div class="w-100 mb-10" style="font-size: 20px">
                 <div>{{$loop->iteration . '. ' . $productModificationInOrder->ProductModifications->Product->title . ' ' . ($productModificationInOrder->ProductModifications->Modification->title !== 'Соло-продукт' ? $productModificationInOrder->ProductModifications->Modification->title . ' ' . $productModificationInOrder->ProductModifications->Modification->value : '')}}</div>

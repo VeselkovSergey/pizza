@@ -47,7 +47,7 @@
             <div>+7(926)585-36-21</div>
             <div>г.Дубна, ул Вернова, д 9</div>
         </div>
-        <div class="w-100 mb-5" style="font-style: italic; padding-left: 10px;">Заказ:</div>
+        <div class="w-100 mb-5" style="font-style: italic; padding-left: 10px;">Заказ: <span style="font-weight: 600;">#{{date('d', time())}}{{$order->id}}</span></div>
         <div class="w-100 mb-5">{{$order->created_at}}</div>
         @foreach($productsModificationsInOrder as $productModificationInOrder)
             <div class="w-100 mb-10">
@@ -86,10 +86,10 @@
     </div>
 </div>
 <script>
-    window.print();
-    setTimeout(() => {
-        window.close();
-    }, 500);
+    // window.print();
+    // setTimeout(() => {
+    //     window.close();
+    // }, 500);
 </script>
 </body>
 </html>
