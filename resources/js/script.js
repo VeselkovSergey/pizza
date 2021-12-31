@@ -535,6 +535,8 @@ function BasketWindow() {
 
 function CreateOrder(orderId) {
 
+    return ModalWindow('По техническим причинам мы закрыты. Приносим свои извинения.');
+
     if (CheckingFieldForEmptiness('client-information') === false) {
         return;
     }
