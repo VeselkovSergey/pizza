@@ -126,7 +126,7 @@
 
         <script>
 
-            ModalWindow('По техническим причинам мы закрыты. Приносим свои извинения.');
+            ModalWindow('Снова радовать пиццей мы начнём 03.01.2022');
 
             // function calcLostTime(container, startHour, startMints) {
             //     let timerId = setInterval(function() {
