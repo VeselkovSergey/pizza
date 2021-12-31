@@ -37,13 +37,13 @@
         @endforeach
     </div>
 
-    <div class="flex-wrap catalog" style="padding-top: 55px;">
+    <div class="flex-wrap catalog">
 
         @foreach($allProducts as $product)
 
             @if(!isset($category) || $product->categoryId !== $category)
                 @php($category = $product->categoryId)
-                <div class="w-100 ml-10 mb-10" {{--style="padding-top: 95px;"--}} id="{{$product->categoryId}}">{{$product->categoryTitle}}</div>
+                <div class="w-100 ml-10 mb-10" id="{{$product->categoryId}}">{{$product->categoryTitle}}</div>
             @endif
 
                 @php($imgFile = (file_exists(public_path() . '/img/' . $product->id . '.jpg') ? 'img/' . $product->id . '.jpg' : 'img-pizza.png'))
