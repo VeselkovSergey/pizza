@@ -244,6 +244,7 @@
         let changeDateFields = document.body.querySelectorAll('.start-date, .end-date');
         changeDateFields.forEach((changeDateField) => {
             changeDateField.addEventListener('change', (event) => {
+                LoaderShow();
                 let startDate = document.body.querySelector('.start-date').value;
                 let endDate = document.body.querySelector('.end-date').value;
                 if (startDate && endDate) {
@@ -254,11 +255,13 @@
 
         let allOrdersTodayButton = document.body.querySelector('.all-orders-today');
         allOrdersTodayButton.addEventListener('click', () => {
+            LoaderShow();
             location.href = "{{route('administrator-arm-orders-page')}}??start-date={{date('Y-m-d', time())}}&end-date={{date('Y-m-d', time())}}";
         });
 
         let allOrdersButton = document.body.querySelector('.all-orders');
         allOrdersButton.addEventListener('click', () => {
+            LoaderShow();
             location.href = "{{route('administrator-arm-orders-page')}}?all=true";
         });
 
