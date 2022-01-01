@@ -46,7 +46,7 @@
                 <div class="w-100 ml-10 mb-10" id="{{$product->categoryId}}">{{$product->categoryTitle}}</div>
             @endif
 
-                @php($imgFile = (file_exists(public_path() . '/img/' . $product->id . '.jpg') ? 'img/' . $product->id . '.jpg' : 'img-pizza.png'))
+                @php($imgFile = (file_exists(public_path() . '/img/' . $product->id . '.webp') ? 'img/' . $product->id . '.webp' : 'img-pizza.png'))
 
                 <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}" data-product-img="{{url($imgFile)}}">
 
