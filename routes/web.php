@@ -215,7 +215,7 @@ Route::get('/location-view', function () {
 });
 
 Route::get('/location-hook', function () {
-    new \App\Services\Pusher\Location(request()->get('lat'), request()->get('lon'));
+    event(new \App\Services\Pusher\Location(request()->get('lat'), request()->get('lon')));
 });
 
 Route::get('/ucaller-balance', function () {
