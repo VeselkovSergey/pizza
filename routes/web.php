@@ -209,6 +209,15 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 //    dd($balance, $info, $initCall);
 //});
 //
+
+Route::get('/location-view', function () {
+    return view('debug.location');
+});
+
+Route::get('/location-hook', function () {
+    new \App\Services\Pusher\Location(request()->get('lat'), request()->get('lon'));
+});
+
 Route::get('/ucaller-balance', function () {
 //    return;
     $ucaller = new App\Services\Ucaller\Ucaller();
