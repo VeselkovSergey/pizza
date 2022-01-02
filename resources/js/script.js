@@ -535,7 +535,7 @@ function BasketWindow() {
 
 function CreateOrder(orderId) {
 
-    return ModalWindow('Снова радовать пиццей мы начнём 03.01.2022');
+    return ModalWindow('По техническим причинам мы закрыты. Приносим свои извинения.');
 
     if (CheckingFieldForEmptiness('client-information') === false) {
         return;
