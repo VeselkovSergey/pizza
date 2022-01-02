@@ -210,13 +210,13 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 //});
 //
 
-Route::get('/location-view', function () {
-    return view('debug.location');
-});
-
-Route::get('/location-hook', function () {
-    event(new \App\Services\Pusher\Location(request()->get('lat'), request()->get('lon')));
-});
+//Route::get('/location-view', function () {
+//    return view('debug.location');
+//});
+//
+//Route::get('/location-hook', function () {
+//    event(new \App\Services\Pusher\Location(request()->get('lat'), request()->get('lon')));
+//});
 
 Route::get('/ucaller-balance', function () {
 //    return;
