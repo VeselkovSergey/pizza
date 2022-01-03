@@ -126,8 +126,6 @@
 
         <script>
 
-            ModalWindow('По техническим причинам мы закрыты. Приносим свои извинения.');
-
             // function calcLostTime(container, startHour, startMints) {
             //     let timerId = setInterval(function() {
             //         let time = new Date();
