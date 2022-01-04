@@ -695,12 +695,12 @@ function OrderInfoGenerationHTML(orderId) {
                     '<div>Оформление заказа</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Имя</label>' +
-                        '<input name="clientName" class="need-validate last-data w-100" type="text" value="' + lastClientName + '">' +
+                        '<input name="clientName" placeholder="имя" class="need-validate last-data w-100" type="text" value="' + lastClientName + '">' +
                     '</div>' +
                         phoneInput +
                     '<div class="w-100 flex-wrap mt-10">' +
-                        '<label for="">Адрес для доставки (улица, дом, кв.)</label>' +
-                        '<input name="clientAddressDelivery" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '">' +
+                        '<label for="">Адрес для доставки</label>' +
+                        '<input name="clientAddressDelivery" placeholder="улица, дом, кв." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '">' +
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Комментарий</label>' +
