@@ -91,53 +91,49 @@ header {
     top: 0;
     left: 0;
     z-index: 10;
-}
 
-.modal-window-component-container .modal-window-component {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .modal-window-component {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .modal-window-shadow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #00000030;
+        }
 
-.modal-window-component-container .modal-window-component .modal-window-shadow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #00000030;
-}
+        .modal-window-content-container {
+            z-index: 1;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 
-.modal-window-component-container .modal-window-component .modal-window-content-container {
-    z-index: 1;
-    position: relative;
-    border-radius: 10px;
-    /*background-color: white;*/
-    padding: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    margin-left: 10px;
-    margin-right: 10px;
-}
+            .modal-window-close-button {
+                position: absolute;
+                top: 0;
+                right: 0;
+                cursor: pointer;
+                display: flex;
+                padding: 8px;
 
-.modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-close-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    cursor: pointer;
-    display: flex;
-    padding: 8px;
-}
+                path {
+                    fill: white;
+                }
+            }
 
-.modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-close-button path {
-    fill: white;
-}
-
-.modal-window-component-container .modal-window-component .modal-window-content-container .modal-window-content {
-    overflow-y: auto;
-    overflow-x: hidden;
-    max-height: 80vh;
+            .modal-window-content {
+                overflow-y: auto;
+                overflow-x: hidden;
+                max-height: 80vh;
+                margin: 25px;
+            }
+        }
+    }
 }
 
 .buttons-edit-amount-product:active {
