@@ -48,6 +48,8 @@ class ProductsController extends Controller
 
             $arrModifications = [];
 
+            $modificationCount = 0;
+
             foreach ($product->Modifications as $modification) {
 
                 if (!in_array($modification->Modification->type_id, $arrModifications)) {
@@ -56,6 +58,8 @@ class ProductsController extends Controller
                     $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id] = [];
 
                 }
+
+                $modificationCount++;
 
                 $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id]['modification-' . $modification->id] = [
                     'id' => $modification->id,
@@ -77,6 +81,8 @@ class ProductsController extends Controller
                     ];
                 }
             }
+
+            $allProducts['product-' . $product->id]['modificationCount'] = $modificationCount;
         }
 
         return ArrayHelper::ArrayToObject($allProducts);

@@ -62,7 +62,7 @@
                                     <div class="text-center mb-10">{{$product->title}}</div>
                                     <div style="font-weight: 400; font-size: 12px;">{{$product->description}}</div>
                                 </div>
-                                <button class="w-100 bg-orange color-white border-radius-5 clear-button p-5 mt-a cp">от {{$product->minimumPrice}} ₽</button>
+                                <button class="w-100 bg-orange color-white border-radius-5 clear-button p-5 mt-a cp">{{$product->modificationCount > 1 ? 'от' : ''}} {{$product->minimumPrice}} ₽</button>
                             </div>
                         </div>
 
