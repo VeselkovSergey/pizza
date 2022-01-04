@@ -135,7 +135,7 @@ function ModalWindow(content, closingCallback, flash) {
             click: () => {
                 closingCallback ? closingCallback() : '';
                 modalWindowComponentContainer.slowRemove();
-                !flash ? documentBody.classList.remove('scroll-off') : '';
+                ScrollOff(flash);
             }
         }
     }, modalWindowComponent);
@@ -155,7 +155,7 @@ function ModalWindow(content, closingCallback, flash) {
             click: () => {
                 closingCallback ? closingCallback() : '';
                 modalWindowComponentContainer.slowRemove();
-                !flash ? documentBody.classList.remove('scroll-off') : '';
+                ScrollOff(flash);
             }
         }
     }, modalWindowContainer);
@@ -179,10 +179,16 @@ function ModalWindow(content, closingCallback, flash) {
     CloseByScroll(modalWindowComponentContainer, modalWindowContainer, modalWindowContent, () => {
         closingCallback ? closingCallback() : '';
         modalWindowComponentContainer.slowRemove();
-        !flash ? documentBody.classList.remove('scroll-off') : '';
+        ScrollOff(flash);
     });
 
     return modalWindowComponentContainer;
+
+    function ScrollOff(flash) {
+        setTimeout(() => {
+            !flash ? documentBody.classList.remove('scroll-off') : '';
+        }, 200);
+    }
 }
 
 function CloseByScroll(modalWindowComponentContainer, container, content, closingCallback) {
