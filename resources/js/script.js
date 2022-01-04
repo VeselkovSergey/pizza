@@ -201,10 +201,10 @@ function CloseByScroll(modalWindowComponentContainer, container, content, closin
                 startTouchY = event.changedTouches[0].clientY;
                 correctionCoefficientY = content.getBoundingClientRect().top;
             }
-            if (content.getBoundingClientRect().right >= 0) {
-                startTouchX = event.changedTouches[0].clientX;
-                correctionCoefficientX = content.getBoundingClientRect().right;
-            }
+            // if (content.getBoundingClientRect().right >= 0) {
+            //     startTouchX = event.changedTouches[0].clientX;
+            //     correctionCoefficientX = content.getBoundingClientRect().right;
+            // }
         })
 
         let lengthSwipeY = 0;
@@ -219,14 +219,14 @@ function CloseByScroll(modalWindowComponentContainer, container, content, closin
                 startTouchY = event.changedTouches[0].clientY;
             }
 
-            if (content.getBoundingClientRect().right === content.firstChild.getBoundingClientRect().right && content.getBoundingClientRect().right >= (-1 + correctionCoefficientX)) {
-                lengthSwipeX = event.changedTouches[0].clientX - startTouchX;
-                if (lengthSwipeX < 0) {
-                    containerModalWindow.style.transform = 'translateX(' + lengthSwipeX + 'px)';
-                }
-            } else {
-                startTouchX = event.changedTouches[0].clientX;
-            }
+            // if (content.getBoundingClientRect().right === content.firstChild.getBoundingClientRect().right && content.getBoundingClientRect().right >= (-1 + correctionCoefficientX)) {
+            //     lengthSwipeX = event.changedTouches[0].clientX - startTouchX;
+            //     if (lengthSwipeX < 0) {
+            //         containerModalWindow.style.transform = 'translateX(' + lengthSwipeX + 'px)';
+            //     }
+            // } else {
+            //     startTouchX = event.changedTouches[0].clientX;
+            // }
         });
 
         let heightClientScreen = document.documentElement.clientHeight;
@@ -241,12 +241,12 @@ function CloseByScroll(modalWindowComponentContainer, container, content, closin
                 closingCallback ? closingCallback() : '';
             }
 
-            if ((lengthSwipeX * -1) > (widthClientScreen / 2)) {
-                containerModalWindow.style.transform = 'translateX(-' + widthClientScreen + 'px)';
-                closingCallback ? closingCallback() : '';
-            } else {
-                containerModalWindow.style.transform = 'translateX(0px)';
-            }
+            // if ((lengthSwipeX * -1) > (widthClientScreen / 2)) {
+            //     containerModalWindow.style.transform = 'translateX(-' + widthClientScreen + 'px)';
+            //     closingCallback ? closingCallback() : '';
+            // } else {
+            //     containerModalWindow.style.transform = 'translateX(0px)';
+            // }
         });
     }
 }
