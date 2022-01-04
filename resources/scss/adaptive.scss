@@ -151,6 +151,7 @@
 
   .container-product-img-and-description {
     display: flex;
+    flex-direction: row;
   }
 
   .container-product-img {
@@ -214,6 +215,7 @@
   .catalog {
     .product-container {
       margin: 0 0 10px 0;
+      border-radius: 5px;
     }
   }
 

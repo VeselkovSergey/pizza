@@ -82,7 +82,10 @@ header {
 }
 
 .container-product-img-and-description {
-    display: block;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 /* модальное окно */
@@ -294,6 +297,11 @@ header {
 .catalog {
     .product-container {
         margin: 10px;
+        border-radius: 15px;
+        height: 100%;
+        .container-product-description {
+            flex: 1;
+        }
     }
 }
 
