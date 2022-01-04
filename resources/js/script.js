@@ -649,7 +649,7 @@ function ProductsInBasketGenerationHTML() {
             let amount = basket[key].amount
 
             let modificationHTML =
-                '<div class="container-product-in-basket w-100 ">' +
+                '<div class="container-product-in-basket w-100 py-10">' +
                     '<div class="p-10 mr-a">' +
                         '<div>' + product.categoryTitle + ': ' + product.title + '</div>' +
                         '<div>' + (modification.title !== 'Соло-продукт' ? modification.title + ': ' : '') + (modification.value !== 'Отсутствует' ? modification.value : '') + '</div>' +
@@ -669,7 +669,7 @@ function ProductsInBasketGenerationHTML() {
             productsInBasketGenerationHTML += modificationHTML
         });
         let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
-        productsInBasketGenerationHTML += '<div class="price-sum-products-in-basket w-100 text-right">Итого: ' + parseFloat(resultPriceSumProductsInBasket).toFixed(2) + ' ₽</div>';
+        productsInBasketGenerationHTML += '<div class="price-sum-products-in-basket py-10 w-100 text-right">Итого: ' + parseFloat(resultPriceSumProductsInBasket).toFixed(2) + ' ₽</div>';
     }
 
     return productsInBasketGenerationHTML;
