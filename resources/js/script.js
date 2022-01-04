@@ -360,42 +360,70 @@ function DeleteAllProductsInBasket() {
     UpdateBasketCounter(CountProductsInBasket())
 }
 
+let promoCode = null;
+
 function PriceSumProductsInBasket() {
     let priceSum = 0;
     let sumIdentModifications = {};
     let basket = JSON.parse(localStorage.getItem('basket'));
     let sumAllDiscountProduct = 0;
+
     Object.keys(basket).forEach((key) => {
         let modificationTypeId = basket[key].data.modification.modificationTypeId;
+        let productModification = basket[key].data.modification;
+        let productModificationAmount = parseInt(basket[key].amount);
 
-        if (basket[key].data.modification.modificationTypeDiscountPrice !== false) {
-            if (!!!sumIdentModifications[modificationTypeId]) {
-                sumIdentModifications[modificationTypeId] = {
-                    count: 0,
-                    maxPrice: basket[key].data.modification.sellingPrice,
-                    minPrice: basket[key].data.modification.sellingPrice,
-                    discountPrice: basket[key].data.modification.modificationTypeDiscountPrice,
-                };
+        if (promoCode) {        // если есть промокод
+            if (promoCode.general.discountPercent === null && promoCode.general.discountSum === null) {       // если НЕ установлена скидка на весь заказа в процентах или сумме
+                if (promoCode.every.productModifications.indexOf(productModification.id) !== -1) {
+                    let reiterationsCounts = promoCode.every.reiterationsCounts > productModificationAmount ? productModificationAmount : promoCode.every.reiterationsCounts;
+                    if (promoCode.every.discountPercent !== null) {
+                        sumAllDiscountProduct += (basket[key].data.modification.sellingPrice / 100 * promoCode.every.discountPercent) * reiterationsCounts;
+                    } else if (promoCode.every.discountSum !== null) {
+                        sumAllDiscountProduct += promoCode.every.discountSum * reiterationsCounts;
+                    } else if (promoCode.every.salePrice !== null) {
+                        sumAllDiscountProduct += (basket[key].data.modification.sellingPrice - promoCode.every.salePrice) * reiterationsCounts;
+                    }
+                }
             }
+        } else {
+            if (basket[key].data.modification.modificationTypeDiscountPrice !== false) {
+                if (!!!sumIdentModifications[modificationTypeId]) {
+                    sumIdentModifications[modificationTypeId] = {
+                        count: 0,
+                        maxPrice: basket[key].data.modification.sellingPrice,
+                        minPrice: basket[key].data.modification.sellingPrice,
+                        discountPrice: basket[key].data.modification.modificationTypeDiscountPrice,
+                    };
+                }
 
-            let oldCount = sumIdentModifications[modificationTypeId]['count'];
-            sumIdentModifications[modificationTypeId]['count'] = oldCount + basket[key].amount;
+                let oldCount = sumIdentModifications[modificationTypeId]['count'];
+                sumIdentModifications[modificationTypeId]['count'] = oldCount + basket[key].amount;
 
-            let maxPrice = sumIdentModifications[modificationTypeId]['maxPrice'] > basket[key].data.modification.sellingPrice
-                ? sumIdentModifications[modificationTypeId]['maxPrice']
-                : basket[key].data.modification.sellingPrice;
+                let maxPrice = sumIdentModifications[modificationTypeId]['maxPrice'] > basket[key].data.modification.sellingPrice
+                    ? sumIdentModifications[modificationTypeId]['maxPrice']
+                    : basket[key].data.modification.sellingPrice;
 
-            let minPrice = sumIdentModifications[modificationTypeId]['minPrice'] < basket[key].data.modification.sellingPrice
-                ? sumIdentModifications[modificationTypeId]['minPrice']
-                : basket[key].data.modification.sellingPrice;
+                let minPrice = sumIdentModifications[modificationTypeId]['minPrice'] < basket[key].data.modification.sellingPrice
+                    ? sumIdentModifications[modificationTypeId]['minPrice']
+                    : basket[key].data.modification.sellingPrice;
 
-            sumIdentModifications[modificationTypeId]['maxPrice'] = maxPrice;
-            sumIdentModifications[modificationTypeId]['minPrice'] = minPrice;
-            sumAllDiscountProduct += (basket[key].data.modification.sellingPrice * basket[key].amount);
+                sumIdentModifications[modificationTypeId]['maxPrice'] = maxPrice;
+                sumIdentModifications[modificationTypeId]['minPrice'] = minPrice;
+                sumAllDiscountProduct += (basket[key].data.modification.sellingPrice * basket[key].amount);
+            }
         }
 
         priceSum += (basket[key].data.modification.sellingPrice * basket[key].amount);
     });
+
+    if (promoCode) {
+        if (promoCode.general.discountPercent !== null) {
+            sumAllDiscountProduct = (((priceSum / 100).toFixed(2)) * promoCode.general.discountPercent).toFixed(2);
+        } else if(promoCode.general.discountSum !== null) {
+            sumAllDiscountProduct = promoCode.general.discountSum;
+        }
+    }
 
     let sumDiscount = 0;
     Object.keys(sumIdentModifications).forEach((key) => {
@@ -416,7 +444,7 @@ function PriceSumProductsInBasket() {
 
     priceSum = priceSum - sumAllDiscountProduct + sumDiscount;
 
-    return priceSum;
+    return Math.ceil(priceSum);
 }
 
 function UpdateBasketCounter(value) {
@@ -427,6 +455,12 @@ function UpdateBasketCounter(value) {
         basketCounter.hide();
     }
     basketCounter.innerHTML = value;
+}
+
+function UpdateBasketSum() {
+    let basketSum = PriceSumProductsInBasket();
+    let basketSumField = document.body.querySelector('.price-sum-products-in-basket');
+    basketSumField.innerHTML = 'Итого: ' + basketSum.toFixed(2) + ' ₽';
 }
 
 function GetAllProductsInBasket() {
@@ -536,6 +570,32 @@ function BasketWindow() {
             localStorage.removeItem('lastClientComment');
             localStorage.removeItem('lastTypePayment');
             localStorage.removeItem('orderId');
+        });
+    }
+
+    let promoCodeApplyButton = document.body.querySelector('.promo-code-apply-button');
+    if (promoCodeApplyButton !== null) {
+        promoCodeApplyButton.addEventListener('click', () => {
+            promoCode = null;
+            let promoCodeContainer = document.body.querySelector('.promo-code-container');
+            let promoCodeField = promoCodeContainer.querySelector('input[name="clientPromoCode"]');
+            let promoCodeValue = promoCodeField.value;
+            if (promoCodeValue === '') {
+                ModalWindow('Промокод не действителен');
+                UpdateBasketSum();
+            } else {
+                Ajax(routeCheckPromoCodeRequest, 'POST', {promoCode: promoCodeValue})
+                    .then((response) => {
+                        if (response.status) {
+                            let result = response.result;
+                            promoCode = result.conditions;
+                            ModalWindow(result.description);
+                        } else {
+                            ModalWindow('Промокод не действителен');
+                        }
+                        UpdateBasketSum();
+                    });
+            }
         });
     }
 
@@ -706,11 +766,11 @@ function OrderInfoGenerationHTML(orderId) {
                         '<label for="">Комментарий</label>' +
                         '<textarea  rows="3" name="clientComment" class="w-100 last-data" placeholder="Особые пожелания, сдача, подъезд, код-домофона">' + lastClientComment + '</textarea>' +
                     '</div>' +
-                    // '<div class="w-100 flex-wrap mt-10">' +
-                    //     '<label for="">Промокод</label>' +
-                    //     '<input name="clientPromoCode" class="w-75 mr-a mb-10" type="text">' +
-                    //     '<button class="promo-code-apply-button clear-button bg-grey color-white py-5 px-10 border-radius-5 mb-10">Применить</button>' +
-                    // '</div>' +
+                    '<div class="promo-code-container w-100 flex-wrap-center mt-10">' +
+                        '<label for="">Промокод</label>' +
+                        '<input name="clientPromoCode" class="w-75 mr-a" type="text">' +
+                        '<button class="promo-code-apply-button orange-button">Применить</button>' +
+                    '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<div class="w-100">Способ оплаты</div>' +
                         '<div class="flex w-100 px-5">' +

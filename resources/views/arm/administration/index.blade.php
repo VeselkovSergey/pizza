@@ -25,6 +25,12 @@
         <div>
             <a href="{{route('administrator-arm-spent-ingredients-page')}}">Расход ингредиентов</a>
         </div>
+        <div>
+            <a href="{{route('all-promo-codes-page')}}">Промокоды</a>
+        </div>
+        <div>
+            <a href="{{route('create-promo-code-page')}}">Создание промокода</a>
+        </div>
     </div>
 
 @stop

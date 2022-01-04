@@ -321,3 +321,12 @@ input[type="radio"]:checked + span {
 .container-product-in-basket {
     border-bottom: 1px solid white;
 }
+
+.promo-code-container {
+    input[name="clientPromoCode"] {
+        text-transform: uppercase;
+    }
+    .promo-code-apply-button {
+        margin-bottom: 0;
+    }
+}

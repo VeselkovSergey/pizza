@@ -90,6 +90,8 @@
             const routeCheckConfirmationCode = "{{route('check-confirmation-code')}}";
             const routeLogout = "{{route('logout')}}";
 
+            const routeCheckPromoCodeRequest = "{{route('check-promo-code')}}";
+
             const routeManagerArmCheckOrderStatusChange = "{{route('manager-arm-check-order-status-change')}}";
         </script>
 

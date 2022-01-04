@@ -40,6 +40,12 @@ Route::group(['prefix' => 'orders'], function () {
 
 });
 
+Route::group(['prefix' => 'promo-codes'], function () {
+
+    Route::post('/check', [Controllers\PromoCodes\PromoCodesController::class, 'CheckPromoCodeRequest'])->name('check-promo-code');
+
+});
+
 Route::group(['prefix' => 'auth'], function () {
 
     Route::post('/phone-validation', [Controllers\Auth\AuthController::class, 'PhoneValidation'])->name('phone-validation');
@@ -96,6 +102,14 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
         Route::get('/create', [Controllers\Suppliers\SuppliersController::class, 'Create'])->name('supplier-create-page');
         Route::post('/save', [Controllers\Suppliers\SuppliersController::class, 'Save'])->name('supplier-save');
+
+    });
+
+    Route::group(['prefix' => 'promo-codes'], function () {
+
+        Route::get('/', [Controllers\PromoCodes\PromoCodesController::class, 'AllPromoCodesPage'])->name('all-promo-codes-page');
+        Route::get('/create-page', [Controllers\PromoCodes\PromoCodesController::class, 'CreatePromoCodePage'])->name('create-promo-code-page');
+        Route::post('/create', [Controllers\PromoCodes\PromoCodesController::class, 'CreatePromoCodeRequest'])->name('create-promo-code');
 
     });
 
