@@ -112,6 +112,7 @@ header {
             position: relative;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+            transition: transform 500ms;
 
             .modal-window-close-button {
                 position: absolute;

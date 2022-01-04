@@ -174,13 +174,13 @@ function ModalWindow(content, closingCallback, flash) {
 
     document.body.append(modalWindowComponentContainer);
 
-    // if (typeof content !== 'string') {
-    //     CloseByScroll(modalWindowComponentContainer, modalWindowContainer, content, () => {
-    //         closingCallback ? closingCallback() : '';
-    //         modalWindowComponentContainer.slowRemove();
-    //         !flash ? documentBody.classList.remove('scroll-off') : '';
-    //     });
-    // }
+    if (typeof content !== 'string') {
+        CloseByScroll(modalWindowComponentContainer, modalWindowContainer, content, () => {
+            closingCallback ? closingCallback() : '';
+            modalWindowComponentContainer.slowRemove();
+            !flash ? documentBody.classList.remove('scroll-off') : '';
+        });
+    }
 
     return modalWindowComponentContainer;
 }
