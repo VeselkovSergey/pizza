@@ -101,9 +101,9 @@
             let imgUrl = productImg;
 
             let productContent = document.createElement('div');
-            productContent.className = 'flex-wrap product-content';
+            productContent.className = 'flex product-content h-100';
             productContent.innerHTML =
-                                '<div class="container-img-and-about-product w-50">' +
+                                '<div class="container-img-and-about-product">' +
                                     '<div class="w-100">' +
                                         '<div>' +
                                             '<img src="' + imgUrl + '" class="w-100" alt="">' +
@@ -111,7 +111,7 @@
                                         // '<p>Традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</p>' +
                                     '</div>' +
                                 '</div>' +
-                                '<div class="container-modification-product w-50">' +
+                                '<div class="container-modification-product flex" style="flex: 1;">' +
                                     '<div class="w-100 flex-column h-100">' +
                                         '<div class="text-center text-up">'+productTitle+'</div>' +
                                         '<div class="container-ingredients text-down">' +
