@@ -167,20 +167,20 @@ function ModalWindow(content, closingCallback, flash) {
     }, modalWindowContainer);
 
     if (typeof content === 'string') {
-        modalWindowContent.innerHTML = content
-    } else {
-        modalWindowContent.append(content)
+        content = CreateElement('div', {
+            content: content
+        });
     }
+
+    modalWindowContent.append(content)
 
     document.body.append(modalWindowComponentContainer);
 
-    if (typeof content !== 'string') {
-        CloseByScroll(modalWindowComponentContainer, modalWindowContainer, content, () => {
-            closingCallback ? closingCallback() : '';
-            modalWindowComponentContainer.slowRemove();
-            !flash ? documentBody.classList.remove('scroll-off') : '';
-        });
-    }
+    CloseByScroll(modalWindowComponentContainer, modalWindowContainer, modalWindowContent, () => {
+        closingCallback ? closingCallback() : '';
+        modalWindowComponentContainer.slowRemove();
+        !flash ? documentBody.classList.remove('scroll-off') : '';
+    });
 
     return modalWindowComponentContainer;
 }
@@ -191,37 +191,61 @@ function CloseByScroll(modalWindowComponentContainer, container, content, closin
 
         let containerModalWindow = container;
 
-        let startTouch = 0;
+        let startTouchY = 0;
+        let startTouchX = 0;
+        let correctionCoefficientY = 0;
+        let correctionCoefficientX = 0;
         containerModalWindow.addEventListener('touchstart', (event) => {
-            //console.log('start', event)
             containerModalWindow.style.transition = 'transform 0ms ease-out';
             if (content.getBoundingClientRect().top >= 0) {
-                startTouch = event.changedTouches[0].clientY;
+                startTouchY = event.changedTouches[0].clientY;
+                correctionCoefficientY = content.getBoundingClientRect().top;
+            }
+            if (content.getBoundingClientRect().right >= 0) {
+                startTouchX = event.changedTouches[0].clientX;
+                correctionCoefficientX = content.getBoundingClientRect().right;
             }
         })
 
-        let lengthSwipe = 0;
+        let lengthSwipeY = 0;
+        let lengthSwipeX = 0;
         containerModalWindow.addEventListener('touchmove', (event) => {
-            let correctionCoefficient = 50;     // padding +
-            if (content.getBoundingClientRect().top >= (-1 + correctionCoefficient)) {
-                lengthSwipe = event.changedTouches[0].clientY - startTouch;
-                if (lengthSwipe > 0) {
-                    containerModalWindow.style.transform = 'translateY(' + lengthSwipe + 'px)';
+            if (content.getBoundingClientRect().top === content.firstChild.getBoundingClientRect().top && content.getBoundingClientRect().top >= (-1 + correctionCoefficientY)) {
+                lengthSwipeY = event.changedTouches[0].clientY - startTouchY;
+                if (lengthSwipeY > 0) {
+                    containerModalWindow.style.transform = 'translateY(' + lengthSwipeY + 'px)';
                 }
             } else {
-                startTouch = event.changedTouches[0].clientY;
+                startTouchY = event.changedTouches[0].clientY;
+            }
+
+            if (content.getBoundingClientRect().right === content.firstChild.getBoundingClientRect().right && content.getBoundingClientRect().right >= (-1 + correctionCoefficientX)) {
+                lengthSwipeX = event.changedTouches[0].clientX - startTouchX;
+                if (lengthSwipeX < 0) {
+                    containerModalWindow.style.transform = 'translateX(' + lengthSwipeX + 'px)';
+                }
+            } else {
+                startTouchX = event.changedTouches[0].clientX;
             }
         });
 
         let heightClientScreen = document.documentElement.clientHeight;
+        let widthClientScreen = document.documentElement.clientWidth;
 
         containerModalWindow.addEventListener('touchend', () => {
             containerModalWindow.style.transition = '';
-            if (lengthSwipe < (heightClientScreen / 3)) {
+            if (lengthSwipeY < (heightClientScreen / 3)) {
                 containerModalWindow.style.transform = 'translateY(0px)';
             } else {
                 containerModalWindow.style.transform = 'translateY(' + heightClientScreen + 'px)';
                 closingCallback ? closingCallback() : '';
+            }
+
+            if ((lengthSwipeX * -1) > (widthClientScreen / 2)) {
+                containerModalWindow.style.transform = 'translateX(-' + widthClientScreen + 'px)';
+                closingCallback ? closingCallback() : '';
+            } else {
+                containerModalWindow.style.transform = 'translateX(0px)';
             }
         });
     }
