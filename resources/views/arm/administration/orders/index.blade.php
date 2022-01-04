@@ -55,6 +55,7 @@
                     <th>Дата создания</th>
                     <th>Дата изменения последнего статуса</th>
                     <th>Потрачено времени всего</th>
+                    <th>Передан на кухню -> Доставлен</th>
                     <th>Менеджер зашел в заказ</th>
                     <th>Менеджер передал на кухню</th>
                     <th>Кухня приготовила</th>
@@ -79,6 +80,7 @@
                     @php($productsModificationsInOrder = \App\Http\Controllers\Orders\OrdersController::OrderProductsModifications($order))
                     @php($rawData = json_decode($order->all_information_raw_data))
                     @php($longTime = false)
+                    @php($longTimeDelivered = false)
 
                     @if($order->IsCancelled())
                         @php($amountOrdersCancelled++)
@@ -124,12 +126,17 @@
                         @php($longTime = true)
                     @endif
 
+                    @if(date('H', strtotime(\App\Models\Orders::TimeBetweenStatuses($order->id, \App\Models\Orders::STATUS_TEXT['kitchen'], \App\Models\Orders::STATUS_TEXT['delivered']))) !== '00')
+                        @php($longTimeDelivered = true)
+                    @endif
+
                     <tr class="order">
                         <td><a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}">{{$order->id}}</a></td>
                         <td class="order-status-{{$order->status_id}}">{{\App\Models\Orders::STATUS[$order->status_id]}}</td>
                         <td>{{$order->created_at}}</td>
                         <td>{{$order->LatestStatus->updated_at}}</td>
                         <td @if($longTime) style="background-color: #e37e7e;" @endif>{{date_diff($order->created_at, $order->LatestStatus->updated_at)->format('%H:%I:%S')}}</td>
+                        <td @if($longTimeDelivered) style="background-color: #e37e7e;" @endif>{{\App\Models\Orders::TimeBetweenStatuses($order->id, \App\Models\Orders::STATUS_TEXT['kitchen'], \App\Models\Orders::STATUS_TEXT['delivered'])}}</td>
                         <td>{{$order->TimeManagerProcesses()}}</td>
                         <td>{{$order->TimeTransferOnKitchen()}}</td>
                         <td>{{$order->TimeCooked()}}</td>

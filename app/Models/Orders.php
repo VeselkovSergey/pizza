@@ -101,7 +101,7 @@ class Orders extends BaseModel
         return false;
     }
 
-    private static function TimeBetweenStatuses($orderId, $oldStatus, $newStatus)
+    public static function TimeBetweenStatuses($orderId, $oldStatus, $newStatus)
     {
         $oldStatusLog = OrdersStatusLogs::where('order_id', $orderId)
             ->where('new_status_id', $oldStatus)
