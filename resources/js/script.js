@@ -535,6 +535,10 @@ function BasketWindow() {
 
 function CreateOrder(orderId) {
 
+    if (closeMessage) {
+        return ModalWindow(closeMessage);
+    }
+
     if (CheckingFieldForEmptiness('client-information') === false) {
         return;
     }

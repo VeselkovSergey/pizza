@@ -126,6 +126,13 @@
 
         <script>
 
+            //toDo сделать редактирование через интерфейс
+            const closeMessage = '';
+
+            if (closeMessage) {
+                ModalWindow(closeMessage);
+            }
+
             // function calcLostTime(container, startHour, startMints) {
             //     let timerId = setInterval(function() {
             //         let time = new Date();
