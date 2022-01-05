@@ -13,9 +13,13 @@ class PromoCodesController extends Controller
     {
         $promoCodeTitle = request()->post('promoCode');
         $promoCode = PromoCodes::where('title', $promoCodeTitle)->first();
+        //  нашли промокод
         if ($promoCode) {
-            $promoCode->conditions = json_decode($promoCode->conditions);
-           return ResultGenerate::Success('', $promoCode);
+            //  промокод можно еще раз использовать
+            if ($promoCode->amount_used < $promoCode->amount) {
+                $promoCode->conditions = json_decode($promoCode->conditions);
+                return ResultGenerate::Success('', $promoCode);
+            }
         }
 
         return ResultGenerate::Error();
