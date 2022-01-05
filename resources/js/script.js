@@ -368,6 +368,20 @@ function PriceSumProductsInBasket() {
     let basket = JSON.parse(localStorage.getItem('basket'));
     let sumAllDiscountProduct = 0;
 
+    let reiterationsCounts = 0;
+    if (promoCode) {
+        reiterationsCounts = promoCode.every.reiterationsCounts;
+    }
+
+    //  сортируем массив по возрастанию цены
+    let arrTemp = [];
+    Object.keys(basket).forEach((key) => {
+        arrTemp.push(basket[key]);
+    });
+
+    arrTemp.sort((prev, next) => prev.data.modification.sellingPrice - next.data.modification.sellingPrice);
+    basket = arrTemp;
+
     Object.keys(basket).forEach((key) => {
         let modificationTypeId = basket[key].data.modification.modificationTypeId;
         let productModification = basket[key].data.modification;
@@ -376,13 +390,16 @@ function PriceSumProductsInBasket() {
         if (promoCode) {        // если есть промокод
             if (promoCode.general.discountPercent === null && promoCode.general.discountSum === null) {       // если НЕ установлена скидка на весь заказа в процентах или сумме
                 if (promoCode.every.productModifications.indexOf(productModification.id) !== -1) {
-                    let reiterationsCounts = promoCode.every.reiterationsCounts > productModificationAmount ? productModificationAmount : promoCode.every.reiterationsCounts;
-                    if (promoCode.every.discountPercent !== null) {
-                        sumAllDiscountProduct += (basket[key].data.modification.sellingPrice / 100 * promoCode.every.discountPercent) * reiterationsCounts;
-                    } else if (promoCode.every.discountSum !== null) {
-                        sumAllDiscountProduct += promoCode.every.discountSum * reiterationsCounts;
-                    } else if (promoCode.every.salePrice !== null) {
-                        sumAllDiscountProduct += (basket[key].data.modification.sellingPrice - promoCode.every.salePrice) * reiterationsCounts;
+                    if (reiterationsCounts > 0) {
+                        let tempReiterationsCounts = reiterationsCounts > productModificationAmount ? productModificationAmount : reiterationsCounts;
+                        reiterationsCounts -= tempReiterationsCounts;
+                        if (promoCode.every.discountPercent !== null) {
+                            sumAllDiscountProduct += (basket[key].data.modification.sellingPrice / 100 * promoCode.every.discountPercent) * tempReiterationsCounts;
+                        } else if (promoCode.every.discountSum !== null) {
+                            sumAllDiscountProduct += promoCode.every.discountSum * tempReiterationsCounts;
+                        } else if (promoCode.every.salePrice !== null) {
+                            sumAllDiscountProduct += (basket[key].data.modification.sellingPrice - promoCode.every.salePrice) * tempReiterationsCounts;
+                        }
                     }
                 }
             }
