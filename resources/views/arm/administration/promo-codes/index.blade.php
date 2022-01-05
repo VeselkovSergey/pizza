@@ -25,6 +25,7 @@
                 <th>Конец</th>
                 <th>Кол-во</th>
                 <th>Использовано</th>
+                <th>Активный</th>
                 <th>Условие</th>
             </tr>
             </thead>
@@ -38,6 +39,7 @@
                     <td>{{$promoCode->end_date}}</td>
                     <td>{{$promoCode->amount}}</td>
                     <td>{{$promoCode->amount_used}}</td>
+                    <td>{{$promoCode->active}}</td>
                     <td>{{$promoCode->conditions}}</td>
                 </tr>
             @endforeach
