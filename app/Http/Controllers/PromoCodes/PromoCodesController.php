@@ -59,9 +59,9 @@ class PromoCodesController extends Controller
             }
         }
 
-        if (empty($modifications) && (!empty($everyDiscountPercent) || !empty($everyDiscountSum) || !empty($everySalePrice))) {
+        if (!empty($modifications) && (empty($everyDiscountPercent) && empty($everyDiscountSum) && empty($everySalePrice))) {
             return ResultGenerate::Error('Модификации не выбраны');
-        } else if (empty($generalDiscountPercent) && empty($generalDiscountSum)) {
+        } else if (empty($generalDiscountPercent) && empty($generalDiscountSum) && empty($modifications)) {
             return ResultGenerate::Error('Не верный формат промокода. Сделайте промо на модификации или на общий заказ!');
         }
 
