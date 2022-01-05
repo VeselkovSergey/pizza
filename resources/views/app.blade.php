@@ -1,3 +1,10 @@
+@php
+    $disableBlack = false;
+    if(str_contains(url()->current(), 'arm') && auth()->check() && auth()->user()->IsManager()) {
+        $disableBlack = true;
+    }
+@endphp
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -19,18 +26,22 @@
         <link href="{{asset('resources/scss/app.scss')}}" rel="stylesheet">
         <link href="{{asset('resources/scss/adaptive.scss')}}" rel="stylesheet">
 
+        @if($disableBlack)
+
+            <style>
+                .flash-message-container .flash-message-text {
+                    background-color: rgba(0, 0, 0, 0.9);
+                    color: #ffffff;
+                }
+            </style>
+
+        @endif
+
         @yield('css')
 
         <script src="{{ asset('resources/js/add.prototypes.js') }}"></script>
 
     </head>
-
-    @php
-        $disableBlack = false;
-        if(str_contains(url()->current(), 'arm') && auth()->check() && auth()->user()->IsManager()) {
-            $disableBlack = true;
-        }
-    @endphp
 
     <body class="@if(!$disableBlack) bg-black-custom color-white @endif">
 
