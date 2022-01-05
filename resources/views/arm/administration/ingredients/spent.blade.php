@@ -6,6 +6,14 @@
         .hover-color:hover {
             background-color: wheat;
         }
+
+        .edit-field {
+            cursor: pointer;
+            width: -webkit-fill-available;
+        }
+        .edit-field:not(:read-only) {
+            transform: scale(1.2);
+        }
     </style>
 
     <div class="mb-10">
@@ -41,9 +49,9 @@
                 </thead>
                 <tbody>
                 @foreach($ingredients as $ingredient)
-                    <tr class="hover-color">
+                    <tr class="hover-color ingredient-container" data-ingredient-id="{{$ingredient->id}}">
                         <td>#{{$ingredient->id}}</td>
-                        <td>{{$ingredient->title}}</td>
+                        <td><input name="title" class="edit-field" readonly type="text" value="{{$ingredient->title}}"></td>
                         <td>{{$ingredient->last_price_ingredient}} ₽</td>
                         <td>{{$ingredient->last_amount_ingredient}}</td>
                         <td>{{$ingredient->sent}}</td>
@@ -73,6 +81,27 @@
                 }
             });
         });
+
+        document.body.querySelectorAll('.edit-field').forEach((field) => {
+            field.addEventListener('dblclick', (event) => {
+                event.target.removeAttribute('readonly');
+            });
+
+            field.addEventListener('blur', (event) => {
+                event.target.setAttribute('readonly', 'readonly');
+                let ingredientContainer = event.target.closest('.ingredient-container');
+                let ingredientId = ingredientContainer.dataset.ingredientId;
+                let value = {};
+                value[event.target.name] = event.target.value;
+                SaveChanges (ingredientId, value);
+            });
+        });
+
+        function SaveChanges (ingredientId, data) {
+            Ajax("{{route('administrator-arm-ingredient-save-changes')}}", "POST", {ingredientId: ingredientId, data: JSON.stringify(data)}).then((response) => {
+                FlashMessage(response.message);
+            });
+        }
     </script>
 
 @stop

@@ -41,4 +41,18 @@ class IngredientsController extends Controller
             })
             ->get();
     }
+
+    public static function GetIngredientById($ingredientId)
+    {
+        return Ingredients::find($ingredientId);
+    }
+
+    public static function SaveChanges(Ingredients $ingredient, array|object $data)
+    {
+        foreach ($data as $title => $value) {
+            $ingredient->$title = $value;
+        }
+        $ingredient->save();
+        return $ingredient;
+    }
 }

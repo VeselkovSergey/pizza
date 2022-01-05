@@ -178,6 +178,15 @@ class AdministratorARMController extends Controller
         return view('arm.administration.ingredients.index', compact('ingredients'));
     }
 
+    public function IngredientSaveChanges()
+    {
+        $ingredientId = request()->ingredientId;
+        $data = json_decode(request()->data);
+        $ingredient = IngredientsController::GetIngredientById($ingredientId);
+        IngredientsController::SaveChanges($ingredient, $data);
+        return ResultGenerate::Success();
+    }
+
     public function SpentIngredients()
     {
         $startDate = (request()->get('start-date') === null) ? date('Y-m-d', time()) : request()->get('start-date');
