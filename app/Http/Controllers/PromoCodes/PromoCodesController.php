@@ -104,6 +104,7 @@ class PromoCodesController extends Controller
             'end_date' => $endDate,
             'amount' => $amount,
             'amount_used' => 0,
+            'active' => 1,
         ];
 
         if (PromoCodes::where('title', $title)->first()) {

@@ -10,6 +10,7 @@ namespace App\Models;
  * @property string end_date
  * @property integer amount
  * @property integer amount_used
+ * @property integer active
  */
 class PromoCodes extends BaseModel
 {
@@ -21,5 +22,6 @@ class PromoCodes extends BaseModel
         'end_date',
         'amount',
         'amount_used',
+        'active',
     ];
 }
