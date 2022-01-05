@@ -65,7 +65,7 @@
                 </label>
                 <label class="mb-10">
                     <input type="text" id="everyReiterationsCounts" value="0" class="need-validate">
-                    На какое количество одинаковых модификаций применится
+                    На какое количество модификаций применится
                 </label>
             </div>
 
