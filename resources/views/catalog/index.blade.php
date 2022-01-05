@@ -147,7 +147,7 @@
             });
 
             buttonPutInBasket.addEventListener('click', () => {
-                if (modificationSelected.stopList === 1) {
+                if (parseInt(modificationSelected.stopList) === 1) {
                     ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
                     return;
                 }
