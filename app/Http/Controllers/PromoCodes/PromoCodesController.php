@@ -66,15 +66,21 @@ class PromoCodesController extends Controller
 
         $modificationsRaw = request()->post('modifications');
         $modifications = [];
-        foreach ($modificationsRaw as $id => $modificationRaw) {
-            if ($modificationRaw !== 'false') {
-                $modifications[] = $id;
+
+        //  если не установлена глобальная скидка на заказ
+        if (empty($generalDiscountPercent) && empty($generalDiscountSum)) {
+            foreach ($modificationsRaw as $id => $modificationRaw) {
+                if ($modificationRaw !== 'false') {
+                    $modifications[] = $id;
+                }
             }
         }
 
         if (!empty($modifications) && (empty($everyDiscountPercent) && empty($everyDiscountSum) && empty($everySalePrice))) {
+            //   если модификации не пустые и не выбраны скидки для модификаций
             return ResultGenerate::Error('Модификации не выбраны');
         } else if (empty($generalDiscountPercent) && empty($generalDiscountSum) && empty($modifications)) {
+            //  если пустые модификации и пустые глобальные скидки на заказа
             return ResultGenerate::Error('Не верный формат промокода. Сделайте промо на модификации или на общий заказ!');
         }
 
