@@ -1,7 +1,7 @@
 @php
-    $disableBlack = false;
+    $isARM = false;
     if(str_contains(url()->current(), 'arm') && auth()->check() && auth()->user()->IsManager()) {
-        $disableBlack = true;
+        $isARM = true;
     }
 @endphp
 
@@ -26,7 +26,7 @@
         <link href="{{asset('resources/scss/app.scss')}}" rel="stylesheet">
         <link href="{{asset('resources/scss/adaptive.scss')}}" rel="stylesheet">
 
-        @if($disableBlack)
+        @if($isARM)
 
             <style>
                 .flash-message-container .flash-message-text {
@@ -43,7 +43,7 @@
 
     </head>
 
-    <body class="@if(!$disableBlack) bg-black-custom color-white @endif">
+    <body class="@if(!$isARM) bg-black-custom color-white @endif">
 
 
         @php
@@ -175,6 +175,13 @@
             document.querySelectorAll('.table-sort > thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
 
             ManagerArmCheckOrderStatusChange();
+
+            @if($isARM)
+            document.body.querySelectorAll('table').forEach((table) => {
+                table.parentNode.style.overflow = 'auto';
+                table.parentNode.style.width = '100%';
+            });
+            @endif
 
         </script>
 
