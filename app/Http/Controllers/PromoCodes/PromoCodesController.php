@@ -12,7 +12,7 @@ class PromoCodesController extends Controller
     public function CheckPromoCodeRequest()
     {
         $promoCodeTitle = request()->post('promoCode');
-        $promoCode = PromoCodes::where('title', $promoCodeTitle)->first();
+        $promoCode = PromoCodes::where('title', $promoCodeTitle)->where('active', 1)->first();
         //  нашли промокод
         if ($promoCode) {
             $promoCode = self::CheckPromoCode($promoCode);
@@ -112,5 +112,13 @@ class PromoCodesController extends Controller
         }
         PromoCodes::create($promoCode);
         return ResultGenerate::Success('Промокод успешно создан');
+    }
+
+    public function ChangeActivePromoCode()
+    {
+        $promoCode = PromoCodes::find(request()->post('promoCodeId'));
+        $promoCode->active = request()->post('promoCodeActive') === 'true' ? 1 : 0;
+        $promoCode->save();
+        return ResultGenerate::Success();
     }
 }

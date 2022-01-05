@@ -39,7 +39,14 @@
                     <td>{{$promoCode->end_date}}</td>
                     <td>{{$promoCode->amount}}</td>
                     <td>{{$promoCode->amount_used}}</td>
-                    <td>{{$promoCode->active}}</td>
+                    <td>
+                        <div class="flex-center">
+                            <label class="custom-checkbox-label" for="checkbox-{{$promoCode->id}}">
+                                <input type="checkbox" id="checkbox-{{$promoCode->id}}" data-id="{{$promoCode->id}}" name="changeActivePromoCode" @if($promoCode->active) checked @endif />
+                                <div class="custom-checkbox-slider round"></div>
+                            </label>
+                        </div>
+                    </td>
                     <td>{{$promoCode->conditions}}</td>
                 </tr>
             @endforeach
@@ -52,5 +59,21 @@
 @stop
 
 @section('js')
+
+    <script>
+
+        document.body.querySelectorAll('input[name="changeActivePromoCode"]').forEach((changeActivePromoCodeField) => {
+            changeActivePromoCodeField.addEventListener('change', (event) => {
+                let promoCodeId = event.target.dataset.id;
+                let promoCodeActive = event.target.checked;
+                console.log(promoCodeId, promoCodeActive)
+                Ajax('{{route('change-active-promo-code')}}', 'POST', {promoCodeId: promoCodeId, promoCodeActive: promoCodeActive})
+                .then((response) => {
+                    FlashMessage(response.message);
+                });
+            });
+        });
+
+    </script>
 
 @stop

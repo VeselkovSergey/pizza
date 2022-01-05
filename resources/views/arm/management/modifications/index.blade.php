@@ -37,7 +37,12 @@
                 <td>{{$productsModification->Modification->value}}</td>
                 <td>{{$productsModification->selling_price}}</td>
                 <td>
-                    <input type="checkbox" name="stopList[{{$productsModification->id}}]" @if($productsModification->stop_list) checked @endif>
+                    <div class="flex-center">
+                        <label class="custom-checkbox-label" for="checkbox-{{$productsModification->id}}">
+                            <input type="checkbox" id="checkbox-{{$productsModification->id}}" name="stopList[{{$productsModification->id}}]" @if($productsModification->stop_list) checked @endif />
+                            <div class="custom-checkbox-slider round"></div>
+                        </label>
+                    </div>
                 </td>
             </tr>
         @endforeach

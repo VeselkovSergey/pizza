@@ -110,6 +110,7 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::get('/', [Controllers\PromoCodes\PromoCodesController::class, 'AllPromoCodesPage'])->name('all-promo-codes-page');
         Route::get('/create-page', [Controllers\PromoCodes\PromoCodesController::class, 'CreatePromoCodePage'])->name('create-promo-code-page');
         Route::post('/create', [Controllers\PromoCodes\PromoCodesController::class, 'CreatePromoCodeRequest'])->name('create-promo-code');
+        Route::post('/change-active-promo-code', [Controllers\PromoCodes\PromoCodesController::class, 'ChangeActivePromoCode'])->name('change-active-promo-code');
 
     });
 
