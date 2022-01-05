@@ -684,6 +684,7 @@ function CreateOrder(orderId) {
                 basketWindow.slowRemove();
                 document.body.classList.remove('scroll-off');
                 DeleteAllProductsInBasket();
+                promoCode = null;
                 if (orderId) {
                     localStorage.removeItem('promoCode');
                     localStorage.removeItem('lastClientName');
