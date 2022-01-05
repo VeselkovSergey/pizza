@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Payments\PaymentsController;
 use App\Http\Controllers\Products\ProductsController;
+use App\Http\Controllers\PromoCodes\PromoCodesController;
 use App\Models\Orders;
 use App\Models\OrdersProductsStatusLogs;
 use App\Models\OrdersStatusLogs;
@@ -16,6 +17,7 @@ use App\Models\Payments;
 use App\Models\ProductModifications;
 use App\Models\Products;
 use App\Models\ProductsModificationsInOrders;
+use App\Models\PromoCodes;
 use App\Models\UsedDevices;
 use App\Models\User;
 use App\Services\Pusher\Pusher;
@@ -92,6 +94,16 @@ class OrdersController extends Controller
             }
 
             $flashMessage = 'Заказ принят. Мы скоро свяжемся с вами.';
+
+            $promoCodeTitle = $clientInformation->clientPromoCode;
+            $promoCode = PromoCodes::where('title', $promoCodeTitle)->first();
+            if ($promoCode) {
+                if (PromoCodesController::CheckPromoCode($promoCode) !== false) {
+                    $promoCode->amount_used = $promoCode->amount_used + 1;
+                    $promoCode->save();
+                }
+            }
+
         }
 
         $modificationsId = [];

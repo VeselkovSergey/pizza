@@ -104,6 +104,10 @@
 
         let allProducts = {!! json_encode($allProducts, JSON_UNESCAPED_UNICODE) !!};
         let productsAndModificationsInOrderForOrderEdit = {!! json_encode($productsAndModificationsInOrderForOrderEdit, JSON_UNESCAPED_UNICODE) !!};
+        @if($promoCode)
+        promoCode = {!! json_encode($promoCode->conditions, JSON_UNESCAPED_UNICODE) !!};
+        localStorage.setItem('promoCode', JSON.stringify(promoCode));
+        @endif
 
         let buttonsOrderChangeStatus = document.body.querySelectorAll('.order-change-status');
         buttonsOrderChangeStatus.forEach((button) => {

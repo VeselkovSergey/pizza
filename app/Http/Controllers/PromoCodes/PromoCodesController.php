@@ -15,14 +15,23 @@ class PromoCodesController extends Controller
         $promoCode = PromoCodes::where('title', $promoCodeTitle)->first();
         //  нашли промокод
         if ($promoCode) {
-            //  промокод можно еще раз использовать
-            if ($promoCode->amount_used < $promoCode->amount) {
+            $promoCode = self::CheckPromoCode($promoCode);
+            if ($promoCode !== false) {
                 $promoCode->conditions = json_decode($promoCode->conditions);
                 return ResultGenerate::Success('', $promoCode);
             }
         }
-
         return ResultGenerate::Error();
+
+    }
+
+    public static function CheckPromoCode(PromoCodes $promoCode)
+    {
+        //  промокод можно еще раз использовать
+        if ($promoCode->amount_used < $promoCode->amount) {
+            return $promoCode;
+        }
+        return false;
     }
 
     public function AllPromoCodesPage()

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Orders\OrdersController;
 use App\Http\Controllers\Products\ProductsController;
 use App\Models\Orders;
+use App\Models\PromoCodes;
 use App\Models\User;
 use App\Services\Telegram\Telegram;
 
@@ -37,6 +38,10 @@ class ManagerARMController extends Controller
         $orderStatuses = OrdersController::OrderStatuses($order);
         $clientInfo = json_decode($order->client_raw_data);
         $rawData = json_decode($order->all_information_raw_data);
+        $promoCode = PromoCodes::where('title', $clientInfo->clientPromoCode)->first();
+        if ($promoCode) {
+            $promoCode->conditions = json_decode($promoCode->conditions);
+        }
 
         $allProducts = ProductsController::GetAllProducts();
 
@@ -49,6 +54,7 @@ class ManagerARMController extends Controller
             'rawData' => $rawData,
             'couriers' => $couriers,
             'allProducts' => $allProducts,
+            'promoCode' => $promoCode,
         ]);
     }
 

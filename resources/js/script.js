@@ -360,7 +360,7 @@ function DeleteAllProductsInBasket() {
     UpdateBasketCounter(CountProductsInBasket())
 }
 
-let promoCode = null;
+let promoCode = localStorage.getItem('promoCode') !== null ? JSON.parse(localStorage.getItem('promoCode')) : null;
 
 function PriceSumProductsInBasket() {
     let priceSum = 0;
@@ -570,6 +570,9 @@ function BasketWindow() {
             localStorage.removeItem('lastClientComment');
             localStorage.removeItem('lastTypePayment');
             localStorage.removeItem('orderId');
+            localStorage.removeItem('promoCode');
+            promoCode = null;
+            basketWindow.slowRemove();
         });
     }
 
@@ -682,6 +685,7 @@ function CreateOrder(orderId) {
                 document.body.classList.remove('scroll-off');
                 DeleteAllProductsInBasket();
                 if (orderId) {
+                    localStorage.removeItem('promoCode');
                     localStorage.removeItem('lastClientName');
                     localStorage.removeItem('lastClientPhone');
                     localStorage.removeItem('lastClientAddressDelivery');
