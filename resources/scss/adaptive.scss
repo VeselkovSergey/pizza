@@ -125,6 +125,18 @@
 
 @media screen and (max-width: 540px) {
 
+  main {
+    margin: 0;
+  }
+
+  .orange-button {
+    width: calc(100% - 20px);
+
+    &:not(:last-child) {
+      margin-right: unset;
+    }
+  }
+
   .button-open-product {
     width: 100%;
   }
@@ -147,6 +159,7 @@
 
   .promo-code-apply-button {
     margin-top: 5px;
+    width: 100%;
   }
 
   .container-product-img-and-description {
@@ -164,10 +177,6 @@
 
   .first:hover {
     box-shadow: unset;
-  }
-
-  main {
-    margin: 0;
   }
 
   /* модальное окно */
@@ -216,14 +225,6 @@
     .product-container {
       margin: 0 0 10px 0;
       border-radius: 5px;
-    }
-  }
-
-  .orange-button {
-    width: 100%;
-
-    &:not(:last-child) {
-      margin-right: unset;
     }
   }
 
