@@ -461,9 +461,11 @@ function PriceSumProductsInBasket() {
 
     });
 
+    //console.log(sum, sumAllDiscountProduct, sumDiscount)
+
     return {
         sum: sum,
-        discount: sumDiscount === 0 ? sumAllDiscountProduct : sum - sumAllDiscountProduct,
+        discount: 0, //sumDiscount === 0 ? sumAllDiscountProduct : sum - sumDiscount,
         total: sum - sumAllDiscountProduct + sumDiscount
     };
 }
