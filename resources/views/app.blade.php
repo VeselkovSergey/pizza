@@ -85,7 +85,7 @@
             </div>
         </nav>
 
-        <main>@yield('content')</main>
+        <main @if(!$isARM) style="max-width: 1440px;"@endif>@yield('content')</main>
 
         @if(isset($footer) && $footer === true)
             <footer>@include('layouts.footer')</footer>

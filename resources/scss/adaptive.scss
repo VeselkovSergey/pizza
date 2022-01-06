@@ -113,13 +113,13 @@
     text-align: center;
   }
 
-    .confirmation-code-title {
-        width: 100%;
-    }
+  .confirmation-code-title {
+    width: 100%;
+  }
 
-    .catalog {
-        padding-top: 50px;
-    }
+  .promo-container {
+    padding: 60px 0 10px 0;
+  }
 
 }
 
@@ -157,6 +157,10 @@
     width: 100%;
   }
 
+  .promo-container {
+    margin: 0;
+  }
+
   .promo-code-apply-button {
     margin-top: 5px;
     width: 100%;
@@ -184,17 +188,21 @@
     .modal-window-component {
       .modal-window-shadow {
       }
+
       .modal-window-content-container {
         width: 100%;
         height: 100%;
         border: unset;
         border-radius: unset;
+
         .modal-window-close-button {
           padding-left: 10px;
           padding-bottom: 10px;
+
           path {
           }
         }
+
         .modal-window-content {
           max-height: calc(100% - 50px);
           height: 100%;
