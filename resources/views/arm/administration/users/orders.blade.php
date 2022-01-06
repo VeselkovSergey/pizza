@@ -35,7 +35,7 @@
                     <?php /** @var \App\Models\Orders $order */?>
                     @php($productsModificationsInOrder = \App\Http\Controllers\Orders\OrdersController::OrderProductsModifications($order))
                     <tr>
-                        <td>{{$order->id}}</td>
+                        <td><a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}">{{$order->id}}</a></td>
                         <td>{{\App\Models\Orders::STATUS[$order->status_id]}}</td>
                         <td>{{$order->created_at}}</td>
                         <td>{{$order->LatestStatus->updated_at}}</td>
