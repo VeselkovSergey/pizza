@@ -124,6 +124,7 @@
         </script>
         @endif
 
+        <script src="{{ asset('resources/js/smoothscroll-polyfill.js') }}"></script>
         <script src="{{ asset('resources/js/script.js') }}"></script>
 
         @yield('js')
