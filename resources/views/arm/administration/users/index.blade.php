@@ -39,7 +39,7 @@
                         <td>{{$user->phone}}</td>
                         <td><input name="role_id" class="edit-field" readonly type="text" value="{{$user->role_id}}"></td>
                         <td><input name="telegram_chat_id" class="edit-field" readonly type="text" value="{{$user->telegram_chat_id}}"></td>
-                        <td><a href="{{route('administrator-arm-user-orders-page', $user->id)}}">{{$user->Orders->count()}}</a></td>
+                        <td>{{$user->Orders->count()}}<a href="{{route('administrator-arm-user-orders-page', $user->id)}}"> -></a></td>
                     </tr>
                 @endforeach
                 </tbody>
