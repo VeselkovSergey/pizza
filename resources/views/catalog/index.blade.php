@@ -50,15 +50,20 @@
                 <div class="w-100 ml-10 mb-10" id="{{$product->categoryId}}">{{$product->categoryTitle}}</div>
             @endif
 
-                @php($imgFile = (file_exists(public_path() . '/img/' . $product->id . '.webp') ? 'img/' . $product->id . '.webp' : 'img-pizza.png'))
+                @php($webpFile = (file_exists(public_path() . '/img/' . $product->id . '.webp') ? 'img/' . $product->id . '.webp' : 'img-pizza.png'))
+                @php($imgFile = (file_exists(public_path() . '/img/jpg500/' . $product->id . '.jpg') ? 'img/jpg500/' . $product->id . '.jpg' : 'img-pizza.png'))
 
-                <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}" data-product-img="{{url($imgFile)}}">
+                <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}" data-product-img-webp="{{url($webpFile)}}" data-product-img="{{url($imgFile)}}">
 
                     <div class="product-container flex-column border-orange scroll-off">
 
                         <div class="container-product-img-and-description">
                             <div class="container-product-img">
-                                <img src="{{url($imgFile)}}" class="w-100" alt="{{$product->title}}">
+                                <picture>
+                                    <source class="w-100" srcset="{{url($webpFile)}}" type="image/webp">
+                                    <source class="w-100" srcset="{{url($imgFile)}}" type="image/jpeg">
+                                    <img class="w-100" src="{{url($imgFile)}}" alt="{{$product->title}}">
+                                </picture>
                             </div>
 
                             <div class="container-product-description flex-column-center p-10">
@@ -93,16 +98,18 @@
             el.addEventListener('click', () => {
                 let productId = el.dataset.productId;
                 let productImg = el.dataset.productImg;
-                ProductWindowGenerator(productId, productImg);
+                let productImgWebP = el.dataset.productImgWebp;
+                ProductWindowGenerator(productId, productImg, productImgWebP);
             });
         });
 
         let modificationSelected = null;
-        function ProductWindowGenerator(productId, productImg) {
+        function ProductWindowGenerator(productId, productImg, productImgWebP) {
 
             let productTitle = allProducts['product-'+productId].title;
 
             let imgUrl = productImg;
+            let webpUrl = productImgWebP;
 
             let productContent = document.createElement('div');
             productContent.className = 'flex product-content h-100';
@@ -110,7 +117,11 @@
                                 '<div class="container-img-and-about-product">' +
                                     '<div class="w-100">' +
                                         '<div>' +
-                                            '<img src="' + imgUrl + '" class="w-100" alt="">' +
+                                            '<picture>'+
+                                                '<source class="w-100" srcset="' + webpUrl + '" type="image/webp">'+
+                                                '<source class="w-100" srcset="' + imgUrl + '" type="image/jpeg">'+
+                                                '<img class="w-100" src="' + imgUrl + '" alt="">'+
+                                            '</picture>'+
                                         '</div>' +
                                         // '<p>Традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</p>' +
                                     '</div>' +
