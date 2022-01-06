@@ -185,7 +185,7 @@
                         disableModificationContainer = true;
                     }
 
-                    if (modification.stop_list === 1) {
+                    if (modification.stop_list === 1 && i === 0) {
                         stopList = true;
                     }
 
