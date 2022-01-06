@@ -717,8 +717,8 @@ function CreateOrder(orderId) {
                 document.body.classList.remove('scroll-off');
                 DeleteAllProductsInBasket();
                 promoCode = null;
+                localStorage.removeItem('promoCode');
                 if (orderId) {
-                    localStorage.removeItem('promoCode');
                     localStorage.removeItem('lastClientName');
                     localStorage.removeItem('lastClientPhone');
                     localStorage.removeItem('lastClientAddressDelivery');
