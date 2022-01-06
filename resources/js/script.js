@@ -789,7 +789,7 @@ function OrderInfoGenerationHTML(orderId) {
         return  '<div class="client-information w-100">' +
                     '<div class="promo-code-container w-100 flex-wrap-center mb-10">' +
                         '<label for="">Промокод</label>' +
-                        '<input name="clientPromoCode" class="w-75 mr-a" type="text">' +
+                        '<input name="clientPromoCode" class="w-75 mr-a last-data" type="text">' +
                         '<button class="promo-code-apply-button orange-button">Применить</button>' +
                     '</div>' +
                     '<div>Оформление заказа</div>' +
