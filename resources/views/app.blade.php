@@ -187,7 +187,7 @@
             @endif
 
             if (localStorage.getItem('cookiesAccepted') === null) {
-                const cookiesInfo = '<div class="pos-fix bottom-0 bg-black w-100 shadow-white"><div class="flex-space-between flex-wrap p-25"><div> Мы тоже используем куки, потому что без них вообще ничего не работает</div><button class="cookies-accept-button orange-button">Ничего, я привык</button></div></div>';
+                const cookiesInfo = '<div class="pos-fix bottom-0 bg-black w-100 shadow-white"><div class="flex-space-between flex-wrap p-25"><div class="text-center py-10"> Мы тоже используем куки, потому что без них вообще ничего не работает</div><button class="cookies-accept-button orange-button">Ничего, я привык</button></div></div>';
                 let cookiesInfoElement = CreateElement('div', {content: cookiesInfo}, document.body);
                 let cookiesAcceptButton = document.body.querySelector('.cookies-accept-button');
                 if (cookiesAcceptButton) {
