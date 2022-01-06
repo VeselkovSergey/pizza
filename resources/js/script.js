@@ -463,7 +463,7 @@ function PriceSumProductsInBasket() {
 
     return {
         sum: sum,
-        discount: sumDiscount === 0 ? sumAllDiscountProduct : sumAllDiscountProduct + sumDiscount - sum,
+        discount: sumDiscount === 0 ? sumAllDiscountProduct : sum - sumAllDiscountProduct,
         total: sum - sumAllDiscountProduct + sumDiscount
     };
 }
