@@ -1,7 +1,11 @@
 <div class="logo-container flex-center">
     <a class="flex-center w-100" href="{{route('home-page')}}">
         <div class="logo w-100 h-100">
-            <img class="w-100" src="{{url('logo.webp')}}" alt="">
+            <picture>
+                <source class="w-100" srcset="{{asset('logo.webp')}}" type="image/webp">
+                <source class="w-100" srcset="{{asset('logo.png')}}" type="image/jpeg">
+                <img class="w-100" src="{{asset('logo.webp')}}" alt="logo">
+            </picture>
         </div>
     </a>
 </div>
