@@ -130,7 +130,7 @@
                     let productId = el.dataset.productId;
                     let modificationType = el.dataset.modificationType;
                     let modificationId = el.dataset.modificationId;
-                    let stopList = el.dataset.stopList;
+                    let stopList = parseInt(el.dataset.stopList);
 
                     let modification = allProducts[productId]['modifications'][modificationType][modificationId];
                     let sellingPriceModification = modification.sellingPrice;
@@ -143,11 +143,15 @@
                         modification: allProducts[productId]['modifications'][modificationType][modificationId],
                         stopList: stopList,
                     }
+
+                    if (stopList === 1) {
+                        ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
+                    }
                 });
             });
 
             buttonPutInBasket.addEventListener('click', () => {
-                if (parseInt(modificationSelected.stopList) === 1) {
+                if (modificationSelected.stopList === 1) {
                     ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
                     return;
                 }
