@@ -31,7 +31,7 @@
 
     </style>
 
-    <div class="promo-container flex py-20 m-10">
+    <div class="promo-container flex pb-20 m-10">
         <img class="border-radius-10" src="{{asset('promo/promo-1.jpg')}}" width="100%" alt="promo">
     </div>
 
