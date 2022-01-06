@@ -31,6 +31,10 @@
 
     </style>
 
+    <div class="promo-container flex py-20 m-10">
+        <img class="border-radius-10" src="{{asset('promo/promo-1.jpg')}}" width="100%" alt="promo">
+    </div>
+
     <div class="fast-menu pos-fix w-100 py-15 flex scroll-x-auto left-0 bg-black-custom" style="top: 50px; box-shadow: 0 0 10px white;">
         @foreach($allCategory as $category)
             <div class="clear-a color-orange px-15 navigation" data-anchor-id="{{$category->id}}">{{$category->title}}</div>
