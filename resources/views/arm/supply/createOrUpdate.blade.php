@@ -127,9 +127,9 @@
                 let option = options[i];
 
                 if (options[i].innerHTML.match(q)) {
-                    option.style.color = 'unset';
+                    option.removeAttribute('hidden');
                 } else {
-                    option.style.color = 'white';
+                    option.setAttribute('hidden', 'true');
                 }
             }
         }
