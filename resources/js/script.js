@@ -487,6 +487,7 @@ function UpdateBasketSum() {
     basketSumField.innerHTML =  '<div>Сумма: ' + resultPriceSumProductsInBasket.sum.toFixed(2) + ' ₽</div>' +
                                 '<div>Скидка: ' + resultPriceSumProductsInBasket.discount.toFixed(2) + ' ₽</div>' +
                                 '<div>Итого: ' + resultPriceSumProductsInBasket.total.toFixed(2) + ' ₽</div>';
+    return resultPriceSumProductsInBasket;
 }
 
 function GetAllProductsInBasket() {
@@ -526,11 +527,8 @@ function BasketWindow() {
                 let containerProductInBasket = el.closest('.container-product-in-basket');
                 containerProductInBasket.remove();
             }
-            let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
-            priceSumProductsInBasket.innerHTML =    '<div>Сумма: ' + resultPriceSumProductsInBasket.sum.toFixed(2) + ' ₽</div>' +
-                                                    '<div>Скидка: ' + resultPriceSumProductsInBasket.discount.toFixed(2) + ' ₽</div>' +
-                                                    '<div>Итого: ' + resultPriceSumProductsInBasket.total.toFixed(2) + ' ₽</div>';
-            if (resultPriceSumProductsInBasket.total === 0) {
+            let resultPriceSumProductsInBasket = UpdateBasketSum();
+            if (resultPriceSumProductsInBasket.sum === 0) {
                 basketWindow.slowRemove();
                 document.body.classList.remove('scroll-off');
             }
@@ -552,11 +550,8 @@ function BasketWindow() {
                 let containerProductInBasket = el.closest('.container-product-in-basket');
                 containerProductInBasket.remove();
             }
-            let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
-            priceSumProductsInBasket.innerHTML =    '<div>Сумма: ' + resultPriceSumProductsInBasket.sum.toFixed(2) + ' ₽</div>' +
-                                                    '<div>Скидка: ' + resultPriceSumProductsInBasket.discount.toFixed(2) + ' ₽</div>' +
-                                                    '<div>Итого: ' + resultPriceSumProductsInBasket.total.toFixed(2) + ' ₽</div>';
-            if (resultPriceSumProductsInBasket.total === 0) {
+            let resultPriceSumProductsInBasket = UpdateBasketSum();
+            if (resultPriceSumProductsInBasket.sum === 0) {
                 basketWindow.slowRemove();
                 document.body.classList.remove('scroll-off');
             }
@@ -573,10 +568,7 @@ function BasketWindow() {
             }
             AddProductInBasket(modification);
             amountProduct.innerHTML = AmountProductInBasket(modificationId);
-            let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
-            priceSumProductsInBasket.innerHTML =    '<div>Сумма: ' + resultPriceSumProductsInBasket.sum.toFixed(2) + ' ₽</div>' +
-                                                    '<div>Скидка: ' + resultPriceSumProductsInBasket.discount.toFixed(2) + ' ₽</div>' +
-                                                    '<div>Итого: ' + resultPriceSumProductsInBasket.total.toFixed(2) + ' ₽</div>';
+            UpdateBasketSum();
         });
     });
 
@@ -624,6 +616,7 @@ function BasketWindow() {
                         if (response.status) {
                             let result = response.result;
                             promoCode = result.conditions;
+                            localStorage.setItem('promoCode', JSON.stringify('promoCode'));
                             ModalWindow(result.description);
                         } else {
                             ModalWindow('Промокод не действителен');
