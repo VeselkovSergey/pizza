@@ -21,7 +21,8 @@ class SuppliersController extends Controller
 
     public function Create()
     {
-        return view('arm.suppliers.createOrUpdate');
+        $suppliers = Suppliers::all();
+        return view('arm.suppliers.createOrUpdate', compact('suppliers'));
     }
 
     public function Save(Request $request)

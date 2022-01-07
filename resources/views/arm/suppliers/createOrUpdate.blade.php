@@ -4,18 +4,41 @@
 
     <div>
 
-        <form class="supplier-create-or-edit-form" action="" onsubmit="return false;">
+        <div class="mb-10">
+            <form class="supplier-create-or-edit-form" action="" onsubmit="return false;">
 
-            <div>
-                <label for="">Название
-                    <input class="need-validate" name="title" type="text">
-                </label>
-            </div>
-            <div>
-                <button class="save-button">Создать</button>
-            </div>
+                <div>
+                    <label for="">Название
+                        <input class="need-validate" name="title" type="text">
+                    </label>
+                </div>
+                <div>
+                    <button class="save-button">Создать</button>
+                </div>
 
-        </form>
+            </form>
+        </div>
+
+
+
+        <div>
+            <table class="w-100 border table-sort">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Наименование</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($suppliers as $supplier)
+                    <tr>
+                        <td>{{$supplier->id}}</td>
+                        <td>{{$supplier->title}}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
 
     </div>
 
@@ -41,8 +64,7 @@
             Ajax("{{route('supplier-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
                 if (response.status === true) {
-                    title.value = '';
-                    title.focus();
+                    location.reload();
                 }
             })
         });
