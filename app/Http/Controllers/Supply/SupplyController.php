@@ -20,14 +20,24 @@ class SupplyController extends Controller
 
     }
 
+    public function Index()
+    {
+        $supplies = Supply::all();
+        return view('arm.supply.index', compact('supplies'));
+    }
+
+    public function Detail()
+    {
+        $supplyId = (int)\request()->supplyId;
+        $supply = Supply::find($supplyId);
+        return view('arm.supply.detail', compact('supply'));
+    }
+
     public function Create()
     {
         $suppliers = Suppliers::all();
         $ingredients = Ingredients::all();
-        return view('arm.supply.createOrUpdate', [
-            'suppliers' => $suppliers,
-            'ingredients' => $ingredients,
-        ]);
+        return view('arm.supply.createOrUpdate', compact('ingredients', 'suppliers'));
     }
 
     public function Save(Request $request)

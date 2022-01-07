@@ -8,6 +8,7 @@ namespace App\Models;
  * @property integer ingredient_id
  * @property float amount_ingredient
  * @property float price_ingredient
+ * @property Ingredients Ingredient
  */
 class IngredientsInSupply extends BaseModel
 {
@@ -18,4 +19,9 @@ class IngredientsInSupply extends BaseModel
         'amount_ingredient',
         'price_ingredient',
     ];
+
+    public function Ingredient()
+    {
+        return $this->hasOne(Ingredients::class, 'id', 'ingredient_id');
+    }
 }

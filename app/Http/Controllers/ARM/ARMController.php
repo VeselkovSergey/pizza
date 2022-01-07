@@ -38,8 +38,8 @@ class ARMController
                 'role' => [999],
             ],
             [
-                'title' => 'Новая поставка (поставка. тут вносим ингредиенты)',
-                'link' => route('supply-create-page'),
+                'title' => 'Поставки',
+                'link' => route('supplies-page'),
                 'role' => [999],
             ],
             [
