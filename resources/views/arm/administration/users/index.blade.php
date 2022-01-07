@@ -28,6 +28,7 @@
                     <th>Роль</th>
                     <th>ID чата в телеграм</th>
                     <th>Кол-во заказов</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,7 +40,8 @@
                         <td>{{$user->phone}}</td>
                         <td><input name="role_id" class="edit-field" readonly type="text" value="{{$user->role_id}}"></td>
                         <td><input name="telegram_chat_id" class="edit-field" readonly type="text" value="{{$user->telegram_chat_id}}"></td>
-                        <td>{{$user->Orders->count()}}<a class="mr-5" href="{{route('administrator-arm-user-orders-page', $user->id)}}"> к заказам</a></td>
+                        <td>{{$user->Orders->count()}}</td>
+                        <td><a href="{{route('administrator-arm-user-orders-page', $user->id)}}">к заказам</a></td>
                     </tr>
                 @endforeach
                 </tbody>
