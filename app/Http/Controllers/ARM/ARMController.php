@@ -40,7 +40,7 @@ class ARMController
             [
                 'title' => 'Поставки',
                 'link' => route('supplies-page'),
-                'role' => [777],
+                'role' => [999, 777],
             ],
             [
                 'title' => 'Новый продукт',
