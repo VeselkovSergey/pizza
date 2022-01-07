@@ -31,8 +31,8 @@
                         <td>{{$supply->PaymentType()}}</td>
                         <td>{{$supply->SupplySum()}}</td>
                         <td>{{$supply->Ingredients->count()}}</td>
-                        <td><a href="{{route('supply-detail-page', $supply->id)}}">Подробнее</a></td>
                         <td>{{$supply->Creator->name}}</td>
+                        <td><a href="{{route('supply-detail-page', $supply->id)}}">Подробнее</a></td>
                     </tr>
                 @endforeach
                 </tbody>
