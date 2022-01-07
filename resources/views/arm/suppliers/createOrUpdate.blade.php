@@ -6,20 +6,12 @@
 
         <div class="mb-10">
             <form class="supplier-create-or-edit-form" action="" onsubmit="return false;">
-
-                <div>
-                    <label for="">Название
-                        <input class="need-validate" name="title" type="text">
-                    </label>
-                </div>
-                <div>
-                    <button class="save-button">Создать</button>
-                </div>
-
+                <label for="">Название
+                    <input class="need-validate" name="title" type="text">
+                    <button class="save-button orange-button">Создать</button>
+                </label>
             </form>
         </div>
-
-
 
         <div>
             <table class="w-100 border table-sort">
