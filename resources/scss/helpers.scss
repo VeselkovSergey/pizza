@@ -532,6 +532,10 @@
 }
 
 /* border */
+.border-clear {
+    border: unset;
+}
+
 .border {
     border: 1px solid black;
 }

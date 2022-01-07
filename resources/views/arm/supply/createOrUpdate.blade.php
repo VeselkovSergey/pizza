@@ -9,7 +9,7 @@
 
         <form class="supply-create-or-edit-form" action="" onsubmit="return false;">
 
-            <div>
+            <div class="mb-10">
                 <label for="">Поставщик
                     <select name="supplier">
                         @foreach($suppliers as $supplier)
@@ -17,14 +17,15 @@
                         @endforeach
                     </select>
                 </label>
-
             </div>
-            <div>
+
+            <div class="mb-10">
                 <label for="">Дата
                     <input class="need-validate" name="dateSupply" type="datetime-local" value="{{date('Y-m-d\TH:i', time())}}">
                 </label>
             </div>
-            <div>
+
+            <div class="mb-10">
                 <label for="">Тип оплаты
                     <select name="paymentType">
                         <option value="1">Наличные</option>
@@ -32,25 +33,24 @@
                         <option value="3">Перевод</option>
                     </select>
                 </label>
+            </div>
+
+            <div class="container-for-ingredients mb-10">
 
             </div>
 
-            <div class="container-for-ingredients">
-
-            </div>
-
-            <div>
+            <div class="mb-10">
                 <label>Сумма
                     <input name="totalSumSupply" type="text" readonly value="0">
                 </label>
             </div>
 
-            <div>
-                <button class="add-ingredients-in-supply-button">Добавить товар в поставку</button>
+            <div class="mb-10">
+                <button class="add-ingredients-in-supply-button orange-button">Добавить товар в поставку</button>
             </div>
 
             <div>
-                <button class="save-button">Создать</button>
+                <button class="save-button orange-button">Создать</button>
             </div>
 
         </form>
@@ -137,10 +137,7 @@
         function AddRowIngredient() {
             let containerIngredients = document.body.querySelector('.container-for-ingredients');
             let rowIngredient = document.createElement('div');
-            rowIngredient.classList.add('container-for-ingredient');
-            rowIngredient.classList.add('flex');
-            rowIngredient.classList.add('m-5');
-            rowIngredient.classList.add('border');
+            rowIngredient.className = 'container-for-ingredient flex-center-vertical m-5 border';
             rowIngredient.innerHTML =   '<div class="m-5">' +
                                             '<label for="" class="flex-column">Товар' +
                                                 '<input class="type-search" placeholder="фильтр по словам" onchange="Search(this)" type="text">' +
@@ -160,7 +157,9 @@
                                             '<input class="need-validate" name="sum" type="text" value="0" readonly>' +
                                         '</div>' +
                                         '<div class="m-5">' +
-                                            '<button class="delete-ingredient-button">Удалить</button>' +
+                                            '<button class="delete-ingredient-button cp flex-center border-radius-25 p-10 m-0 border-clear border">' +
+                                                '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/> <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/> </svg>' +
+                                            '</button>' +
                                         '</div>';
             containerIngredients.append(rowIngredient);
 
