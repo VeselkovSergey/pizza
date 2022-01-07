@@ -30,7 +30,11 @@ label {
     width: 100%;
 }
 
-input[type='text'], textarea {
+input[type='text'],
+input[type='date'],
+input[type='datetime-local'],
+textarea,
+select {
     border: 1px solid #cbcdd1;
     padding: 10px 10px;
     border-radius: 5px;
