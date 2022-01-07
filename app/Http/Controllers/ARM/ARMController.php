@@ -33,9 +33,9 @@ class ARMController
                 'role' => [999],
             ],
             [
-                'title' => 'Поставщики (метро/рынок/рога и копыта)',
+                'title' => 'Поставщики',
                 'link' => route('supplier-create-page'),
-                'role' => [999],
+                'role' => [999, 777],
             ],
             [
                 'title' => 'Поставки',
