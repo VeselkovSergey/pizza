@@ -122,11 +122,11 @@
         function Search(target) {
             let options = target.parentNode.querySelectorAll('select[name="ingredient"] option');
 
-            let q = new RegExp(target.value, 'ig');
-            for (let i = 0, l = options.length; i < l; i += 1) {
+            let regExp = new RegExp(target.value, 'ig');
+            for (let i = 0; i < options.length; i++) {
                 let option = options[i];
 
-                if (options[i].innerHTML.match(q)) {
+                if (option.innerHTML.match(regExp)) {
                     option.removeAttribute('hidden');
                 } else {
                     option.setAttribute('hidden', 'true');
