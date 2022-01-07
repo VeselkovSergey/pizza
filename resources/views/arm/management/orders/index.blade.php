@@ -86,6 +86,7 @@
             </div>
             <div style="order: 1;">
                 <div class="mb-10">Итого: {{$sum}} ₽ (Наличные: {{$sumCash}} ₽ / Банк: {{$sumBank}} ₽)</div>
+                <div class="mb-10">Закупка: {{$supplySum}} ₽</div>
             </div>
         </div>
         <div class="found-orders-container hide"></div>
