@@ -191,6 +191,7 @@
         <div style="order: 1;">
             <div class="mb-10">Итого: {{$sum}} (Наличные: {{$sumCash}} / Банк: {{$sumBank}})</div>
             <div class="mb-10">Себестоимость: {{$sumCost}}</div>
+            <div class="mb-10">Поставки: {{$supplySum}}</div>
             <div class="mb-10">Кол-во заказов: {{$orders->count()}} (Сайт: {{$ordersCreatorWeb}} / Менеджер {{$ordersCreatorManager}} / Собственник {{$ordersCreatorAdmin}} / Отказ {{$amountOrdersCancelled}})</div>
             <div class="mb-10">Средний чек: {{$orders->count() !== 0 ? ($sum / ($orders->count() - $amountOrdersCancelled)) : 0}}</div>
             <div class="mb-10">

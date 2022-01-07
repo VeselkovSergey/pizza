@@ -12,6 +12,7 @@ use App\Http\Controllers\Products\ProductsController;
 use App\Models\Orders;
 use App\Models\ProductModificationsIngredients;
 use App\Models\ProductsModificationsInOrders;
+use App\Models\Supply;
 use App\Models\User;
 
 class AdministratorARMController extends Controller
@@ -40,10 +41,13 @@ class AdministratorARMController extends Controller
         $endDate = (request()->get('end-date') === null) ? date('Y-m-d', time()) : request()->get('end-date');
         if (request()->get('all')) {
             $orders = OrdersController::AllOrders('asc');
+            $supplySum = Supply::SuppliesSum();
         } else {
             $orders = OrdersController::OrdersByDate($startDate, $endDate, true, 'asc');
+            $supplySum = Supply::SuppliesSumByDate($startDate, $endDate);
         }
-        return view('arm.administration.orders.index', compact('orders', 'startDate', 'endDate'));
+
+        return view('arm.administration.orders.index', compact('orders', 'supplySum', 'startDate', 'endDate'));
     }
 
     public function Products()

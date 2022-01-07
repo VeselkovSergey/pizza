@@ -55,4 +55,38 @@ class Supply extends BaseModel
         }
         return $sum;
     }
+
+    public static function SuppliesSum()
+    {
+        $supplies = new self();
+        $supplies = $supplies->get();
+
+        $sum = 0;
+        foreach ($supplies as $supply) {
+            $sum += $supply->SupplySum();
+        }
+        return $sum;
+    }
+
+    public static function SuppliesSumByDate($startDate = null, $endDate = null)
+    {
+        $startDate = strtotime($startDate);
+        $endDate = strtotime($endDate);
+        $startDate = date('Y-m-d 00:00:00', $startDate);
+        $endDate = date('Y-m-d 23:59:59', $endDate);
+
+        $supplies = new self();
+
+        $supplies = $supplies->where('created_at', '>=', $startDate);
+        $supplies = $supplies->where('created_at', '<=', $endDate);
+
+        $supplies = $supplies->get();
+
+        $sum = 0;
+        foreach ($supplies as $supply) {
+            $sum += $supply->SupplySum();
+        }
+        return $sum;
+
+    }
 }
