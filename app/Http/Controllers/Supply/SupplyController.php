@@ -51,6 +51,7 @@ class SupplyController extends Controller
             'supplier_id' => $supplierId,
             'supply_date' => $dateSupply,
             'payment_type' => $paymentType,
+            'creator_id' => auth()->user()->id,
         ]);
 
         $ingredientInSupply = [];

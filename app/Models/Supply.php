@@ -7,6 +7,8 @@ namespace App\Models;
  * @property integer supplier_id
  * @property string supply_date
  * @property integer payment_type
+ * @property integer creator_id
+ * @property User Creator
  * @property Suppliers Supplier
  * @property string PaymentType
  */
@@ -17,7 +19,13 @@ class Supply extends BaseModel
         'supplier_id',
         'supply_date',
         'payment_type',
+        'creator_id',
     ];
+
+    public function Creator()
+    {
+        return $this->hasOne(User::class, 'id', 'creator_id');
+    }
 
     public function Supplier()
     {
