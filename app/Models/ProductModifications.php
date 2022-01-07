@@ -32,6 +32,6 @@ class ProductModifications extends BaseModel
 
     public function Ingredients()
     {
-        return $this->hasMany(ProductModificationsIngredients::class, 'product_modification_id', 'id');
+        return $this->hasMany(ProductModificationsIngredients::class, 'product_modification_id', 'id')->orderBy('ingredient_id');
     }
 }

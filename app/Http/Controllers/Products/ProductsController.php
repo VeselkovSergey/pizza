@@ -51,6 +51,7 @@ class ProductsController extends Controller
             $modificationCount = 0;
 
             foreach ($product->Modifications as $modification) {
+                /** @var ProductModifications $modification */
 
                 if (!in_array($modification->Modification->type_id, $arrModifications)) {
                     $arrModifications[] = $modification->Modification->type_id;  // добавляем тип модификации который еще не добавляли
