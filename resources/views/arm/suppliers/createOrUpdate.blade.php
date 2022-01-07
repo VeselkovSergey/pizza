@@ -6,7 +6,7 @@
 
         <div class="mb-10">
             <form class="supplier-create-or-edit-form" action="" onsubmit="return false;">
-                <label for="">Название
+                <label>Название поставщика
                     <input class="need-validate" name="title" type="text">
                     <button class="save-button orange-button">Создать</button>
                 </label>
