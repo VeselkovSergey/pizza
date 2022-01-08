@@ -7,6 +7,18 @@
     </div>
 
     <div>
+
+        @if(sizeof($files))
+
+        <div>
+            <div>Файлы</div>
+            @foreach($files as $file)
+                <a href="{{route('files', $file->modelFile->id)}}" download="{{$file->modelFile->original_name}}">{{$file->modelFile->original_name . '.' . $file->modelFile->extension}}</a>
+            @endforeach
+        </div>
+
+        @endif
+
         <div>
             <table class="w-100 border table-sort">
                 <thead>
@@ -32,6 +44,7 @@
                 </tbody>
             </table>
         </div>
+
     </div>
 
 

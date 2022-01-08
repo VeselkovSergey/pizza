@@ -19,6 +19,7 @@ class CreateSupplyTable extends Migration
             $table->dateTime('supply_date');
             $table->integer('payment_type');
             $table->integer('creator_id');
+            $table->json('files');
             $table->timestamps();
         });
     }

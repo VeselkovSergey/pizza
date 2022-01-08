@@ -7,6 +7,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property integer id
+ */
 class Files extends BaseModel
 {
     use HasFactory, Notifiable;

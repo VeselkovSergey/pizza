@@ -79,7 +79,7 @@ class Files
 
     public static function GetFileHTTP(Request $request)
     {
-        $file = FilesDB::find($request->file_id);
+        $file = FilesDB::find($request->fileId);
         if ($file) {
             $filePath = Storage::disk($file->disk)->get($file->path . '/' . $file->hash_name. '.' . $file->extension);
             return response($filePath)->header('Content-type',$file->type);

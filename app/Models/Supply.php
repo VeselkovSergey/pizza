@@ -8,6 +8,7 @@ namespace App\Models;
  * @property string supply_date
  * @property integer payment_type
  * @property integer creator_id
+ * @property string files
  * @property User Creator
  * @property Suppliers Supplier
  * @property string PaymentType
@@ -20,6 +21,7 @@ class Supply extends BaseModel
         'supply_date',
         'payment_type',
         'creator_id',
+        'files',
     ];
 
     public function Creator()

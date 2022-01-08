@@ -41,6 +41,12 @@
                 </label>
             </div>
 
+            <div class="mb-10">
+                <label for="">Накладная/чек
+                    <input name="file" type="file">
+                </label>
+            </div>
+
             <div class="container-for-ingredients mb-10">
 
             </div>
@@ -98,6 +104,11 @@
             let supplierId = document.body.querySelector('select[name="supplier"]').value;
             let dateSupply = document.body.querySelector('input[name="dateSupply"]').value;
             let paymentType = document.body.querySelector('select[name="paymentType"]').value;
+            let file = document.body.querySelector('input[name="file"]').files[0];
+
+            if (file === undefined) {
+                return FlashMessage('Выберите файл!');
+            }
 
             if (dateSupply === '' || existInvalidIngredientData === true || allIngredientsInSupplyData.length === 0) {
                 return FlashMessage('Заполните данные корректно!');
@@ -108,6 +119,7 @@
                 dateSupply: dateSupply,
                 paymentType: paymentType,
                 allIngredientsInSupplyData: JSON.stringify(allIngredientsInSupplyData),
+                file: file,
             }
 
             Ajax("{{route('supply-save')}}", 'POST', data).then((response) => {

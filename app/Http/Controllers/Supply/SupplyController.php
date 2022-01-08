@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers\Supply;
 
+use App\Helpers\Files;
 use App\Helpers\ResultGenerate;
 use App\Helpers\StringHelper;
 use App\Http\Controllers\Controller;
@@ -30,7 +31,17 @@ class SupplyController extends Controller
     {
         $supplyId = (int)\request()->supplyId;
         $supply = Supply::find($supplyId);
-        return view('arm.supply.detail', compact('supply'));
+        $supplyFiles = $supply->files;
+        $supplyFiles = json_decode($supplyFiles);
+
+        $files = [];
+        if (isset($supplyFiles)) {
+            foreach ($supplyFiles as $fileId) {
+                $files[] = Files::GetFile($fileId);
+            }
+        }
+
+        return view('arm.supply.detail', compact('supply', 'files'));
     }
 
     public function Create()
@@ -45,13 +56,17 @@ class SupplyController extends Controller
         $supplierId = $request->supplierId;
         $dateSupply = $request->dateSupply;
         $paymentType = $request->paymentType;
+        $file = $request->file;
         $allIngredientsInSupplyData = StringHelper::JsonDecode($request->allIngredientsInSupplyData);
+
+        $fileDB = Files::SaveFile($file, 'invoice');
 
         $newSupply = Supply::create([
             'supplier_id' => $supplierId,
             'supply_date' => $dateSupply,
             'payment_type' => $paymentType,
             'creator_id' => auth()->user()->id,
+            'files' => json_encode([$fileDB->id]),
         ]);
 
         $ingredientInSupply = [];

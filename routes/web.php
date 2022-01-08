@@ -26,7 +26,8 @@ use App\Http\Controllers;
 
 Route::get('/', [Controllers\Catalog\CatalogController::class, 'Index'])->name('home-page');
 
-Route::get('resources/{directory}/{fileName}', [Controllers\Resources\ResourceController::class, 'GetResources']);
+Route::get('/resources/{directory}/{fileName}', [Controllers\Resources\ResourceController::class, 'GetResources']);
+Route::get('/files/{fileId}', [\App\Helpers\Files::class, 'GetFileHTTP'])->name('files');
 
 Route::group(['prefix' => 'catalog'], function () {
 
