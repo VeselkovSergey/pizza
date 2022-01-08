@@ -9,6 +9,7 @@ use App\Http\Controllers\Orders\OrdersController;
 use App\Http\Controllers\Products\ProductsController;
 use App\Models\Orders;
 use App\Models\PromoCodes;
+use App\Models\Supply;
 use App\Models\User;
 use App\Services\Telegram\Telegram;
 
@@ -24,7 +25,8 @@ class ManagerARMController extends Controller
         $today = now()->format('Y-m-d');
         $allOrders = !empty(request()->get('all-orders'));
         $orders = OrdersController::OrdersByDate($today, $today, $allOrders);
-        return view('arm.management.orders.index', compact('orders'));
+        $supplySum = Supply::SuppliesSumByDate($today, $today);
+        return view('arm.management.orders.index', compact('orders', 'supplySum'));
     }
 
     public function Order()
