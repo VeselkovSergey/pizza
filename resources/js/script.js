@@ -99,7 +99,11 @@ function CheckingFieldForEmptiness(container, ShowFlashMessage = false) {
             check = false;
             element.classList.add('invalid-value');
             element.addEventListener('input', () => {
-                FieldCorrection(element);
+                let strValue = element.value;
+                if (strValue !== '' && strValue !== null && strValue !== 'null' && strValue !== undefined) {
+                    element.classList.remove('invalid-value');
+                    element.removeEventListener('input', null);
+                }
             }, {once: true});
         }
     });
@@ -107,14 +111,6 @@ function CheckingFieldForEmptiness(container, ShowFlashMessage = false) {
         FlashMessage('Заполните все поля!');
     }
     return check;
-}
-
-function FieldCorrection(element) {
-    let strValue = element.value;
-    if (strValue !== '' && strValue !== null && strValue !== 'null' && strValue !== undefined) {
-        element.classList.remove('invalid-value');
-        element.removeEventListener('input', null);
-    }
 }
 
 function ModalWindow(content, closingCallback, flash) {
@@ -185,9 +181,11 @@ function ModalWindow(content, closingCallback, flash) {
     return modalWindowComponentContainer;
 
     function ScrollOff(flash) {
-        setTimeout(() => {
-            !flash ? documentBody.classList.remove('scroll-off') : '';
-        }, 200);
+        if (document.querySelectorAll('.modal-window-component-container').length === 1) {
+            setTimeout(() => {
+                !flash ? documentBody.classList.remove('scroll-off') : '';
+            }, 200);
+        }
     }
 }
 
@@ -198,9 +196,9 @@ function CloseByScroll(modalWindowComponentContainer, container, content, closin
         let containerModalWindow = container;
 
         let startTouchY = 0;
-        let startTouchX = 0;
+        // let startTouchX = 0;
         let correctionCoefficientY = 0;
-        let correctionCoefficientX = 0;
+        // let correctionCoefficientX = 0;
         containerModalWindow.addEventListener('touchstart', (event) => {
             containerModalWindow.style.transition = 'transform 0ms ease-out';
             if (content.getBoundingClientRect().top >= 0) {
@@ -214,7 +212,7 @@ function CloseByScroll(modalWindowComponentContainer, container, content, closin
         })
 
         let lengthSwipeY = 0;
-        let lengthSwipeX = 0;
+        // let lengthSwipeX = 0;
         containerModalWindow.addEventListener('touchmove', (event) => {
             if (content.getBoundingClientRect().top === content.firstChild.getBoundingClientRect().top && content.getBoundingClientRect().top >= (-1 + correctionCoefficientY)) {
                 lengthSwipeY = event.changedTouches[0].clientY - startTouchY;
@@ -236,7 +234,7 @@ function CloseByScroll(modalWindowComponentContainer, container, content, closin
         });
 
         let heightClientScreen = document.documentElement.clientHeight;
-        let widthClientScreen = document.documentElement.clientWidth;
+        // let widthClientScreen = document.documentElement.clientWidth;
 
         containerModalWindow.addEventListener('touchend', () => {
             containerModalWindow.style.transition = '';
@@ -484,10 +482,14 @@ function UpdateBasketCounter(value) {
 
 function UpdateBasketSum() {
     let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
+
     let basketSumField = document.body.querySelector('.price-sum-products-in-basket');
-    basketSumField.innerHTML =  '<div>Сумма: ' + resultPriceSumProductsInBasket.sum.toFixed(2) + ' ₽</div>' +
-                                '<div>Скидка: ' + resultPriceSumProductsInBasket.discount.toFixed(2) + ' ₽</div>' +
-                                '<div>Итого: ' + resultPriceSumProductsInBasket.total.toFixed(2) + ' ₽</div>';
+    if (basketSumField) {
+        basketSumField.innerHTML =  '<div>Сумма: ' + resultPriceSumProductsInBasket.sum.toFixed(2) + ' ₽</div>' +
+                                    '<div>Скидка: ' + resultPriceSumProductsInBasket.discount.toFixed(2) + ' ₽</div>' +
+                                    '<div>Итого: ' + resultPriceSumProductsInBasket.total.toFixed(2) + ' ₽</div>';
+    }
+
     return resultPriceSumProductsInBasket;
 }
 
@@ -510,8 +512,6 @@ function BasketWindow() {
         OrderInfoGenerationHTML(orderId);
 
     basketWindow = ModalWindow(basketContent);
-
-    let priceSumProductsInBasket = document.body.querySelector('.price-sum-products-in-basket');
 
     let deleteProductButtons = document.body.querySelectorAll('.delete-product-button');
     deleteProductButtons.forEach((el) => {
@@ -1218,6 +1218,7 @@ function OpeningHours(startHour, startMints, endHour, endMints) {
     }
 }
 
+/* сообщение о куках */
 if (localStorage.getItem('cookiesAccepted') === null) {
     const cookiesInfo = '<div class="pos-fix bottom-0 bg-black w-100 shadow-white"><div class="flex-space-between flex-wrap p-25"><div class="text-center py-10"> Мы тоже используем куки, потому что без них вообще ничего не работает</div><button class="cookies-accept-button orange-button">Ничего, я привык</button></div></div>';
     let cookiesInfoElement = CreateElement('div', {content: cookiesInfo}, document.body);
