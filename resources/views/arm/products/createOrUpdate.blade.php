@@ -4,7 +4,12 @@
 
     <style>
         .delete-ingredient-button {
-            align-self: flex-end;
+            padding: 15px;
+            margin: 0;
+            border: 1px solid red;
+            color: red;
+            background-color: unset;
+            border-radius: 25px;
         }
     </style>
 
@@ -169,20 +174,22 @@
             generatedIngredientContainer.className = 'ingredient-container border m-5 p-5 flex-wrap';
             generatedIngredientContainer.innerHTML =    '' +
                                                             GenerateIngredientsSelector(tempId)+
-                                                            '<div>' +
+                                                            '<div class="m-5">' +
                                                                 '<label>Количество</label>' +
                                                                 '<input class="need-validate ingredient-amount" name="modifications['+ tempId +'][ingredients][amount][]" type="text">' +
                                                             '</div>' +
-                                                            '<div>' +
+                                                            '<div class="m-5">' +
                                                                 '<label>Стоимость за единицу</label>' +
                                                                 '<input class="unit-ingredient-price" type="text" readonly>' +
                                                             '</div>' +
-                                                            '<div>' +
+                                                            '<div class="m-5">' +
                                                                 '<label>Стоимость</label>' +
                                                                 '<input class="ingredient-price" type="text" readonly>' +
                                                             '</div>' +
-                                                            '<div class="flex">' +
-                                                                '<button class="delete-ingredient-button">Удалить ингредиент</button>' +
+                                                            '<div class="m-5">' +
+                                                                '<button class="delete-ingredient-button flex-center cp">' +
+                                                                    '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/> <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/> </svg>' +
+                                                                '</button>' +
                                                             '</div>';
 
             let ingredientPriceInput = generatedIngredientContainer.querySelector('.ingredient-price');
