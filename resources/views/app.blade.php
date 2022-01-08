@@ -143,7 +143,7 @@
         <script>
 
             //toDo сделать редактирование через интерфейс
-            const closeMessage = '';
+            const closeMessage = 'По техническим причинам мы закрыты. Приносим свои извинения.';
 
             if (closeMessage) {
                 ModalWindow(closeMessage);
