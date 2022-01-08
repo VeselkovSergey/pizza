@@ -2,6 +2,19 @@
 
 @section('content')
 
+    <style>
+
+        .delete-ingredient-button {
+            padding: 15px;
+            margin: 0;
+            border: 1px solid red;
+            color: red;
+            background-color: unset;
+            border-radius: 25px;
+        }
+
+    </style>
+
     <div class="mb-10">
         <a class="orange-button" href="{{route('supplies-page')}}">назад в поставки</a>
     </div>
@@ -175,7 +188,7 @@
                                             '<input class="need-validate" name="sum" type="text" value="0" readonly>' +
                                         '</div>' +
                                         '<div class="m-5">' +
-                                            '<button class="delete-ingredient-button cp flex-center border-radius-25 p-10 m-0 border-clear border">' +
+                                            '<button class="delete-ingredient-button cp flex-center">' +
                                                 '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/> <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/> </svg>' +
                                             '</button>' +
                                         '</div>';
