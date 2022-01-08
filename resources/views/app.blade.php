@@ -3,6 +3,11 @@
     if(str_contains(url()->current(), 'arm') && auth()->check() && auth()->user()->IsManager()) {
         $isARM = true;
     }
+
+    $isStaff = false;
+    if (auth()->check() && auth()->user()->IsStaff()) {
+        $isStaff = true;
+    }
 @endphp
 
 <!DOCTYPE html>
@@ -71,7 +76,7 @@
                                     Вход
                                 @endif
                             </div>
-                            @if($authCheck && auth()->user()->IsStaff())
+                            @if($isStaff)
                                 @foreach(\App\Http\Controllers\ARM\ARMController::AllRoutes() as $route)
                                     @if(in_array(auth()->user()->role_id, (array)$route->role))
                                         <a class="mb-5 pb-5 color-black" style="text-decoration: none; border-bottom: 1px solid gray;" href="{{$route->link}}">{{$route->title}}</a>
@@ -91,8 +96,6 @@
             <footer>@include('layouts.footer')</footer>
         @endif
 
-
-
         <script>
             const auth = {{auth()->check() ? 'true' : 'false'}};
             const admin = {{(auth()->check() && auth()->user()->IsManager()) ? 'true' : 'false'}};
@@ -102,13 +105,10 @@
             const routePhoneValidation = "{{route('phone-validation')}}";
             const routeCheckConfirmationCode = "{{route('check-confirmation-code')}}";
             const routeLogout = "{{route('logout')}}";
-
             const routeCheckPromoCodeRequest = "{{route('check-promo-code')}}";
-
-            const routeManagerArmCheckOrderStatusChange = "{{route('manager-arm-check-order-status-change')}}";
         </script>
 
-        @if(auth()->check() && auth()->user()->IsManager())
+        @if($isStaff)
         <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
         <script>
 
@@ -138,9 +138,6 @@
                 localStorage.removeItem('execFunction');
                 eval(execFunction);
             }
-        </script>
-
-        <script>
 
             //toDo сделать редактирование через интерфейс
             const closeMessage = 'По техническим причинам мы закрыты. Приносим свои извинения.';
@@ -149,35 +146,13 @@
                 ModalWindow(closeMessage);
             }
 
-            // function calcLostTime(container, startHour, startMints) {
-            //     let timerId = setInterval(function() {
-            //         let time = new Date();
-            //         let hour = time.getUTCHours() + moskowUtc;
-            //         container.innerHTML = ((hour > 24 ? "0" : "") + (((startHour - 1) - hour) < 10 ? '0' : '') + ((startHour - 1) - hour)) + ":" + (((60 - startMints) - time.getMinutes()) < 10 ? '0' : '') + ((60 - startMints) - time.getMinutes()) + ":" + ((60 - time.getSeconds()) < 10 ? '0' : '') + (60 - time.getSeconds());
-            //     }, 1000);
-            // }
-
-            let startHour = 11;
-            let startMints = 0;
-            let endHour = 22;
-            let endMints = 45;
-
-            let moskowUtc = 3;
-            let time = new Date();
-            let hour = time.getUTCHours() + moskowUtc;
-            let mints = time.getMinutes() + moskowUtc;
-
-            if ((hour === startHour && mints >= startMints) || (startHour < hour && hour < endHour) || (hour === endHour && mints <= endMints)) {
-                //
-            } else {
-                if (!admin) {
-                    ModalWindow('<div class="text-center">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div></div>');
-                }
-            }
+            OpeningHours(11, 0, 22, 45);
 
             document.querySelectorAll('.table-sort > thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
 
-            ManagerArmCheckOrderStatusChange();
+            @if($isStaff)
+                ManagerArmCheckOrderStatusChange();
+            @endif
 
             @if($isARM)
             document.body.querySelectorAll('table').forEach((table) => {
@@ -186,22 +161,7 @@
             });
             @endif
 
-            if (localStorage.getItem('cookiesAccepted') === null) {
-                const cookiesInfo = '<div class="pos-fix bottom-0 bg-black w-100 shadow-white"><div class="flex-space-between flex-wrap p-25"><div class="text-center py-10"> Мы тоже используем куки, потому что без них вообще ничего не работает</div><button class="cookies-accept-button orange-button">Ничего, я привык</button></div></div>';
-                let cookiesInfoElement = CreateElement('div', {content: cookiesInfo}, document.body);
-                let cookiesAcceptButton = document.body.querySelector('.cookies-accept-button');
-                if (cookiesAcceptButton) {
-                    cookiesAcceptButton.addEventListener('click', () => {
-                        localStorage.setItem('cookiesAccepted', Date.now().toString());
-                        cookiesInfoElement.remove();
-                    });
-                }
-            }
-
-
-
         </script>
-
 
     </body>
 

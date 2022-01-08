@@ -360,8 +360,6 @@ function DeleteAllProductsInBasket() {
     UpdateBasketCounter(CountProductsInBasket())
 }
 
-let promoCode = localStorage.getItem('promoCode') !== null ? JSON.parse(localStorage.getItem('promoCode')) : null;
-
 function PriceSumProductsInBasket() {
     let sum = 0;
     let sumIdentModifications = {};
@@ -369,6 +367,9 @@ function PriceSumProductsInBasket() {
     let sumAllDiscountProduct = 0;
 
     let reiterationsCounts = 0;
+
+    let promoCode = localStorage.getItem('promoCode') !== null ? JSON.parse(localStorage.getItem('promoCode')) : null;
+
     if (promoCode) {
         reiterationsCounts = promoCode.every.reiterationsCounts;
     }
@@ -595,29 +596,29 @@ function BasketWindow() {
             localStorage.removeItem('lastTypePayment');
             localStorage.removeItem('orderId');
             localStorage.removeItem('promoCode');
-            promoCode = null;
             basketWindow.slowRemove();
         });
     }
 
     let promoCodeApplyButton = document.body.querySelector('.promo-code-apply-button');
     if (promoCodeApplyButton !== null) {
+
         promoCodeApplyButton.addEventListener('click', () => {
-            promoCode = null;
+
             localStorage.removeItem('promoCode');
+
             let promoCodeContainer = document.body.querySelector('.promo-code-container');
             let promoCodeField = promoCodeContainer.querySelector('input[name="clientPromoCode"]');
             let promoCodeValue = promoCodeField.value;
+
             if (promoCodeValue === '') {
-                ModalWindow('Промокод не действителен');
                 UpdateBasketSum();
             } else {
                 Ajax(routeCheckPromoCodeRequest, 'POST', {promoCode: promoCodeValue})
                     .then((response) => {
                         if (response.status) {
                             let result = response.result;
-                            promoCode = result.conditions;
-                            localStorage.setItem('promoCode', JSON.stringify(promoCode));
+                            localStorage.setItem('promoCode', JSON.stringify(result.conditions));
                             ModalWindow(result.description);
                         } else {
                             ModalWindow('Промокод не действителен');
@@ -710,7 +711,6 @@ function CreateOrder(orderId) {
                 basketWindow.slowRemove();
                 document.body.classList.remove('scroll-off');
                 DeleteAllProductsInBasket();
-                promoCode = null;
                 localStorage.removeItem('promoCode');
                 if (orderId) {
                     localStorage.removeItem('lastClientName');
@@ -789,7 +789,7 @@ function OrderInfoGenerationHTML(orderId) {
         return  '<div class="client-information w-100">' +
                     '<div class="promo-code-container w-100 flex-wrap-center mb-10">' +
                         '<label for="">Промокод</label>' +
-                        '<input name="clientPromoCode" class="w-75 mr-a last-data" type="text">' +
+                        '<input name="clientPromoCode" class="w-75 mr-a" type="text">' +
                         '<button class="promo-code-apply-button orange-button">Применить</button>' +
                     '</div>' +
                     '<div>Оформление заказа</div>' +
@@ -1200,5 +1200,32 @@ function ManagerArmCheckOrderStatusChange(data = null) {
 
     } else {
         alarmContainer.classList.remove('motion');
+    }
+}
+
+function OpeningHours(startHour, startMints, endHour, endMints) {
+    let moskowUtc = 3;
+    let time = new Date();
+    let hour = time.getUTCHours() + moskowUtc;
+    let mints = time.getMinutes() + moskowUtc;
+
+    if ((hour === startHour && mints >= startMints) || (startHour < hour && hour < endHour) || (hour === endHour && mints <= endMints)) {
+        //
+    } else {
+        if (!admin) {
+            ModalWindow('<div class="text-center">Часы работы с ' + startHour + ':'+ ((startMints < 10 ? '0' : '') + startMints) +' до ' + endHour + ':'+ ((endMints < 10 ? '0' : '') + endMints) +'</div></div>');
+        }
+    }
+}
+
+if (localStorage.getItem('cookiesAccepted') === null) {
+    const cookiesInfo = '<div class="pos-fix bottom-0 bg-black w-100 shadow-white"><div class="flex-space-between flex-wrap p-25"><div class="text-center py-10"> Мы тоже используем куки, потому что без них вообще ничего не работает</div><button class="cookies-accept-button orange-button">Ничего, я привык</button></div></div>';
+    let cookiesInfoElement = CreateElement('div', {content: cookiesInfo}, document.body);
+    let cookiesAcceptButton = document.body.querySelector('.cookies-accept-button');
+    if (cookiesAcceptButton) {
+        cookiesAcceptButton.addEventListener('click', () => {
+            localStorage.setItem('cookiesAccepted', Date.now().toString());
+            cookiesInfoElement.remove();
+        });
     }
 }

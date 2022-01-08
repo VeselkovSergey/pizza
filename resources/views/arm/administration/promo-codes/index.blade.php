@@ -66,7 +66,6 @@
             changeActivePromoCodeField.addEventListener('change', (event) => {
                 let promoCodeId = event.target.dataset.id;
                 let promoCodeActive = event.target.checked;
-                console.log(promoCodeId, promoCodeActive)
                 Ajax('{{route('change-active-promo-code')}}', 'POST', {promoCodeId: promoCodeId, promoCodeActive: promoCodeActive})
                 .then((response) => {
                     FlashMessage(response.message);

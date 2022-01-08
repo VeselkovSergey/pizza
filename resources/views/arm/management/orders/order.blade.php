@@ -104,10 +104,6 @@
 
         let allProducts = {!! json_encode($allProducts, JSON_UNESCAPED_UNICODE) !!};
         let productsAndModificationsInOrderForOrderEdit = {!! json_encode($productsAndModificationsInOrderForOrderEdit, JSON_UNESCAPED_UNICODE) !!};
-        @if($promoCode)
-        promoCode = {!! json_encode($promoCode->conditions, JSON_UNESCAPED_UNICODE) !!};
-        localStorage.setItem('promoCode', JSON.stringify(promoCode));
-        @endif
 
         let buttonsOrderChangeStatus = document.body.querySelectorAll('.order-change-status');
         buttonsOrderChangeStatus.forEach((button) => {
@@ -192,6 +188,10 @@
                 localStorage.setItem('lastClientComment', '{{$clientInfo->clientComment}}');
                 localStorage.setItem('lastTypePayment', '{{$clientInfo->typePayment[0] === true ? 'card' : 'cash'}}');
                 localStorage.setItem('orderId', orderId);
+
+                @if($promoCode)
+                localStorage.setItem('promoCode', JSON.stringify({!! json_encode($promoCode->conditions, JSON_UNESCAPED_UNICODE) !!}));
+                @endif
 
                 localStorage.setItem('execFunction', 'BasketWindow()');
 
