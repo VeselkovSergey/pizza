@@ -9,10 +9,8 @@
             <div>
                 <label for="">Название
                     <input class="need-validate" name="title" type="text">
+                    <button class="save-button orange-button">Создать</button>
                 </label>
-            </div>
-            <div>
-                <button class="save-button">Создать</button>
             </div>
 
         </form>

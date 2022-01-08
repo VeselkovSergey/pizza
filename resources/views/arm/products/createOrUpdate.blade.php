@@ -12,25 +12,25 @@
 
         <form class="product-create-or-edit-form" action="" onsubmit="return false;">
 
-            <div>
+            <div class="mb-10">
                 <label for="">Название
                     <input class="need-validate" name="title" type="text">
                 </label>
             </div>
 
-            <div>
+            <div class="mb-10">
                 <div>Модификации</div>
                 <div class="modifications-containers">
 
                 </div>
 
                 <div>
-                    <button class="add-modification-button">Добавить модификацию</button>
+                    <button class="add-modification-button orange-button">Добавить модификацию</button>
                 </div>
             </div>
 
             <div>
-                <button class="save-button">Создать</button>
+                <button class="save-button orange-button">Создать</button>
             </div>
 
         </form>
@@ -78,9 +78,9 @@
                                                             '<div class="ingredients-container">' +
                                                             '</div>' +
                                                             '<div>' +
-                                                                '<button class="add-ingredient-button">Добавить ингредиенты</button>' +
+                                                                '<button class="add-ingredient-button orange-button mt-10">Добавить ингредиенты</button>' +
                                                             '</div>' +
-                                                            '<div class="pricing-container">' +
+                                                            '<div class="pricing-container mb-10">' +
                                                                 '<div>' +
                                                                     '<label>Себестоимость</label>' +
                                                                     '<input class="cost-price" readonly type="text">' +
@@ -95,7 +95,7 @@
                                                                 '</div>' +
                                                             '</div>' +
                                                             '<div>' +
-                                                                '<button class="delete-modification-button">Удалить модификацию</button>' +
+                                                                '<button class="delete-modification-button orange-button">Удалить модификацию</button>' +
                                                             '</div>';
             let ingredientsContainer = generatedModificationContainer.querySelector('.ingredients-container');
             let addIngredientButton = generatedModificationContainer.querySelector('.add-ingredient-button');

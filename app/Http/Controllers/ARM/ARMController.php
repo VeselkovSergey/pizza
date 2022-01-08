@@ -28,6 +28,11 @@ class ARMController
                 'role' => [999],
             ],
             [
+                'title' => 'Новый продукт',
+                'link' => route('product-create-page'),
+                'role' => [999],
+            ],
+            [
                 'title' => 'Все ингредиенты (JSON)',
                 'link' => route('all-ingredients'),
                 'role' => [999],
@@ -41,11 +46,6 @@ class ARMController
                 'title' => 'Поставки',
                 'link' => route('supplies-page'),
                 'role' => [999, 777],
-            ],
-            [
-                'title' => 'Новый продукт',
-                'link' => route('product-create-page'),
-                'role' => [999],
             ],
             [
                 'title' => 'Все продукты (Админка)',

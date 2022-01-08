@@ -6,12 +6,12 @@
 
         <form class="modifications-create-or-edit-form" action="" onsubmit="return false;">
 
-            <div>
+            <div class="mb-10">
                 <label for="">Название
                     <input class="need-validate" name="title" type="text">
                 </label>
             </div>
-            <div>
+            <div class="mb-10">
                 <label for="">Тип
                     <select name="modificationType">
                         @foreach($typeModifications as $typeModification)
@@ -21,13 +21,13 @@
                 </label>
 
             </div>
-            <div>
+            <div class="mb-10">
                 <label for="">Значение
                     <input class="need-validate" name="modificationValue" type="text">
                 </label>
             </div>
             <div>
-                <button class="save-button">Создать</button>
+                <button class="save-button orange-button">Создать</button>
             </div>
 
         </form>
