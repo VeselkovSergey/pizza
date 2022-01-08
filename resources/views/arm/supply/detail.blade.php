@@ -12,9 +12,18 @@
 
         <div>
             <div>Файлы</div>
-            @foreach($files as $file)
-                <a href="{{route('files', $file->modelFile->id)}}" download="{{$file->modelFile->original_name}}">{{$file->modelFile->original_name . '.' . $file->modelFile->extension}}</a>
-            @endforeach
+            <div class="flex-wrap">
+                @foreach($files as $file)
+                    <div>
+                        @if($file->modelFile->extension === 'jpg')
+                            <img class="open-large cp" width="200" height="200" src="{{route('files', $file->modelFile->id)}}">
+                        @endif
+                        <div>
+                            <a href="{{route('files', $file->modelFile->id)}}" download="{{$file->modelFile->original_name}}">{{$file->modelFile->original_name . '.' . $file->modelFile->extension}}</a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
 
         @endif
@@ -51,5 +60,21 @@
 @stop
 
 @section('js')
+
+    <script>
+
+        document.body.querySelectorAll('.open-large').forEach((imgElement) => {
+           imgElement.addEventListener('click', (event) => {
+               let imgUrl = event.target.getAttribute('src');
+               let img = CreateElement('img', {
+                   attr: {
+                       src: imgUrl
+                   }
+               });
+               ModalWindow(img);
+           })
+        });
+
+    </script>
 
 @stop
