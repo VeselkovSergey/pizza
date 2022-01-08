@@ -53,7 +53,6 @@ class SupplyController extends Controller
 
     public function Save(Request $request)
     {
-        dd($request->all());
         $supplierId = $request->supplierId;
         $dateSupply = $request->dateSupply;
         $paymentType = $request->paymentType;
