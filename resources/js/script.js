@@ -617,7 +617,7 @@ function BasketWindow() {
                         if (response.status) {
                             let result = response.result;
                             promoCode = result.conditions;
-                            localStorage.setItem('promoCode', JSON.stringify('promoCode'));
+                            localStorage.setItem('promoCode', JSON.stringify(promoCode));
                             ModalWindow(result.description);
                         } else {
                             ModalWindow('Промокод не действителен');
