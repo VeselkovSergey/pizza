@@ -381,3 +381,7 @@ input:checked + .custom-checkbox-slider:before {
 .custom-checkbox-slider.round:before {
     border-radius: 50%;
 }
+
+::-webkit-scrollbar {
+    width: 0;               /* ширина scrollbar */
+}
