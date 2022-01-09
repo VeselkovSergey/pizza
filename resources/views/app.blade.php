@@ -1,12 +1,22 @@
 @php
-    $isARM = false;
-    if(str_contains(url()->current(), 'arm') && auth()->check() && auth()->user()->IsManager()) {
-        $isARM = true;
-    }
-
     $isStaff = false;
     if (auth()->check() && auth()->user()->IsStaff()) {
         $isStaff = true;
+    }
+
+    $isARM = false;
+    if((str_contains(url()->current(), 'arm') || str_contains(url()->current(), 'settings')) && $isStaff) {
+        $isARM = true;
+    }
+
+    $closedMessage = \App\Models\Settings::where('key', 'closedMessage')->first();
+    if ($closedMessage) {
+        $closedMessageTitle = json_decode($closedMessage->value)->closedMessageTitle;
+        $closedMessageStart = json_decode($closedMessage->value)->start;
+        $closedMessageStart = (time() - strtotime($closedMessageStart)) > 0 ? true : false;
+    } else {
+        $closedMessageTitle = '';
+        $closedMessageStart = false;
     }
 @endphp
 
@@ -156,12 +166,13 @@
                 eval(execFunction);
             }
 
-            //toDo сделать редактирование через интерфейс
-            const closeMessage = 'По техническим причинам мы закрыты. Приносим свои извинения.';
+            @if(!$isARM && $closedMessageStart)
+            const closeMessage = "{{$closedMessageTitle}}";
 
             if (closeMessage) {
                 ModalWindow(closeMessage);
             }
+            @endif
 
             OpeningHours(11, 0, 22, 45);
 

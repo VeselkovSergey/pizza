@@ -41,6 +41,19 @@ Route::group(['prefix' => 'orders'], function () {
 
 });
 
+Route::group(['prefix' => 'settings'], function () {
+
+    Route::get('/', [Controllers\Settings\SettingsController::class, 'Index'])->name('settings-page');
+
+    Route::group(['prefix' => 'closed-message'], function () {
+
+        Route::get('/', [Controllers\Settings\SettingsController::class, 'ClosedMessage'])->name('settings-closed-message-page');
+        Route::post('/save', [Controllers\Settings\SettingsController::class, 'ClosedMessageSave'])->name('settings-closed-message-save');
+
+    });
+
+});
+
 Route::group(['prefix' => 'promo-codes'], function () {
 
     Route::post('/check', [Controllers\PromoCodes\PromoCodesController::class, 'CheckPromoCodeRequest'])->name('check-promo-code');

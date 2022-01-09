@@ -63,6 +63,11 @@ class ARMController
                 'role' => [999],
             ],
             [
+                'title' => 'Настройки',
+                'link' => route('settings-page'),
+                'role' => [999],
+            ],
+            [
                 'title' => 'АРМ Администратора',
                 'link' => route('administrator-arm-page'),
                 'role' => [999],
