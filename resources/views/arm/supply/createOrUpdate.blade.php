@@ -215,16 +215,16 @@
             });
 
             inputIngredientAmount.addEventListener('input', () => {
-                let amount = inputIngredientAmount.value;
-                let price = inputIngredientPrice.value;
+                let amount = inputIngredientAmount.value.replace(/,/, '.');
+                let price = inputIngredientPrice.value.replace(/,/, '.');
                 let countSum = CountSum(amount, price);
                 inputIngredientSum.value = parseFloat(countSum).toFixed(2);
                 CountSumTotal();
             });
 
             inputIngredientPrice.addEventListener('input', () => {
-                let price = inputIngredientPrice.value;
-                let amount = inputIngredientAmount.value;
+                let price = inputIngredientPrice.value.replace(/,/, '.');
+                let amount = inputIngredientAmount.value.replace(/,/, '.');
                 let countSum = CountSum(amount, price);
                 inputIngredientSum.value = parseFloat(countSum).toFixed(2);
                 CountSumTotal();
