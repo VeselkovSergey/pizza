@@ -57,13 +57,18 @@ class TelegramBotController extends Controller
                     $message = '<b>Команды:</b>' . PHP_EOL;
                     $message .= 'Показать все команды: /all' . PHP_EOL;
                     $message .= 'Получить ID чата /chatId' . PHP_EOL;
-                    $message .= 'Отчёт /todayReport' . PHP_EOL;
-                    $message .= 'Отчёт /yesterdayReport' . PHP_EOL;
-                    $message .= 'Отчёт /weekReport' . PHP_EOL;
-                    $message .= 'Отчёт /lastWeekReport' . PHP_EOL;
-                    $message .= 'Отчёт /monthReport' . PHP_EOL;
-                    $message .= 'Отчёт /lastMonthReport' . PHP_EOL;
-                    $message .= 'Отчёт /fullReport' . PHP_EOL;
+
+                    $user = User::where('telegram_chat_id', $telegram->ChatId())->first();
+                    if ($user && $user->UserIsAdmin()) {
+                        $message .= 'Отчёт /todayReport' . PHP_EOL;
+                        $message .= 'Отчёт /yesterdayReport' . PHP_EOL;
+                        $message .= 'Отчёт /weekReport' . PHP_EOL;
+                        $message .= 'Отчёт /lastWeekReport' . PHP_EOL;
+                        $message .= 'Отчёт /monthReport' . PHP_EOL;
+                        $message .= 'Отчёт /lastMonthReport' . PHP_EOL;
+                        $message .= 'Отчёт /fullReport' . PHP_EOL;
+                    }
+
                     $telegram->sendMessage($message);
                     break;
 
