@@ -75,9 +75,7 @@ class TelegramBotController extends Controller
                 case '/lastMonthReport':
                 case '/fullReport':
 
-                    $user = User::where('telegram_chat_id', $telegram->ChatId());
-                    $telegram->sendMessage(json_encode($user));
-
+                    $user = User::where('telegram_chat_id', $telegram->ChatId())->first();
                     if (!($user && $user->IsAdmin())) {
                         $telegram->sendMessage('Неа ;) не прокатит!');
                         break;
