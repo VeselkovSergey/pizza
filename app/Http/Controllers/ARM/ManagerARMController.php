@@ -24,7 +24,7 @@ class ManagerARMController extends Controller
     {
         $today = now()->format('Y-m-d');
         $allOrders = !empty(request()->get('all-orders'));
-        $orders = OrdersController::OrdersByDate($today, $today, $allOrders);
+        $orders = Orders::ByDate($today, $today, $allOrders);
         $supplySum = Supply::SuppliesSumByDate($today, $today);
         return view('arm.management.orders.index', compact('orders', 'supplySum'));
     }
@@ -32,12 +32,12 @@ class ManagerARMController extends Controller
     public function Order()
     {
         $orderId = request()->orderId;
-        $order = OrdersController::Order($orderId);
+        $order = Orders::find($orderId);
         if ($order->status_id === Orders::STATUS_TEXT['newOrder'] && !auth()->user()->IsAdmin()) {
             self::ChangeStatusOrderToManagerProcesses($order);
         }
-        $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
-        $orderStatuses = OrdersController::OrderStatuses($order);
+        $productsModificationsInOrder = $order->ProductsModifications;
+        $orderStatuses = $order->Statuses;
         $clientInfo = json_decode($order->client_raw_data);
         $rawData = json_decode($order->all_information_raw_data);
         $promoCode = PromoCodes::where('title', $clientInfo->clientPromoCode)->first();
@@ -70,9 +70,9 @@ class ManagerARMController extends Controller
     public function InvoicePage()
     {
         $orderId = request()->orderId;
-        $order = OrdersController::Order($orderId);
+        $order = Orders::find($orderId);
         $clientInfo = json_decode($order->client_raw_data);
-        $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
+        $productsModificationsInOrder = $order->ProductsModifications;
         $rawData = json_decode($order->all_information_raw_data);
 
         return view('arm.management.orders.invoice.invoice', compact('order', 'clientInfo', 'productsModificationsInOrder', 'rawData'));
@@ -81,8 +81,8 @@ class ManagerARMController extends Controller
     public function InvoiceChefPage()
     {
         $orderId = request()->orderId;
-        $order = OrdersController::Order($orderId);
-        $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
+        $order = Orders::find($orderId);
+        $productsModificationsInOrder = $order->ProductsModifications;
 
         return view('arm.management.orders.invoice.invoice-chef', compact('order', 'productsModificationsInOrder'));
     }
@@ -90,14 +90,14 @@ class ManagerARMController extends Controller
     public function ChangeStatusOrderToNewOrder()
     {
         $orderId = request()->orderId;
-        $order = OrdersController::Order($orderId);
+        $order = Orders::find($orderId);
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['newOrder']);
     }
 
     public function ChangeStatusOrderToManagerProcessesRequest()
     {
         $orderId = request()->orderId;
-        $order = OrdersController::Order($orderId);
+        $order = Orders::find($orderId);
         return self::ChangeStatusOrderToManagerProcesses($order);
     }
 
@@ -109,7 +109,7 @@ class ManagerARMController extends Controller
     public function TransferOrderToKitchen()
     {
         $orderId = request()->orderId;
-        $order = OrdersController::Order($orderId);
+        $order = Orders::find($orderId);
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['kitchen']);
     }
 
@@ -123,7 +123,7 @@ class ManagerARMController extends Controller
             $courierId = $user->id;
         }
 
-        $order = OrdersController::Order($orderId);
+        $order = Orders::find($orderId);
         $order->courier_id = $courierId;
 
         if ($courierId !== 0) {
@@ -174,21 +174,21 @@ class ManagerARMController extends Controller
     public function ChangeStatusOrderToCompleted()
     {
         $orderId = request()->orderId;
-        $order = OrdersController::Order($orderId);
+        $order = Orders::find($orderId);
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['completed']);
     }
 
     public function ChangeStatusOrderToCanceled()
     {
         $orderId = request()->orderId;
-        $order = OrdersController::Order($orderId);
+        $order = Orders::find($orderId);
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['cancelled']);
     }
 
     public function ChangeStatusOrderToDelivered()
     {
         $orderId = request()->orderId;
-        $order = OrdersController::Order($orderId);
+        $order = Orders::find($orderId);
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['delivered']);
     }
 
@@ -215,7 +215,7 @@ class ManagerARMController extends Controller
         $orderId = request()->post('orderId');
         $paymentType = request()->post('typePayment');
         $paymentType = json_decode($paymentType);
-        $order = OrdersController::Order($orderId);
+        $order = Orders::find($orderId);
         OrdersController::ChangePaymentType($order, $paymentType);
         return ResultGenerate::Success();
     }

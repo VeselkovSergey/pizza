@@ -5,6 +5,7 @@ namespace App\Http\Controllers\PromoCodes;
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Products\ProductsController;
+use App\Models\Products;
 use App\Models\PromoCodes;
 
 class PromoCodesController extends Controller
@@ -22,7 +23,6 @@ class PromoCodesController extends Controller
             }
         }
         return ResultGenerate::Error();
-
     }
 
     public static function CheckPromoCode(PromoCodes $promoCode)
@@ -37,14 +37,12 @@ class PromoCodesController extends Controller
     public function AllPromoCodesPage()
     {
         $promoCodes = PromoCodes::all();
-
         return view('arm.administration.promo-codes.index', compact('promoCodes'));
     }
 
     public function CreatePromoCodePage()
     {
-        $products = ProductsController::ALlProducts();
-
+        $products = Products::all();
         return view('arm.administration.promo-codes.create', compact('products'));
     }
 

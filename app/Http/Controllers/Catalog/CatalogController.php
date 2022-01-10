@@ -11,10 +11,6 @@ use App\Models\Products;
 
 class CatalogController extends Controller
 {
-    public function __construct()
-    {
-    }
-
     public function Index()
     {
         $allProducts = ProductsController::GetAllProducts();

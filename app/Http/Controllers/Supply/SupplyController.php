@@ -16,11 +16,6 @@ use Illuminate\Http\Request;
 
 class SupplyController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
     public function Index()
     {
         $supplies = Supply::all();

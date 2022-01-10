@@ -12,11 +12,6 @@ use Illuminate\Http\Request;
 
 class TypesModificationsController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
     public function Create()
     {
         return view('arm.typesModifications.createOrUpdate');

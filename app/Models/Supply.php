@@ -12,6 +12,7 @@ namespace App\Models;
  * @property User Creator
  * @property Suppliers Supplier
  * @property string PaymentType
+ * @property IngredientsInSupply Ingredients
  */
 class Supply extends BaseModel
 {

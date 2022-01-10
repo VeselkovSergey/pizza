@@ -33,7 +33,7 @@
                 <tbody>
                 @foreach($orders as $order)
                     <?php /** @var \App\Models\Orders $order */?>
-                    @php($productsModificationsInOrder = \App\Http\Controllers\Orders\OrdersController::OrderProductsModifications($order))
+                    @php($productsModificationsInOrder = $order->ProductsModifications)
                     <tr>
                         <td><a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}">{{$order->id}}</a></td>
                         <td>{{\App\Models\Orders::STATUS[$order->status_id]}}</td>

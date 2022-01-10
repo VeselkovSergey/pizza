@@ -16,6 +16,8 @@ namespace App\Models;
  * @property ProductsModificationsInOrders ProductsModifications
  * @property OrdersStatusLogs LatestStatus
  * @property User Courier
+ * @property OrdersStatusLogs Statuses
+ * @method Orders find($orderId)
  */
 class Orders extends BaseModel
 {
@@ -101,6 +103,41 @@ class Orders extends BaseModel
         return false;
     }
 
+    public static function AllOrders($direction = 'DESC')
+    {
+        return self::orderBy('id', $direction)->get();
+    }
+
+    public static function ByDate($startDate, $endDate, $allOrdersByDate = false, $direction = 'DESC')
+    {
+        $startDate = strtotime($startDate);
+        $endDate = strtotime($endDate);
+        $startDate = date('Y-m-d 00:00:00', $startDate);
+        $endDate = date('Y-m-d 23:59:59', $endDate);
+        $orders = new self();
+        $orders = $orders->where('created_at', '>=', $startDate);
+        $orders = $orders->where('created_at', '<=', $endDate);
+        if (!$allOrdersByDate) {
+            $orders = $orders->whereNotIn('status_id', [self::STATUS_TEXT['completed'], self::STATUS_TEXT['cancelled']]);
+        }
+        $orders = $orders->orderBy('id', $direction);
+        return $orders->get();
+    }
+
+    public static function KitchenStatusOnly()
+    {
+        return self::where('status_id', self::STATUS_TEXT['kitchen'])->get();
+    }
+
+    /**
+     * @param int $messageId
+     * @return Orders
+     */
+    public static function ByMessageTelegram(int $messageId)
+    {
+        return self::where('telegram_message_id', $messageId)->first();
+    }
+
     public static function TimeBetweenStatuses($orderId, $oldStatus, $newStatus)
     {
         $oldStatusLog = OrdersStatusLogs::where('order_id', $orderId)
@@ -120,31 +157,31 @@ class Orders extends BaseModel
 
     public function TimeManagerProcesses()
     {
-        return self::TimeBetweenStatuses($this->id, Orders::STATUS_TEXT['newOrder'], Orders::STATUS_TEXT['managerProcesses']);
+        return self::TimeBetweenStatuses($this->id, self::STATUS_TEXT['newOrder'], self::STATUS_TEXT['managerProcesses']);
     }
 
     public function TimeTransferOnKitchen()
     {
-        return self::TimeBetweenStatuses($this->id, Orders::STATUS_TEXT['managerProcesses'], Orders::STATUS_TEXT['kitchen']);
+        return self::TimeBetweenStatuses($this->id, self::STATUS_TEXT['managerProcesses'], self::STATUS_TEXT['kitchen']);
     }
 
     public function TimeCooked()
     {
-        return self::TimeBetweenStatuses($this->id, Orders::STATUS_TEXT['kitchen'], Orders::STATUS_TEXT['cooked']);
+        return self::TimeBetweenStatuses($this->id, self::STATUS_TEXT['kitchen'], self::STATUS_TEXT['cooked']);
     }
 
     public function TimeCourier()
     {
-        return self::TimeBetweenStatuses($this->id, Orders::STATUS_TEXT['cooked'], Orders::STATUS_TEXT['courier']);
+        return self::TimeBetweenStatuses($this->id, self::STATUS_TEXT['cooked'], self::STATUS_TEXT['courier']);
     }
 
     public function TimeDelivered()
     {
-        return self::TimeBetweenStatuses($this->id, Orders::STATUS_TEXT['courier'], Orders::STATUS_TEXT['delivered']);
+        return self::TimeBetweenStatuses($this->id, self::STATUS_TEXT['courier'], self::STATUS_TEXT['delivered']);
     }
 
     public function TimeCompleted()
     {
-        return self::TimeBetweenStatuses($this->id, Orders::STATUS_TEXT['delivered'], Orders::STATUS_TEXT['completed']);
+        return self::TimeBetweenStatuses($this->id, self::STATUS_TEXT['delivered'], self::STATUS_TEXT['completed']);
     }
 }

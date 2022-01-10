@@ -12,11 +12,6 @@ use Illuminate\Http\Request;
 
 class ModificationsController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
     public function Create()
     {
         $typeModifications = TypesModifications::all();

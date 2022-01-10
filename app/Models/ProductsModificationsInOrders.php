@@ -4,7 +4,7 @@ namespace App\Models;
 
 /**
  * @property ProductModifications ProductModifications
- * @property OrdersProductsStatusLogs Statusses
+ * @property OrdersProductsStatusLogs Statuses
  * @property integer product_modification_amount
  * @property integer id
  * @property integer order_id
@@ -40,7 +40,7 @@ class ProductsModificationsInOrders extends BaseModel
         return $this->hasOne(ProductModifications::class, 'id', 'product_modification_id');
     }
 
-    public function Statusses()
+    public function Statuses()
     {
         return $this->hasMany(OrdersProductsStatusLogs::class, 'order_product_id', 'id');
     }

@@ -18,7 +18,6 @@ use function GuzzleHttp\Promise\all;
 
 class ProductsController extends Controller
 {
-
     public static function GetAllProducts()
     {
         $forceUpdate = request()->get('force-update') ?? false;
@@ -192,11 +191,6 @@ class ProductsController extends Controller
         return ResultGenerate::Success();
     }
 
-    public static function GetProductById($productId)
-    {
-        return Products::find($productId);
-    }
-
     public static function SaveChanges(Products $product, array|object $data)
     {
         foreach ($data as $title => $value) {
@@ -204,10 +198,5 @@ class ProductsController extends Controller
         }
         $product->save();
         return $product;
-    }
-
-    public static function ALlProducts()
-    {
-        return Products::all();
     }
 }

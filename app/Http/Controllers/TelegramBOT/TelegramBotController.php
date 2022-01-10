@@ -9,6 +9,7 @@ use App\Http\Controllers\ARM\ManagerARMController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Orders\OrdersController;
 use App\Models\Ingredients;
+use App\Models\Orders;
 use App\Models\ProductModificationsIngredients;
 use App\Models\ProductsModificationsInOrders;
 use App\Services\Telegram\Telegram;
@@ -165,9 +166,9 @@ class TelegramBotController extends Controller
     {
         if ($startDate) {
             $endDate = $endDate ?: $startDate;
-            $orders = OrdersController::OrdersByDate($startDate, $endDate, true);
+            $orders = Orders::ByDate($startDate, $endDate, true);
         } else {
-            $orders = OrdersController::AllOrders('ASC');
+            $orders = Orders::AllOrders('ASC');
         }
 
         $ordersCount = $orders->count();
@@ -181,7 +182,7 @@ class TelegramBotController extends Controller
         foreach ($orders as $order) {
             $clientInfo = json_decode($order->client_raw_data);
 
-            $productsModifications = OrdersController::OrderProductsModifications($order);
+            $productsModifications = $order->ProductsModifications;
 
             $orderCostPrice = 0;
 

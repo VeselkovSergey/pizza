@@ -14,11 +14,6 @@ use Illuminate\Http\Request;
 
 class SuppliersController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
     public function Create()
     {
         $suppliers = Suppliers::all();

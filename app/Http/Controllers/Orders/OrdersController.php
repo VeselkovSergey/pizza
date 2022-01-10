@@ -210,64 +210,6 @@ class OrdersController extends Controller
         $telegram->sendMessage($message, env('TELEGRAM_BOT_ORDERS_CHAT'));
     }
 
-    public static function AllOrders($direction = 'desc')
-    {
-        return Orders::orderBy('id', $direction)->get();
-    }
-
-    public static function OrdersByDate($startDate, $endDate, $allOrdersByDate = false, $direction = 'desc')
-    {
-        $startDate = strtotime($startDate);
-        $endDate = strtotime($endDate);
-        $startDate = date('Y-m-d 00:00:00', $startDate);
-        $endDate = date('Y-m-d 23:59:59', $endDate);
-        $orders = new Orders();
-        $orders = $orders->where('created_at', '>=', $startDate);
-        $orders = $orders->where('created_at', '<=', $endDate);
-        if (!$allOrdersByDate) {
-            $orders = $orders->whereNotIn('status_id', [Orders::STATUS_TEXT['completed'], Orders::STATUS_TEXT['cancelled']]);
-        }
-        $orders = $orders->orderBy('id', $direction);
-        return $orders->get();
-    }
-
-    public static function KitchenOrdersOnly()
-    {
-        return Orders::where('status_id', Orders::STATUS_TEXT['kitchen'])->get();
-    }
-
-    /**
-     * @param int $orderId
-     * @return Orders
-     */
-    public static function Order(int $orderId)
-    {
-        return Orders::find($orderId);
-    }
-
-    /**
-     * @param int $messageId
-     * @return Orders
-     */
-    public static function OrderByMessageTelegram(int $messageId)
-    {
-        return Orders::where('telegram_message_id', $messageId)->first();
-    }
-
-    public static function OrderStatuses(Orders $order)
-    {
-        return $order->Statuses;
-    }
-
-    /**
-     * @param Orders $order
-     * @return ProductsModificationsInOrders
-     */
-    public static function OrderProductsModifications(Orders $order)
-    {
-        return $order->ProductsModifications;
-    }
-
     public static function SearchByPhone(string $phone)
     {
         $user = User::where('phone', 'like', '%' . $phone . '%')->first();
@@ -305,11 +247,6 @@ class OrdersController extends Controller
         $clientRawData->typePayment = $paymentType;
         $order->client_raw_data = json_encode($clientRawData);
         return $order->save();
-    }
-
-    public static function OrderProduct($productId)
-    {
-        return ProductsModificationsInOrders::find($productId);
     }
 
     public static function OrderProductChangeStatus(ProductsModificationsInOrders $product, $status_id)

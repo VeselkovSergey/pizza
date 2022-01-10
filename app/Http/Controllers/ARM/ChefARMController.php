@@ -17,7 +17,7 @@ class ChefARMController extends Controller
 
     public function Orders()
     {
-        $orders = OrdersController::KitchenOrdersOnly();
+        $orders = Orders::KitchenStatusOnly();
         return view('arm.chef.orders.index', [
             'orders' => $orders
         ]);
@@ -26,8 +26,8 @@ class ChefARMController extends Controller
     public function Order()
     {
         $orderId = request()->orderId;
-        $order = OrdersController::Order($orderId);
-        $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
+        $order = Orders::find($orderId);
+        $productsModificationsInOrder = $order->ProductsModifications;
         return view('arm.chef.orders.order', [
             'order' => $order,
             'productsModificationsInOrder' => $productsModificationsInOrder,
@@ -37,28 +37,28 @@ class ChefARMController extends Controller
     public function ChangeStatusOrderToCooked()
     {
         $orderId = request()->orderId;
-        $order = OrdersController::Order($orderId);
+        $order = Orders::find($orderId);
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['cooked']);
     }
 
     public function ChangeStatusProductToNew()
     {
         $productIdInOrder = request()->productIdInOrder;
-        $product = OrdersController::OrderProduct($productIdInOrder);
+        $product = ProductsModificationsInOrders::find($productIdInOrder);
         return OrdersController::OrderProductChangeStatus($product, ProductsModificationsInOrders::STATUS_TEXT['new']);
     }
 
     public function ChangeStatusProductToChefProcesses()
     {
         $productIdInOrder = request()->productIdInOrder;
-        $product = OrdersController::OrderProduct($productIdInOrder);
+        $product = ProductsModificationsInOrders::find($productIdInOrder);
         return OrdersController::OrderProductChangeStatus($product, ProductsModificationsInOrders::STATUS_TEXT['chefProcesses']);
     }
 
     public function ChangeStatusProductToCooKed()
     {
         $productIdInOrder = request()->productIdInOrder;
-        $product = OrdersController::OrderProduct($productIdInOrder);
+        $product = ProductsModificationsInOrders::find($productIdInOrder);
         return OrdersController::OrderProductChangeStatus($product, ProductsModificationsInOrders::STATUS_TEXT['cooked']);
     }
 }

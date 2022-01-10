@@ -9,8 +9,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Ingredients\IngredientsController;
 use App\Http\Controllers\Orders\OrdersController;
 use App\Http\Controllers\Products\ProductsController;
+use App\Models\Ingredients;
 use App\Models\Orders;
 use App\Models\ProductModificationsIngredients;
+use App\Models\Products;
 use App\Models\ProductsModificationsInOrders;
 use App\Models\Supply;
 use App\Models\User;
@@ -40,10 +42,10 @@ class AdministratorARMController extends Controller
         $startDate = (request()->get('start-date') === null) ? date('Y-m-d', time()) : request()->get('start-date');
         $endDate = (request()->get('end-date') === null) ? date('Y-m-d', time()) : request()->get('end-date');
         if (request()->get('all')) {
-            $orders = OrdersController::AllOrders('asc');
+            $orders = Orders::AllOrders('ASC');
             $supplySum = Supply::SuppliesSum();
         } else {
-            $orders = OrdersController::OrdersByDate($startDate, $endDate, true, 'asc');
+            $orders = Orders::ByDate($startDate, $endDate, true, 'ASC');
             $supplySum = Supply::SuppliesSumByDate($startDate, $endDate);
         }
 
@@ -52,7 +54,7 @@ class AdministratorARMController extends Controller
 
     public function Products()
     {
-        $products = ProductsController::ALlProducts();
+        $products = Products::all();
         return view('arm.administration.products.index', compact('products'));
     }
 
@@ -60,7 +62,7 @@ class AdministratorARMController extends Controller
     {
         $productId = request()->productId;
         $data = json_decode(request()->data);
-        $product = ProductsController::GetProductById($productId);
+        $product = Products::find($productId);
         ProductsController::SaveChanges($product, $data);
         return ResultGenerate::Success();
     }
@@ -89,7 +91,7 @@ class AdministratorARMController extends Controller
 
             $sumOrders += $order->order_amount;
 
-            $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
+            $productsModificationsInOrder = $order->ProductsModifications;
             foreach($productsModificationsInOrder as $productModificationInOrder) {
                 /** @var ProductsModificationsInOrders $productModificationInOrder */
 
@@ -129,7 +131,7 @@ class AdministratorARMController extends Controller
 
     public function DeviceUsed()
     {
-        $orders = OrdersController::AllOrders();
+        $orders = Orders::AllOrders();
         $devicesInfo = [];
         $typeDevice = [
             'iphone' => 0,
@@ -186,7 +188,7 @@ class AdministratorARMController extends Controller
     {
         $ingredientId = request()->ingredientId;
         $data = json_decode(request()->data);
-        $ingredient = IngredientsController::GetIngredientById($ingredientId);
+        $ingredient = Ingredients::find($ingredientId);
         IngredientsController::SaveChanges($ingredient, $data);
         return ResultGenerate::Success();
     }
@@ -203,7 +205,7 @@ class AdministratorARMController extends Controller
             $ingredients[$ingredient->id] = $ingredient;
         }
 
-        $orders = OrdersController::OrdersByDate($startDate, $endDate, true, 'ASC');
+        $orders = Orders::ByDate($startDate, $endDate, true, 'ASC');
 
         $amountSpent = 0;
         foreach($orders as $order) {
@@ -211,7 +213,7 @@ class AdministratorARMController extends Controller
                 continue;
             }
 
-            $productsModificationsInOrder = OrdersController::OrderProductsModifications($order);
+            $productsModificationsInOrder = $order->ProductsModifications;
             foreach($productsModificationsInOrder as $productModificationInOrder) {
                 /** @var ProductsModificationsInOrders $productModificationInOrder */
 

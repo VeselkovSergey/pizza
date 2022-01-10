@@ -77,7 +77,7 @@
                     <?php /** @var \App\Models\Orders $order  */ ?>
 
                     @php($clientInfo = json_decode($order->client_raw_data))
-                    @php($productsModificationsInOrder = \App\Http\Controllers\Orders\OrdersController::OrderProductsModifications($order))
+                    @php($productsModificationsInOrder = $order->ProductsModifications)
                     @php($rawData = json_decode($order->all_information_raw_data))
                     @php($longTime = false)
                     @php($longTimeDelivered = false)
@@ -251,7 +251,7 @@
 
         let changeDateFields = document.body.querySelectorAll('.start-date, .end-date');
         changeDateFields.forEach((changeDateField) => {
-            changeDateField.addEventListener('change', (event) => {
+            changeDateField.addEventListener('change', () => {
                 LoaderShow();
                 let startDate = document.body.querySelector('.start-date').value;
                 let endDate = document.body.querySelector('.end-date').value;

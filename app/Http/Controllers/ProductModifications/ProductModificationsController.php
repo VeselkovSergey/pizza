@@ -12,11 +12,6 @@ use Illuminate\Http\Request;
 
 class ProductModificationsController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
     public function Create()
     {
         return view('arm.products.createOrUpdate');

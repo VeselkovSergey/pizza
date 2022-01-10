@@ -13,6 +13,7 @@
 
         <div>
             @foreach($productsModificationsInOrder as $productModificationInOrder)
+                <?php /** @var \App\Models\ProductsModificationsInOrders $productModificationInOrder */ ?>
                 <div class="product-container p-5 mb-10 product-in-order-status-{{$productModificationInOrder->status_id}}" data-order-product-status="{{$productModificationInOrder->status_id}}" data-product-id-in-order="{{$productModificationInOrder->id}}">
                     <div>{{\App\Models\ProductsModificationsInOrders::STATUS[$productModificationInOrder->status_id]}}</div>
                     <div>{{$productModificationInOrder->ProductModifications->Product->title . ' ' . $productModificationInOrder->ProductModifications->Modification->title . ' ' . $productModificationInOrder->ProductModifications->Modification->value}}</div>
@@ -21,7 +22,8 @@
                     <div class="bg-white color-black mt-10 mb-5 p-10">
                         <div class="toggle-button cp" data-toogle="status-log-container">Изменения статуса:</div>
                         <div class="ml-10 status-log-container">
-                            @foreach($productModificationInOrder->Statusses as $orderProductStatus)
+                            @foreach($productModificationInOrder->Statuses as $orderProductStatus)
+                                <?php /** @var \App\Models\OrdersStatusLogs $orderProductStatus */ ?>
                                 <div class="p-5 m-5 flex-center-vertical flex-wrap" style="border: 1px solid grey;">
                                     <div class="mr-5" style="min-width: 200px">{{$orderProductStatus->created_at}}</div>
                                     <div class="mr-5 p-5 product-in-order-status-{{$orderProductStatus->old_status_id}}">{{\App\Models\ProductsModificationsInOrders::STATUS[$orderProductStatus->old_status_id]}}</div>
