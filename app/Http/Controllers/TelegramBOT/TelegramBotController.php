@@ -82,7 +82,7 @@ class TelegramBotController extends Controller
 
                     $user = User::where('telegram_chat_id', $telegram->ChatId())->first();
                     if (!($user && $user->UserIsAdmin())) {
-                        $telegram->sendMessage('Неа ;) не прокатит!');
+                        $telegram->sendMessage('Неа ;) не прокатит! Ты слишком мал;)');
                         break;
                     }
 
