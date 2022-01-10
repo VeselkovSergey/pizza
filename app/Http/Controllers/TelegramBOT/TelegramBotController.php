@@ -12,6 +12,7 @@ use App\Models\Ingredients;
 use App\Models\Orders;
 use App\Models\ProductModificationsIngredients;
 use App\Models\ProductsModificationsInOrders;
+use App\Models\User;
 use App\Services\Telegram\Telegram;
 
 class TelegramBotController extends Controller
@@ -73,6 +74,12 @@ class TelegramBotController extends Controller
                 case '/monthReport':
                 case '/lastMonthReport':
                 case '/fullReport':
+
+                    $user = User::where('telegram_chat_id', $telegram->ChatId());
+                    if (!($user && $user->IsAdmin())) {
+                        $telegram->sendMessage('Неа ;) не прокатит!');
+                        break;
+                    }
 
                     if ($command === '/todayReport') {
 
