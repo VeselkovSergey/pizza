@@ -32,6 +32,10 @@ class TelegramBotController extends Controller
                     // текст сообщения
                     $telegram->sendMessage('BROпицца!');
                     $telegram->sendMessage('Твой id чата: ' . $telegram->ChatId());
+
+                    $telegram->RequestContact();
+                    $telegram->sendMessage('Отправьте номер для связывания аккаунта на сайте и в телеграм');
+
                     break;
 
                 case 'Delivered':
