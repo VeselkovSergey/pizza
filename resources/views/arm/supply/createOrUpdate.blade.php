@@ -185,7 +185,7 @@
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<label for="">Сумма</label>' +
-                                            '<input class="need-validate" name="sum" type="text" value="0" readonly>' +
+                                            '<input class="need-validate" name="sum" type="text" value="0">' +
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<button class="delete-ingredient-button cp flex-center">' +
@@ -227,6 +227,14 @@
                 let amount = inputIngredientAmount.value;
                 let countSum = CountSum(amount, price);
                 inputIngredientSum.value = parseFloat(countSum).toFixed(2);
+                CountSumTotal();
+            });
+
+            inputIngredientSum.addEventListener('input', () => {
+                let amount = inputIngredientAmount.value.replace(/,/, '.');
+                let sum = inputIngredientSum.value.replace(/,/, '.');
+                let countSum = sum / amount;
+                inputIngredientPrice.value = parseFloat(countSum).toFixed(2);
                 CountSumTotal();
             });
         }
