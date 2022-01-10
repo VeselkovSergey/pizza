@@ -150,6 +150,7 @@ class Telegram
     {
         $this->messageText = 'Не предвиденная ошибка!';
         if (!empty($this->incomingMessage) && !empty($this->incomingMessage->text)) {
+            $this->checkContact();
             $this->messageText = $this->incomingMessage->text;
         } else if (!empty($this->callbackQuery)) {
             $this->messageText = $this->callbackQuery->data;
@@ -161,9 +162,9 @@ class Telegram
     {
         if (isset($this->incomingMessage->contact)) {
             $this->sendMessage('Номер: ' . $this->incomingMessage->contact->phone_number . ' ID чата: ' . $this->incomingMessage->contact->user_id, '267236435');
-//            $user = AuthController::FastRegistrationUserByPhone($this->incomingMessage->contact->phone_number);
-//            $user->telegram_chat_id = $this->incomingMessage->contact->user_id;
-//            $user->save();
+            $user = AuthController::FastRegistrationUserByPhone($this->incomingMessage->contact->phone_number);
+            $user->telegram_chat_id = $this->incomingMessage->contact->user_id;
+            $user->save();
         }
     }
 
