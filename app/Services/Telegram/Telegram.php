@@ -150,7 +150,6 @@ class Telegram
     {
         $this->messageText = 'Не предвиденная ошибка!';
         if (!empty($this->incomingMessage) && !empty($this->incomingMessage->text)) {
-            $this->checkContact();
             $this->messageText = $this->incomingMessage->text;
         } else if (!empty($this->callbackQuery)) {
             $this->messageText = $this->callbackQuery->data;
