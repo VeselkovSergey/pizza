@@ -265,6 +265,7 @@
 
         function CountSum(amount, price) {
             if (amount !== '' && price !== '') {
+                console.log(amount, price)
                 return parseFloat(amount).toFixed(2) * parseFloat(price).toFixed(2);
             } else {
                 return 0;
