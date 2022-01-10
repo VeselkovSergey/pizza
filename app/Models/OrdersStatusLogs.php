@@ -8,6 +8,7 @@ namespace App\Models;
  * @property integer old_status_id
  * @property integer new_status_id
  * @property integer user_id
+ * @property User User
  */
 class OrdersStatusLogs extends BaseModel
 {
