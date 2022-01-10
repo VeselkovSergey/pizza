@@ -6,6 +6,7 @@ namespace App\Http\Controllers\TelegramBOT;
 
 use App\Http\Controllers\ARM\CourierARMController;
 use App\Http\Controllers\ARM\ManagerARMController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Orders\OrdersController;
 use App\Models\Ingredients;
@@ -24,7 +25,16 @@ class TelegramBotController extends Controller
             $telegram = new Telegram('1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0');
 
             $command = $telegram->incomingMessage();
-            $telegram->checkContact();
+
+            $checkContact = $telegram->checkContact();
+            if (!empty($checkContact)) {
+                $telegram->inlineKeyboard['remove_keyboard'] = true;
+                $telegram->sendMessage('Успешно! '. PHP_EOL .'Номер: ' . $checkContact->phone . ' ID чата: ' . $checkContact->chatId);
+
+                $user = AuthController::FastRegistrationUserByPhone($checkContact->phone);
+                $user->telegram_chat_id = $checkContact->chatId;
+                $user->save();
+            }
 
             switch ($command) {
 

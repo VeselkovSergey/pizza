@@ -17,7 +17,7 @@ class Telegram
     private $incomingMessage;
     private $callbackQuery;
     private $messageText = null;
-    private $inlineKeyboard = null;
+    public $inlineKeyboard = null;
     private $type = 'inline_keyboard';
     private $permissionToMessageId = false;
     private string|false $messageRaw;
@@ -160,12 +160,13 @@ class Telegram
     public function checkContact()
     {
         if (isset($this->incomingMessage->contact)) {
-            $this->inlineKeyboard['remove_keyboard'] = true;
-            $this->sendMessage('Успешно! '. PHP_EOL .'Номер: ' . $this->incomingMessage->contact->phone_number . ' ID чата: ' . $this->incomingMessage->contact->user_id, '267236435');
-            $user = AuthController::FastRegistrationUserByPhone($this->incomingMessage->contact->phone_number);
-            $user->telegram_chat_id = $this->incomingMessage->contact->user_id;
-            $user->save();
+            return (object)[
+                'phone' => $this->incomingMessage->contact->phone_number,
+                'chatId' => $this->incomingMessage->contact->user_id,
+            ];
         }
+
+        return null;
     }
 
     public function addButton($textOrArrayButton, $action = null)
