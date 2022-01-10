@@ -29,7 +29,7 @@ class TelegramBotController extends Controller
             $checkContact = $telegram->checkContact();
             if (!empty($checkContact)) {
                 $telegram->inlineKeyboard['remove_keyboard'] = true;
-                $telegram->sendMessage('Успешно! '. PHP_EOL .'Номер: ' . $checkContact->phone . ' ID чата: ' . $checkContact->chatId);
+                $telegram->sendMessage('Успешно! '. PHP_EOL .'Номер: ' . $checkContact->phone . PHP_EOL . ' ID чата: ' . $checkContact->chatId);
 
                 $user = AuthController::FastRegistrationUserByPhone($checkContact->phone);
                 $user->telegram_chat_id = $checkContact->chatId;
