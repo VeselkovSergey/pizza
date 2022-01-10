@@ -256,16 +256,16 @@ Route::get('/ucaller-balance', function () {
     dd($balance);
 });
 //
-Route::get('/test-bot', function () {
-//    return ;
-    $message = 'Приветствуем. Вы сможете получать уведомления о статусе вашего заказа в этом боте. Осталось только поделиться номером телефона для синхронизации ваших заказов' . PHP_EOL;
-    $message = 'Отправьте номер для связывания аккаунта на сайте и в телеграм' . PHP_EOL;
-//    $telegram = new Telegram('2081173182:AAEuKyhCNybjJTiZD-NQAxbhUj0YBNmopXk');
-    $telegram = new Telegram('1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0');
-    $telegram->RequestContact();
+//Route::get('/test-bot', function () {
+////    return ;
+//    $message = 'Приветствуем. Вы сможете получать уведомления о статусе вашего заказа в этом боте. Осталось только поделиться номером телефона для синхронизации ваших заказов' . PHP_EOL;
+//    $message = 'Отправьте номер для связывания аккаунта на сайте и в телеграм' . PHP_EOL;
+////    $telegram = new Telegram('2081173182:AAEuKyhCNybjJTiZD-NQAxbhUj0YBNmopXk');
+//    $telegram = new Telegram('1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0');
+//    $telegram->RequestContact();
+////    $telegram->sendMessage($message, '267236435');
 //    $telegram->sendMessage($message, '267236435');
-    $telegram->sendMessage($message, '267236435');
-});
+//});
 //
 //Route::get('/test-parse', function () {
 //
