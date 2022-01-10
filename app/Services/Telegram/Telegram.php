@@ -2,6 +2,8 @@
 
 namespace App\Services\Telegram;
 
+use App\Http\Controllers\Auth\AuthController;
+
 class Telegram
 {
     private $token;
@@ -159,6 +161,9 @@ class Telegram
     {
         if (isset($this->incomingMessage->contact)) {
             $this->sendMessage('Номер: ' . $this->incomingMessage->contact->phone_number . ' ID чата: ' . $this->incomingMessage->contact->user_id, '267236435');
+            $user = AuthController::FastRegistrationUserByPhone($this->incomingMessage->contact->phone_number);
+            $user->telegram_chat_id = $this->incomingMessage->contact->user_id;
+            $user->save();
         }
     }
 

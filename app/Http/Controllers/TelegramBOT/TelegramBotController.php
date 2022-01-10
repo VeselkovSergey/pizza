@@ -24,7 +24,6 @@ class TelegramBotController extends Controller
             $telegram = new Telegram('1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0');
 
             $command = $telegram->incomingMessage();
-            $telegram->checkContact();
 
             switch ($command) {
 
