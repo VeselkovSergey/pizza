@@ -188,6 +188,7 @@ class ManagerARMController extends Controller
 
             $telegram->addButton('Доставлен', 'Delivered');
             $telegram->addButton('Отказ', 'Refused');
+            $telegram->addButton('Ошибка', 'Error');
             return $telegram->sendMessage($message, $chatId);
         }
         return false;

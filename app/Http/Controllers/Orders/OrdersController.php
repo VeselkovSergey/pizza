@@ -236,22 +236,24 @@ class OrdersController extends Controller
 
     public static function ChangeStatus(Orders $order, $statusId, $userId = 0)
     {
-        if ($order->status_id !== $statusId) {
-            OrdersStatusLogs::create([
-                'order_id' => $order->id,
-                'old_status_id' => $order->status_id,
-                'new_status_id' => $statusId,
-                'user_id' => $userId === 0 ? auth()->user()->id : $userId,
-            ]);
+        OrdersStatusLogs::create([
+            'order_id' => $order->id,
+            'old_status_id' => $order->status_id,
+            'new_status_id' => $statusId,
+            'user_id' => $userId === 0 ? auth()->user()->id : $userId,
+        ]);
 
-            $oldStatusId = $order->status_id;
+        $oldStatusId = $order->status_id;
 
-            $order->status_id = $statusId;
-            $order->save();
+        $order->status_id = $statusId;
 
-            event(new Pusher($order->id, $oldStatusId, $statusId));
-
+        if ($order->status_id === $oldStatusId && $statusId === Orders::STATUS_TEXT['courier'] && $order->courier_id === $userId) {
+            $order->courier_id = 0;
         }
+
+        $order->save();
+
+        event(new Pusher($order->id, $oldStatusId, $statusId));
         return true;
     }
 

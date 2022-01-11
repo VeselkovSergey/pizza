@@ -67,6 +67,13 @@ class TelegramBotController extends Controller
                     CourierARMController::ChangeStatusOrderToCanceled($messageId);
                     break;
 
+                case 'Error':
+                    $messageId = $telegram->MessageId();
+                    $telegram->deleteMessage();
+                    $telegram->sendMessage('Все мы люди.. И все мы можем ошибиться...');
+                    CourierARMController::CourierError($messageId);
+                    break;
+
                 case '/chatId':
                     $telegram->sendMessage('Твой id чата: ' . $telegram->ChatId());
                     break;
