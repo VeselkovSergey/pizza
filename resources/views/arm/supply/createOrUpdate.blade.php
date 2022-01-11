@@ -32,7 +32,7 @@
                 <label for="">Поставщик
                     <select name="supplier">
                         @foreach($suppliers as $supplier)
-                            <option value="{{$supplier->id}}">{{$supplier->title}}</option>
+                            <option @if(isset($supply) && $supply->supplier_id === $supplier->id) selected @endif value="{{$supplier->id}}">{{$supplier->title}}</option>
                         @endforeach
                     </select>
                 </label>
@@ -40,16 +40,16 @@
 
             <div class="mb-10">
                 <label for="">Дата
-                    <input class="need-validate" name="dateSupply" type="datetime-local" value="{{date('Y-m-d\TH:i', time())}}">
+                    <input class="need-validate" name="dateSupply" type="datetime-local" value="{{isset($supply) ? date('Y-m-d\TH:i', strtotime($supply->supply_date)) : date('Y-m-d\TH:i', time())}}">
                 </label>
             </div>
 
             <div class="mb-10">
                 <label for="">Тип оплаты
                     <select name="paymentType">
-                        <option value="1">Наличные</option>
-                        <option value="2">Безналичные</option>
-                        <option value="3">Перевод</option>
+                        <option value="1" @if(isset($supply) && $supply->payment_type === 1) selected @endif>Наличные</option>
+                        <option value="2" @if(isset($supply) && $supply->payment_type === 2) selected @endif>Безналичные</option>
+                        <option value="3" @if(isset($supply) && $supply->payment_type === 3) selected @endif>Перевод</option>
                     </select>
                 </label>
             </div>
@@ -75,7 +75,7 @@
             </div>
 
             <div>
-                <button class="save-button orange-button">Создать</button>
+                <button class="save-button orange-button">Сохранить</button>
             </div>
 
         </form>
@@ -119,7 +119,7 @@
             let paymentType = document.body.querySelector('select[name="paymentType"]').value;
             let file = document.body.querySelector('input[name="file"]').files[0];
 
-            if (file === undefined) {
+            if (file === undefined && {{empty($supply) ?: 0}}) {
                 return FlashMessage('Выберите файл!');
             }
 
@@ -133,13 +133,18 @@
                 paymentType: paymentType,
                 allIngredientsInSupplyData: JSON.stringify(allIngredientsInSupplyData),
                 file: file,
+                {{isset($supply) ? 'supplyId: '.$supply->id.',' : ''}}
             }
 
             Ajax("{{route('supply-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
                 if (response.status === true) {
                     setTimeout(() => {
+                        @if(isset($supply))
+                        location.href = "{{route('supplies-page')}}";
+                        @else
                         location.reload();
+                        @endif
                     }, 2000)
                 }
             });
@@ -165,27 +170,27 @@
             }
         }
 
-        function AddRowIngredient() {
+        function AddRowIngredient(ingredientId = null, amountIngredient = null, priceIngredient = null) {
             let containerIngredients = document.body.querySelector('.container-for-ingredients');
             let rowIngredient = document.createElement('div');
             rowIngredient.className = 'container-for-ingredient flex-center-vertical m-5 border';
             rowIngredient.innerHTML =   '<div class="m-5">' +
                                             '<label for="" class="flex-column">Товар' +
                                                 '<input class="type-search" placeholder="фильтр по словам" onchange="Search(this)" type="text">' +
-                                                GenerateIngredientsSelector() +
+                                                GenerateIngredientsSelector(ingredientId) +
                                             '</label>' +
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<label for="">Количество (кг/литр)</label>' +
-                                            '<input class="need-validate" name="amount" type="text">' +
+                                            '<input class="need-validate" name="amount" '+(ingredientId ? "value='"+amountIngredient+"'" : '' )+' type="text">' +
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<label for="">Цена за кг/литр</label>' +
-                                            '<input class="need-validate" name="price" type="text">' +
+                                            '<input class="need-validate" name="price" type="text" '+(ingredientId ? "value='"+priceIngredient+"'" : '' )+'>' +
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<label for="">Сумма</label>' +
-                                            '<input class="need-validate" name="sum" type="text" value="0">' +
+                                            '<input class="need-validate" name="sum" type="text">' +
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<button class="delete-ingredient-button cp flex-center">' +
@@ -215,11 +220,7 @@
             });
 
             inputIngredientAmount.addEventListener('input', () => {
-                let amount = inputIngredientAmount.value.replace(/,/, '.');
-                let price = inputIngredientPrice.value.replace(/,/, '.');
-                let countSum = CountSum(amount, price);
-                inputIngredientSum.value = parseFloat(countSum).toFixed(2);
-                CountSumTotal();
+                ReSum()
             });
 
             inputIngredientPrice.addEventListener('input', () => {
@@ -237,6 +238,18 @@
                 inputIngredientPrice.value = parseFloat(countSum).toFixed(2);
                 CountSumTotal();
             });
+
+            if(ingredientId) {
+                ReSum();
+            }
+
+            function ReSum() {
+                let amount = inputIngredientAmount.value.replace(/,/, '.');
+                let price = inputIngredientPrice.value.replace(/,/, '.');
+                let countSum = CountSum(amount, price);
+                inputIngredientSum.value = parseFloat(countSum).toFixed(2);
+                CountSumTotal();
+            }
         }
 
         function CountSumTotal() {
@@ -250,12 +263,12 @@
         }
 
         let generatedIngredientsSelector = null;
-        function GenerateIngredientsSelector() {
-            if (generatedIngredientsSelector === null) {
+        function GenerateIngredientsSelector(ingredientId = null) {
+            if (generatedIngredientsSelector === null || ingredientId !== null) {
                 let tempGenerateIngredientsSelector = '<select name="ingredient">';
-                tempGenerateIngredientsSelector += '<option value="null" disabled selected>Выберите продукт</option>';
+                tempGenerateIngredientsSelector += '<option value="null" disabled '+ (ingredientId ? '' : 'selected') +'>Выберите продукт</option>';
                 Object.keys(allIngredients).forEach((key) => {
-                    tempGenerateIngredientsSelector += '<option value="' + allIngredients[key]['id'] + '">' + allIngredients[key]['title'] + '</option>';
+                    tempGenerateIngredientsSelector += '<option '+ (ingredientId === allIngredients[key]['id'] ? 'selected' : '') +' value="' + allIngredients[key]['id'] + '">' + allIngredients[key]['title'] + '</option>';
                 });
                 tempGenerateIngredientsSelector += '</select>';
                 generatedIngredientsSelector = tempGenerateIngredientsSelector;
@@ -265,7 +278,6 @@
 
         function CountSum(amount, price) {
             if (amount !== '' && price !== '') {
-                console.log(amount, price)
                 return parseFloat(amount).toFixed(2) * parseFloat(price).toFixed(2);
             } else {
                 return 0;
@@ -276,7 +288,16 @@
         Ajax("{{route('all-ingredients')}}").then((response) => {
             allIngredients = response;
             GenerateIngredientsSelector();
+            IngredientsFill();
         });
+
+        function IngredientsFill() {
+            @if(isset($ingredientsInSupply))
+                @foreach($ingredientsInSupply as $ingredientInSupply)
+                    AddRowIngredient({{$ingredientInSupply->ingredient_id}}, {{$ingredientInSupply->amount_ingredient}}, {{$ingredientInSupply->price_ingredient}});
+                @endforeach
+            @endif
+        }
 
     </script>
 

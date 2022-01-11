@@ -108,8 +108,9 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
     Route::group(['prefix' => 'supplies'], function () {
 
         Route::get('/', [Controllers\Supply\SupplyController::class, 'Index'])->name('supplies-page');
-        Route::get('/{supplyId}/detail', [Controllers\Supply\SupplyController::class, 'Detail'])->name('supply-detail-page');
         Route::get('/create', [Controllers\Supply\SupplyController::class, 'Create'])->name('supply-create-page');
+        Route::get('/detail/{supplyId}', [Controllers\Supply\SupplyController::class, 'Detail'])->name('supply-detail-page');
+        Route::get('/edit/{supplyId}', [Controllers\Supply\SupplyController::class, 'Edit'])->name('supply-edit-page');
         Route::post('/save', [Controllers\Supply\SupplyController::class, 'Save'])->name('supply-save');
 
     });

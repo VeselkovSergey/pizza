@@ -13,6 +13,7 @@ namespace App\Models;
  * @property Suppliers Supplier
  * @property string PaymentType
  * @property IngredientsInSupply Ingredients
+ * @method Supply find($supplyId)
  */
 class Supply extends BaseModel
 {

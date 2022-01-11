@@ -46,23 +46,63 @@ class SupplyController extends Controller
         return view('arm.supply.createOrUpdate', compact('ingredients', 'suppliers'));
     }
 
+    public function Edit()
+    {
+        $supplyId = \request()->supplyId;
+        $supply = Supply::find($supplyId);
+        $ingredientsInSupply = $supply->Ingredients;
+        $suppliers = Suppliers::all();
+        $ingredients = Ingredients::all();
+        return view('arm.supply.createOrUpdate', compact('ingredients', 'suppliers', 'supply', 'ingredientsInSupply'));
+    }
+
     public function Save(Request $request)
     {
+        $supplyId = $request->supplyId ? (int)$request->supplyId : null;
         $supplierId = $request->supplierId;
         $dateSupply = $request->dateSupply;
         $paymentType = $request->paymentType;
-        $file = $request->file;
+        $file = $request->file !== 'undefined' ? $request->file : null;
         $allIngredientsInSupplyData = StringHelper::JsonDecode($request->allIngredientsInSupplyData);
 
-        $fileDB = Files::SaveFile($file, 'invoice');
+        if ($supplyId) {
+            $supply = Supply::find($supplyId);
+        }
 
-        $newSupply = Supply::create([
-            'supplier_id' => $supplierId,
-            'supply_date' => $dateSupply,
-            'payment_type' => $paymentType,
-            'creator_id' => auth()->user()->id,
-            'files' => json_encode([$fileDB->id]),
-        ]);
+        if (isset($file) && isset($supply)) {
+            if (isset($supply->files)) {
+                $filesDB = json_decode($supply->files);
+                foreach ($filesDB as $fileDB) {
+                    Files::DeleteFiles($fileDB);
+                }
+            }
+            $fileDB = Files::SaveFile($file, 'invoice');
+        } else if (empty($supply)) {
+            $fileDB = Files::SaveFile($file, 'invoice');
+        }
+
+
+        if (isset($supply)) {
+            $supply->update([
+                'supplier_id' => $supplierId,
+                'supply_date' => $dateSupply,
+                'payment_type' => $paymentType,
+                'creator_id' => auth()->user()->id,
+                'files' => isset($file) ? json_encode([$fileDB->id]) : $supply->files,
+            ]);
+            foreach ($supply->Ingredients as $ingredient) {
+                $ingredient->delete();
+            }
+            $newSupply = $supply;
+        } else {
+            $newSupply = Supply::create([
+                'supplier_id' => $supplierId,
+                'supply_date' => $dateSupply,
+                'payment_type' => $paymentType,
+                'creator_id' => auth()->user()->id,
+                'files' => json_encode([$fileDB->id]),
+            ]);
+        }
 
         $ingredientInSupply = [];
         foreach ($allIngredientsInSupplyData as $ingredientInSupplyData) {
