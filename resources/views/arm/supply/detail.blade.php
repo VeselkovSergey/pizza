@@ -4,7 +4,9 @@
 
     <div class="mb-10">
         <a class="orange-button" href="{{route('supplies-page')}}">назад в поставки</a>
-        <a class="orange-button" href="{{route('supply-edit-page', $supply->id)}}">Редактировать</a>
+        @if(auth()->user()->IsAdmin())
+            <a class="orange-button" href="{{route('supply-edit-page', $supply->id)}}">Редактировать</a>
+        @endif
     </div>
 
     <div>
