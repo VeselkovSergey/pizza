@@ -162,28 +162,30 @@ class ManagerARMController extends Controller
     {
         $chatId = $user->telegram_chat_id;
 
-        $clientData = json_decode($order->client_raw_data);
-
-        $clientName = $clientData->clientName;
-        $clientPhone = $clientData->clientPhone;
-        $typePayment = ($clientData->typePayment[0] === true ? 'Карта' : 'Наличные') ;
-        $clientAddressDelivery = $clientData->clientAddressDelivery;
-        $clientComment = $clientData->clientComment;
-
-        $message = '<b>Курьер: </b>' . PHP_EOL;
-        $message .= '<i>Имя:</i> ' . $user->name . PHP_EOL;
-        $message .= '<i>Телефон:</i> +' . $user->phone . PHP_EOL;
-
-        $message .= '<b>Клиент:</b>' . PHP_EOL;
-        $message .= '<i>Имя:</i> ' . $clientName . PHP_EOL;
-        $message .= '<i>Телефон:</i> +' . $clientPhone . PHP_EOL;
-        $message .= '<i>Оплата:</i> ' . $typePayment . PHP_EOL;
-        $message .= '<i>Адрес:</i> ' . $clientAddressDelivery . PHP_EOL;
-        $message .= '<i>Комментарий:</i> ' . $clientComment . PHP_EOL;
-        $message .= '<i>Итого:</i> ' . $order->order_amount . ' ₽' . PHP_EOL;
-
-        $telegram = new Telegram();
         if (!empty($chatId)) {
+
+            $clientData = json_decode($order->client_raw_data);
+
+            $clientName = $clientData->clientName;
+            $clientPhone = $clientData->clientPhone;
+            $typePayment = ($clientData->typePayment[0] === true ? 'Карта' : 'Наличные') ;
+            $clientAddressDelivery = $clientData->clientAddressDelivery;
+            $clientComment = $clientData->clientComment;
+
+            $message = '<b>Курьер: </b>' . PHP_EOL;
+            $message .= '<i>Имя:</i> ' . $user->name . PHP_EOL;
+            $message .= '<i>Телефон:</i> +' . $user->phone . PHP_EOL;
+
+            $message .= '<b>Клиент:</b>' . PHP_EOL;
+            $message .= '<i>Имя:</i> ' . $clientName . PHP_EOL;
+            $message .= '<i>Телефон:</i> +' . $clientPhone . PHP_EOL;
+            $message .= '<i>Оплата:</i> ' . $typePayment . PHP_EOL;
+            $message .= '<i>Адрес:</i> ' . $clientAddressDelivery . PHP_EOL;
+            $message .= '<i>Комментарий:</i> ' . $clientComment . PHP_EOL;
+            $message .= '<i>Итого:</i> ' . $order->order_amount . ' ₽' . PHP_EOL;
+
+            $telegram = new Telegram();
+
             $telegram->addButton('Доставлен', 'Delivered');
             $telegram->addButton('Отказ', 'Refused');
             return $telegram->sendMessage($message, $chatId);

@@ -101,13 +101,17 @@ class Telegram
         return $this->_send();
     }
 
-    public function editMessageText($textMessage)
+    public function editMessageText($textMessage, $chatId = null, $messageId = null)
     {
         $this->textMessage = $textMessage;
         $this->buttons = $this->inlineKeyboard; //$buttons;
         $this->method = 'editMessageText';
+        if (isset($chatId) && isset($messageId)) {
+            $this->chatId = $chatId;
+            $this->messageId = $messageId;
+        }
         $this->permissionToMessageId = true;
-        $this->_send();
+        return $this->_send();
     }
 
     public function editMessageReplyMarkup()

@@ -52,6 +52,7 @@ class OrdersController extends Controller
             $orderAmount = (int)($orderAmount / 2);
         }
 
+        $editOrder = false;
         if (!empty($orderId)) {
             $order = Orders::find($orderId);
             if (empty($order)) {
@@ -63,6 +64,9 @@ class OrdersController extends Controller
             $order->order_amount = $orderAmount;
             $order->save();
             ProductsModificationsInOrders::where('order_id', $orderId)->delete();
+
+            $editOrder = true;
+
             $flashMessage = 'Заказ обновлен. Не забудь обновить страницу с заказом.';
         } else {
             $newOrder = Orders::create([
@@ -148,9 +152,15 @@ class OrdersController extends Controller
             'totalOrderAmount' => $totalOrderAmount,
             'clientInformation' => $clientInformation,
             'orderId' => $orderId,
+            'order' => $order,
         ];
 
-        $this->SendTelegram($orderFullInformation);
+        $result = $this->SendTelegram($orderFullInformation, $editOrder);
+        $result = json_decode($result);
+        if ($result && $result->ok === true) {
+            $order->order_telegram_message_id = $result->result->message_id;
+            $order->save();
+        }
 
         AuthController::UpdateUserName($user, $clientInformation->clientName);
 
@@ -182,7 +192,7 @@ class OrdersController extends Controller
         return $clientInformation;
     }
 
-    private function SendTelegram($orderFullInformation)
+    private function SendTelegram($orderFullInformation, $editOrder)
     {
         $allProductsInOrder = $orderFullInformation->products;
         $clientInformation = $orderFullInformation->clientInformation;
@@ -207,7 +217,11 @@ class OrdersController extends Controller
         $message .= '<i>Заказ в системе:</i> ' . route('manager-arm-order-page', $orderFullInformation->orderId) . PHP_EOL;
 
         $telegram = new Telegram();
-        $telegram->sendMessage($message, env('TELEGRAM_BOT_ORDERS_CHAT'));
+        if ($editOrder) {
+            return $telegram->editMessageText($message, env('TELEGRAM_BOT_ORDERS_CHAT'), $orderFullInformation->order->order_telegram_message_id);
+        } else {
+            return $telegram->sendMessage($message, env('TELEGRAM_BOT_ORDERS_CHAT'));
+        }
     }
 
     public static function SearchByPhone(string $phone)

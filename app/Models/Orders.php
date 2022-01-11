@@ -10,6 +10,7 @@ namespace App\Models;
  * @property string products_raw_data
  * @property string all_information_raw_data
  * @property string courier_telegram_message_id
+ * @property string order_telegram_message_id
  * @property string client_raw_data
  * @property integer order_amount
  * @property integer total_order_amount
@@ -30,6 +31,7 @@ class Orders extends BaseModel
         'courier_id',
         'payment_id',
         'courier_telegram_message_id',
+        'order_telegram_message_id',
         'order_amount',
         'total_order_amount',
     ];
