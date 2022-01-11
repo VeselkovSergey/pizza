@@ -118,27 +118,47 @@ class ManagerARMController extends Controller
         $orderId = request()->orderId;
         $courierId = (int)request()->courierId;
 
+        $order = Orders::find($orderId);
+
+        if (empty($order->courier_id)) {
+            OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['courier']);
+        }
+
+        self::ChangeCourierInOrder($courierId, $order);
+
+        return true;
+    }
+
+    public function ChangeCourierInOrderRequest()
+    {
+        $this->TransferOrderToDelivery();
+    }
+
+    public static function ChangeCourierInOrder($courierId, Orders $order)
+    {
         if ($courierId !== 0) {
             $user = User::find($courierId);
             $courierId = $user->id;
         }
 
-        $order = Orders::find($orderId);
-        $order->courier_id = $courierId;
+        if (isset($order->courier_id) && $order->courier_id !== 0 && isset($order->telegram_message_id)) {
+            $telegram = new Telegram();
+            $telegram->deleteMessage($order->Courier->telegram_chat_id, $order->telegram_message_id);
+        }
 
         if ($courierId !== 0) {
-            $result = $this->SendTelegram($user, $order);
+            $result = self::SendTelegram($user, $order);
             $result = json_decode($result);
             if ($result && $result->ok === true) {
                 $order->telegram_message_id = $result->result->message_id;
             }
         }
-        $order->save();
 
-        return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['courier']);
+        $order->courier_id = $courierId;
+        $order->save();
     }
 
-    private function SendTelegram(User $user, Orders $order)
+    private static function SendTelegram(User $user, Orders $order)
     {
         $chatId = $user->telegram_chat_id;
 

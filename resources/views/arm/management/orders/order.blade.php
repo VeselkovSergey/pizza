@@ -14,6 +14,9 @@
         </div>
 
         <div class="mb-10">
+            @if(auth()->user()->IsAdmin() && $order->status_id !== \App\Models\Orders::STATUS_TEXT['courier'])
+                <button class="change-courier-in-order clear-button py-5 px-25 mr-10 border-radius-5 cp red-button" data-url="{{route('manager-arm-change-courier-in-order')}}">Изменить курьера</button>
+            @endif
             @switch($order->status_id)
                 @case(\App\Models\Orders::STATUS_TEXT['newOrder'])
                     <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-2" data-url="{{route('manager-arm-change-status-order-to-manager-processes-page')}}">Взять в работу</button>
@@ -32,6 +35,7 @@
                     <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-9" data-url="{{route('manager-arm-change-status-order-to-canceled-page')}}">Отказ</button>
                     @break
                 @case(\App\Models\Orders::STATUS_TEXT['courier'])
+                    <button class="change-courier-in-order clear-button py-5 px-25 mr-10 border-radius-5 cp red-button" data-url="{{route('manager-arm-change-courier-in-order')}}">Изменить курьера</button>
                     <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-7" data-url="{{route('manager-arm-change-status-order-to-delivered')}}">Доставлен</button>
                     <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-9" data-url="{{route('manager-arm-change-status-order-to-canceled-page')}}">Отказ</button>
                     @break
@@ -105,12 +109,12 @@
         let allProducts = {!! json_encode($allProducts, JSON_UNESCAPED_UNICODE) !!};
         let productsAndModificationsInOrderForOrderEdit = {!! json_encode($productsAndModificationsInOrderForOrderEdit, JSON_UNESCAPED_UNICODE) !!};
 
-        let buttonsOrderChangeStatus = document.body.querySelectorAll('.order-change-status');
+        let buttonsOrderChangeStatus = document.body.querySelectorAll('.order-change-status, .change-courier-in-order');
         buttonsOrderChangeStatus.forEach((button) => {
             button.addEventListener('click', () => {
                 localStorage.removeItem('orderId');
                 let url = button.dataset.url;
-                if (url === "{{route('manager-arm-transfer-order-to-delivery-page')}}") {
+                if (url === "{{route('manager-arm-transfer-order-to-delivery-page')}}" || url === "{{route('manager-arm-change-courier-in-order')}}") {
                     CreateModalWindowForCourierSelection(url);
                 } else {
                     Ajax(url, 'post', {orderId: {{$order->id}}}).then(() => {

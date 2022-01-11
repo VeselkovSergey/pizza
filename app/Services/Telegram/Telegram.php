@@ -41,7 +41,6 @@ class Telegram
         empty($this->buttons) ?: $message['reply_markup'] = json_encode($this->buttons);
         $this->permissionToMessageId === false ?: $message['message_id'] = $this->messageId;
 
-
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $remote, // Полный адрес метода
@@ -119,9 +118,13 @@ class Telegram
         $this->_send();
     }
 
-    public function deleteMessage()
+    public function deleteMessage($chatId = null, $messageId = null)
     {
         $this->method = 'deleteMessage';
+        if (isset($chatId) && isset($messageId)) {
+            $this->chatId = $chatId;
+            $this->messageId = $messageId;
+        }
         $this->permissionToMessageId = true;
         $this->_send();
     }
