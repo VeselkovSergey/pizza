@@ -9,7 +9,7 @@ namespace App\Models;
  * @property integer payment_id
  * @property string products_raw_data
  * @property string all_information_raw_data
- * @property string telegram_message_id
+ * @property string courier_telegram_message_id
  * @property string client_raw_data
  * @property integer order_amount
  * @property integer total_order_amount
@@ -29,7 +29,7 @@ class Orders extends BaseModel
         'all_information_raw_data',
         'courier_id',
         'payment_id',
-        'telegram_message_id',
+        'courier_telegram_message_id',
         'order_amount',
         'total_order_amount',
     ];
@@ -133,9 +133,9 @@ class Orders extends BaseModel
      * @param int $messageId
      * @return Orders
      */
-    public static function ByMessageTelegram(int $messageId)
+    public static function ByCourierMessageTelegram(int $messageId)
     {
-        return self::where('telegram_message_id', $messageId)->first();
+        return self::where('courier_telegram_message_id', $messageId)->first();
     }
 
     public static function TimeBetweenStatuses($orderId, $oldStatus, $newStatus)

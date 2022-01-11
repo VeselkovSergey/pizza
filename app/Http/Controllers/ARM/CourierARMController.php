@@ -9,7 +9,7 @@ class CourierARMController
 {
     public static function ChangeStatusOrderToDelivered(int $messageId): bool
     {
-        $order = Orders::ByMessageTelegram($messageId);
+        $order = Orders::ByCourierMessageTelegram($messageId);
         if ($order) {
             return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['delivered'], $order->courier_id);
         }
@@ -18,7 +18,7 @@ class CourierARMController
 
     public static function ChangeStatusOrderToCanceled(int $messageId): bool
     {
-        $order = Orders::ByMessageTelegram($messageId);
+        $order = Orders::ByCourierMessageTelegram($messageId);
         if ($order) {
             return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['cancelled'], $order->courier_id);
         }

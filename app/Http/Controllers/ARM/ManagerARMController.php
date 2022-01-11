@@ -141,16 +141,16 @@ class ManagerARMController extends Controller
             $courierId = $user->id;
         }
 
-        if (isset($order->courier_id) && $order->courier_id !== 0 && isset($order->telegram_message_id)) {
+        if (isset($order->courier_id) && $order->courier_id !== 0 && isset($order->courier_telegram_message_id)) {
             $telegram = new Telegram();
-            $telegram->deleteMessage($order->Courier->telegram_chat_id, $order->telegram_message_id);
+            $telegram->deleteMessage($order->Courier->telegram_chat_id, $order->courier_telegram_message_id);
         }
 
         if ($courierId !== 0) {
             $result = self::SendTelegram($user, $order);
             $result = json_decode($result);
             if ($result && $result->ok === true) {
-                $order->telegram_message_id = $result->result->message_id;
+                $order->courier_telegram_message_id = $result->result->message_id;
             }
         }
 
