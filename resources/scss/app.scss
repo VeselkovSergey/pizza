@@ -214,6 +214,8 @@ header {
 
 .left-menu-content-container {
     max-width: calc(25% - 96px);
+    transition: transform 500ms;
+    transform: translateX(-100%);
 }
 
 .close-menu-button > svg {

@@ -1181,7 +1181,18 @@ function Profile() {
 let leftMenuButtons = document.body.querySelectorAll('.button-menu, .shadow-menu, .close-menu-button');
 leftMenuButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        document.body.querySelector('.left-menu').showToggle();
+        let leftMenu = document.body.querySelector('.left-menu');
+        if (leftMenu.classList.contains('hide')) {
+            leftMenu.classList.remove('hide');
+            setTimeout(() => {
+                leftMenu.querySelector('.left-menu-content-container').style.transform = "translateX(0%)"
+            }, 50)
+        } else {
+            leftMenu.querySelector('.left-menu-content-container').style.transform = "translateX(-120%)"
+            setTimeout(() => {
+                leftMenu.classList.add('hide');
+            }, 300)
+        }
     });
 });
 
