@@ -101,6 +101,7 @@ header {
         display: flex;
         justify-content: center;
         align-items: center;
+
         .modal-window-shadow {
             position: absolute;
             top: 0;
@@ -145,9 +146,11 @@ header {
         background-color: rgb(243, 243, 247);
         height: 25px;
         min-width: 30px;
+
         &.delete-product-button {
             border-radius: 25px 0 0 25px;
         }
+
         &.add-product-button {
             border-radius: 0 25px 25px 0;
         }
@@ -163,35 +166,43 @@ header {
     background-color: #f1848e;
     color: #000000;
 }
+
 .order-status-2 {
     background-color: #b0e9f5;
     color: #000000;
 }
+
 .order-status-3 {
     background-color: #f1b489;
     color: #000000;
 }
+
 .order-status-4 {
     background-color: #ffc107;
     color: #000000;
 }
+
 .order-status-5 {
     background-color: #84b79f;
     color: #000000;
 }
+
 .order-status-6 {
     background-color: #7195cb;
     color: #000000;
 }
+
 .order-status-7 {
     background-color: #b8c1c9;
     color: #000000;
 }
+
 .order-status-8 {
     background-color: #f8f9fa;
     color: #000000;
     border: 1px solid #000000;
 }
+
 .order-status-9 {
     background-color: #212529;
     color: #FFFFFF;
@@ -271,6 +282,7 @@ header {
     &.alarm-container {
         color: red;
     }
+
     animation: motion-animation 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 }
 
@@ -288,6 +300,7 @@ header {
         margin: 10px;
         border-radius: 15px;
         height: 100%;
+
         .container-product-description {
             flex: 1;
         }
@@ -315,6 +328,7 @@ input[type="radio"]:checked + span {
     input[name="clientPromoCode"] {
         text-transform: uppercase;
     }
+
     .promo-code-apply-button {
         margin-bottom: 0;
     }
@@ -329,7 +343,7 @@ input[type="radio"]:checked + span {
 }
 
 .custom-checkbox-label input {
-    display:none;
+    display: none;
 }
 
 .custom-checkbox-slider {
@@ -370,6 +384,10 @@ input:checked + .custom-checkbox-slider:before {
     border-radius: 50%;
 }
 
-::-webkit-scrollbar {
-    width: 0;               /* ширина scrollbar */
+body,
+.modal-window-component-container,
+.left-menu-content-container .scroll-auto {
+    &::-webkit-scrollbar {
+        width: 0; /* ширина scrollbar */
+    }
 }
