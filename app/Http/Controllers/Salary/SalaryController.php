@@ -27,6 +27,16 @@ class SalaryController
     {
         $employee = User::find(request()->employeeId);
         dd($employee);
-        return view('arm.salary.employees.card', compact('employee'));
+    }
+
+    public function Calendar()
+    {
+        return view('arm.salary.calendar.index');
+    }
+
+    public function DayDetail()
+    {
+        $date = request()->post('date');
+        return view('arm.salary.calendar.detail');
     }
 }

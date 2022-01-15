@@ -138,6 +138,13 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::get('/employee-card/{employeeId}', [Controllers\Salary\SalaryController::class, 'EmployeeCard'])->name('employee-card-page');
         Route::get('/save/{employeeId}', [Controllers\Salary\SalaryController::class, 'Save'])->name('employee-card-save-page');
 
+        Route::group(['prefix' => 'calendar'], function () {
+
+            Route::get('/', [Controllers\Salary\SalaryController::class, 'Calendar'])->name('calendar-page');
+            Route::post('/day-detail', [Controllers\Salary\SalaryController::class, 'DayDetail'])->name('day-detail-page');
+
+        });
+
     });
 
     Route::group(['prefix' => 'administration'], function () {
