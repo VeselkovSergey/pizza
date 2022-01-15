@@ -47,7 +47,7 @@ class ManagerARMController extends Controller
 
         $allProducts = ProductsController::GetAllProducts();
 
-        $couriers = User::where('role_id', 111)->get();
+        $couriers = User::Couriers();
         return view('arm.management.orders.order', [
             'order' => $order,
             'orderStatuses' => $orderStatuses,

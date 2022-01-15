@@ -76,7 +76,7 @@
                 let productContainer = event.target.closest('.user-info-container');
                 let userId = productContainer.dataset.userId;
                 let value = {};
-                value[event.target.name] = event.target.type === 'checkbox' ? (event.target.value === 'on' ? 1 : 0) : event.target.value;
+                value[event.target.name] = event.target.type === 'checkbox' ? (event.target.checked ? 1 : 0) : event.target.value;
                 SaveChanges (userId, value);
             });
         });

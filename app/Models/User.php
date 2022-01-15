@@ -81,7 +81,7 @@ class User extends Authenticatable
 
     public function IsAdmin()
     {
-        if (auth()->check() && auth()->user()->role_id === 999) {
+        if (auth()->check() && auth()->user()->role_id === 999  && auth()->user()->is_employee === 1) {
             return true;
         }
         return false;
@@ -93,7 +93,7 @@ class User extends Authenticatable
             return true;
         }
 
-        if (auth()->check() && auth()->user()->role_id === 777) {
+        if (auth()->check() && auth()->user()->role_id === 777  && auth()->user()->is_employee === 1) {
             return true;
         }
         return false;
@@ -101,10 +101,15 @@ class User extends Authenticatable
 
     public function IsStaff()
     {
-        if (auth()->check() && auth()->user()->role_id > 100) {
+        if (auth()->check() && auth()->user()->role_id > 100 && auth()->user()->is_employee === 1) {
             return true;
         }
         return false;
+    }
+
+    public static function Couriers()
+    {
+        return User::where('role_id', 111)->where('is_employee', 1)->get();
     }
 
     public function UserIsAdmin()
