@@ -11,6 +11,7 @@ use App\Models\Orders;
 use App\Models\PromoCodes;
 use App\Models\Supply;
 use App\Models\User;
+use App\Services\Pusher\NewOrderForKitchen;
 use App\Services\Telegram\Telegram;
 
 class ManagerARMController extends Controller
@@ -110,7 +111,10 @@ class ManagerARMController extends Controller
     {
         $orderId = request()->orderId;
         $order = Orders::find($orderId);
-        return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['kitchen']);
+        OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['kitchen']);
+        event(new NewOrderForKitchen($order->id));
+        return true;
+
     }
 
     public function TransferOrderToDelivery()

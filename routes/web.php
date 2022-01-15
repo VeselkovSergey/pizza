@@ -38,6 +38,7 @@ Route::group(['prefix' => 'catalog'], function () {
 Route::group(['prefix' => 'orders'], function () {
 
     Route::post('/create', [Controllers\Orders\OrdersController::class, 'Create'])->name('order-create');
+    Route::get('/order-info', [Controllers\Orders\OrdersController::class, 'OrderByIdForKitchenInterface'])->name('order-info');
 
 });
 
@@ -244,9 +245,9 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 //
 //Route::view('/pusher', 'arm.test-view.pusher');
 //
-//Route::get('/test-pusher-event', function () {
-//    event(new App\Services\Pusher\Pusher(1, 1, 1));
-//});
+Route::get('/test-pusher-event', function () {
+    event(new \App\Services\Pusher\NewOrderForKitchen(request()->orderId));
+});
 //
 //
 ///*

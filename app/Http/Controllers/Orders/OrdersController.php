@@ -278,4 +278,34 @@ class OrdersController extends Controller
         }
         return $product->save();
     }
+
+    public function OrderByIdForKitchenInterface()
+    {
+        $orderId = \request()->orderId;
+        $order = Orders::find($orderId);
+        $order->sendToKitchen = OrdersStatusLogs::where('order_id', $order->id)->where('new_status_id', Orders::STATUS_TEXT['kitchen'])->first('created_at')->created_at->format('H:m');
+
+        $productsInOrder = [];
+        foreach (json_decode($order->products_raw_data) as $product) {
+            $productsInOrder[] = [
+                'categoryId' => (int)$product->data->product->categoryId,
+                'title' => $product->data->product->categoryTitle . ' ' . $product->data->product->title,
+                'amount' => $product->amount,
+            ];
+        }
+
+        $order->products = $productsInOrder;
+        unset($order->client_raw_data);
+        unset($order->all_information_raw_data);
+        unset($order->created_at);
+        unset($order->order_amount);
+        unset($order->status_id);
+        unset($order->telegram_message_id);
+        unset($order->total_order_amount);
+        unset($order->updated_at);
+        unset($order->user_id);
+        unset($order->courier_id);
+        unset($order->products_raw_data);
+        return $order;
+    }
 }
