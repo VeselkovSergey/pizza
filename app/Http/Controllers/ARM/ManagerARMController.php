@@ -42,7 +42,7 @@ class ManagerARMController extends Controller
         $clientInfo = json_decode($order->client_raw_data);
         $rawData = json_decode($order->all_information_raw_data);
         $promoCode = null;
-        if ($clientInfo->clientPromoCode) {
+        if (isset($clientInfo->clientPromoCode)) {
             $promoCode = PromoCodes::where('title', $clientInfo->clientPromoCode)->first();
             if ($promoCode) {
                 $promoCode->conditions = json_decode($promoCode->conditions);
