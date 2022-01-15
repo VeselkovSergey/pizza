@@ -28,6 +28,9 @@
         <div>
             <a href="{{route('all-promo-codes-page')}}">Промокоды</a>
         </div>
+        <div>
+            <a href="{{route('salary-page')}}">Зарплатный блок</a>
+        </div>
     </div>
 
 @stop

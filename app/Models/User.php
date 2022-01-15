@@ -15,8 +15,10 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string phone
  * @property string name
  * @property string surname
+ * @property string patronymic
  * @property string telegram_chat_id
  * @property integer role_id
+ * @property integer is_employee
  * @property Orders Orders
  */
 class User extends Authenticatable
@@ -40,6 +42,7 @@ class User extends Authenticatable
         'password',
         'role_id',
         'telegram_chat_id',
+        'is_employee',
     ];
 
     /**
@@ -153,5 +156,10 @@ class User extends Authenticatable
             }
         }
         return false;
+    }
+
+    public static function Employees()
+    {
+        return User::where('role_id', '!=', 1)->get();
     }
 }

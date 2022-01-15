@@ -131,6 +131,14 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
     });
 
+    Route::group(['prefix' => 'salary'], function () {
+
+        Route::get('/', [Controllers\Salary\SalaryController::class, 'Index'])->name('salary-page');
+        Route::get('/employees', [Controllers\Salary\SalaryController::class, 'Employees'])->name('employees-page');
+        Route::get('/employee-card/{employeeId}', [Controllers\Salary\SalaryController::class, 'EmployeeCard'])->name('employee-card-page');
+
+    });
+
     Route::group(['prefix' => 'administration'], function () {
 
         Route::get('/', [Controllers\ARM\AdministratorARMController::class, 'Index'])->name('administrator-arm-page');

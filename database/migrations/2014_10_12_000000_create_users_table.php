@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->integer('role_id')->default(1);
             $table->string('telegram_chat_id')->nullable();
+            $table->tinyInteger('is_employee')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
