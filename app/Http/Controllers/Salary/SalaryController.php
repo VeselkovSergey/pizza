@@ -22,4 +22,11 @@ class SalaryController
         $employee = User::find(request()->employeeId);
         return view('arm.salary.employees.card', compact('employee'));
     }
+
+    public function Save()
+    {
+        $employee = User::find(request()->employeeId);
+        dd($employee);
+        return view('arm.salary.employees.card', compact('employee'));
+    }
 }

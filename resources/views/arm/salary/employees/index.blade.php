@@ -13,10 +13,8 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Имя</th>
+                <th>ФИО</th>
                 <th>Номер</th>
-                <th>Роль</th>
-                <th>ID чата в телеграм</th>
                 <th></th>
             </tr>
             </thead>
@@ -25,10 +23,8 @@
                 <?php /** @var \App\Models\User $user */?>
                 <tr class="user-info-container" data-user-id="{{$user->id}}">
                     <td>{{$user->id}}</td>
-                    <td><input name="name" class="edit-field" readonly type="text" value="{{$user->name}}"></td>
+                    <td>{{$user->surname . ' ' . $user->name . ' ' . $user->patronymic}}</td>
                     <td>{{$user->phone}}</td>
-                    <td><input name="role_id" class="edit-field" readonly type="text" value="{{$user->role_id}}"></td>
-                    <td><input name="telegram_chat_id" class="edit-field" readonly type="text" value="{{$user->telegram_chat_id}}"></td>
                     <td class="text-center"><a href="{{route('employee-card-page', $user->id)}}">карточка сотрудника</a></td>
                 </tr>
             @endforeach

@@ -136,6 +136,7 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::get('/', [Controllers\Salary\SalaryController::class, 'Index'])->name('salary-page');
         Route::get('/employees', [Controllers\Salary\SalaryController::class, 'Employees'])->name('employees-page');
         Route::get('/employee-card/{employeeId}', [Controllers\Salary\SalaryController::class, 'EmployeeCard'])->name('employee-card-page');
+        Route::get('/save/{employeeId}', [Controllers\Salary\SalaryController::class, 'Save'])->name('employee-card-save-page');
 
     });
 

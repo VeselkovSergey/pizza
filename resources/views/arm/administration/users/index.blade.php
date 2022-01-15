@@ -26,6 +26,7 @@
                     <th>Имя</th>
                     <th>Номер</th>
                     <th>Роль</th>
+                    <th>Работает</th>
                     <th>ID чата в телеграм</th>
                     <th>Кол-во заказов</th>
                     <th></th>
@@ -39,9 +40,18 @@
                         <td><input name="name" class="edit-field" readonly type="text" value="{{$user->name}}"></td>
                         <td>{{$user->phone}}</td>
                         <td><input name="role_id" class="edit-field" readonly type="text" value="{{$user->role_id}}"></td>
+                        <td>
+                            <div class="flex-center">
+                                <label class="custom-checkbox-label" for="is_employee-{{$user->id}}">
+                                    <input class="edit-field" type="checkbox" id="is_employee-{{$user->id}}" name="is_employee" @if($user->is_employee) checked @endif/>
+                                    <div class="custom-checkbox-slider round"></div>
+                                </label>
+                            </div>
+                        </td>
                         <td><input name="telegram_chat_id" class="edit-field" readonly type="text" value="{{$user->telegram_chat_id}}"></td>
                         <td>{{$user->Orders->count()}}</td>
                         <td><a href="{{route('administrator-arm-user-orders-page', $user->id)}}">к заказам</a></td>
+
                     </tr>
                 @endforeach
                 </tbody>
@@ -61,12 +71,12 @@
                 event.target.removeAttribute('readonly');
             });
 
-            field.addEventListener('blur', (event) => {
-                event.target.setAttribute('readonly', 'readonly');
+            field.addEventListener('change', (event) => {
+                event.target.type !== 'checkbox' ? event.target.setAttribute('readonly', 'readonly') : '';
                 let productContainer = event.target.closest('.user-info-container');
                 let userId = productContainer.dataset.userId;
                 let value = {};
-                value[event.target.name] = event.target.value;
+                value[event.target.name] = event.target.type === 'checkbox' ? (event.target.value === 'on' ? 1 : 0) : event.target.value;
                 SaveChanges (userId, value);
             });
         });
