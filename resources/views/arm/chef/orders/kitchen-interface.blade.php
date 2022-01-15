@@ -3,6 +3,19 @@
 @section('content')
 
     <style>
+        .width-order-info {
+            width: 25%;
+        }
+        @media screen and (max-width: 720px) {
+            .width-order-info {
+                width: 50%;
+            }
+        }
+        @media screen and (max-width: 540px) {
+            .width-order-info {
+                width: 100%;
+            }
+        }
         .title-order {
             background-color: #f1848e;
         }
@@ -25,7 +38,7 @@
         <div class="orders-container flex-wrap">
             @if(sizeof($orders))
                 @foreach($orders as $order)
-                    <div class="w-25 mb-25 flex-column order-id-{{$order->id}}" onclick="OrderCompletionWindow({{$order->id}})">
+                    <div class="width-order-info mb-25 flex-column order-id-{{$order->id}}" onclick="OrderCompletionWindow({{$order->id}})">
                         @php($clientInfo = json_decode($order->client_raw_data))
                         @php($productsRawData = json_decode($order->products_raw_data))
 
@@ -112,7 +125,7 @@
                                     '</div>'+
                                 '</div>';
 
-            return CreateElement('div', {content: content, class: 'w-25 mb-25 flex-column order-id-'+orderInfo.id, attr: {onclick: 'OrderCompletionWindow('+orderInfo.id+')'}}, ordersContainer);
+            return CreateElement('div', {content: content, class: 'width-order-info mb-25 flex-column order-id-'+orderInfo.id, attr: {onclick: 'OrderCompletionWindow('+orderInfo.id+')'}}, ordersContainer);
         }
 
         function GenerateProductInfo(orderInfo) {
