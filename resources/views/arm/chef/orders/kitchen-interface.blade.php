@@ -91,6 +91,15 @@
 
     <script>
 
+        Start();
+        function Start() {
+            let completeButton = CreateElement('button', {content: 'Понеслась;)', class: 'big-button orange-button'});
+            let modal = ModalWindow(completeButton);
+            completeButton.addEventListener('click', () => {
+                modal.hide();
+            });
+        }
+
         function OrderCompletionWindow(orderId) {
             let completeButton = CreateElement('button', {content: 'выполнен', class: 'big-button orange-button'});
             let modal = ModalWindow(completeButton);
@@ -106,6 +115,10 @@
 
         const kitchenChannel = pusher.subscribe('kitchen-channel');
         kitchenChannel.bind('newOrderForKitchen', function(data) {
+
+            let audio = new Audio('{{asset('audio/new-order.mp3')}}'); // Создаём новый элемент Audio
+            audio.play(); // Автоматически запускаем
+
             Ajax('{{route('order-info')}}?orderId=' + data.orderId).then((response) => {
                 GenerateOrderInfo(response);
             });
