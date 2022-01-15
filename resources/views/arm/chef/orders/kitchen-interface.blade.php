@@ -3,6 +3,9 @@
 @section('content')
 
     <style>
+        header {
+            display: none!important;
+        }
         .width-order-info {
             width: 25%;
         }
