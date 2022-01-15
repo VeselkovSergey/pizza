@@ -8,8 +8,9 @@
         }
     </style>
 
-    <div class="mb-10">
+    <div class="mb-10 flex-wrap">
         <a class="orange-button" href="{{route('administrator-arm-page')}}">назад в ARM админа</a>
+        <a class="orange-button ml-a" href="{{route('create-promo-code-page')}}">новый промокод</a>
     </div>
 
     <div>
