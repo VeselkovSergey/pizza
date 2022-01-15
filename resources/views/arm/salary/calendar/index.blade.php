@@ -109,8 +109,10 @@
 
             let labelEmployeeSelector = CreateElement('label', {content: 'Сотрудник', class: 'flex-column mb-10'}, container);
             let employeeSelector = CreateElement('select', {}, labelEmployeeSelector);
-            CreateElement('option', {content: 'Сотрудник-1'}, employeeSelector);
-            CreateElement('option', {content: 'Сотрудник-2'}, employeeSelector);
+
+            @foreach($employees as $employee)
+            CreateElement('option', {content: '#{{$employee->id . ' ' . $employee->name . '-' . $employee->phone}}'}, employeeSelector);
+            @endforeach
 
             let labelEmployeeStartOfShift = CreateElement('label', {content: 'Начало смены', class: 'flex-column mb-10'}, container);
             let fieldEmployeeStartOfShift = CreateElement('input', {attr: {type: 'datetime-local', value: nowTime},}, labelEmployeeStartOfShift);

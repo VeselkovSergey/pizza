@@ -31,7 +31,8 @@ class SalaryController
 
     public function Calendar()
     {
-        return view('arm.salary.calendar.index');
+        $employees = User::Employees();
+        return view('arm.salary.calendar.index', compact('employees'));
     }
 
     public function DayDetail()
