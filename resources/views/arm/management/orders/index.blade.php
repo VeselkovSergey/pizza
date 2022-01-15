@@ -114,7 +114,7 @@
         });
 
         function SearchOrdersByPhone(phone) {
-            Ajax('{{route('manager-arm-order-search-bu-phone')}}', 'post', {phone: phone}).then((response) => {
+            Ajax('{{route('manager-arm-order-search-by-phone')}}', 'post', {phone: phone}).then((response) => {
                 foundOrdersContainer.innerHTML = '';
                 FoundOrdersGenerationHTML(response);
                 ordersContainer.hide();
