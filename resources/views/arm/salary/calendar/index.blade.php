@@ -19,23 +19,6 @@
 
     <div>
 
-        <div>
-            <label>
-                Сотрудник
-                <select name="">
-                    <option value="">Сотрудник</option>
-                </select>
-            </label>
-            <label>
-                Начало смены
-                <input type="datetime-local" value="{{now()->format('Y-m-d\TH:i')}}">
-            </label>
-            <label>
-                Конец смены
-                <input type="datetime-local" value="{{now()->format('Y-m-d\TH:i')}}">
-            </label>
-        </div>
-
         <div class="flex-wrap">
             @for($day = ((int)(now()->startOfMonth()->format('d')) - now()->startOfMonth()->dayOfWeekIso + 1); $day <= (int)(now()->endOfMonth()->format('d')); $day++)
                 @php($text = $day > 0 ? $day : '')
