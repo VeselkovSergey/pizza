@@ -23,6 +23,14 @@ class ChefARMController extends Controller
         ]);
     }
 
+    public function OrdersKitchenInterface()
+    {
+        $orders = Orders::KitchenStatusOnly();
+        return view('arm.chef.orders.kitchen-interface', [
+            'orders' => $orders
+        ]);
+    }
+
     public function Order()
     {
         $orderId = request()->orderId;
@@ -38,6 +46,11 @@ class ChefARMController extends Controller
     {
         $orderId = request()->orderId;
         $order = Orders::find($orderId);
+        $productsInOrder = $order->ProductsModifications;
+        foreach ($productsInOrder as $product) {
+            OrdersController::OrderProductChangeStatus($product, ProductsModificationsInOrders::STATUS_TEXT['cooked']);
+        }
+
         return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['cooked']);
     }
 

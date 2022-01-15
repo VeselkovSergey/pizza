@@ -7,6 +7,9 @@
         <div>
             <a href="{{route('chef-arm-orders-page')}}">Заказы</a>
         </div>
+        <div>
+            <a href="{{route('chef-arm-orders-kitchen-page')}}">Заказы интерфейс кухни</a>
+        </div>
     </div>
 
 @stop
