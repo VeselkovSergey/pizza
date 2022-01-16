@@ -97,6 +97,7 @@
             let modal = ModalWindow(completeButton);
             completeButton.addEventListener('click', () => {
                 modal.hide();
+                document.body.classList.remove('scroll-off')
             });
         }
 
@@ -107,6 +108,7 @@
                 Ajax('{{route('chef-arm-change-status-order-to-cooked')}}', 'POST', {orderId: orderId}).then((response) => {
                     document.body.querySelector('.order-id-'+orderId).remove();
                     modal.hide();
+                    document.body.classList.remove('scroll-off')
                 });
             });
         }
