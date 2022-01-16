@@ -72,7 +72,8 @@
                                         ?>
 
                                         <div class="flex-space-between py-5 bg-order-{{$flexOrder}}" style="border-bottom: 1px solid black; order: {{$flexOrder}}">
-                                            <span>{{$product->data->product->categoryTitle . ' ' . $product->data->product->title . ' ' . $product->data->modification->title . ' ' . $product->data->modification->value}}</span>
+                                            @php($titleText = $product->data->product->categoryTitle . ' ' . $product->data->product->title . ' ' . ($product->data->modification->title !== 'Соло-продукт' ? $product->data->modification->title . ' ' . $product->data->modification->value : ''))
+                                            <span>{{$titleText}}</span>
                                             <span class="font-weight-600">{{$product->amount}}</span>
                                         </div>
                                     @endforeach

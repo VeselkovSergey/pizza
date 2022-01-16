@@ -289,7 +289,7 @@ class OrdersController extends Controller
         foreach (json_decode($order->products_raw_data) as $product) {
             $productsInOrder[] = [
                 'categoryId' => (int)$product->data->product->categoryId,
-                'title' => $product->data->product->categoryTitle . ' ' . $product->data->product->title . ' ' . $product->data->modification->title . ' ' . $product->data->modification->value,
+                'title' => $product->data->product->categoryTitle . ' ' . $product->data->product->title . ' ' . ($product->data->modification->title !== 'Соло-продукт' ? $product->data->modification->title . ' ' . $product->data->modification->value : ''),
                 'amount' => $product->amount,
             ];
         }
