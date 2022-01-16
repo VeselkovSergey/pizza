@@ -72,7 +72,7 @@
                                         ?>
 
                                         <div class="flex-space-between py-5 bg-order-{{$flexOrder}}" style="border-bottom: 1px solid black; order: {{$flexOrder}}">
-                                            <span>{{$product->data->product->categoryTitle . ' ' . $product->data->product->title}}</span>
+                                            <span>{{$product->data->product->categoryTitle . ' ' . $product->data->product->title . ' ' . $product->data->modification->title . ' ' . $product->data->modification->value}}</span>
                                             <span class="font-weight-600">{{$product->amount}}</span>
                                         </div>
                                     @endforeach
