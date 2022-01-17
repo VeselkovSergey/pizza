@@ -37,6 +37,7 @@ Route::get('/111', function () {
                 $phones[$phone][] = unserialize($data);
             } else {
                 $phones[$phone] = [];
+                $phones[$phone][] = unserialize($data);
             }
         }
     }
