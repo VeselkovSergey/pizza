@@ -34,10 +34,13 @@ Route::get('/111', function () {
 
             $phone = unserialize($data)['clientPhone'];
             if (isset($phones[$phone])) {
-                $phones[$phone][] = unserialize($data);
+                if ($phone === '79151640548') {
+                    unlink(storage_path('framework/sessions/' . $session));
+                }
+//                $phones[$phone][] = unserialize($data);
             } else {
-                $phones[$phone] = [];
-                $phones[$phone][] = unserialize($data);
+//                $phones[$phone] = [];
+//                $phones[$phone][] = unserialize($data);
             }
         }
     }
