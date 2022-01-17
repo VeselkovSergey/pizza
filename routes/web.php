@@ -29,7 +29,7 @@ Route::get('/111', function () {
             $data = file_get_contents(storage_path('framework/sessions/' . $session));
 
             if (empty(unserialize($data)['clientPhone'])) {
-                break;
+                continue;
             }
 
             $phone = isset(unserialize($data)['clientPhone']);
