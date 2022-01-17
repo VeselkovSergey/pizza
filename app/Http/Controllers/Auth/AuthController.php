@@ -60,6 +60,43 @@ class AuthController extends Controller
         return ResultGenerate::Success();
     }
 
+    public function AllSessions()
+    {
+        $sessionsArr = [];
+        $sessions = \Storage::disk('sessions')->allFiles();
+        foreach ($sessions as $session) {
+            $data = file_get_contents(storage_path('framework/sessions/' . $session));
+
+            if (empty(unserialize($data)['clientPhone'])) {
+                continue;
+            }
+
+            $phone = unserialize($data)['clientPhone'];
+            if ($phone === \auth()->user()->phone) {
+                $sessionsArr[] = unserialize($data);
+            }
+        }
+        return view('arm.administration.users.sessions', compact('sessionsArr'));
+    }
+
+    public function LogoutAllDevices()
+    {
+        $sessions = \Storage::disk('sessions')->allFiles();
+        foreach ($sessions as $session) {
+            $data = file_get_contents(storage_path('framework/sessions/' . $session));
+
+            if (empty(unserialize($data)['clientPhone'])) {
+                continue;
+            }
+
+            $phone = unserialize($data)['clientPhone'];
+            if ($phone === \auth()->user()->phone) {
+                unlink(storage_path('framework/sessions/' . $session));
+            }
+        }
+        return ResultGenerate::Success();
+    }
+
     public static function FastRegistrationUserByPhone($phone)
     {
         $phone = preg_replace("/[^0-9]/", '', $phone);

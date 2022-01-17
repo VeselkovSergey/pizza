@@ -30,6 +30,7 @@
                     <th>ID чата в телеграм</th>
                     <th>Кол-во заказов</th>
                     <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -51,6 +52,7 @@
                         <td><input name="telegram_chat_id" class="edit-field" readonly type="text" value="{{$user->telegram_chat_id}}"></td>
                         <td>{{$user->Orders->count()}}</td>
                         <td><a href="{{route('administrator-arm-user-orders-page', $user->id)}}">к заказам</a></td>
+                        <td><a href="{{route('all-sessions-page')}}">к сессиям</a></td>
 
                     </tr>
                 @endforeach

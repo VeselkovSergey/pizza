@@ -20,28 +20,6 @@ use App\Http\Controllers;
 |
 */
 
-//Route::get('/111', function () {
-//    //return redirect('all-routes-page');
-//    $phones = [];
-//    $sessions = Storage::disk('sessions')->allFiles();
-//    foreach ($sessions as $session) {
-//        if ($session !== '.gitignore') {
-//            $data = file_get_contents(storage_path('framework/sessions/' . $session));
-//
-//            if (empty(unserialize($data)['clientPhone'])) {
-//                continue;
-//            }
-//
-//
-//            $phone = unserialize($data)['clientPhone'];
-//            if ($phone === '79151640548') {
-//                unlink(storage_path('framework/sessions/' . $session));
-//            }
-//        }
-//    }
-//    dd($phones);
-//})->name('home-page');
-
 Route::get('/', [Controllers\Catalog\CatalogController::class, 'Index'])->name('home-page');
 
 Route::get('/resources/{directory}/{fileName}', [Controllers\Resources\ResourceController::class, 'GetResources']);
@@ -85,6 +63,8 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/check-confirmation-code', [Controllers\Auth\AuthController::class, 'CheckConfirmationCode'])->name('check-confirmation-code');
 
     Route::get('/logout', [Controllers\Auth\AuthController::class, 'Logout'])->name('logout');
+    Route::get('/all-sessions', [Controllers\Auth\AuthController::class, 'AllSessions'])->name('all-sessions-page');
+    Route::get('/logout-all-devices', [Controllers\Auth\AuthController::class, 'LogoutAllDevices'])->name('logout-all-devices');
 
 });
 
