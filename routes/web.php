@@ -20,9 +20,23 @@ use App\Http\Controllers;
 |
 */
 
-//Route::get('/', function () {
-//    //return redirect('all-routes-page');
-//})->name('home-page');
+Route::get('/111', function () {
+    //return redirect('all-routes-page');
+    $phones = [];
+    $sessions = Storage::disk('sessions')->allFiles();
+    foreach ($sessions as $session) {
+        if ($session !== '.gitignore') {
+            $data = file_get_contents(storage_path('framework/sessions/' . $session));
+            $phone = unserialize($data)['clientPhone'];
+            if (isset($phones[$phone])) {
+                $phones[$phone][] = unserialize($data);
+            } else {
+                $phones[$phone] = [];
+            }
+        }
+    }
+    dd($phones);
+})->name('home-page');
 
 Route::get('/', [Controllers\Catalog\CatalogController::class, 'Index'])->name('home-page');
 
@@ -245,9 +259,10 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 //
 //Route::view('/pusher', 'arm.test-view.pusher');
 //
-//Route::get('/test-pusher-event', function () {
-//    event(new \App\Services\Pusher\NewOrderForKitchen(request()->orderId));
-//});
+Route::get('/test-pusher-event', function () {
+    return OrdersController::OrderByIdForKitchenInterface();
+    event(new \App\Services\Pusher\NewOrderForKitchen(request()->orderId));
+});
 //
 //
 ///*
