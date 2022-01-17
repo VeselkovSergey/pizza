@@ -20,27 +20,27 @@ use App\Http\Controllers;
 |
 */
 
-Route::get('/111', function () {
-    //return redirect('all-routes-page');
-    $phones = [];
-    $sessions = Storage::disk('sessions')->allFiles();
-    foreach ($sessions as $session) {
-        if ($session !== '.gitignore') {
-            $data = file_get_contents(storage_path('framework/sessions/' . $session));
-
-            if (empty(unserialize($data)['clientPhone'])) {
-                continue;
-            }
-
-
-            $phone = unserialize($data)['clientPhone'];
-            if ($phone === '79151640548') {
-                unlink(storage_path('framework/sessions/' . $session));
-            }
-        }
-    }
-    dd($phones);
-})->name('home-page');
+//Route::get('/111', function () {
+//    //return redirect('all-routes-page');
+//    $phones = [];
+//    $sessions = Storage::disk('sessions')->allFiles();
+//    foreach ($sessions as $session) {
+//        if ($session !== '.gitignore') {
+//            $data = file_get_contents(storage_path('framework/sessions/' . $session));
+//
+//            if (empty(unserialize($data)['clientPhone'])) {
+//                continue;
+//            }
+//
+//
+//            $phone = unserialize($data)['clientPhone'];
+//            if ($phone === '79151640548') {
+//                unlink(storage_path('framework/sessions/' . $session));
+//            }
+//        }
+//    }
+//    dd($phones);
+//})->name('home-page');
 
 Route::get('/', [Controllers\Catalog\CatalogController::class, 'Index'])->name('home-page');
 
