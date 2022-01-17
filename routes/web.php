@@ -27,7 +27,12 @@ Route::get('/111', function () {
     foreach ($sessions as $session) {
         if ($session !== '.gitignore') {
             $data = file_get_contents(storage_path('framework/sessions/' . $session));
-            $phone = unserialize($data)['clientPhone'];
+
+            if (empty(unserialize($data)['clientPhone'])) {
+                break;
+            }
+
+            $phone = isset(unserialize($data)['clientPhone']);
             if (isset($phones[$phone])) {
                 $phones[$phone][] = unserialize($data);
             } else {
