@@ -385,7 +385,7 @@ input:checked + .custom-checkbox-slider:before {
 }
 
 body,
-.modal-window-component-container,
+.modal-window-content,
 .left-menu-content-container .scroll-auto {
     &::-webkit-scrollbar {
         width: 0; /* ширина scrollbar */
