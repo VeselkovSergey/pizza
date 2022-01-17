@@ -65,15 +65,17 @@ class AuthController extends Controller
         $sessionsArr = [];
         $sessions = \Storage::disk('sessions')->allFiles();
         foreach ($sessions as $session) {
-            $data = file_get_contents(storage_path('framework/sessions/' . $session));
+            if ($session !== '.gitignore') {
+                $data = file_get_contents(storage_path('framework/sessions/' . $session));
 
-            if (empty(unserialize($data)['clientPhone'])) {
-                continue;
-            }
+                if (empty(unserialize($data)['clientPhone'])) {
+                    continue;
+                }
 
-            $phone = unserialize($data)['clientPhone'];
-            if ($phone === \auth()->user()->phone) {
-                $sessionsArr[] = unserialize($data);
+                $phone = unserialize($data)['clientPhone'];
+                if ($phone === \auth()->user()->phone) {
+                    $sessionsArr[] = unserialize($data);
+                }
             }
         }
         return view('arm.administration.users.sessions', compact('sessionsArr'));
@@ -83,15 +85,17 @@ class AuthController extends Controller
     {
         $sessions = \Storage::disk('sessions')->allFiles();
         foreach ($sessions as $session) {
-            $data = file_get_contents(storage_path('framework/sessions/' . $session));
+            if ($session !== '.gitignore') {
+                $data = file_get_contents(storage_path('framework/sessions/' . $session));
 
-            if (empty(unserialize($data)['clientPhone'])) {
-                continue;
-            }
+                if (empty(unserialize($data)['clientPhone'])) {
+                    continue;
+                }
 
-            $phone = unserialize($data)['clientPhone'];
-            if ($phone === \auth()->user()->phone) {
-                unlink(storage_path('framework/sessions/' . $session));
+                $phone = unserialize($data)['clientPhone'];
+                if ($phone === \auth()->user()->phone) {
+                    unlink(storage_path('framework/sessions/' . $session));
+                }
             }
         }
         return ResultGenerate::Success();
