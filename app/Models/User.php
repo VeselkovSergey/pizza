@@ -134,6 +134,8 @@ class User extends Authenticatable
 
         if ($this->IsAdmin()) {
             return true;
+        } else if ($this->is_employee !== 1) {
+            return false;
         }
 
         $permissionCategory = trim($permissionCategory);
