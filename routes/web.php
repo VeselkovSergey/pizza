@@ -32,7 +32,7 @@ Route::get('/111', function () {
                 continue;
             }
 
-            $phone = isset(unserialize($data)['clientPhone']);
+            $phone = unserialize($data)['clientPhone'];
             if (isset($phones[$phone])) {
                 $phones[$phone][] = unserialize($data);
             } else {
