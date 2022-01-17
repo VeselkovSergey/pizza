@@ -4,6 +4,7 @@
 
     <div class="mb-10">
         <a class="orange-button" href="{{route('administrator-arm-users-page')}}">назад к пользователям</a>
+        <a class="orange-button" href="{{route('logout-all-devices')}}">удалить все сессии</a>
     </div>
 
     <div>
