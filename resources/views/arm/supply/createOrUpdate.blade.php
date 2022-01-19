@@ -127,7 +127,7 @@
                let ingredientId = containerForIngredient.querySelector('select[name="ingredient"]');
                let ingredientAmount = containerForIngredient.querySelector('input[name="amount"]');
                let ingredientPrice = containerForIngredient.querySelector('input[name="price"]');
-               if (ingredientId.value !== 'null' && ingredientAmount.value !== '' && ingredientPrice.value !== '') {
+               if (ingredientId.value !== null && ingredientId.value !== 'null' && ingredientAmount.value !== '' && ingredientPrice.value !== '') {
                    containerForIngredient.classList.remove('invalid-value');
                    allIngredientsInSupplyData.push({
                        id: ingredientId.value,
@@ -405,6 +405,7 @@
                         optionsCustom[i].show();
                     }
                 }
+                selector.value = oldValue;
             });
 
             searchField.addEventListener('keyup', (event) => {
