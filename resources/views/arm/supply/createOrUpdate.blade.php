@@ -3,9 +3,6 @@
 @section('content')
 
     <style>
-        .select-with-search {
-            display: none;
-        }
         .search-field-container {
             width: 100%;
             position: relative;
