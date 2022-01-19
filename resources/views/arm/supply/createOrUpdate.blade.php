@@ -12,6 +12,7 @@
         }
         .custom-options-container {
             position: absolute;
+            z-index: 1;
             background-color: white;
             width: calc(100% - 20px);
             padding: 5px 10px;
