@@ -243,9 +243,13 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 //
 //Route::view('/pusher', 'arm.test-view.pusher');
 //
-Route::get('/test-pusher-event', function () {
-    return OrdersController::OrderByIdForKitchenInterface();
-    event(new \App\Services\Pusher\NewOrderForKitchen(request()->orderId));
+//Route::get('/test-pusher-event', function () {
+//    return OrdersController::OrderByIdForKitchenInterface();
+//    event(new \App\Services\Pusher\NewOrderForKitchen(request()->orderId));
+//});
+
+Route::get('/debug-view', function () {
+    return view('debug.index');
 });
 //
 //
