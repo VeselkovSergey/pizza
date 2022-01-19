@@ -1,23 +1,23 @@
 @php
-    $isStaff = false;
-    if (auth()->check() && auth()->user()->IsStaff()) {
-        $isStaff = true;
-    }
+        $isStaff = false;
+        if (auth()->check() && auth()->user()->IsStaff()) {
+            $isStaff = true;
+        }
 
-    $isARM = false;
-    if((str_contains(url()->current(), 'arm') || str_contains(url()->current(), 'settings')) && $isStaff) {
-        $isARM = true;
-    }
+        $isARM = false;
+        if(request()->is('arm', 'arm/*', 'settings', 'settings/*') && $isStaff) {
+            $isARM = true;
+        }
 
-    $closedMessage = \App\Models\Settings::where('key', 'closedMessage')->first();
-    if ($closedMessage) {
-        $closedMessageTitle = json_decode($closedMessage->value)->closedMessageTitle;
-        $closedMessageStart = json_decode($closedMessage->value)->start;
-        $closedMessageStart = (time() - strtotime($closedMessageStart)) > 0 ? true : false;
-    } else {
-        $closedMessageTitle = '';
-        $closedMessageStart = false;
-    }
+        $closedMessage = \App\Models\Settings::where('key', 'closedMessage')->first();
+        if ($closedMessage) {
+            $closedMessageTitle = json_decode($closedMessage->value)->closedMessageTitle;
+            $closedMessageStart = json_decode($closedMessage->value)->start;
+            $closedMessageStart = (time() - strtotime($closedMessageStart)) > 0 ? true : false;
+        } else {
+            $closedMessageTitle = '';
+            $closedMessageStart = false;
+        }
 @endphp
 
 <!DOCTYPE html>
