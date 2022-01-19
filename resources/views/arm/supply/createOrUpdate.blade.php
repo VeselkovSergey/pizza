@@ -323,11 +323,9 @@
 
         function IngredientsFill() {
             @if(isset($ingredientsInSupply))
-                LoaderShow();
                 @foreach($ingredientsInSupply as $ingredientInSupply)
                     AddRowIngredient({{$ingredientInSupply->ingredient_id}}, {{$ingredientInSupply->amount_ingredient}}, {{$ingredientInSupply->price_ingredient}});
                 @endforeach
-                LoaderHide();
             @endif
         }
 
