@@ -20,7 +20,7 @@ class CreateProductModificationsTables extends Migration
 //            $table->float('cost_price');
 //            $table->float('margin');
             $table->decimal('selling_price');
-            $table->integer('stop_list')->default(0);
+            $table->tinyInteger('stop_list')->default(0);
             $table->tinyInteger('active')->default(0);
             $table->timestamps();
         });
