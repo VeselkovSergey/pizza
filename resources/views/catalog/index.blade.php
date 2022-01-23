@@ -47,7 +47,7 @@
 
             @if(!isset($category) || $product->categoryId !== $category)
                 @php($category = $product->categoryId)
-                <h3 class="w-100 ml-10 mb-10" id="{{$product->categoryId}}">{{$product->categoryTitle}}</h3>
+                <h2 class="w-100 ml-10 mb-10" id="{{$product->categoryId}}">{{$product->categoryTitle}}</h2>
             @endif
 
                 @php($webpFile = (file_exists(public_path() . '/img/' . $product->id . '.webp') ? 'img/' . $product->id . '.webp' : 'img-pizza.png'))
