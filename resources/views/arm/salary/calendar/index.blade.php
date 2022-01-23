@@ -26,9 +26,9 @@
     </div>
 
     <div class="flex-center">
-        <button class="offset-month-minus">-</button>
+        <button class="offset-month-minus"><</button>
         <div class="offset-container mx-5" data-offset="{{$offsetMonth}}">{{now()->addMonth($offsetMonth)->format('Y-m')}}</div>
-        <button class="offset-month-plus">+</button>
+        <button class="offset-month-plus">></button>
     </div>
 
     <div>
