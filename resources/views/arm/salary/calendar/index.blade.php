@@ -12,7 +12,7 @@
                 width: 100%;
             }
         }
-        .employee-container > div {
+        .employees-container > div {
             font-size: 10px;
             border-bottom: 1px solid black;
         }
@@ -25,12 +25,18 @@
         <a class="orange-button" href="{{route('salary-page')}}">назад в зарплатный блок</a>
     </div>
 
+    <div class="flex-center">
+        <button class="offset-month-minus">-</button>
+        <div class="offset-container mx-5" data-offset="{{$offsetMonth}}">{{now()->addMonth($offsetMonth)->format('Y-m')}}</div>
+        <button class="offset-month-plus">+</button>
+    </div>
+
     <div>
 
         <div class="flex-wrap">
-            @for($day = ((int)(now()->startOfMonth()->format('d')) - now()->startOfMonth()->dayOfWeekIso + 1); $day <= (int)(now()->endOfMonth()->format('d')); $day++)
+            @for($day = ((int)(now()->addMonth($offsetMonth)->startOfMonth()->format('d')) - now()->startOfMonth()->addMonth($offsetMonth)->dayOfWeekIso + 1); $day <= (int)(now()->addMonth($offsetMonth)->endOfMonth()->format('d')); $day++)
                 @php($text = $day > 0 ? $day : '')
-                @php($date = now()->startOfMonth()->format('Y-m-' . $day))
+                @php($date = now()->addMonth($offsetMonth)->startOfMonth()->format('Y-m-' . str_pad($day, 2, '0', STR_PAD_LEFT)))
 
                 <div class="width-day flex-column">
                     <div class="{{$day > 0 ? 'border' : 'hide'}} m-5 flex-center-horizontal" style="flex: 1">
@@ -39,7 +45,7 @@
 
                                 <div class="text-center pos-rel">
                                     {{$text}}
-                                    <div class="cp pos-abs top-0 right-0 p-5" onclick="OpenDetail('{{$date}}')">
+                                    <div class="cp pos-abs top-0 right-0 p-5" onclick="AddShiftModal('{{$date}}')">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                              fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                             <path
@@ -49,23 +55,16 @@
                                 </div>
 
                                 <div class="w-100">
-                                    <div class="employee-container employee-container-{{$date}} p-5">
-{{--                                        @if($day === 15)--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                            <div>123</div>--}}
-{{--                                        @endif--}}
+                                    <div class="employees-container employee-container-{{$date}} p-5">
+                                        @if(isset($shiftsGroupByDay[$date]))
+                                            @foreach($shiftsGroupByDay[$date] as $shift)
+                                                <?php /** @var \App\Models\Calendar $shift */ ?>
+                                            <div class="pos-rel employee-container" data-shift-id="{{$shift->id}}">
+                                                <div class="pos-abs right-0 top-0 color-red cp delete-shift-button">x</div>
+                                                <div>#{{$shift->Employee->id}}#{{$shift->Employee->name}} - {{$shift->Employee->phone}} {{$shift->start_shift}} - {{$shift->end_shift}}</div>
+                                            </div>
+                                            @endforeach
+                                        @endif
                                     </div>
                                 </div>
 
@@ -79,14 +78,13 @@
 
     </div>
 
-
 @stop
 
 @section('js')
 
     <script>
 
-        function OpenDetail(date) {
+        function AddShiftModal(date) {
             AddEmployeeWindow(date);
             {{--Ajax('{{route('day-detail-page')}}', 'POST', {date: date}).then((response) => {--}}
             {{--    // ModalWindow(response);--}}
@@ -110,7 +108,7 @@
             let employeeSelector = CreateElement('select', {}, labelEmployeeSelector);
 
             @foreach($employees as $employee)
-            CreateElement('option', {content: '#{{$employee->id . '# ' . $employee->name . '-' . $employee->phone}}'}, employeeSelector);
+            CreateElement('option', {content: '#{{$employee->id . '# ' . $employee->name . '-' . $employee->phone}}', attr: {value: {{$employee->id}} } }, employeeSelector);
             @endforeach
 
             let labelEmployeeStartOfShift = CreateElement('label', {
@@ -142,21 +140,53 @@
 
             let employeeContainer = document.body.querySelector('.employee-container-' + date);
             buttonSave.addEventListener('click', () => {
-                let employee = employeeSelector.value;
-                let startTime = fieldEmployeeStartOfShift.value;
-                let endTime = fieldEmployeeEndOfShift.value;
-                let text = employee + ' ' + startTime + ' - ' +endTime;
-                let employeeInCalendarContainer = CreateElement('div', {class: 'pos-rel'}, employeeContainer);
-                let employeeInCalendar = CreateElement('div', {content: text}, employeeInCalendarContainer);
-                let deleteIcon = CreateElement('div', {content: 'x', class: 'pos-abs right-0 top-0 color-red cp'}, employeeInCalendarContainer);
-                deleteIcon.addEventListener('click', () => {
-                    alert('Удалил! ААА....');
-                    employeeInCalendarContainer.remove();
+                let employeeId = employeeSelector.value;
+                let employeeOption = employeeSelector.querySelector('option:checked');
+                let startShift = fieldEmployeeStartOfShift.value;
+                let endShift = fieldEmployeeEndOfShift.value;
+                let text = employeeOption.innerHTML + ' ' + startShift + ':00 - ' +endShift + ':00';
+
+                Ajax('{{route('add-shift')}}', "POST", {employeeId: employeeId, date: date, startShift: startShift, endShift: endShift}).then((response) => {
+                    if (response.status === true) {
+                        let employeeInCalendarContainer = CreateElement('div', {class: 'pos-rel employee-container'}, employeeContainer);
+                        employeeInCalendarContainer.dataset.shiftId = response.result.id;
+                        let employeeInCalendar = CreateElement('div', {content: text}, employeeInCalendarContainer);
+                        let deleteShiftButton = CreateElement('div', {content: 'x', class: 'pos-abs right-0 top-0 color-red cp delete-shift-button'}, employeeInCalendarContainer);
+                        deleteShiftButton.addEventListener('click', () => {
+                            DeleteShift(deleteShiftButton.closest('.employee-container').dataset.shiftId);
+                            employeeInCalendarContainer.remove();
+                        });
+                        addEmployeeModal.remove();
+                        document.body.classList.remove('scroll-off');
+                    }
+                    FlashMessage(response.message);
                 });
-                addEmployeeModal.remove();
-                document.body.classList.remove('scroll-off');
             });
         }
+
+        document.body.querySelectorAll('.delete-shift-button').forEach((deleteShiftButton) => {
+            deleteShiftButton.addEventListener('click', () => {
+                DeleteShift(deleteShiftButton.closest('.employee-container').dataset.shiftId);
+                deleteShiftButton.closest('.employee-container').remove();
+            });
+        });
+
+        function DeleteShift(shiftId) {
+            Ajax('{{route('delete-shift')}}', "POST", {shiftId: shiftId}).then((response) => {
+                FlashMessage(response.message);
+            });
+        }
+
+        const offsetMonth = document.body.querySelector('.offset-container');
+        document.body.querySelector('.offset-month-minus').addEventListener('click', () => {
+            let offset = offsetMonth.dataset.offset;
+            location.href = '{{route('calendar-page')}}' + '?offsetMonth=' + --offset;
+        });
+
+        document.body.querySelector('.offset-month-plus').addEventListener('click', () => {
+            let offset = offsetMonth.dataset.offset;
+            location.href = '{{route('calendar-page')}}' + '?offsetMonth=' + ++offset;
+        });
 
     </script>
 

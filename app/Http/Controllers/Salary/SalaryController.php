@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Salary;
 
+use App\Helpers\ResultGenerate;
+use App\Models\Calendar;
 use App\Models\User;
 
 class SalaryController
@@ -31,8 +33,45 @@ class SalaryController
 
     public function Calendar()
     {
+        $offsetMonth = request()->offsetMonth ?? 0;
+        $shifts = Calendar::where('date', '>=', now()->addMonth($offsetMonth)->startOfMonth()->format('Y-m-d'))
+            ->where('date', '<=', now()->addMonth($offsetMonth)->endOfMonth()->format('Y-m-d'))
+            ->get();
+
+        $shiftsGroupByDay = [];
+        foreach ($shifts as $shift) {
+            $shiftsGroupByDay[$shift->date][] = $shift;
+        }
         $employees = User::Employees();
-        return view('arm.salary.calendar.index', compact('employees'));
+        return view('arm.salary.calendar.index', compact('employees', 'shiftsGroupByDay', 'offsetMonth'));
+    }
+
+    public function AddShift()
+    {
+        $employeeId = request()->post('employeeId');
+        $date = request()->post('date');
+        $startShift = request()->post('startShift');
+        $endShift = request()->post('endShift');
+
+        if (empty($startShift) || empty($endShift)) {
+            return ResultGenerate::Error('Запоните время смены!');
+        }
+
+        $shift = Calendar::create([
+            'user_id' => $employeeId,
+            'date' => $date,
+            'start_shift' => $startShift,
+            'end_shift' => $endShift,
+        ]);
+
+        return ResultGenerate::Success('', $shift);
+    }
+
+    function DeleteShift()
+    {
+        $shift = Calendar::findOrFail(request()->post('shiftId'));
+        $shift->delete();
+        return ResultGenerate::Success();
     }
 
     public function DayDetail()

@@ -140,6 +140,8 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::group(['prefix' => 'calendar'], function () {
 
             Route::get('/', [Controllers\Salary\SalaryController::class, 'Calendar'])->name('calendar-page');
+            Route::post('/add-shift', [Controllers\Salary\SalaryController::class, 'AddShift'])->name('add-shift');
+            Route::post('/delete-shift', [Controllers\Salary\SalaryController::class, 'DeleteShift'])->name('delete-shift');
             Route::post('/day-detail', [Controllers\Salary\SalaryController::class, 'DayDetail'])->name('day-detail-page');
 
         });
