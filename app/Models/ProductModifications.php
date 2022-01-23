@@ -7,18 +7,15 @@ namespace App\Models;
  * @property integer modification_id
  * @property float selling_price
  * @property integer stop_list
+ * @property integer active
+ *
  * @property Products Product
  * @property Modifications Modification
  * @property ProductModificationsIngredients Ingredients
  */
 class ProductModifications extends BaseModel
 {
-    protected $fillable = [
-        'product_id',
-        'modification_id',
-        'selling_price',
-        'stop_list',
-    ];
+    protected $guarded = ['id'];
 
     public function Product()
     {
