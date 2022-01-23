@@ -7,7 +7,6 @@ namespace App\Models;
  * @property integer modification_id
  * @property float selling_price
  * @property integer stop_list
- * @property integer active
  *
  * @property Products Product
  * @property Modifications Modification

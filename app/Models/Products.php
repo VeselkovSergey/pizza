@@ -5,11 +5,13 @@ namespace App\Models;
 /**
  * @property integer id
  * @property string title
- * @property ProductModifications Modifications
  * @property string MinimumPrice
  * @property Categories Category
  * @property string description
  * @property integer category_id
+ * @property integer active
+ *
+ * @property ProductModifications Modifications
  */
 class Products extends BaseModel
 {
