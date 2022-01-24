@@ -2,6 +2,12 @@
 
 @section('content')
 
+    <style>
+        .hover-color:hover {
+            background-color: wheat;
+        }
+    </style>
+
     <div class="mb-10">
         <a class="orange-button" href="{{route('supplies-page')}}">назад в поставки</a>
         @if(auth()->user()->IsAdmin())
@@ -33,43 +39,45 @@
 
         @endif
 
-        <div>
-            <table class="w-100 border table-sort">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Наименование</th>
-                    <th>Количество</th>
-                    <th>Стоимость</th>
-                    <th>Сумма</th>
-                </tr>
-                </thead>
-                <tbody>
-                @php($sum = 0)
-                @foreach($supply->Ingredients as $ingredient)
-                    <?php /** @var \App\Models\IngredientsInSupply $ingredient */ ?>
+        <div class="flex-column">
+            <div style="order: 2">
+                <table class="w-100 border table-sort">
+                    <thead>
                     <tr>
-                        <td>{{$ingredient->id}}</td>
-                        @if(empty($ingredient->Ingredient))
-                            <td>{{$ingredient->ingredient_id}}</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                        @else
-                            @php($sum += $ingredient->amount_ingredient * $ingredient->price_ingredient)
-                            <td>{{$ingredient->Ingredient->title}}</td>
-                            <td>{{$ingredient->amount_ingredient}}</td>
-                            <td>{{round($ingredient->price_ingredient, 2)}} ₽</td>
-                            <td>{{round($ingredient->amount_ingredient * $ingredient->price_ingredient, 2)}} ₽</td>
-                        @endif
-
+                        <th class="w-0">#</th>
+                        <th>Наименование</th>
+                        <th class="w-0">Количество</th>
+                        <th class="w-0">Стоимость</th>
+                        <th class="w-0">Сумма</th>
                     </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                    @php($sum = 0)
+                    @foreach($supply->Ingredients as $ingredient)
+                        <?php /** @var \App\Models\IngredientsInSupply $ingredient */ ?>
+                        <tr class="hover-color">
+                            <td>{{$ingredient->id}}</td>
+                            @if(empty($ingredient->Ingredient))
+                                <td>{{$ingredient->ingredient_id}}</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            @else
+                                @php($sum += $ingredient->amount_ingredient * $ingredient->price_ingredient)
+                                <td>{{$ingredient->Ingredient->title}}</td>
+                                <td>{{$ingredient->amount_ingredient}}</td>
+                                <td>{{round($ingredient->price_ingredient, 2)}} ₽</td>
+                                <td>{{round($ingredient->amount_ingredient * $ingredient->price_ingredient, 2)}} ₽</td>
+                            @endif
 
-        <div>Сумма: {{round($sum, 2)}}</div>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="order: 1">Сумма: {{round($sum, 2)}} ₽ ({{$supply->created_at}})</h3>
+        </div>
 
     </div>
 
