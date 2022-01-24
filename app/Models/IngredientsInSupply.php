@@ -22,6 +22,13 @@ class IngredientsInSupply extends BaseModel
 
     public function Ingredient()
     {
-        return $this->hasOne(Ingredients::class, 'id', 'ingredient_id');
+        try {
+            return $this->hasOne(Ingredients::class, 'id', 'ingredient_id');
+        } catch (\Exception $e) {
+            return (object) [
+                'id' => $this->ingredient_id,
+                'title' => 'Удалил'
+            ];
+        }
     }
 }
