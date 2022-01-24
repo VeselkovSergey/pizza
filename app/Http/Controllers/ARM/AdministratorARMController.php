@@ -10,6 +10,7 @@ use App\Http\Controllers\Ingredients\IngredientsController;
 use App\Http\Controllers\Orders\OrdersController;
 use App\Http\Controllers\Products\ProductsController;
 use App\Models\Ingredients;
+use App\Models\IngredientsInSupply;
 use App\Models\Orders;
 use App\Models\ProductModificationsIngredients;
 use App\Models\Products;
@@ -84,7 +85,7 @@ class AdministratorARMController extends Controller
         $sumOrders = 0;
         $costOrders = 0;
 
-        foreach($orders as $order) {
+        foreach ($orders as $order) {
             if ($order->IsCancelled()) {
                 continue;
             }
@@ -92,7 +93,7 @@ class AdministratorARMController extends Controller
             $sumOrders += $order->order_amount;
 
             $productsModificationsInOrder = $order->ProductsModifications;
-            foreach($productsModificationsInOrder as $productModificationInOrder) {
+            foreach ($productsModificationsInOrder as $productModificationInOrder) {
                 /** @var ProductsModificationsInOrders $productModificationInOrder */
 
                 $title = $productModificationInOrder->ProductModifications->Product->title . ' ' . $productModificationInOrder->ProductModifications->Modification->title . ' ' . $productModificationInOrder->ProductModifications->Modification->value;
@@ -102,7 +103,7 @@ class AdministratorARMController extends Controller
 
                 $costPrice = 0;
                 $modificationIngredients = $productModificationInOrder->ProductModifications->Ingredients;
-                foreach($modificationIngredients as $ingredient) {
+                foreach ($modificationIngredients as $ingredient) {
                     /** @var ProductModificationsIngredients $ingredient */
                     $ingredientAmount = $ingredient->ingredient_amount;
                     $ingredientPrice = $ingredient->Ingredient->CurrentPrice();
@@ -195,32 +196,51 @@ class AdministratorARMController extends Controller
 
     public function SpentIngredients()
     {
-        $startDate = (request()->get('start-date') === null) ? date('Y-m-d', time()) : request()->get('start-date');
-        $endDate = (request()->get('end-date') === null) ? date('Y-m-d', time()) : request()->get('end-date');
+        $startDate = (request()->get('start-date') === null) ? now()->format('Y-m-d') : request()->get('start-date');
+        $endDate = (request()->get('end-date') === null) ? now()->format('Y-m-d') : request()->get('end-date');
+
+        $startDateFull = date('Y-m-d 00:00:00', strtotime($startDate));
+        $endDateFull = date('Y-m-d 23:59:59', strtotime($endDate));
+
+        $ingredientsQuantityPurchasedRaw = IngredientsInSupply::query()->select('ingredients_in_supply.ingredient_id as id')
+            ->selectRaw('sum(ingredients_in_supply.amount_ingredient) as quantityPurchased')
+            ->leftJoin('supply', 'supply.id', '=', 'ingredients_in_supply.supply_id')
+            ->where('supply_date', '>=', $startDateFull)
+            ->where('supply_date', '<=', $endDateFull)
+            ->groupBy('ingredients_in_supply.ingredient_id')
+            ->get();
+
+        $ingredientsQuantityPurchased = (object)[];
+        foreach ($ingredientsQuantityPurchasedRaw as $ingredientQuantityPurchasedRaw) {
+            $id = $ingredientQuantityPurchasedRaw->id;
+            $ingredientsQuantityPurchased->$id = $ingredientQuantityPurchasedRaw->quantityPurchased;
+        }
 
         $ingredientsRaw = IngredientsController::AllIngredients();
         $ingredients = [];
         foreach ($ingredientsRaw as $ingredient) {
             $ingredient->sent = 0;
-            $ingredients[$ingredient->id] = $ingredient;
+            $ingredientId = $ingredient->id;
+            $ingredient->quantityPurchased = $ingredientsQuantityPurchased->$ingredientId ?? 0;
+            $ingredients[$ingredientId] = $ingredient;
         }
 
         $orders = Orders::ByDate($startDate, $endDate, true, 'ASC');
 
         $amountSpent = 0;
-        foreach($orders as $order) {
+        foreach ($orders as $order) {
             if ($order->IsCancelled()) {
                 continue;
             }
 
             $productsModificationsInOrder = $order->ProductsModifications;
-            foreach($productsModificationsInOrder as $productModificationInOrder) {
+            foreach ($productsModificationsInOrder as $productModificationInOrder) {
                 /** @var ProductsModificationsInOrders $productModificationInOrder */
 
                 $amount = $productModificationInOrder->product_modification_amount;
 
                 $modificationIngredients = $productModificationInOrder->ProductModifications->Ingredients;
-                foreach($modificationIngredients as $ingredient) {
+                foreach ($modificationIngredients as $ingredient) {
                     /** @var ProductModificationsIngredients $ingredient */
 
                     $ingredientAmount = $ingredient->ingredient_amount;
