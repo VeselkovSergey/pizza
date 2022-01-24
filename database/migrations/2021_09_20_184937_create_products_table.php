@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->longText('description');
             $table->longText('category_id');
             $table->tinyInteger('active')->default(0);
+            $table->integer('sort')->default(0);
             $table->timestamps();
         });
     }

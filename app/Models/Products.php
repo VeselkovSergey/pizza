@@ -10,16 +10,13 @@ namespace App\Models;
  * @property string description
  * @property integer category_id
  * @property integer active
+ * @property integer sort
  *
  * @property ProductModifications Modifications
  */
 class Products extends BaseModel
 {
-    protected $fillable = [
-        'title',
-        'description',
-        'category_id',
-    ];
+    protected $fillable = ['id'];
 
     public function Modifications()
     {
