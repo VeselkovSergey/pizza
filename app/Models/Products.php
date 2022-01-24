@@ -16,7 +16,7 @@ namespace App\Models;
  */
 class Products extends BaseModel
 {
-    protected $fillable = ['id'];
+    protected $guarded = ['id'];
 
     public function Modifications()
     {
