@@ -59,10 +59,9 @@
 
             Ajax("{{route('product-create')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
-                if (response.status === true) {
-                    location.reload();
+                if (response.status === false) {
+                    saveButton.show();
                 }
-                saveButton.show();
             })
         });
 
@@ -169,7 +168,9 @@
             return generatedModificationContainer;
         }
 
+        let ingredientsTempId = -1;
         function GenerateIngredientContainer(tempId) {
+            ingredientsTempId++;
             let generatedIngredientContainer = document.createElement('div');
             generatedIngredientContainer.className = 'ingredient-container border m-5 p-5 flex-wrap';
             generatedIngredientContainer.innerHTML =    '' +
@@ -185,6 +186,13 @@
                                                             '<div class="m-5">' +
                                                                 '<label>Стоимость</label>' +
                                                                 '<input class="ingredient-price" type="text" readonly>' +
+                                                            '</div>' +
+                                                            '<div class="flex-column-center">' +
+                                                                '<div>Видимый</div>'+
+                                                                '<label class="custom-checkbox-label" for="ingredient-'+ ingredientsTempId +'">'+
+                                                                    '<input class="visible" type="checkbox" checked id="ingredient-'+ ingredientsTempId +'" name="modifications['+ tempId +'][ingredients][visible][]"/>'+
+                                                                    '<div class="custom-checkbox-slider round"></div>'+
+                                                                '</label>'+
                                                             '</div>' +
                                                             '<div class="m-5">' +
                                                                 '<button class="delete-ingredient-button flex-center cp">' +

@@ -181,10 +181,12 @@ class ProductsController extends Controller
             $ingredients = (object)$modification->ingredients;
             foreach ($ingredients->id as $key => $ingredientId) {
                 $ingredientAmount = $ingredients->amount[$key];
+                $ingredientVisible = $ingredients->visible[$key];
                 ProductModificationsIngredients::create([
                     'product_modification_id' => $productModification->id,
                     'ingredient_id' => $ingredientId,
                     'ingredient_amount' => $ingredientAmount,
+                    'visible' => $ingredientVisible === 'true' ? 1 : 0,
                 ]);
                 // создаем связь ингредиентов с модификатором
             }

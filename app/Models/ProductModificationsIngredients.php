@@ -8,16 +8,12 @@ namespace App\Models;
  * @property integer ingredient_id
  * @property float ingredient_amount
  * @property integer visible
+ *
  * @property Ingredients Ingredient
  */
 class ProductModificationsIngredients extends BaseModel
 {
-    protected $fillable = [
-        'product_modification_id',
-        'ingredient_id',
-        'ingredient_amount',
-        'visible',
-    ];
+    protected $guarded = ['id'];
 
     public function Ingredient()
     {
