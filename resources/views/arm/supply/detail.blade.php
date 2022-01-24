@@ -50,12 +50,17 @@
                     <tr>
                         <td>{{$ingredient->id}}</td>
                         @if(empty($ingredient->Ingredient))
-                            {{dd($ingredient->id)}}
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        @else
+                            <td>{{$ingredient->Ingredient->title}}</td>
+                            <td>{{$ingredient->amount_ingredient}}</td>
+                            <td>{{$ingredient->price_ingredient}} ₽</td>
+                            <td>{{$ingredient->amount_ingredient * $ingredient->price_ingredient}} ₽</td>
                         @endif
-                        <td>{{$ingredient->Ingredient->title}}</td>
-                        <td>{{$ingredient->amount_ingredient}}</td>
-                        <td>{{$ingredient->price_ingredient}} ₽</td>
-                        <td>{{$ingredient->amount_ingredient * $ingredient->price_ingredient}} ₽</td>
+
                     </tr>
                 @endforeach
                 </tbody>
