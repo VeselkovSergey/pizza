@@ -55,6 +55,7 @@
                 <tbody>
                 @foreach($ingredients as $ingredient)
                     @php($ingredientLastPrice = $ingredient->CurrentPrice())
+                    @php($balance = round($ingredient->quantityPurchased - $ingredient->sent, 2))
                     <tr class="hover-color ingredient-container" data-ingredient-id="{{$ingredient->id}}">
                         <td>#{{$ingredient->id}}</td>
                         <td><input name="title" class="edit-field" readonly type="text" value="{{$ingredient->title}}"></td>
@@ -63,7 +64,7 @@
                         <td>{{$ingredient->quantityPurchased}}</td>
                         <td>{{$ingredient->sent}}</td>
                         <td>{{$ingredient->sent * $ingredientLastPrice}}</td>
-                        <td>{{round($ingredient->quantityPurchased - $ingredient->sent, 2)}}</td>
+                        <td class="@if($balance <= 0) bg-red @endif">{{$balance}}</td>
                         <td class="text-center used cp">Где юзается</td>
                     </tr>
                 @endforeach
