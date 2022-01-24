@@ -63,7 +63,7 @@
                         <td>{{$ingredient->quantityPurchased}}</td>
                         <td>{{$ingredient->sent}}</td>
                         <td>{{$ingredient->sent * $ingredientLastPrice}}</td>
-                        <td>{{$ingredient->quantityPurchased - $ingredient->sent}}</td>
+                        <td>{{round($ingredient->quantityPurchased - $ingredient->sent, 2)}}</td>
                         <td class="text-center used cp">Где юзается</td>
                     </tr>
                 @endforeach
