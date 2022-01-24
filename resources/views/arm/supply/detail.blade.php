@@ -17,14 +17,16 @@
             <div>Файлы</div>
             <div class="flex-wrap">
                 @foreach($files as $file)
-                    <div>
-                        @if($file->modelFile->extension === 'jpg')
-                            <img class="open-large cp" width="200" height="200" src="{{route('files', $file->modelFile->id)}}">
-                        @endif
+                    @if($file)
                         <div>
-                            <a href="{{route('files', $file->modelFile->id)}}" download="{{$file->modelFile->original_name}}">{{$file->modelFile->original_name . '.' . $file->modelFile->extension}}</a>
+                            @if($file->modelFile->extension === 'jpg')
+                                <img class="open-large cp" width="200" height="200" src="{{route('files', $file->modelFile->id)}}">
+                            @endif
+                            <div>
+                                <a href="{{route('files', $file->modelFile->id)}}" download="{{$file->modelFile->original_name}}">{{$file->modelFile->original_name . '.' . $file->modelFile->extension}}</a>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
             </div>
         </div>
