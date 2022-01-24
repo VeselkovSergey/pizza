@@ -12,9 +12,14 @@ use Illuminate\Http\Request;
 
 class TypesModificationsController extends Controller
 {
+    public function Index()
+    {
+        $typesModifications = TypesModifications::all();
+        return view('arm.types-modifications.index', compact('typesModifications'));
+    }
     public function Create()
     {
-        return view('arm.typesModifications.createOrUpdate');
+        return view('arm.types-modifications.createOrUpdate');
     }
 
     public function Save(Request $request)

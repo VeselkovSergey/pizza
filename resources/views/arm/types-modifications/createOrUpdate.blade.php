@@ -2,26 +2,22 @@
 
 @section('content')
 
-    <div>
+    <div class="mb-10 flex-wrap">
+        <a class="orange-button" href="{{route('types-modifications-page')}}">назад</a>
+        <button class="save-button orange-button ml-a">Создать</button>
+    </div>
 
-        <form class="modification-typen-create-or-edit-form" action="" onsubmit="return false;">
-
-            <div class="mb-10">
-                <label for="">Название
-                    <input class="need-validate" name="title" type="text">
-                </label>
-            </div>
-            <div class="mb-10">
-                <label for="">Значение
-                    <input class="need-validate" name="value_unit" type="text">
-                </label>
-            </div>
-            <div>
-                <button class="save-button orange-button">Создать</button>
-            </div>
-
-        </form>
-
+    <div class="container">
+        <div class="mb-10">
+            <label for="">Название
+                <input class="need-validate" name="title" type="text">
+            </label>
+        </div>
+        <div class="mb-10">
+            <label for="">Значение
+                <input class="need-validate" name="value_unit" type="text">
+            </label>
+        </div>
     </div>
 
 @stop
@@ -42,11 +38,11 @@
                 valueUnit:valueUnitValue
             }
 
-            if (!CheckingFieldForEmptiness('modification-type-create-or-edit-form', true)) {
+            if (!CheckingFieldForEmptiness('container', true)) {
                 return;
             }
 
-            Ajax("{{route('modification-type-save')}}", 'POST', data).then((response) => {
+            Ajax("{{route('type-modification-save')}}", 'POST', data).then((response) => {
                 FlashMessage(response.message);
                 if (response.status === true) {
                     title.value = '';

@@ -91,8 +91,9 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
     Route::group(['prefix' => 'types-modifications'], function () {
 
-        Route::get('/create', [Controllers\TypesModifications\TypesModificationsController::class, 'Create'])->name('modification-type-create-page');
-        Route::post('/save', [Controllers\TypesModifications\TypesModificationsController::class, 'Save'])->name('modification-type-save');
+        Route::get('/', [Controllers\TypesModifications\TypesModificationsController::class, 'Index'])->name('types-modifications-page');
+        Route::get('/create', [Controllers\TypesModifications\TypesModificationsController::class, 'Create'])->name('type-modification-create-page');
+        Route::post('/save', [Controllers\TypesModifications\TypesModificationsController::class, 'Save'])->name('type-modification-save');
 
     });
 

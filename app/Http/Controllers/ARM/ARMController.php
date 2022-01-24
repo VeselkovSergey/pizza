@@ -13,8 +13,8 @@ class ARMController
     {
         $allRoutes = [
             [
-                'title' => 'Новый тип модификации (размер/толщина теста)',
-                'link' => route('modification-type-create-page'),
+                'title' => 'Типы модификаций (размер/толщина теста)',
+                'link' => route('types-modifications-page'),
                 'role' => [999],
             ],
             [
