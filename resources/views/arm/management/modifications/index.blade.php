@@ -21,22 +21,22 @@
         <table class="w-100 border">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Категория</th>
+                <th class="w-0">ID</th>
+                <th class="w-0">Категория</th>
                 <th>Название</th>
-                <th>Размерность</th>
-                <th>Стоимость</th>
-                <th>Стоп лист</th>
+                <th class="w-0">Размерность</th>
+                <th class="w-0">Стоимость</th>
+                <th class="w-0">Стоп лист</th>
             </tr>
             </thead>
             <tbody class="modifications">
             @foreach($productsModifications as $productsModification)
                 <tr class="modification">
-                    <td># {{$productsModification->id}}</td>
-                    <td>{{$productsModification->Product->Category->title}}</td>
+                    <td class="text-center"># {{$productsModification->id}}</td>
+                    <td class="text-center">{{$productsModification->Product->Category->title}}</td>
                     <td>{{$productsModification->Product->title}}</td>
-                    <td>{{$productsModification->Modification->value}}</td>
-                    <td>{{$productsModification->selling_price}}</td>
+                    <td class="text-center">{{$productsModification->Modification->value}}</td>
+                    <td class="text-center">{{$productsModification->selling_price}}</td>
                     <td>
                         <div class="flex-center">
                             <label class="custom-checkbox-label" for="checkbox-{{$productsModification->id}}">
