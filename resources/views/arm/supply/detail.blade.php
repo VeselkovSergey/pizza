@@ -49,7 +49,9 @@
                     <?php /** @var \App\Models\IngredientsInSupply $ingredient */ ?>
                     <tr>
                         <td>{{$ingredient->id}}</td>
-                        {{var_dump($ingredient->id)}}
+                        @if(empty($ingredient->Ingredient))
+                            {{dd($ingredient->id)}}
+                        @endif
                         <td>{{$ingredient->Ingredient->title}}</td>
                         <td>{{$ingredient->amount_ingredient}}</td>
                         <td>{{$ingredient->price_ingredient}} ₽</td>
