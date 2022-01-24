@@ -13,8 +13,9 @@
             }
         }
         .employees-container > div {
-            font-size: 10px;
+            font-size: 12px;
             border-bottom: 1px solid black;
+            padding: 10px 0;
         }
         .color-red {
             color: red;
