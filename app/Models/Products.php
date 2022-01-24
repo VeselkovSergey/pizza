@@ -9,7 +9,7 @@ namespace App\Models;
  * @property Categories Category
  * @property string description
  * @property integer category_id
- * @property integer active
+ * @property integer show_in_catalog
  * @property integer sort
  *
  * @property ProductModifications Modifications

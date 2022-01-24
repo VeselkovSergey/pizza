@@ -35,10 +35,6 @@ class ProductsController extends Controller
         $allProducts = [];
         foreach ($allProductsDB as $product) {
 
-            if ($product->active === 0) {
-                continue;
-            }
-
             $allProducts['product-' . $product->id] = [
                 'id' => $product->id,
                 'title' => $product->title,
