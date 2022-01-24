@@ -43,10 +43,10 @@
                 <tr>
                     <th class="w-0">ID</th>
                     <th>Наименование</th>
+                    <th class="w-0">Сумма закупки</th>
                     <th class="w-0">Актуальная цена за кг/шт</th>
                     <th class="w-0">Кол-во закупки</th>
-                    <th class="w-0">Сумма закупки</th>
-                    <th class="w-0">Потрачено в еденицах</th>
+                    <th class="w-0">Потрачено в единицах</th>
                     <th class="w-0">Потрачено в деньгах</th>
                     <th class="w-0"></th>
                 </tr>
@@ -57,9 +57,9 @@
                     <tr class="hover-color ingredient-container" data-ingredient-id="{{$ingredient->id}}">
                         <td>#{{$ingredient->id}}</td>
                         <td><input name="title" class="edit-field" readonly type="text" value="{{$ingredient->title}}"></td>
+                        <td>{{$ingredient->quantityPurchased * $ingredientLastPrice}}</td>
                         <td>{{$ingredientLastPrice}} ₽</td>
                         <td>{{$ingredient->quantityPurchased}}</td>
-                        <td>{{$ingredient->quantityPurchased * $ingredientLastPrice}}</td>
                         <td>{{$ingredient->sent}}</td>
                         <td>{{$ingredient->sent * $ingredientLastPrice}}</td>
                         <td class="text-center used cp">Где юзается</td>
