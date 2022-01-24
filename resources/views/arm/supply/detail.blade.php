@@ -51,7 +51,7 @@
                     <tr>
                         <td>{{$ingredient->id}}</td>
                         @if(empty($ingredient->Ingredient))
-                            @php($dell += $ingredient->ingredient_id . ',')
+                            @php($dell .= $ingredient->ingredient_id . ',')
                             <td>{{$ingredient->ingredient_id}}</td>
                             <td>-</td>
                             <td>-</td>
