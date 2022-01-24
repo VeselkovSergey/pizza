@@ -44,7 +44,7 @@
                 <table class="w-100 border table-sort">
                     <thead>
                     <tr>
-                        <th class="w-0">#</th>
+                        <th class="text-center w-0">#</th>
                         <th>Наименование</th>
                         <th class="w-0">Количество</th>
                         <th class="w-0">Стоимость</th>
