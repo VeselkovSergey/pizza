@@ -15,6 +15,7 @@
                 <th>ID</th>
                 <th>ФИО</th>
                 <th>Номер</th>
+                <th>Телеграмм</th>
                 <th></th>
             </tr>
             </thead>
@@ -25,6 +26,7 @@
                     <td>{{$user->id}}</td>
                     <td>{{$user->surname . ' ' . $user->name . ' ' . $user->patronymic}}</td>
                     <td>{{$user->phone}}</td>
+                    <td>{{$user->telegram_chat_id}}</td>
                     <td class="text-center"><a href="{{route('employee-card-page', $user->id)}}">карточка сотрудника</a></td>
                 </tr>
             @endforeach
