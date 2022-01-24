@@ -45,22 +45,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                @php($dell = [])
+                @php($sum = 0)
                 @foreach($supply->Ingredients as $ingredient)
                     <?php /** @var \App\Models\IngredientsInSupply $ingredient */ ?>
                     <tr>
                         <td>{{$ingredient->id}}</td>
                         @if(empty($ingredient->Ingredient))
-                            @php($dell[] = $ingredient->ingredient_id)
                             <td>{{$ingredient->ingredient_id}}</td>
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
                         @else
+                            @php($sum += $ingredient->amount_ingredient * $ingredient->price_ingredient)
                             <td>{{$ingredient->Ingredient->title}}</td>
                             <td>{{$ingredient->amount_ingredient}}</td>
-                            <td>{{$ingredient->price_ingredient}} ₽</td>
-                            <td>{{$ingredient->amount_ingredient * $ingredient->price_ingredient}} ₽</td>
+                            <td>{{round($ingredient->price_ingredient, 2)}} ₽</td>
+                            <td>{{round($ingredient->amount_ingredient * $ingredient->price_ingredient, 2)}} ₽</td>
                         @endif
 
                     </tr>
@@ -69,9 +69,9 @@
             </table>
         </div>
 
-    </div>
+        <div>Сумма: {{round($sum, 2)}}</div>
 
-    {{implode(',', $dell)}}
+    </div>
 
 
 @stop
