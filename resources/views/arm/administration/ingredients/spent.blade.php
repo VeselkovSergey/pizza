@@ -55,13 +55,13 @@
                 <tbody>
                 @foreach($ingredients as $ingredient)
                     @php($ingredientLastPrice = $ingredient->CurrentPrice())
-                    @php($balance = number_format($ingredient->quantityPurchased - $ingredient->sent, 2, '.', "&nbsp;"))
+                    @php($balance = number_format($ingredient->quantityPurchased - $ingredient->sent, 2, '.', "'"))
                     <tr class="hover-color ingredient-container" data-ingredient-id="{{$ingredient->id}}">
                         <td class="text-center">#{{$ingredient->id}}</td>
                         <td><input name="title" class="edit-field" readonly type="text" value="{{$ingredient->title}}"></td>
                         <td class="text-center">{{$ingredientLastPrice}}&nbsp;₽</td>
-                        <td class="text-center">{{number_format($ingredient->quantityPurchased * $ingredientLastPrice, 2, '.', "&nbsp;")}}&nbsp;₽</td>
-                        <td class="text-center">{{number_format($ingredient->sent * $ingredientLastPrice, 2, '.', "&nbsp;")}}&nbsp;₽</td>
+                        <td class="text-center">{{number_format($ingredient->quantityPurchased * $ingredientLastPrice, 2, '.', "'")}}&nbsp;₽</td>
+                        <td class="text-center">{{number_format($ingredient->sent * $ingredientLastPrice, 2, '.', "'")}}&nbsp;₽</td>
                         <td class="text-center">{{$ingredient->quantityPurchased}}</td>
                         <td class="text-center">{{$ingredient->sent}}</td>
                         <td class="text-center @if($balance <= 0) bg-red @endif">{{$balance}}</td>
