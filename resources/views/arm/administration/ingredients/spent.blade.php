@@ -12,7 +12,7 @@
             width: -webkit-fill-available;
         }
         .edit-field:not(:read-only) {
-            transform: scale(1.2);
+            transform: scale(1.01);
         }
     </style>
 
