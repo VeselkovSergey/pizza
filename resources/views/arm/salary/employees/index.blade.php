@@ -16,7 +16,7 @@
                 <th>ФИО</th>
                 <th class="w-0">Номер</th>
                 <th class="w-0">Телеграмм</th>
-                <th class="w-0"></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
