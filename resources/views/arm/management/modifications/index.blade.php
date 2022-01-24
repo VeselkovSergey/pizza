@@ -17,37 +17,39 @@
         <button class="orange-button save-modifications">Сохранить</button>
     </div>
 
-    <table class="w-100 border">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Категория</th>
-            <th>Название</th>
-            <th>Размерность</th>
-            <th>Стоимость</th>
-            <th>Стоп лист</th>
-        </tr>
-        </thead>
-        <tbody class="modifications">
-        @foreach($productsModifications as $productsModification)
-            <tr class="modification">
-                <td># {{$productsModification->id}}</td>
-                <td>{{$productsModification->Product->Category->title}}</td>
-                <td>{{$productsModification->Product->title}}</td>
-                <td>{{$productsModification->Modification->value}}</td>
-                <td>{{$productsModification->selling_price}}</td>
-                <td>
-                    <div class="flex-center">
-                        <label class="custom-checkbox-label" for="checkbox-{{$productsModification->id}}">
-                            <input type="checkbox" id="checkbox-{{$productsModification->id}}" name="stopList[{{$productsModification->id}}]" @if($productsModification->stop_list) checked @endif />
-                            <div class="custom-checkbox-slider round"></div>
-                        </label>
-                    </div>
-                </td>
+    <div>
+        <table class="w-100 border">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Категория</th>
+                <th>Название</th>
+                <th>Размерность</th>
+                <th>Стоимость</th>
+                <th>Стоп лист</th>
             </tr>
-        @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="modifications">
+            @foreach($productsModifications as $productsModification)
+                <tr class="modification">
+                    <td># {{$productsModification->id}}</td>
+                    <td>{{$productsModification->Product->Category->title}}</td>
+                    <td>{{$productsModification->Product->title}}</td>
+                    <td>{{$productsModification->Modification->value}}</td>
+                    <td>{{$productsModification->selling_price}}</td>
+                    <td>
+                        <div class="flex-center">
+                            <label class="custom-checkbox-label" for="checkbox-{{$productsModification->id}}">
+                                <input type="checkbox" id="checkbox-{{$productsModification->id}}" name="stopList[{{$productsModification->id}}]" @if($productsModification->stop_list) checked @endif />
+                                <div class="custom-checkbox-slider round"></div>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
 
 @stop
 
