@@ -12,21 +12,21 @@
         <table class="w-100 border table-sort">
             <thead>
             <tr>
-                <th>ID</th>
+                <th class="w-0">ID</th>
                 <th>ФИО</th>
-                <th>Номер</th>
-                <th>Телеграмм</th>
-                <th></th>
+                <th class="w-0">Номер</th>
+                <th class="w-0">Телеграмм</th>
+                <th class="w-0"></th>
             </tr>
             </thead>
             <tbody>
             @foreach($usersEmployees as $user)
                 <?php /** @var \App\Models\User $user */?>
                 <tr class="user-info-container" data-user-id="{{$user->id}}">
-                    <td>{{$user->id}}</td>
-                    <td>{{$user->surname . ' ' . $user->name . ' ' . $user->patronymic}}</td>
-                    <td>{{$user->phone}}</td>
-                    <td>{{$user->telegram_chat_id}}</td>
+                    <td class="text-center">{{$user->id}}</td>
+                    <td class="text-center">{{$user->surname . ' ' . $user->name . ' ' . $user->patronymic}}</td>
+                    <td class="text-center">{{$user->phone}}</td>
+                    <td class="text-center">{{$user->telegram_chat_id}}</td>
                     <td class="text-center"><a href="{{route('employee-card-page', $user->id)}}">карточка сотрудника</a></td>
                 </tr>
             @endforeach
