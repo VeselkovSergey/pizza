@@ -48,6 +48,7 @@
                     <th class="w-0">Кол-во закупки</th>
                     <th class="w-0">Потрачено в единицах</th>
                     <th class="w-0">Потрачено в деньгах</th>
+                    <th class="w-0">Остаток</th>
                     <th class="w-0"></th>
                 </tr>
                 </thead>
@@ -62,6 +63,7 @@
                         <td>{{$ingredient->quantityPurchased}}</td>
                         <td>{{$ingredient->sent}}</td>
                         <td>{{$ingredient->sent * $ingredientLastPrice}}</td>
+                        <td>{{$ingredient->quantityPurchased - $ingredient->sent}}</td>
                         <td class="text-center used cp">Где юзается</td>
                     </tr>
                 @endforeach
