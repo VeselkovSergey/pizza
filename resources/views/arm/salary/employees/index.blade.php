@@ -22,7 +22,7 @@
             <tbody>
             @foreach($usersEmployees as $user)
                 <?php /** @var \App\Models\User $user */?>
-                <tr class="user-info-container" data-user-id="{{$user->id}}">
+                <tr class="hover-color user-info-container" data-user-id="{{$user->id}}">
                     <td class="text-center">{{$user->id}}</td>
                     <td class="text-center">{{$user->surname . ' ' . $user->name . ' ' . $user->patronymic}}</td>
                     <td class="text-center">{{$user->phone}}</td>
