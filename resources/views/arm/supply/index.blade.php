@@ -11,7 +11,7 @@
             <table class="w-100 border table-sort">
                 <thead>
                 <tr>
-                    <th class="w-0">#</th>
+                    <th>#</th>
                     <th>Поставщик</th>
                     <th>Дата поставки</th>
                     <th>Тип оплаты</th>
