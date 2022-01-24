@@ -1241,3 +1241,101 @@ if (localStorage.getItem('cookiesAccepted') === null) {
         });
     }
 }
+
+function SelectWithSearch(selector) {
+
+    selector.hide();
+    let oldValue = null;
+
+    const defaultOption = selector.querySelector('option[selected]');
+    let defaultOptionText = ''
+    if (defaultOption) {
+        defaultOptionText = defaultOption.innerHTML;
+        oldValue = defaultOption.value;
+    }
+
+    const options = selector.querySelectorAll('option');
+
+    let container = selector.parentNode;
+
+    let searchFieldContainer = container.querySelector('.search-field-container');
+    if (!searchFieldContainer) {
+        searchFieldContainer = CreateElement('div', {
+            attr: {type: 'text'},
+            class: 'search-field-container'
+        }, container);
+    }
+
+    let searchField = searchFieldContainer.querySelector('.search-field');
+    if (!searchField) {
+        searchField = CreateElement('input', {
+            attr: {type: 'text'},
+            class: 'search-field'
+        }, searchFieldContainer);
+    }
+
+
+    if (defaultOption.getAttribute('disabled') !== null) {
+        searchField.setAttribute('placeholder', defaultOptionText)
+    } else {
+        searchField.value = defaultOptionText;
+    }
+
+    let customOptionsContainer = searchFieldContainer.querySelector('.custom-options-container');
+    if (!customOptionsContainer) {
+        customOptionsContainer = CreateElement('div', {class: 'custom-options-container hide'}, searchFieldContainer);
+    }
+    customOptionsContainer.innerHTML = '';
+
+    let optionsCustom = [];
+    options.forEach((option) => {
+        const text = option.innerHTML;
+        const value = option.value;
+        if (option.getAttribute('disabled') === null) {
+            const customOption = CreateElement('div', {
+                attr: {'data-value': value},
+                class: 'custom-option',
+                content: text
+            }, customOptionsContainer);
+            optionsCustom.push(customOption);
+            customOption.addEventListener('mousedown', (event) => {
+                searchField.value = event.target.innerHTML;
+                const value = event.target.dataset.value;
+                selector.value = value;
+                oldValue = value;
+                triggerEvent(selector, 'change');
+            });
+        }
+    });
+
+    searchField.addEventListener('focus', (event) => {
+        customOptionsContainer.show();
+    });
+
+    searchField.addEventListener('blur', (event) => {
+        customOptionsContainer.hide();
+        if (!oldValue) {
+            searchField.value = '';
+            for (let i = 0; i < optionsCustom.length; i++) {
+                optionsCustom[i].show();
+            }
+        }
+        selector.value = oldValue;
+    });
+
+    searchField.addEventListener('keyup', (event) => {
+        oldValue = null;
+        let target = event.target;
+
+        let regExp = new RegExp(target.value, 'ig');
+        for (let i = 0; i < optionsCustom.length; i++) {
+            let option = optionsCustom[i];
+
+            if (option.innerHTML.match(regExp)) {
+                option.show();
+            } else {
+                option.hide();
+            }
+        }
+    });
+}

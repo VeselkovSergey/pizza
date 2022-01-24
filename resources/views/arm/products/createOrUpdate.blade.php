@@ -172,12 +172,12 @@
             });
 
             markupInput.addEventListener('input', (event) => {
-                let markupValue = event.target.value;
+                let markupValue = event.target.value = event.target.value.replace(/,/, '.');;
                 sellingPriceInput.value = costPriceInput.value * ((markupValue / 100) + 1);
             });
 
             sellingPriceInput.addEventListener('input', (event) => {
-                let sellingPriceValue = event.target.value;
+                let sellingPriceValue = event.target.value = event.target.value.replace(/,/, '.');;
                 markupInput.value = ((sellingPriceValue / costPriceInput.value) - 1) * 100;
             });
 
@@ -228,8 +228,9 @@
             ingredientAmountInput.addEventListener('input', (event) => {
                 let selectedIndex = event.target.closest('.ingredient-container').querySelector('.selector-ingredients').options.selectedIndex;
                 let lastPriceIngredient = event.target.closest('.ingredient-container').querySelector('.selector-ingredients').options[selectedIndex].dataset.lastPriceIngredient;
+                unitIngredientPrice.value = lastPriceIngredient;
                 if (lastPriceIngredient !== undefined) {
-                    let ingredientAmountValue = event.target.value;
+                    let ingredientAmountValue = event.target.value = event.target.value.replace(/,/, '.');
                     ingredientPriceInput.value = parseFloat(ingredientAmountValue * lastPriceIngredient).toFixed(2);
                 }
             });
@@ -244,13 +245,16 @@
                     ingredientPriceInput.value = parseFloat(ingredientAmountValue * lastPriceIngredient).toFixed(2);
                 }
             });
+
+            SelectWithSearch(selectorIngredients);
+
             return generatedIngredientContainer;
         }
 
         let generatedIngredientsSelector = null;
         function GenerateIngredientsSelector(tempId) {
             //if (generatedIngredientsSelector === null) {
-                let tempGenerateIngredientsSelector =   '<div><label>Ингредиент</label><select class="selector-ingredients need-validate" name="modifications['+ tempId +'][ingredients][id][]">';
+                let tempGenerateIngredientsSelector =   '<div class="m-5"><label>Ингредиент</label><select class="selector-ingredients need-validate" name="modifications['+ tempId +'][ingredients][id][]">';
 
                 tempGenerateIngredientsSelector += '<option value="" disabled selected>Выберите ингредиент</option>';
                 Object.keys(allIngredients).forEach((key) => {

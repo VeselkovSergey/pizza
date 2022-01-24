@@ -391,3 +391,29 @@ body,
         width: 0; /* ширина scrollbar */
     }
 }
+
+/* поиск в select */
+.search-field-container {
+    width: 100%;
+    position: relative;
+}
+.search-field {
+    width: calc(100% - 20px);
+}
+.custom-options-container {
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+    width: calc(100% - 20px);
+    padding: 5px 10px;
+    border: 1px solid #cbcdd1;
+    border-radius: 5px;
+    max-height: 250px;
+    overflow: auto;
+}
+.custom-option {
+    padding: 3px;
+}
+.custom-option:hover {
+    background-color: #4489c8;
+}
