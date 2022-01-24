@@ -50,7 +50,7 @@
                     <tr>
                         <td>{{$ingredient->id}}</td>
                         @if(empty($ingredient->Ingredient))
-                            <td>-</td>
+                            <td>{{$ingredient->ingredient_id}}</td>
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
