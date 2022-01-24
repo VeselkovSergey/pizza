@@ -38,25 +38,22 @@
             <table class="w-100 border table-sort">
                 <thead>
                 <tr>
-                    <th>ID</th>
+                    <th class="w-0">ID</th>
                     <th>Наименование</th>
-                    <th>Актуальная цена за кг/шт</th>
-                    <th>Кол-во в последней поставке</th>
-                    <th>Потрачено в еденицах</th>
-                    <th>Потрачено в деньгах</th>
-                    <th>Дата</th>
+                    <th class="w-0">Актуальная цена за кг/шт</th>
+                    <th class="w-0">Потрачено в еденицах</th>
+                    <th class="w-0">Потрачено в деньгах</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($ingredients as $ingredient)
+                    @php($ingredientLastPrice = $ingredient->CurrentPrice())
                     <tr class="hover-color ingredient-container" data-ingredient-id="{{$ingredient->id}}">
                         <td>#{{$ingredient->id}}</td>
                         <td><input name="title" class="edit-field" readonly type="text" value="{{$ingredient->title}}"></td>
-                        <td>{{$ingredient->last_price_ingredient}} ₽</td>
-                        <td>{{$ingredient->last_amount_ingredient}}</td>
+                        <td>{{$ingredientLastPrice}} ₽</td>
                         <td>{{$ingredient->sent}}</td>
-                        <td>{{$ingredient->sent * $ingredient->last_price_ingredient}}</td>
-                        <td>{{$ingredient->created_at}}</td>
+                        <td>{{$ingredient->sent * $ingredientLastPrice}}</td>
                     </tr>
                 @endforeach
                 </tbody>
