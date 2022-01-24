@@ -16,7 +16,7 @@
                 <th>ФИО</th>
                 <th class="w-0">Номер</th>
                 <th class="w-0">Телеграмм</th>
-                <th></th>
+                <th class="w-0"></th>
             </tr>
             </thead>
             <tbody>
@@ -27,7 +27,7 @@
                     <td class="text-center">{{$user->surname . ' ' . $user->name . ' ' . $user->patronymic}}</td>
                     <td class="text-center">{{$user->phone}}</td>
                     <td class="text-center">{{$user->telegram_chat_id}}</td>
-                    <td class="text-center"><a href="{{route('employee-card-page', $user->id)}}">карточка сотрудника</a></td>
+                    <td class="text-center"><a href="{{route('employee-card-page', $user->id)}}">карточка&nbsp;сотрудника</a></td>
                 </tr>
             @endforeach
             </tbody>
