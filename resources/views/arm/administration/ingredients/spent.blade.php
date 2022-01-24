@@ -86,6 +86,7 @@
                 let startDate = document.body.querySelector('.start-date').value;
                 let endDate = document.body.querySelector('.end-date').value;
                 if (startDate && endDate) {
+                    LoaderShow();
                     location.href = "{{route('administrator-arm-spent-ingredients-page')}}?start-date=" + startDate + "&end-date=" + endDate;
                 }
             });
