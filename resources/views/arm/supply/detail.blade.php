@@ -18,7 +18,7 @@
             <div class="flex-wrap">
                 @foreach($files as $file)
                     <div>
-                        @if($file->modelFile->extension === 'jpg')
+                        @if(isset($file->modelFile) && $file->modelFile->extension === 'jpg')
                             <img class="open-large cp" width="200" height="200" src="{{route('files', $file->modelFile->id)}}">
                         @endif
                         <div>
