@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Salary;
 
 use App\Helpers\ResultGenerate;
 use App\Models\Calendar;
+use App\Models\Categories;
 use App\Models\User;
+use App\Services\Telegram\Telegram;
 
 class SalaryController
 {
@@ -64,12 +66,15 @@ class SalaryController
             'end_shift' => $endShift,
         ]);
 
+        self::SendTelegram($employeeId, 'AddShift', $shift);
+
         return ResultGenerate::Success('', $shift);
     }
 
     function DeleteShift()
     {
         $shift = Calendar::findOrFail(request()->post('shiftId'));
+        self::SendTelegram($shift->user_id, 'DeleteShift', $shift);
         $shift->delete();
         return ResultGenerate::Success();
     }
@@ -78,5 +83,34 @@ class SalaryController
     {
         $date = request()->post('date');
         return view('arm.salary.calendar.detail');
+    }
+
+    private function SendTelegram($employeeId, $type, $shift)
+    {
+        $employee = User::find($employeeId);
+
+        if (empty($employee) && empty($employee->telegram_chat_id)) {
+            return false;
+        }
+
+        $winText = 'Тебе повезло!';
+        $shiftText = 'У тебя новая смена:';
+        if ($type === 'DeleteShift') {
+            $winText = 'Вынужден тебя огорчить!';
+            $shiftText = 'Тебе сняли смену:';
+        }
+
+        $message = '<b>' . $employee->name . '! '.$winText.'</b>' . PHP_EOL;
+        $message .= PHP_EOL;
+
+        $message .= '<i>'.$shiftText.'</i> ' . PHP_EOL;
+
+        $message .= '<i>' . $shift->date . '</i> ' . PHP_EOL;
+        $message .= PHP_EOL;
+
+        $message .= '<i>C ' . $shift->start_shift . ' до ' . $shift->end_shift . '</i> ' . PHP_EOL;
+
+        $telegram = new Telegram();
+        return $telegram->sendMessage($message, $employee->telegram_chat_id);
     }
 }
