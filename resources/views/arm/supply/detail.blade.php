@@ -65,9 +65,9 @@
                             @else
                                 @php($sum += $ingredient->amount_ingredient * $ingredient->price_ingredient)
                                 <td>{{$ingredient->Ingredient->title}}</td>
-                                <td>{{$ingredient->amount_ingredient}}</td>
-                                <td>{{round($ingredient->price_ingredient, 2)}} ₽</td>
-                                <td>{{round($ingredient->amount_ingredient * $ingredient->price_ingredient, 2)}} ₽</td>
+                                <td class="text-center">{{$ingredient->amount_ingredient}}</td>
+                                <td class="text-center">{{round($ingredient->price_ingredient, 2)}} ₽</td>
+                                <td class="text-center">{{round($ingredient->amount_ingredient * $ingredient->price_ingredient, 2)}} ₽</td>
                             @endif
 
                         </tr>
