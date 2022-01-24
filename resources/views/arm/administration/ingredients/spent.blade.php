@@ -14,6 +14,9 @@
         .edit-field:not(:read-only) {
             transform: scale(1.01);
         }
+        .used:hover {
+            color: #7300ff;
+        }
     </style>
 
     <div class="mb-10">
@@ -43,6 +46,7 @@
                     <th class="w-0">Актуальная цена за кг/шт</th>
                     <th class="w-0">Потрачено в еденицах</th>
                     <th class="w-0">Потрачено в деньгах</th>
+                    <th class="w-0"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,6 +58,7 @@
                         <td>{{$ingredientLastPrice}} ₽</td>
                         <td>{{$ingredient->sent}}</td>
                         <td>{{$ingredient->sent * $ingredientLastPrice}}</td>
+                        <td class="text-center used cp">Где юзается</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -98,6 +103,24 @@
             Ajax("{{route('administrator-arm-ingredient-save-changes')}}", "POST", {ingredientId: ingredientId, data: JSON.stringify(data)}).then((response) => {
                 FlashMessage(response.message);
             });
+        }
+
+        document.body.querySelectorAll('.used').forEach((ingredient) => {
+            ingredient.addEventListener('click', () => {
+                const ingredientId = ingredient.closest('.ingredient-container').dataset.ingredientId;
+                Ajax("{{route('products-used-ingredient')}}?ingredientId=" + ingredientId, 'GET').then((response) => {
+                    ModalWindow(GenerationProductsUsedIngredient(response));
+                });
+            });
+        });
+
+        function GenerationProductsUsedIngredient(data) {
+            let content = '';
+            Object.keys(data).forEach((key) => {
+                const product = data[key];
+                content += '<div class="mb-10"><div>'+product.productTitle+'</div><div>Кол-во: '+product.ingredientUsageAmount+'</div></div>'
+            });
+            return content;
         }
     </script>
 

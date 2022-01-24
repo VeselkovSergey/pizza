@@ -103,6 +103,8 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::post('/save', [Controllers\Ingredients\IngredientsController::class, 'Save'])->name('ingredients-save');
         Route::get('/all', [Controllers\Ingredients\IngredientsController::class, 'AllIngredients'])->name('all-ingredients');
 
+        Route::get('/products-used-ingredient/{ingredientId?}', [Controllers\Ingredients\IngredientsController::class, 'ProductsUsedIngredient'])->name('products-used-ingredient');
+
     });
 
     Route::group(['prefix' => 'supplies'], function () {

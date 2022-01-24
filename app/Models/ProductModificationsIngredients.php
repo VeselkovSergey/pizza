@@ -10,6 +10,7 @@ namespace App\Models;
  * @property integer visible
  *
  * @property Ingredients Ingredient
+ * @property ProductModifications ProductModification
  */
 class ProductModificationsIngredients extends BaseModel
 {
@@ -18,5 +19,10 @@ class ProductModificationsIngredients extends BaseModel
     public function Ingredient()
     {
         return $this->hasOne(Ingredients::class, 'id', 'ingredient_id');
+    }
+
+    public function ProductModification()
+    {
+        return $this->hasOne(ProductModifications::class, 'id', 'product_modification_id');
     }
 }
