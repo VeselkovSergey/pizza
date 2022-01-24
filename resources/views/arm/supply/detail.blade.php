@@ -76,7 +76,7 @@
                 </table>
             </div>
 
-            <h3 style="order: 1">Сумма: {{round($sum, 2)}} ₽ ({{$supply->created_at}})</h3>
+            <h3 style="order: 1">Сумма: {{round($sum, 2)}} ₽</h3>
             <div style="order: 1">{{$supply->created_at}}</div>
             <div style="order: 1" class="mb-10">{{$supply->Creator->name}}</div>
         </div>
