@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Products;
 
 use App\Helpers\ArrayHelper;
 use App\Helpers\Files;
+use App\Models\Categories;
 use App\Models\Files as FilesDB;
 use App\Helpers\ResultGenerate;
 use App\Http\Controllers\Controller;
@@ -110,15 +111,15 @@ class ProductsController extends Controller
     {
         $modifications = Modifications::all();
         $ingredients = Ingredients::all();
-        return view('arm.products.createOrUpdate', [
-            'modifications' => $modifications,
-            'ingredients' => $ingredients,
-        ]);
+        $categories = Categories::all();
+        return view('arm.products.createOrUpdate', compact('modifications','ingredients','categories',));
     }
 
     public function Create(Request $request)
     {
         $title = $request->title;
+        $category = (int)$request->category;
+        $showInCatalog = $request->show_in_catalog === 'true' ? 1 : 0;
         $modifications = $request->modifications;
         if (empty($title)) {
             return ResultGenerate::Error('Пустое название');
@@ -158,7 +159,9 @@ class ProductsController extends Controller
 
         // создаем продукт и его модификаторы
         $createdProduct = Products::create([
-            'title' => $title
+            'title' => $title,
+            'category_id' => $category,
+            'show_in_catalog' => $showInCatalog,
         ]);
 
         foreach ($modifications as $modification) {

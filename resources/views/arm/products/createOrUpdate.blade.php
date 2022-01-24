@@ -22,6 +22,22 @@
                     <input class="need-validate" name="title" type="text">
                 </label>
             </div>
+            <div class="mb-10">
+                <label for="">Категория
+                    <select name="category">
+                        @foreach($categories as $category)
+                            <option value="{{$category->id}}">{{$category->title}}</option>
+                        @endforeach
+                    </select>
+                </label>
+            </div>
+            <div class="mb-10 flex-center-vertical">
+                <span>Показывать в каталоге</span>
+                <label class="custom-checkbox-label" for="checkbox-show-in-catalog">
+                    <input type="checkbox" id="checkbox-show-in-catalog" name="show_in_catalog"/>
+                    <div class="custom-checkbox-slider round"></div>
+                </label>
+            </div>
 
             <div class="mb-10">
                 <div>Модификации</div>
