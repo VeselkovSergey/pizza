@@ -172,13 +172,13 @@
             });
 
             markupInput.addEventListener('input', (event) => {
-                let markupValue = event.target.value = event.target.value.replace(/,/, '.');;
-                sellingPriceInput.value = costPriceInput.value * ((markupValue / 100) + 1);
+                event.target.value = event.target.value.replace(/,/, '.');
+                sellingPriceInput.value = costPriceInput.value * ((event.target.value / 100) + 1);
             });
 
             sellingPriceInput.addEventListener('input', (event) => {
-                let sellingPriceValue = event.target.value = event.target.value.replace(/,/, '.');;
-                markupInput.value = ((sellingPriceValue / costPriceInput.value) - 1) * 100;
+                event.target.value = event.target.value.replace(/,/, '.');
+                markupInput.value = ((event.target.value / costPriceInput.value) - 1) * 100;
             });
 
             return generatedModificationContainer;
@@ -226,12 +226,12 @@
 
             let ingredientAmountInput = generatedIngredientContainer.querySelector('.ingredient-amount');
             ingredientAmountInput.addEventListener('input', (event) => {
+                event.target.value = event.target.value.replace(/,/, '.');
                 let selectedIndex = event.target.closest('.ingredient-container').querySelector('.selector-ingredients').options.selectedIndex;
                 let lastPriceIngredient = event.target.closest('.ingredient-container').querySelector('.selector-ingredients').options[selectedIndex].dataset.lastPriceIngredient;
                 unitIngredientPrice.value = lastPriceIngredient;
                 if (lastPriceIngredient !== undefined) {
-                    let ingredientAmountValue = event.target.value = event.target.value.replace(/,/, '.');
-                    ingredientPriceInput.value = parseFloat(ingredientAmountValue * lastPriceIngredient).toFixed(2);
+                    ingredientPriceInput.value = parseFloat(event.target.value * lastPriceIngredient).toFixed(2);
                 }
             });
 

@@ -214,7 +214,7 @@
 
             inputIngredient.addEventListener('change', (event) => {
                 let ingredient = event.target.value;
-                console.log(ingredient)
+                console.log(ingredient);
             });
 
             inputIngredientSum.addEventListener('change', () => {
@@ -226,9 +226,9 @@
             });
 
             inputIngredientPrice.addEventListener('input', () => {
-                let price = inputIngredientPrice.value.replace(/,/, '.');
-                let amount = inputIngredientAmount.value.replace(/,/, '.');
-                let countSum = CountSum(amount, price);
+                inputIngredientPrice.value = inputIngredientPrice.value.replace(/,/, '.');
+                inputIngredientAmount.value = inputIngredientAmount.value.replace(/,/, '.');
+                let countSum = CountSum(inputIngredientPrice.value, inputIngredientAmount.value);
                 inputIngredientSum.value = parseFloat(countSum).toFixed(2);
                 CountSumTotal();
             });
@@ -246,9 +246,9 @@
             }
 
             function ReSum() {
-                let amount = inputIngredientAmount.value.replace(/,/, '.');
-                let price = inputIngredientPrice.value.replace(/,/, '.');
-                let countSum = CountSum(amount, price);
+                inputIngredientAmount.value = inputIngredientAmount.value.replace(/,/, '.');
+                inputIngredientPrice.value = inputIngredientPrice.value.replace(/,/, '.');
+                let countSum = CountSum(inputIngredientAmount.value, inputIngredientPrice.value);
                 inputIngredientSum.value = parseFloat(countSum).toFixed(2);
                 CountSumTotal();
             }
@@ -256,9 +256,13 @@
 
         function CountSumTotal() {
             let allIngredientsSum = document.body.querySelectorAll('input[name="sum"]');
+
             let totalSumSupply = document.body.querySelector('input[name="totalSumSupply"]');
+            totalSumSupply = totalSumSupply.value.replace(/,/, '.');
+
             let totalSumSupplyValue = 0;
             allIngredientsSum.forEach((sum) => {
+                sum.value = sum.value.replace(/,/, '.');
                 totalSumSupplyValue += parseFloat(sum.value);
             });
             totalSumSupply.value = parseFloat(totalSumSupplyValue).toFixed(2);
