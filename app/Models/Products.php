@@ -11,6 +11,8 @@ namespace App\Models;
  * @property integer category_id
  * @property integer show_in_catalog
  * @property integer sort
+ * @property integer is_additional_sales
+ * @property integer additional_sales_sort
  *
  * @property ProductModifications Modifications
  */

@@ -507,9 +507,18 @@ let basketWindow;
 function BasketWindow() {
     let orderId = localStorage.getItem('orderId');
     let basketContent = document.createElement('div');
-    basketContent.innerHTML =
-        ProductsInBasketGenerationHTML() +
-        OrderInfoGenerationHTML(orderId);
+
+    const ProductsInBasketGenerationElement = CreateElement('div', {});
+    const AdditionalSalesElement = CreateElement('div', {});
+    const OrderInfoGenerationHTMLElement = CreateElement('div', {});
+
+    ProductsInBasketGenerationElement.append(ProductsInBasketGenerationHTML());
+    AdditionalSalesElement.append(AdditionalSales());
+    OrderInfoGenerationHTMLElement.append(OrderInfoGenerationHTML(orderId));
+
+    basketContent.append(ProductsInBasketGenerationElement);
+    basketContent.append(AdditionalSalesElement);
+    basketContent.append(OrderInfoGenerationHTMLElement);
 
     basketWindow = ModalWindow(basketContent);
 
@@ -651,6 +660,54 @@ function BasketWindow() {
         });
     }
 
+    document.body.querySelectorAll('.product-additional-sales-container').forEach((productAdditionalSales) => {
+        productAdditionalSales.addEventListener('click', (event) => {
+            const productId = productAdditionalSales.dataset.productId;
+            let productImg = '/img/jpg500/' + productId + '.img';
+            let productImgWebP = '/img/' + productId + '.webp';
+            ProductWindowGenerator(productId, productImg, productImgWebP, () => {
+                ProductsInBasketGenerationElement.innerHTML = '';
+                ProductsInBasketGenerationElement.append(ProductsInBasketGenerationHTML());
+            });
+        });
+    });
+
+    function AdditionalSales() {
+
+        let content = '';
+        if (typeof allProducts !== 'undefined' && CountProductsInBasket() !== 0) {
+
+            content =   '<div style="max-width: 600px; scroll-snap-type: x mandatory;" class="flex scroll-x-auto additional-sales-scroll mb-10">';
+
+            Object.keys(allProducts).forEach((key) => {
+                let product = allProducts[key];
+
+                if (product.is_additional_sales === 1) {
+                let productId = product.id;
+                let productTitle = product.title;
+                let productSort = product.additional_sales_sort;
+                let productImg = '/img/jpg500/' + productId + '.img';
+                let productImgWebP = '/img/' + productId + '.webp';
+
+                content +=
+                                        '<div class="mr-5 product-additional-sales-container cp" data-product-id="'+productId+'" style="scroll-snap-align: start; order: '+productSort+'">' +
+                                            '<picture>' +
+                                                '<source srcset="'+productImgWebP+'" type="image/webp">' +
+                                                '<source class="w-100" srcset="'+productImg+'" type="image/jpeg">' +
+                                                '<img width="100" height="100" src="'+productImg+'" alt="">' +
+                                            '</picture>' +
+                                            '<div class="text-center">'+productTitle+'</div>' +
+                                        '</div>';
+                }
+            });
+
+            content +=      '</div>';
+
+        }
+
+        return CreateElement('div', {content: content});
+    }
+
 }
 
 function CreateOrder(orderId) {
@@ -726,6 +783,7 @@ function CreateOrder(orderId) {
 }
 
 function ProductsInBasketGenerationHTML() {
+    let productsInBasketGenerationElement = CreateElement('div', {class: 'w-100'});
     let productsInBasketGenerationHTML = '<div class="w-100">Корзина</div>';
     let countProductsInBasket = CountProductsInBasket();
     if (countProductsInBasket === 0) {
@@ -767,7 +825,9 @@ function ProductsInBasketGenerationHTML() {
                                             '</div>';
     }
 
-    return productsInBasketGenerationHTML;
+    productsInBasketGenerationElement.innerHTML = productsInBasketGenerationHTML
+
+    return productsInBasketGenerationElement;
 }
 
 function OrderInfoGenerationHTML(orderId) {
@@ -785,50 +845,52 @@ function OrderInfoGenerationHTML(orderId) {
             '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '">' +
         '</div>' : '';
 
+    let content = '';
+
     if (countProductsInBasket !== 0) {
-        return  '<div class="client-information w-100">' +
-                    '<div class="promo-code-container w-100 flex-wrap-center mb-10">' +
-                        '<label for="">Промокод</label>' +
-                        '<input name="clientPromoCode" autocomplete="off" class="w-75 mr-a" type="text">' +
-                        '<button class="promo-code-apply-button orange-button">Применить</button>' +
-                    '</div>' +
-                    '<div>Оформление заказа</div>' +
-                    '<div class="w-100 flex-wrap mt-10">' +
-                        '<label for="">Имя</label>' +
-                        '<input name="clientName" placeholder="имя" class="need-validate last-data w-100" type="text" value="' + lastClientName + '">' +
-                    '</div>' +
-                        phoneInput +
-                    '<div class="w-100 flex-wrap mt-10">' +
-                        '<label for="">Адрес для доставки</label>' +
-                        '<input name="clientAddressDelivery" placeholder="улица, дом, кв." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '">' +
-                    '</div>' +
-                    '<div class="w-100 flex-wrap mt-10">' +
-                        '<label for="">Комментарий</label>' +
-                        '<textarea  rows="3" name="clientComment" class="w-100 last-data" placeholder="Особые пожелания, сдача, подъезд, код-домофона">' + lastClientComment + '</textarea>' +
-                    '</div>' +
-                    '<div class="w-100 flex-wrap mt-10">' +
-                        '<div class="w-100">Способ оплаты</div>' +
-                        '<div class="flex w-100 px-5">' +
-                            '<div class="flex w-50">' +
-                                '<label for="bank-payment">' +
-                                    '<input ' + ((lastTypePayment === 'card' || lastTypePayment === '') ? 'checked' : '') + ' name="typePayment" value="card" type="radio" id="bank-payment" class="last-data hide">' +
-                                    '<span class="cp py-10 block text-center w-100">Карта</span>' +
-                                '</label>' +
-                            '</div>' +
-                            '<div class="flex w-50">' +
-                                '<label for="cash-payment">' +
-                                    '<input ' + (lastTypePayment === 'cash' ? 'checked' : '') + ' name="typePayment" type="radio" value="cash" id="cash-payment" class="last-data hide">' +
-                                    '<span class="cp py-10 block text-center w-100">Наличные</span>' +
-                                '</label>' +
+        content =   '<div class="client-information w-100">' +
+                        '<div class="promo-code-container w-100 flex-wrap-center mb-10">' +
+                            '<label for="">Промокод</label>' +
+                            '<input name="clientPromoCode" autocomplete="off" class="w-75 mr-a" type="text">' +
+                            '<button class="promo-code-apply-button orange-button">Применить</button>' +
+                        '</div>' +
+                        '<div>Оформление заказа</div>' +
+                        '<div class="w-100 flex-wrap mt-10">' +
+                            '<label for="">Имя</label>' +
+                            '<input name="clientName" placeholder="имя" class="need-validate last-data w-100" type="text" value="' + lastClientName + '">' +
+                        '</div>' +
+                            phoneInput +
+                        '<div class="w-100 flex-wrap mt-10">' +
+                            '<label for="">Адрес для доставки</label>' +
+                            '<input name="clientAddressDelivery" placeholder="улица, дом, кв." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '">' +
+                        '</div>' +
+                        '<div class="w-100 flex-wrap mt-10">' +
+                            '<label for="">Комментарий</label>' +
+                            '<textarea  rows="3" name="clientComment" class="w-100 last-data" placeholder="Особые пожелания, сдача, подъезд, код-домофона">' + lastClientComment + '</textarea>' +
+                        '</div>' +
+                        '<div class="w-100 flex-wrap mt-10">' +
+                            '<div class="w-100">Способ оплаты</div>' +
+                            '<div class="flex w-100 px-5">' +
+                                '<div class="flex w-50">' +
+                                    '<label for="bank-payment">' +
+                                        '<input ' + ((lastTypePayment === 'card' || lastTypePayment === '') ? 'checked' : '') + ' name="typePayment" value="card" type="radio" id="bank-payment" class="last-data hide">' +
+                                        '<span class="cp py-10 block text-center w-100">Карта</span>' +
+                                    '</label>' +
+                                '</div>' +
+                                '<div class="flex w-50">' +
+                                    '<label for="cash-payment">' +
+                                        '<input ' + (lastTypePayment === 'cash' ? 'checked' : '') + ' name="typePayment" type="radio" value="cash" id="cash-payment" class="last-data hide">' +
+                                        '<span class="cp py-10 block text-center w-100">Наличные</span>' +
+                                    '</label>' +
+                                '</div>' +
                             '</div>' +
                         '</div>' +
-                    '</div>' +
-                    '<div class="text-center mt-10">Бесплатная доставка от 500 рублей, иначе 150 рублей по городу</div>' +
-                    '<div class="w-100 flex-center mt-25" style="padding-bottom: 50px;"><button class="cp order-create btn first">' + (orderId ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button>' + (orderId ? '<button class="cp clean-basket btn first ml-10">Очистить данные</button>'  : '') + '</div>' +
-                '</div>';
-    } else {
-        return '';
+                        '<div class="text-center mt-10">Бесплатная доставка от 500 рублей, иначе 150 рублей по городу</div>' +
+                        '<div class="w-100 flex-center mt-25" style="padding-bottom: 50px;"><button class="cp order-create btn first">' + (orderId ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button>' + (orderId ? '<button class="cp clean-basket btn first ml-10">Очистить данные</button>'  : '') + '</div>' +
+                    '</div>';
     }
+
+    return CreateElement('div', {content: content});
 }
 
 function startTrackingNumberInput() {
@@ -1338,4 +1400,176 @@ function SelectWithSearch(selector) {
             }
         }
     });
+}
+
+let modificationSelected = null;
+let startSellingPriceModification = 0;
+function ProductWindowGenerator(productId, productImg, productImgWebP, callback) {
+
+    let productTitle = allProducts['product-'+productId].title;
+
+    let imgUrl = productImg;
+    let webpUrl = productImgWebP;
+
+    let productContent = document.createElement('div');
+    productContent.className = 'flex product-content h-100';
+    productContent.innerHTML =
+        '<div class="container-img-and-about-product">' +
+        '<div class="w-100">' +
+        '<div>' +
+        '<picture>'+
+        '<source class="w-100" srcset="' + webpUrl + '" type="image/webp">'+
+        '<source class="w-100" srcset="' + imgUrl + '" type="image/jpeg">'+
+        '<img class="w-100" src="' + imgUrl + '" alt="">'+
+        '</picture>'+
+        '</div>' +
+        // '<p>Традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</p>' +
+        '</div>' +
+        '</div>' +
+        '<div class="container-modification-product flex" style="flex: 1;">' +
+        '<div class="w-100 flex-column h-100">' +
+        '<div class="text-center text-up">'+productTitle+'</div>' +
+        '<div class="container-ingredients text-down">' +
+        IngredientsGenerator(productId) +
+        '</div>'+
+        ModificationsGenerate(productId) +
+        '<div class="container-button-put-in-basket mt-a mx-a" style="padding-bottom: 50px;"><button class="button-put-in-basket btn first mt-25">В корзину</button></div>' +
+        '</div>' +
+        '</div>';
+
+    let buttonPutInBasket = productContent.querySelector('.button-put-in-basket');
+    buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + startSellingPriceModification + ' ₽';
+
+    productContent.querySelectorAll('.modification-button').forEach((el) => {
+        el.addEventListener('click', () => {
+            let productId = el.dataset.productId;
+            let modificationType = el.dataset.modificationType;
+            let modificationId = el.dataset.modificationId;
+            let stopList = parseInt(el.dataset.stopList);
+
+            let modification = allProducts[productId]['modifications'][modificationType][modificationId];
+            let sellingPriceModification = modification.sellingPrice;
+            let ingredients = IngredientsGenerator(null, modification);
+            let containerIngredients = productContent.querySelector('.container-ingredients');
+            containerIngredients.innerHTML = ingredients;
+            buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + sellingPriceModification + ' ₽';
+            modificationSelected = {
+                product: allProducts[productId],
+                modification: allProducts[productId]['modifications'][modificationType][modificationId],
+                stopList: stopList,
+            }
+
+            if (stopList === 1) {
+                ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
+            }
+        });
+    });
+
+    buttonPutInBasket.addEventListener('click', () => {
+        if (modificationSelected.stopList === 1) {
+            ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
+            return;
+        }
+        FlashMessage('Добавлено: <br/>' + modificationSelected.product.title + (modificationSelected.modification.value !== 'Отсутствует' ? (', ' + modificationSelected.modification.title + ' ' + modificationSelected.modification.value) : ''));
+        AddProductInBasket(modificationSelected);
+        modalWindow.slowRemove();
+        document.body.classList.remove('scroll-off');
+
+        if (callback) {
+            callback();
+        }
+
+    });
+
+    let modalWindow = ModalWindow(productContent);
+}
+
+function ModificationsGenerate(productId) {
+    let containerAllModificationsTemp = '';
+    let disableModificationContainer = false;
+    let stopList = false;
+    Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
+        let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
+        let modificationTypeHTML = '<div class="container-modification">';
+        let i = 0;
+        Object.keys(modificationType).forEach(function (modificationId) {
+            let modification = modificationType[modificationId];
+            let checkedInput = i === 0 ? 'checked' : '';
+            if(i === 0) {
+                startSellingPriceModification = modification.sellingPrice;
+                modificationSelected = {
+                    product: allProducts['product-'+productId],
+                    modification: modificationType[modificationId],
+                    stopList: modification.stop_list,
+                }
+            }
+
+            if (modification.value === 'Отсутствует') {
+                disableModificationContainer = true;
+            }
+
+            if (modification.stop_list === 1 && i === 0) {
+                stopList = true;
+            }
+
+            let buttonWidth = 'width:' + (100 / modification.modificationTypeCount) + '%;';
+            let modificationIdHTML =
+                '<div class="text-center flex" style="' + buttonWidth + '">' +
+                '<input name="' + modificationTypeId + '" class="hide modification-input" id="' + modificationId + '" type="radio" ' + checkedInput + '/>' +
+                // '<label class="modification-button"data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.title + ' - ' + modification.value + '</label>' +
+                '<label class="modification-button" data-stop-list="' + modification.stop_list + '" data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.value + '</label>' +
+                '</div>';
+            modificationTypeHTML += modificationIdHTML;
+            i++;
+        });
+        modificationTypeHTML += '</div>';
+        containerAllModificationsTemp += modificationTypeHTML;
+    });
+    let containerAllModifications;
+    if (disableModificationContainer) {
+        containerAllModifications = '<div class="hide">'+ containerAllModificationsTemp +'</div>';
+    } else {
+        containerAllModifications = '<div>'+ containerAllModificationsTemp +'</div>';
+    }
+
+    if (stopList) {
+        setTimeout(() => {
+            ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
+        }, 200);
+    }
+
+    return containerAllModifications;
+}
+
+function IngredientsGenerator(productId, modification) {
+    let containerAllModifications = '<div class="flex-wrap-center">';
+    if (modification === undefined) {
+        Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
+            let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
+            let i = 0;
+            Object.keys(modificationType).forEach(function (modificationId) {
+                let modification = modificationType[modificationId];
+                let ingredients = modification.ingredients;
+                Object.keys(ingredients).forEach(function (ingredientId) {
+                    let ingredient = ingredients[ingredientId];
+                    if (ingredient.visible !== 0) {
+                        if (i === 0) {
+                            containerAllModifications += '<div class="pl-5 flex-center ingredient"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label class="ingredient-title" for="' + ingredientId + '">' + ingredient.title + '</label></div>';
+                        }
+                    }
+                });
+                i++;
+            });
+        });
+    } else {
+        let ingredients = modification.ingredients;
+        Object.keys(ingredients).forEach(function (ingredientId) {
+            let ingredient = ingredients[ingredientId];
+            if (ingredient.visible !== 0) {
+                containerAllModifications += '<div class="pl-5 flex-center ingredient"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label class="ingredient-title" for="' + ingredientId + '">' + ingredient.title + '</label></div>';
+            }
+        });
+    }
+    containerAllModifications += '</div>';
+    return containerAllModifications;
 }

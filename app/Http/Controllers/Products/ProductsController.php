@@ -32,7 +32,7 @@ class ProductsController extends Controller
 
     public static function UpdateFileAllProducts()
     {
-        $allProductsDB = Products::query()->orderBy('category_id')->orderBy('sort')->get();
+        $allProductsDB = Products::orderBy('category_id')->orderBy('sort')->get();
         $allProducts = [];
         foreach ($allProductsDB as $product) {
 
@@ -40,6 +40,8 @@ class ProductsController extends Controller
                 'id' => $product->id,
                 'title' => $product->title,
                 'description' => $product->description,
+                'is_additional_sales' => $product->is_additional_sales,
+                'additional_sales_sort' => $product->additional_sales_sort,
                 'categoryId' => $product->category_id,
                 'categoryTitle' => $product->Category->title,
                 'minimumPrice' => $product->MinimumPrice(),
