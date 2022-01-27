@@ -174,7 +174,7 @@
             }
             @endif
 
-            OpeningHours(11, 0, 22, 45);
+            OpeningHours(11, 0, 22, 30);
 
             document.querySelectorAll('.table-sort > thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
 
