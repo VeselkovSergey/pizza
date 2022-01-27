@@ -65,6 +65,7 @@ class AdministratorARMController extends Controller
         $data = json_decode(request()->data);
         $product = Products::find($productId);
         ProductsController::SaveChanges($product, $data);
+        \Cache::delete('allProducts');
         return ResultGenerate::Success();
     }
 
