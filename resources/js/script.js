@@ -690,7 +690,7 @@ function BasketWindow() {
                 let productImgWebP = '/img/' + productId + '.webp';
 
                 content +=
-                                        '<div class="mr-5 product-additional-sales-container cp" data-product-id="'+productId+'" style="scroll-snap-align: start; order: '+productSort+'">' +
+                                        '<div class="mr-5 product-additional-sales-container cp" style="width: 100px;" data-product-id="'+productId+'" style="scroll-snap-align: start; order: '+productSort+'">' +
                                             '<picture>' +
                                                 '<source srcset="'+productImgWebP+'" type="image/webp">' +
                                                 '<source class="w-100" srcset="'+productImg+'" type="image/jpeg">' +
