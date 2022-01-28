@@ -25,6 +25,7 @@
                 <th>Начало</th>
                 <th>Конец</th>
                 <th>Кол-во</th>
+                <th>Кол-во на пользователя</th>
                 <th>Использовано</th>
                 <th>Активный</th>
                 <th>Условие</th>
@@ -39,6 +40,7 @@
                     <td>{{$promoCode->start_date}}</td>
                     <td>{{$promoCode->end_date}}</td>
                     <td>{{$promoCode->amount}}</td>
+                    <td>{{$promoCode->user_limit}}</td>
                     <td>{{$promoCode->amount_used}}</td>
                     <td>
                         <div class="flex-center">

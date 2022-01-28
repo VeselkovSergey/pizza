@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Products\ProductsController;
 use App\Models\Products;
 use App\Models\PromoCodes;
+use App\Models\PromoCodesUsersUsed;
 
 class PromoCodesController extends Controller
 {
@@ -25,11 +26,23 @@ class PromoCodesController extends Controller
         return ResultGenerate::Error();
     }
 
-    public static function CheckPromoCode(PromoCodes $promoCode)
+    public static function CheckPromoCode(PromoCodes $promoCode, $userId = 0)
     {
         //  промокод можно еще раз использовать
         if ($promoCode->amount_used < $promoCode->amount) {
-            return $promoCode;
+
+            if ($promoCode->user_limit === 0) {
+                return $promoCode;
+            } else {
+                if ($userId === 0) {
+                    $userId = auth()->user()->id;
+                }
+                $userUsage = PromoCodesUsersUsed::where('user_id', $userId)->where('promo_code_id', $promoCode->id)->count('id');
+                if ($userUsage < $promoCode->user_limit) {
+                    return $promoCode;
+                }
+            }
+
         }
         return false;
     }
@@ -53,6 +66,7 @@ class PromoCodesController extends Controller
         $startDate = request()->post('start_date');
         $endDate = request()->post('end_date');
         $amount = (int)request()->post('amount');
+        $userLimit = (int)request()->post('user_limit');
 
         $generalDiscountPercent = (int)request()->post('generalDiscountPercent');
         $generalDiscountSum = (int)request()->post('generalDiscountSum');
@@ -101,6 +115,7 @@ class PromoCodesController extends Controller
             'start_date' => $startDate,
             'end_date' => $endDate,
             'amount' => $amount,
+            'user_limit' => $userLimit,
             'amount_used' => 0,
             'active' => 1,
         ];
