@@ -1279,6 +1279,10 @@ function ManagerArmCheckOrderStatusChange(data = null) {
 }
 
 function OpeningHours(startHour, startMints, endHour, endMints) {
+    const openingHours = document.body.querySelector('.opening-hours');
+    if (openingHours) {
+        openingHours.innerHTML = '<div>'+startHour+':'+((startMints < 10 ? '0' : '') + startMints)+'</div><div>'+endHour+':'+((endMints < 10 ? '0' : '') + endMints)+'</div>';
+    }
     let moskowUtc = 3;
     let time = new Date();
     let hour = time.getUTCHours() + moskowUtc;

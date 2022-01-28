@@ -14,9 +14,8 @@
     BROпицца
 </div>
 
-<div class="flex-column-center mr-10 color-white @if(auth()->check() && auth()->user()->IsManager()) ml-a @endif">
-    <div>10:00</div>
-    <div>22:30</div>
+<div class="opening-hours flex-column-center mr-10 color-white @if(auth()->check() && auth()->user()->IsManager()) ml-a @endif">
+
 </div>
 
 <div class="button-menu flex-center cp mr-10">
