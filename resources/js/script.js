@@ -522,66 +522,6 @@ function BasketWindow() {
 
     basketWindow = ModalWindow(basketContent);
 
-    let deleteProductButtons = document.body.querySelectorAll('.delete-product-button');
-    deleteProductButtons.forEach((el) => {
-        el.addEventListener('click', () => {
-            let modificationId = el.dataset.modificationId;
-            let amountProduct = document.body.querySelector('.amount-product[data-modification-id="' + modificationId + '"]');
-            let modification = {
-                modification: {id: modificationId},
-            }
-            DeleteProductInBasket(modification);
-            let amountProductInBasket = AmountProductInBasket(modificationId);
-            amountProduct.innerHTML = amountProductInBasket;
-            if (amountProductInBasket === 0) {
-                let containerProductInBasket = el.closest('.container-product-in-basket');
-                containerProductInBasket.remove();
-            }
-            let resultPriceSumProductsInBasket = UpdateBasketSum();
-            if (resultPriceSumProductsInBasket.sum === 0) {
-                basketWindow.slowRemove();
-                document.body.classList.remove('scroll-off');
-            }
-        });
-    });
-
-    let clearProductButton = document.body.querySelectorAll('.clear-product-button');
-    clearProductButton.forEach((el) => {
-        el.addEventListener('click', () => {
-            let modificationId = el.dataset.modificationId;
-            let amountProduct = document.body.querySelector('.amount-product[data-modification-id="' + modificationId + '"]');
-            let modification = {
-                modification: {id: modificationId},
-            }
-            ClearProductInBasket(modification);
-            let amountProductInBasket = AmountProductInBasket(modificationId);
-            amountProduct.innerHTML = amountProductInBasket;
-            if (amountProductInBasket === 0) {
-                let containerProductInBasket = el.closest('.container-product-in-basket');
-                containerProductInBasket.remove();
-            }
-            let resultPriceSumProductsInBasket = UpdateBasketSum();
-            if (resultPriceSumProductsInBasket.sum === 0) {
-                basketWindow.slowRemove();
-                document.body.classList.remove('scroll-off');
-            }
-        });
-    });
-
-    let addProductButtons = document.body.querySelectorAll('.add-product-button');
-    addProductButtons.forEach((el) => {
-        el.addEventListener('click', () => {
-            let modificationId = el.dataset.modificationId;
-            let amountProduct = document.body.querySelector('.amount-product[data-modification-id="' + modificationId + '"]');
-            let modification = {
-                modification: {id: modificationId},
-            }
-            AddProductInBasket(modification);
-            amountProduct.innerHTML = AmountProductInBasket(modificationId);
-            UpdateBasketSum();
-        });
-    });
-
     let orderCreateButton = document.body.querySelector('.order-create');
     if (orderCreateButton !== null) {
         orderCreateButton.addEventListener('click', () => {
@@ -661,7 +601,7 @@ function BasketWindow() {
     }
 
     document.body.querySelectorAll('.product-additional-sales-container').forEach((productAdditionalSales) => {
-        productAdditionalSales.addEventListener('click', (event) => {
+        productAdditionalSales.addEventListener('click', () => {
             const productId = productAdditionalSales.dataset.productId;
             let productImg = '/img/jpg500/' + productId + '.img';
             let productImgWebP = '/img/' + productId + '.webp';
@@ -671,6 +611,115 @@ function BasketWindow() {
             });
         });
     });
+
+    function ProductsInBasketGenerationHTML() {
+        let productsInBasketGenerationElement = CreateElement('div', {class: 'w-100'});
+        let productsInBasketGenerationHTML = '<div class="w-100">Корзина</div>';
+        let countProductsInBasket = CountProductsInBasket();
+        if (countProductsInBasket === 0) {
+            productsInBasketGenerationHTML += '<div class="w-100">В корзине пусто</div>'
+        } else {
+            let basket = GetAllProductsInBasket();
+
+            Object.keys(basket).forEach((key) => {
+                let product = basket[key].data.product;
+                let modification = basket[key].data.modification;
+                let modificationId = modification.id
+                let amount = basket[key].amount
+
+                let modificationHTML =
+                    '<div class="container-product-in-basket w-100 py-10">' +
+                        '<div class="p-10 mr-a">' +
+                            '<div>' + product.categoryTitle + ': ' + product.title + '</div>' +
+                            '<div>' + (modification.title !== 'Соло-продукт' ? modification.title + ': ' : '') + (modification.value !== 'Отсутствует' ? modification.value : '') + '</div>' +
+                        '</div>' +
+                        '<div class="flex-space-between">' +
+                            '<div class="flex-center">' +
+                                '<div class="p-10">' + modification.sellingPrice + ' ₽</div>' +
+                                '<button class="clear-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgTrashButton + '</button>' +
+                            '</div>' +
+                            '<div class="buttons-edit-amount-product border-radius-25 flex-center">' +
+                                '<button class="delete-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgMinusButton + '</button>' +
+                                '<div class="amount-product flex-center color-black" data-modification-id="' + modificationId + '">' + amount + '</div>' +
+                                '<button class="add-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgPlusButton + '</button>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+                productsInBasketGenerationHTML += modificationHTML
+            });
+            let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
+            productsInBasketGenerationHTML +=   '<div class="price-sum-products-in-basket py-10 w-100 text-right">' +
+                '<div>Сумма: ' + resultPriceSumProductsInBasket.sum.toFixed(2) + ' ₽</div>' +
+                '<div>Скидка: ' + resultPriceSumProductsInBasket.discount.toFixed(2) + ' ₽</div>' +
+                '<div>Итого: ' + resultPriceSumProductsInBasket.total.toFixed(2) + ' ₽</div>' +
+                '</div>';
+        }
+
+        productsInBasketGenerationElement.innerHTML = productsInBasketGenerationHTML;
+
+
+        let deleteProductButtons = productsInBasketGenerationElement.querySelectorAll('.delete-product-button');
+        deleteProductButtons.forEach((el) => {
+            el.addEventListener('click', () => {
+                let modificationId = el.dataset.modificationId;
+                let amountProduct = document.body.querySelector('.amount-product[data-modification-id="' + modificationId + '"]');
+                let modification = {
+                    modification: {id: modificationId},
+                }
+                DeleteProductInBasket(modification);
+                let amountProductInBasket = AmountProductInBasket(modificationId);
+                amountProduct.innerHTML = amountProductInBasket;
+                if (amountProductInBasket === 0) {
+                    let containerProductInBasket = el.closest('.container-product-in-basket');
+                    containerProductInBasket.remove();
+                }
+                let resultPriceSumProductsInBasket = UpdateBasketSum();
+                if (resultPriceSumProductsInBasket.sum === 0) {
+                    basketWindow.slowRemove();
+                    document.body.classList.remove('scroll-off');
+                }
+            });
+        });
+
+        let clearProductButton = productsInBasketGenerationElement.querySelectorAll('.clear-product-button');
+        clearProductButton.forEach((el) => {
+            el.addEventListener('click', () => {
+                let modificationId = el.dataset.modificationId;
+                let amountProduct = document.body.querySelector('.amount-product[data-modification-id="' + modificationId + '"]');
+                let modification = {
+                    modification: {id: modificationId},
+                }
+                ClearProductInBasket(modification);
+                let amountProductInBasket = AmountProductInBasket(modificationId);
+                amountProduct.innerHTML = amountProductInBasket;
+                if (amountProductInBasket === 0) {
+                    let containerProductInBasket = el.closest('.container-product-in-basket');
+                    containerProductInBasket.remove();
+                }
+                let resultPriceSumProductsInBasket = UpdateBasketSum();
+                if (resultPriceSumProductsInBasket.sum === 0) {
+                    basketWindow.slowRemove();
+                    document.body.classList.remove('scroll-off');
+                }
+            });
+        });
+
+        let addProductButtons = productsInBasketGenerationElement.querySelectorAll('.add-product-button');
+        addProductButtons.forEach((el) => {
+            el.addEventListener('click', () => {
+                let modificationId = el.dataset.modificationId;
+                let amountProduct = document.body.querySelector('.amount-product[data-modification-id="' + modificationId + '"]');
+                let modification = {
+                    modification: {id: modificationId},
+                }
+                AddProductInBasket(modification);
+                amountProduct.innerHTML = AmountProductInBasket(modificationId);
+                UpdateBasketSum();
+            });
+        });
+
+        return productsInBasketGenerationElement;
+    }
 
     function AdditionalSales() {
 
@@ -690,19 +739,83 @@ function BasketWindow() {
                 let productImgWebP = '/img/' + productId + '.webp';
 
                 content +=
-                                        '<div class="mr-5 product-additional-sales-container cp" style="width: 100px;" data-product-id="'+productId+'" style="scroll-snap-align: start; order: '+productSort+'">' +
-                                            '<picture>' +
-                                                '<source srcset="'+productImgWebP+'" type="image/webp">' +
-                                                '<source class="w-100" srcset="'+productImg+'" type="image/jpeg">' +
-                                                '<img width="100" height="100" src="'+productImg+'" alt="">' +
-                                            '</picture>' +
-                                            '<div class="text-center">'+productTitle+'</div>' +
-                                        '</div>';
+                        '<div class="mr-5 product-additional-sales-container cp" style="width: 100px;" data-product-id="'+productId+'" style="scroll-snap-align: start; order: '+productSort+'">' +
+                            '<picture>' +
+                                '<source srcset="'+productImgWebP+'" type="image/webp">' +
+                                '<source class="w-100" srcset="'+productImg+'" type="image/jpeg">' +
+                                '<img width="100" height="100" src="'+productImg+'" alt="">' +
+                            '</picture>' +
+                            '<div class="text-center">'+productTitle+'</div>' +
+                        '</div>';
                 }
             });
 
-            content +=      '</div>';
+            content +=  '</div>';
 
+        }
+
+        return CreateElement('div', {content: content});
+    }
+
+    function OrderInfoGenerationHTML(orderId) {
+
+        let lastClientName = localStorage.getItem('lastClientName') !== null ? localStorage.getItem('lastClientName') : '';
+        let lastClientPhone = localStorage.getItem('lastClientPhone') !== null ? localStorage.getItem('lastClientPhone') : '';
+        let lastClientAddressDelivery = localStorage.getItem('lastClientAddressDelivery') !== null ? localStorage.getItem('lastClientAddressDelivery') : '';
+        let lastClientComment = localStorage.getItem('lastClientComment') !== null ? localStorage.getItem('lastClientComment') : '';
+        let lastTypePayment = localStorage.getItem('lastTypePayment') !== null ? localStorage.getItem('lastTypePayment') : '';
+
+        let countProductsInBasket = CountProductsInBasket();
+        let phoneInput = admin ?
+            '<div class="w-100 flex-wrap mt-10">' +
+                '<label for="">Номер телефона</label>' +
+                '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '" />' +
+            '</div>' : '';
+
+        let content = '';
+
+        if (countProductsInBasket !== 0) {
+            content =
+                '<div class="client-information w-100">' +
+                    '<div class="promo-code-container w-100 flex-wrap-center mb-10">' +
+                        '<label for="">Промокод</label>' +
+                        '<input name="clientPromoCode" autocomplete="off" class="w-75 mr-a" type="text" />' +
+                        '<button class="promo-code-apply-button orange-button">Применить</button>' +
+                    '</div>' +
+                    '<div>Оформление заказа</div>' +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<label for="">Имя</label>' +
+                        '<input name="clientName" placeholder="имя" class="need-validate last-data w-100" type="text" value="' + lastClientName + '" />' +
+                    '</div>' +
+                    phoneInput +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<label for="">Адрес для доставки</label>' +
+                        '<input name="clientAddressDelivery" placeholder="улица, дом, кв." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '" />' +
+                    '</div>' +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<label for="">Комментарий</label>' +
+                        '<textarea  rows="3" name="clientComment" class="w-100 last-data" placeholder="Особые пожелания, сдача, подъезд, код-домофона">' + lastClientComment + '</textarea>' +
+                    '</div>' +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<div class="w-100">Способ оплаты</div>' +
+                        '<div class="flex w-100 px-5">' +
+                            '<div class="flex w-50">' +
+                                '<label for="bank-payment">' +
+                                    '<input ' + ((lastTypePayment === 'card' || lastTypePayment === '') ? 'checked' : '') + ' name="typePayment" value="card" type="radio" id="bank-payment" class="last-data hide" />' +
+                                    '<span class="cp py-10 block text-center w-100">Карта</span>' +
+                                '</label>' +
+                            '</div>' +
+                            '<div class="flex w-50">' +
+                                '<label for="cash-payment">' +
+                                    '<input ' + (lastTypePayment === 'cash' ? 'checked' : '') + ' name="typePayment" type="radio" value="cash" id="cash-payment" class="last-data hide" />' +
+                                    '<span class="cp py-10 block text-center w-100">Наличные</span>' +
+                                '</label>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="text-center mt-10">Бесплатная доставка от 500 рублей, иначе 150 рублей по городу</div>' +
+                    '<div class="w-100 flex-center mt-25" style="padding-bottom: 50px;"><button class="cp order-create btn first">' + (orderId ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button>' + (orderId ? '<button class="cp clean-basket btn first ml-10">Очистить данные</button>'  : '') + '</div>' +
+                '</div>';
         }
 
         return CreateElement('div', {content: content});
@@ -780,117 +893,6 @@ function CreateOrder(orderId) {
             }
         // }
     });
-}
-
-function ProductsInBasketGenerationHTML() {
-    let productsInBasketGenerationElement = CreateElement('div', {class: 'w-100'});
-    let productsInBasketGenerationHTML = '<div class="w-100">Корзина</div>';
-    let countProductsInBasket = CountProductsInBasket();
-    if (countProductsInBasket === 0) {
-        productsInBasketGenerationHTML += '<div class="w-100">В корзине пусто</div>'
-    } else {
-        let basket = GetAllProductsInBasket();
-
-        Object.keys(basket).forEach((key) => {
-            let product = basket[key].data.product;
-            let modification = basket[key].data.modification;
-            let modificationId = modification.id
-            let amount = basket[key].amount
-
-            let modificationHTML =
-                '<div class="container-product-in-basket w-100 py-10">' +
-                    '<div class="p-10 mr-a">' +
-                        '<div>' + product.categoryTitle + ': ' + product.title + '</div>' +
-                        '<div>' + (modification.title !== 'Соло-продукт' ? modification.title + ': ' : '') + (modification.value !== 'Отсутствует' ? modification.value : '') + '</div>' +
-                    '</div>' +
-                    '<div class="flex-space-between">' +
-                        '<div class="flex-center">' +
-                            '<div class="p-10">' + modification.sellingPrice + ' ₽</div>' +
-                            '<button class="clear-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgTrashButton + '</button>' +
-                        '</div>' +
-                        '<div class="buttons-edit-amount-product border-radius-25 flex-center">' +
-                            '<button class="delete-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgMinusButton + '</button>' +
-                            '<div class="amount-product flex-center color-black" data-modification-id="' + modificationId + '">' + amount + '</div>' +
-                            '<button class="add-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgPlusButton + '</button>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>';
-            productsInBasketGenerationHTML += modificationHTML
-        });
-        let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
-        productsInBasketGenerationHTML +=   '<div class="price-sum-products-in-basket py-10 w-100 text-right">' +
-                                                '<div>Сумма: ' + resultPriceSumProductsInBasket.sum.toFixed(2) + ' ₽</div>' +
-                                                '<div>Скидка: ' + resultPriceSumProductsInBasket.discount.toFixed(2) + ' ₽</div>' +
-                                                '<div>Итого: ' + resultPriceSumProductsInBasket.total.toFixed(2) + ' ₽</div>' +
-                                            '</div>';
-    }
-
-    productsInBasketGenerationElement.innerHTML = productsInBasketGenerationHTML
-
-    return productsInBasketGenerationElement;
-}
-
-function OrderInfoGenerationHTML(orderId) {
-
-    let lastClientName = localStorage.getItem('lastClientName') !== null ? localStorage.getItem('lastClientName') : '';
-    let lastClientPhone = localStorage.getItem('lastClientPhone') !== null ? localStorage.getItem('lastClientPhone') : '';
-    let lastClientAddressDelivery = localStorage.getItem('lastClientAddressDelivery') !== null ? localStorage.getItem('lastClientAddressDelivery') : '';
-    let lastClientComment = localStorage.getItem('lastClientComment') !== null ? localStorage.getItem('lastClientComment') : '';
-    let lastTypePayment = localStorage.getItem('lastTypePayment') !== null ? localStorage.getItem('lastTypePayment') : '';
-
-    let countProductsInBasket = CountProductsInBasket();
-    let phoneInput = admin ?
-        '<div class="w-100 flex-wrap mt-10">' +
-            '<label for="">Номер телефона</label>' +
-            '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '">' +
-        '</div>' : '';
-
-    let content = '';
-
-    if (countProductsInBasket !== 0) {
-        content =   '<div class="client-information w-100">' +
-                        '<div class="promo-code-container w-100 flex-wrap-center mb-10">' +
-                            '<label for="">Промокод</label>' +
-                            '<input name="clientPromoCode" autocomplete="off" class="w-75 mr-a" type="text">' +
-                            '<button class="promo-code-apply-button orange-button">Применить</button>' +
-                        '</div>' +
-                        '<div>Оформление заказа</div>' +
-                        '<div class="w-100 flex-wrap mt-10">' +
-                            '<label for="">Имя</label>' +
-                            '<input name="clientName" placeholder="имя" class="need-validate last-data w-100" type="text" value="' + lastClientName + '">' +
-                        '</div>' +
-                            phoneInput +
-                        '<div class="w-100 flex-wrap mt-10">' +
-                            '<label for="">Адрес для доставки</label>' +
-                            '<input name="clientAddressDelivery" placeholder="улица, дом, кв." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '">' +
-                        '</div>' +
-                        '<div class="w-100 flex-wrap mt-10">' +
-                            '<label for="">Комментарий</label>' +
-                            '<textarea  rows="3" name="clientComment" class="w-100 last-data" placeholder="Особые пожелания, сдача, подъезд, код-домофона">' + lastClientComment + '</textarea>' +
-                        '</div>' +
-                        '<div class="w-100 flex-wrap mt-10">' +
-                            '<div class="w-100">Способ оплаты</div>' +
-                            '<div class="flex w-100 px-5">' +
-                                '<div class="flex w-50">' +
-                                    '<label for="bank-payment">' +
-                                        '<input ' + ((lastTypePayment === 'card' || lastTypePayment === '') ? 'checked' : '') + ' name="typePayment" value="card" type="radio" id="bank-payment" class="last-data hide">' +
-                                        '<span class="cp py-10 block text-center w-100">Карта</span>' +
-                                    '</label>' +
-                                '</div>' +
-                                '<div class="flex w-50">' +
-                                    '<label for="cash-payment">' +
-                                        '<input ' + (lastTypePayment === 'cash' ? 'checked' : '') + ' name="typePayment" type="radio" value="cash" id="cash-payment" class="last-data hide">' +
-                                        '<span class="cp py-10 block text-center w-100">Наличные</span>' +
-                                    '</label>' +
-                                '</div>' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="text-center mt-10">Бесплатная доставка от 500 рублей, иначе 150 рублей по городу</div>' +
-                        '<div class="w-100 flex-center mt-25" style="padding-bottom: 50px;"><button class="cp order-create btn first">' + (orderId ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button>' + (orderId ? '<button class="cp clean-basket btn first ml-10">Очистить данные</button>'  : '') + '</div>' +
-                    '</div>';
-    }
-
-    return CreateElement('div', {content: content});
 }
 
 function startTrackingNumberInput() {
@@ -1372,11 +1374,11 @@ function SelectWithSearch(selector) {
         }
     });
 
-    searchField.addEventListener('focus', (event) => {
+    searchField.addEventListener('focus', () => {
         customOptionsContainer.show();
     });
 
-    searchField.addEventListener('blur', (event) => {
+    searchField.addEventListener('blur', () => {
         customOptionsContainer.hide();
         if (!oldValue) {
             searchField.value = '';
