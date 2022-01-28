@@ -15,13 +15,21 @@ class Ingredients extends BaseModel
     public function CurrentPrice()
     {
         try {
+            return $this->LastSupply()->price_ingredient;
+        } catch (\Exception $e) {
+            throw new \Exception('Нет поставки для ингредиента: ' . '#'.$this->id . ' - ' . $this->title);
+        }
+    }
+
+    public function LastSupply()
+    {
+        try {
 
             return IngredientsInSupply::select('ingredients_in_supply.*', 'supply.supply_date as supply_date')
                 ->where('ingredient_id', $this->id)
                 ->leftJoin('supply', 'supply.id', '=', 'ingredients_in_supply.supply_id')
                 ->orderBy('supply_date', 'DESC')
-                ->first()
-                ->price_ingredient;
+                ->first();
 
         } catch (\Exception $e) {
              throw new \Exception('Нет поставки для ингредиента: ' . '#'.$this->id . ' - ' . $this->title);

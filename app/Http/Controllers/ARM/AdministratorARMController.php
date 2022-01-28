@@ -203,6 +203,7 @@ class AdministratorARMController extends Controller
         $startDateFull = date('Y-m-d 00:00:00', strtotime($startDate));
         $endDateFull = date('Y-m-d 23:59:59', strtotime($endDate));
 
+        //  закупленное количество ингредиента
         $ingredientsQuantityPurchasedRaw = IngredientsInSupply::query()->select('ingredients_in_supply.ingredient_id as id')
             ->selectRaw('sum(ingredients_in_supply.amount_ingredient) as quantityPurchased')
             ->leftJoin('supply', 'supply.id', '=', 'ingredients_in_supply.supply_id')
