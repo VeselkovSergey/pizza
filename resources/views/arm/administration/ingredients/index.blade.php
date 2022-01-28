@@ -20,12 +20,13 @@
                 </thead>
                 <tbody>
                 @foreach($ingredients as $ingredient)
+                    @php($ingredientLastSupply = $ingredient->LastSupply())
                     <tr>
                         <td>#{{$ingredient->id}}</td>
                         <td>{{$ingredient->title}}</td>
-                        <td>{{$ingredient->LastSupply()->price_ingredient}} ₽</td>
-                        <td>{{$ingredient->LastSupply()->amount_ingredient}}</td>
-                        <td>{{$ingredient->LastSupply()->supply_date}}</td>
+                        <td>{{$ingredientLastSupply->price_ingredient}} ₽</td>
+                        <td>{{$ingredientLastSupply->amount_ingredient}}</td>
+                        <td>{{$ingredientLastSupply->supply_date}}</td>
                     </tr>
                 @endforeach
                 </tbody>
