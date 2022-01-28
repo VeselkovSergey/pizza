@@ -1337,10 +1337,12 @@ function SelectWithSearch(selector) {
     }
 
 
-    if (defaultOption.getAttribute('disabled') !== null) {
-        searchField.setAttribute('placeholder', defaultOptionText)
-    } else {
-        searchField.value = defaultOptionText;
+    if (defaultOption) {
+        if (defaultOption.getAttribute('disabled') !== null) {
+            searchField.setAttribute('placeholder', defaultOptionText)
+        } else {
+            searchField.value = defaultOptionText;
+        }
     }
 
     let customOptionsContainer = searchFieldContainer.querySelector('.custom-options-container');
