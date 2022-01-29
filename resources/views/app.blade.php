@@ -66,9 +66,9 @@
             $actionConditionAuth = !$authCheck ? 'LoginWindow()' : 'Profile()';
         @endphp
 
-        <header class="flex-wrap pos-sticky top-0 bg-black-custom2 z-1">@include('layouts.header')</header>
+        <header class="flex-wrap pos-sticky top-0 bg-black-custom2 z-2">@include('layouts.header')</header>
 
-        <nav class="left-menu hide z-2 pos-fix top-0 left-0 w-100 h-100">
+        <nav class="left-menu hide z-3 pos-fix top-0 left-0 w-100 h-100">
             <div class="shadow-menu w-100 h-100 bg-black pos-abs" style="opacity: 0.5"></div>
             <div class="left-menu-content-container bg-white h-100 pos-rel w-fit">
                 <div class="close-menu-button cp pos-abs top-0" style="right: -48px">
@@ -101,7 +101,7 @@
         </nav>
 
         @if(isset($allCategory))
-            <div class="fast-menu pos-sticky w-100 py-15 flex scroll-x-auto left-0 bg-black-custom" style="top: 50px; box-shadow: 0 0 10px white;">
+            <div class="fast-menu pos-sticky w-100 py-15 flex scroll-x-auto left-0 bg-black-custom z-1" style="top: 50px; box-shadow: 0 0 10px white;">
                 @foreach($allCategory as $category)
                     <div class="clear-a color-orange px-15 navigation" data-anchor-id="{{$category->id}}">{{$category->title}}</div>
                 @endforeach

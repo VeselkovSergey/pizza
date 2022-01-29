@@ -604,7 +604,7 @@ function BasketWindow() {
         productAdditionalSales.addEventListener('click', () => {
             const productId = productAdditionalSales.dataset.productId;
             let productImg = '/img/jpg500/' + productId + '.img';
-            let productImgWebP = '/img/png' + productId + '.png';
+            let productImgWebP = '/img/png/' + productId + '.png';
             ProductWindowGenerator(productId, productImg, productImgWebP, () => {
                 ProductsInBasketGenerationElement.innerHTML = '';
                 ProductsInBasketGenerationElement.append(ProductsInBasketGenerationHTML());
@@ -736,7 +736,7 @@ function BasketWindow() {
                 let productTitle = product.title;
                 let productSort = product.additional_sales_sort;
                 let productImg = '/img/jpg500/' + productId + '.img';
-                let productImgWebP = '/img/png' + productId + '.png';
+                let productImgWebP = '/img/png/' + productId + '.png';
 
                 content +=
                         '<div class="mr-5 product-additional-sales-container cp" style="width: 100px;" data-product-id="'+productId+'" style="scroll-snap-align: start; order: '+productSort+'">' +
