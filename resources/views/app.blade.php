@@ -100,6 +100,14 @@
             </div>
         </nav>
 
+        @if(isset($allCategory))
+            <div class="fast-menu pos-sticky w-100 py-15 flex scroll-x-auto left-0 bg-black-custom" style="top: 50px; box-shadow: 0 0 10px white;">
+                @foreach($allCategory as $category)
+                    <div class="clear-a color-orange px-15 navigation" data-anchor-id="{{$category->id}}">{{$category->title}}</div>
+                @endforeach
+            </div>
+        @endif
+
         <main @if(!$isARM) style="max-width: 1440px;"@endif>@yield('content')</main>
 
         @if(isset($footer) && $footer === true)
@@ -174,7 +182,7 @@
             }
             @endif
 
-            OpeningHours(11, 0, 22, 45);
+            OpeningHours(11, 0, 22, 30);
 
             document.querySelectorAll('.table-sort > thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
 

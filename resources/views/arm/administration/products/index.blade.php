@@ -21,10 +21,12 @@
             <table class="w-100 border table-sort">
                 <thead>
                 <tr>
-                    <th>ID</th>
+                    <th class="w-0">ID</th>
                     <th>Наименование</th>
-                    <th>Категория</th>
+                    <th class="w-0">Категория</th>
                     <th>Описание</th>
+                    <th class="w-0">Доп. покупки</th>
+                    <th class="w-0">Порядок в доп покупках</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,8 +35,17 @@
                     <tr class="product-container" data-product-id="{{$product->id}}">
                         <td>#{{$product->id}}</td>
                         <td><input name="title" class="edit-field" readonly type="text" value="{{$product->title}}"></td>
-                        <td>{{$product->Category->title}}</td>
+                        <td class="text-center">{{$product->Category->title}}</td>
                         <td><input name="description" class="edit-field w-100" readonly type="text" value="{{$product->description}}"></td>
+                        <td>
+                            <div class="flex-center">
+                                <label class="custom-checkbox-label" for="is_additional_sales-{{$product->id}}">
+                                    <input class="edit-field" type="checkbox" id="is_additional_sales-{{$product->id}}" name="is_additional_sales" @if($product->is_additional_sales) checked @endif/>
+                                    <div class="custom-checkbox-slider round"></div>
+                                </label>
+                            </div>
+                        </td>
+                        <td><input name="additional_sales_sort" class="edit-field w-100" readonly type="text" value="{{$product->additional_sales_sort}}"></td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -56,12 +67,24 @@
             });
 
             field.addEventListener('blur', (event) => {
-                event.target.setAttribute('readonly', 'readonly');
-                let productContainer = event.target.closest('.product-container');
-                let productId = productContainer.dataset.productId;
-                let value = {};
-                value[event.target.name] = event.target.value;
-                SaveChanges (productId, value);
+                if (event.target.getAttribute('type') !== 'checkbox') {
+                    event.target.setAttribute('readonly', 'readonly');
+                    let productContainer = event.target.closest('.product-container');
+                    let productId = productContainer.dataset.productId;
+                    let value = {};
+                    value[event.target.name] = event.target.value;
+                    SaveChanges (productId, value);
+                }
+            });
+
+            field.addEventListener('change', (event) => {
+                if (event.target.getAttribute('type') === 'checkbox') {
+                    let productContainer = event.target.closest('.product-container');
+                    let productId = productContainer.dataset.productId;
+                    let value = {};
+                    value[event.target.name] = event.target.checked;
+                    SaveChanges (productId, value);
+                }
             });
         });
 

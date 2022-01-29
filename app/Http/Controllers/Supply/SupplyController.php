@@ -18,8 +18,21 @@ class SupplyController extends Controller
 {
     public function Index()
     {
-        $supplies = Supply::all();
-        return view('arm.supply.index', compact('supplies'));
+        $ingredientFilter = (int)\request()->ingredient ?? 0;
+        $ingredients = Ingredients::all();
+        if ($ingredientFilter) {
+            $ingredientsInSupply = IngredientsInSupply::select('supply_id')->where('ingredient_id', $ingredientFilter)->groupBy('supply_id')->get();
+            $suppliesId = [];
+            if ($ingredientsInSupply) {
+                foreach ($ingredientsInSupply as $supplyId) {
+                    $suppliesId[] = $supplyId->supply_id;
+                }
+            }
+            $supplies = Supply::whereIn('id', $suppliesId)->get();
+        } else {
+            $supplies = Supply::all();
+        }
+        return view('arm.supply.index', compact('supplies', 'ingredients'));
     }
 
     public function Detail()

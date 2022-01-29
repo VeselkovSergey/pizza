@@ -18,6 +18,7 @@ use App\Models\ProductModifications;
 use App\Models\Products;
 use App\Models\ProductsModificationsInOrders;
 use App\Models\PromoCodes;
+use App\Models\PromoCodesUsersUsed;
 use App\Models\UsedDevices;
 use App\Models\User;
 use App\Services\Pusher\Pusher;
@@ -102,9 +103,16 @@ class OrdersController extends Controller
             $promoCodeTitle = $clientInformation->clientPromoCode;
             $promoCode = PromoCodes::where('title', $promoCodeTitle)->first();
             if ($promoCode) {
-                if (PromoCodesController::CheckPromoCode($promoCode) !== false) {
+                if (PromoCodesController::CheckPromoCode($promoCode, $user->id) !== false) {
                     $promoCode->amount_used = $promoCode->amount_used + 1;
                     $promoCode->save();
+
+                    PromoCodesUsersUsed::create([
+                        'user_id' => $user->id,
+                        'promo_code_id' => $promoCode->id,
+                        'order_id' => $orderId,
+                    ]);
+
                 }
             }
 

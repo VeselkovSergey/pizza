@@ -34,7 +34,11 @@
             </label>
             <label class="mb-10">
                 <input type="text" id="amount" value="1" class="need-validate">
-                Количество
+                Общее количество (> или равно кол-ву на пользователя)
+            </label>
+            <label class="mb-10">
+                <input type="text" id="user_limit" value="1" class="need-validate">
+                Количество на пользователя (0 = безлимит)
             </label>
 
             <div>
@@ -100,7 +104,7 @@
 
         let createPromoCodeButton = document.body.querySelector('.create-promo-code');
         if (createPromoCodeButton) {
-            createPromoCodeButton.addEventListener('click', (event) => {
+            createPromoCodeButton.addEventListener('click', () => {
                 if (CheckingFieldForEmptiness('promo-code-info', true)) {
                     let data = GetDataFormContainer('promo-code-info');
                     console.log(data);

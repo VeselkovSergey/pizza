@@ -22,6 +22,7 @@ class CreatePromoCodesTable extends Migration
             $table->dateTime('end_date');
             $table->integer('amount');
             $table->integer('amount_used');
+            $table->integer('user_limit');
             $table->integer('active')->default(1);
             $table->timestamps();
         });

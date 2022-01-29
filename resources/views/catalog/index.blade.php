@@ -35,12 +35,6 @@
         <img class="border-radius-10" src="{{asset('promo/promo-1.jpg')}}" width="100%" alt="promo">
     </div>
 
-    <div class="fast-menu pos-fix w-100 py-15 flex scroll-x-auto left-0 bg-black-custom" style="top: 50px; box-shadow: 0 0 10px white;">
-        @foreach($allCategory as $category)
-            <div class="clear-a color-orange px-15 navigation" data-anchor-id="{{$category->id}}">{{$category->title}}</div>
-        @endforeach
-    </div>
-
     <div class="flex-wrap catalog">
 
         @foreach($allProducts as $product)
@@ -50,8 +44,8 @@
                 <h2 class="w-100 ml-10 mb-10" id="{{$product->categoryId}}">{{$product->categoryTitle}}</h2>
             @endif
 
-                @php($webpFile = (file_exists(public_path() . '/img/' . $product->id . '.webp') ? 'img/' . $product->id . '.webp' : 'img-pizza.png'))
-                @php($imgFile = (file_exists(public_path() . '/img/jpg500/' . $product->id . '.jpg') ? 'img/jpg500/' . $product->id . '.jpg' : 'img-pizza.png'))
+                @php($webpFile = (file_exists(public_path() . '/img/' . $product->id . '.webp') ? 'img/' . $product->id . '.webp' : 'img-pizza.png') . '?1')
+                @php($imgFile = (file_exists(public_path() . '/img/jpg500/' . $product->id . '.jpg') ? 'img/jpg500/' . $product->id . '.jpg' : 'img-pizza.png') . '?1')
 
                 <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}" data-product-img-webp="{{url($webpFile)}}" data-product-img="{{url($imgFile)}}">
 
@@ -98,174 +92,6 @@
                 ProductWindowGenerator(productId, productImg, productImgWebP);
             });
         });
-
-        let modificationSelected = null;
-        let startSellingPriceModification = 0;
-
-        function ProductWindowGenerator(productId, productImg, productImgWebP) {
-
-            let productTitle = allProducts['product-'+productId].title;
-
-            let imgUrl = productImg;
-            let webpUrl = productImgWebP;
-
-            let productContent = document.createElement('div');
-            productContent.className = 'flex product-content h-100';
-            productContent.innerHTML =
-                                '<div class="container-img-and-about-product">' +
-                                    '<div class="w-100">' +
-                                        '<div>' +
-                                            '<picture>'+
-                                                '<source class="w-100" srcset="' + webpUrl + '" type="image/webp">'+
-                                                '<source class="w-100" srcset="' + imgUrl + '" type="image/jpeg">'+
-                                                '<img class="w-100" src="' + imgUrl + '" alt="">'+
-                                            '</picture>'+
-                                        '</div>' +
-                                        // '<p>Традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</p>' +
-                                    '</div>' +
-                                '</div>' +
-                                '<div class="container-modification-product flex" style="flex: 1;">' +
-                                    '<div class="w-100 flex-column h-100">' +
-                                        '<div class="text-center text-up">'+productTitle+'</div>' +
-                                        '<div class="container-ingredients text-down">' +
-                                            IngredientsGenerator(productId) +
-                                        '</div>'+
-                                        ModificationsGenerate(productId) +
-                                        '<div class="container-button-put-in-basket mt-a mx-a" style="padding-bottom: 50px;"><button class="button-put-in-basket btn first mt-25">В корзину</button></div>' +
-                                    '</div>' +
-                                '</div>';
-
-            let buttonPutInBasket = productContent.querySelector('.button-put-in-basket');
-            buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + startSellingPriceModification + ' ₽';
-
-            productContent.querySelectorAll('.modification-button').forEach((el) => {
-                el.addEventListener('click', () => {
-                    let productId = el.dataset.productId;
-                    let modificationType = el.dataset.modificationType;
-                    let modificationId = el.dataset.modificationId;
-                    let stopList = parseInt(el.dataset.stopList);
-
-                    let modification = allProducts[productId]['modifications'][modificationType][modificationId];
-                    let sellingPriceModification = modification.sellingPrice;
-                    let ingredients = IngredientsGenerator(null, modification);
-                    let containerIngredients = productContent.querySelector('.container-ingredients');
-                    containerIngredients.innerHTML = ingredients;
-                    buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + sellingPriceModification + ' ₽';
-                    modificationSelected = {
-                        product: allProducts[productId],
-                        modification: allProducts[productId]['modifications'][modificationType][modificationId],
-                        stopList: stopList,
-                    }
-
-                    if (stopList === 1) {
-                        ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
-                    }
-                });
-            });
-
-            buttonPutInBasket.addEventListener('click', () => {
-                if (modificationSelected.stopList === 1) {
-                    ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
-                    return;
-                }
-                FlashMessage('Добавлено: <br/>' + modificationSelected.product.title + (modificationSelected.modification.value !== 'Отсутствует' ? (', ' + modificationSelected.modification.title + ' ' + modificationSelected.modification.value) : ''));
-                AddProductInBasket(modificationSelected);
-                modalWindow.slowRemove();
-                document.body.classList.remove('scroll-off');
-            });
-
-            let modalWindow = ModalWindow(productContent);
-        }
-
-        function ModificationsGenerate(productId) {
-            let containerAllModificationsTemp = '';
-            let disableModificationContainer = false;
-            let stopList = false;
-            Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
-                let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
-                let modificationTypeHTML = '<div class="container-modification">';
-                let i = 0;
-                Object.keys(modificationType).forEach(function (modificationId) {
-                    let modification = modificationType[modificationId];
-                    let checkedInput = i === 0 ? 'checked' : '';
-                    if(i === 0) {
-                        startSellingPriceModification = modification.sellingPrice;
-                        modificationSelected = {
-                            product: allProducts['product-'+productId],
-                            modification: modificationType[modificationId],
-                            stopList: modification.stop_list,
-                        }
-                    }
-
-                    if (modification.value === 'Отсутствует') {
-                        disableModificationContainer = true;
-                    }
-
-                    if (modification.stop_list === 1 && i === 0) {
-                        stopList = true;
-                    }
-
-                    let buttonWidth = 'width:' + (100 / modification.modificationTypeCount) + '%;';
-                    let modificationIdHTML =
-                        '<div class="text-center flex" style="' + buttonWidth + '">' +
-                            '<input name="' + modificationTypeId + '" class="hide modification-input" id="' + modificationId + '" type="radio" ' + checkedInput + '/>' +
-                            // '<label class="modification-button"data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.title + ' - ' + modification.value + '</label>' +
-                            '<label class="modification-button" data-stop-list="' + modification.stop_list + '" data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.value + '</label>' +
-                        '</div>';
-                    modificationTypeHTML += modificationIdHTML;
-                    i++;
-                });
-                modificationTypeHTML += '</div>';
-                containerAllModificationsTemp += modificationTypeHTML;
-            });
-            let containerAllModifications;
-            if (disableModificationContainer) {
-                containerAllModifications = '<div class="hide">'+ containerAllModificationsTemp +'</div>';
-            } else {
-                containerAllModifications = '<div>'+ containerAllModificationsTemp +'</div>';
-            }
-
-            if (stopList) {
-                setTimeout(() => {
-                    ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
-                }, 200);
-            }
-
-            return containerAllModifications;
-        }
-
-        function IngredientsGenerator(productId, modification) {
-            let containerAllModifications = '<div class="flex-wrap-center">';
-            if (modification === undefined) {
-                Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
-                    let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
-                    let i = 0;
-                    Object.keys(modificationType).forEach(function (modificationId) {
-                        let modification = modificationType[modificationId];
-                        let ingredients = modification.ingredients;
-                        Object.keys(ingredients).forEach(function (ingredientId) {
-                            let ingredient = ingredients[ingredientId];
-                            if (ingredient.visible !== 0) {
-                                if (i === 0) {
-                                    containerAllModifications += '<div class="pl-5 flex-center ingredient"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label class="ingredient-title" for="' + ingredientId + '">' + ingredient.title + '</label></div>';
-                                }
-                            }
-                        });
-                        i++;
-                    });
-                });
-            } else {
-                let ingredients = modification.ingredients;
-                Object.keys(ingredients).forEach(function (ingredientId) {
-                    let ingredient = ingredients[ingredientId];
-                    if (ingredient.visible !== 0) {
-                        containerAllModifications += '<div class="pl-5 flex-center ingredient"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label class="ingredient-title" for="' + ingredientId + '">' + ingredient.title + '</label></div>';
-                    }
-                });
-            }
-            containerAllModifications += '</div>';
-            return containerAllModifications;
-        }
 
         let allProducts = {!! json_encode($allProducts, JSON_UNESCAPED_UNICODE) !!};
 
