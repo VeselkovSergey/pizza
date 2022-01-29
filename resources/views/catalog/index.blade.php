@@ -36,6 +36,14 @@
              right: 20px;
          }
 
+        @media screen and (max-width: 540px) {
+            .popular-and-new-position-container {
+                top: 10px;
+                left: 10px;
+                right: unset;
+            }
+        }
+
         .popular-and-new-position {
             padding: 2px 4px;
             border-radius: 5px;
