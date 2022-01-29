@@ -10,6 +10,9 @@
         .edit-field:not(:read-only) {
             transform: scale(1.2);
         }
+        .hover-color:hover {
+             background-color: wheat;
+         }
     </style>
 
     <div class="mb-10">
@@ -33,7 +36,7 @@
                 <tbody>
                 @foreach($products as $product)
                     <?php /** @var \App\Models\Products $product */ ?>
-                    <tr class="product-container" data-product-id="{{$product->id}}">
+                    <tr class="product-container hover-color" data-product-id="{{$product->id}}">
                         <td>#{{$product->id}}</td>
                         <td><input name="title" class="edit-field" readonly type="text" value="{{$product->title}}"></td>
                         <td class="text-center">{{$product->Category->title}}</td>
