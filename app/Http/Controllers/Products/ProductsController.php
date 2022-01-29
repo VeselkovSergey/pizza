@@ -112,7 +112,7 @@ class ProductsController extends Controller
                         $ingredientsAmount += $ingredient->ingredient_amount;
                     }
                 }
-                $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id]['modification-' . $modification->id]['weight'] = (integer)($ingredientsAmount * 1000);
+                $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id]['modification-' . $modification->id]['weight'] = $product->category_id !== 5 ? (integer)($ingredientsAmount * 1000) : 0;
             }
 
             $allProducts['product-' . $product->id]['modificationCount'] = $modificationCount;
