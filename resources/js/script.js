@@ -778,7 +778,7 @@ function BasketWindow() {
             content =
                 '<div class="client-information w-100">' +
                     '<div class="promo-code-container w-100 flex-wrap-center mb-10">' +
-                        '<label for="">Промокод</label>' +
+                        '<label for="">Промокод (скидки и акции не суммируются)</label>' +
                         '<input name="clientPromoCode" autocomplete="off" class="w-75 mr-a" type="text" />' +
                         '<button class="promo-code-apply-button orange-button">Применить</button>' +
                     '</div>' +
