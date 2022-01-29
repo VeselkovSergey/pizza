@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->integer('sort')->default(0);
             $table->tinyInteger('is_additional_sales')->default(0);
             $table->integer('additional_sales_sort')->default(0);
+            $table->tinyInteger('is_new')->default(1);
             $table->timestamps();
         });
     }

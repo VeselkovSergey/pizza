@@ -58,7 +58,7 @@
 
     </head>
 
-    <body class="@if(!$isARM) bg-black-custom color-white @endif" style="background-image: url('{{asset('bg-2.jpg')}}'); background-attachment: fixed;">
+    <body class="@if(!$isARM) bg-black-custom color-white @endif" @if(!$isARM)style="background-image: url('{{asset('bg-2.jpg')}}'); background-attachment: fixed;"@endif>
 
 
         @php

@@ -14,6 +14,7 @@ use App\Models\ProductModifications;
 use App\Models\ProductModificationsIngredients;
 use App\Models\Products;
 use App\Models\Modifications;
+use App\Models\ProductsModificationsInOrders;
 use Illuminate\Http\Request;
 use function GuzzleHttp\Promise\all;
 
@@ -32,6 +33,27 @@ class ProductsController extends Controller
 
     public static function UpdateFileAllProducts()
     {
+        $categories = Categories::all();
+        $popularPositionsByCategory = [];
+        foreach ($categories as $category) {
+            $popularPositions = ProductsModificationsInOrders::selectRaw('product_modifications.product_id as product_id, products.title as product_title, sum(products_modifications_in_orders.product_modification_amount) as amount')
+                ->where('products_modifications_in_orders.created_at', '>=', now()->addDays(-10)->format('Y-m-d ') . '00:00:00')
+                ->where('products.category_id', $category->id)
+                ->leftJoin('product_modifications', 'products_modifications_in_orders.product_modification_id', '=', 'product_modifications.id')
+                ->leftJoin('products', 'products.id', '=', 'product_modifications.product_id')
+                ->groupBy('product_id')
+                ->orderBy('amount', 'DESC')
+                ->limit(2)
+                ->get();
+
+            $pp = [];
+            foreach ($popularPositions as $popularPosition) {
+                $pp[] = $popularPosition->product_id;
+            }
+
+            $popularPositionsByCategory[$category->id] = $pp;
+        }
+
         $allProductsDB = Products::orderBy('category_id')->orderBy('sort')->get();
         $allProducts = [];
         foreach ($allProductsDB as $product) {
@@ -42,6 +64,8 @@ class ProductsController extends Controller
                 'description' => $product->description,
                 'is_additional_sales' => $product->is_additional_sales,
                 'additional_sales_sort' => $product->additional_sales_sort,
+                'is_popular' => in_array($product->id, $popularPositionsByCategory[$product->category_id]),
+                'is_new' => $product->is_new,
                 'categoryId' => $product->category_id,
                 'categoryTitle' => $product->Category->title,
                 'minimumPrice' => $product->MinimumPrice(),
@@ -114,7 +138,7 @@ class ProductsController extends Controller
         $modifications = Modifications::all();
         $ingredients = Ingredients::all();
         $categories = Categories::all();
-        return view('arm.products.createOrUpdate', compact('modifications','ingredients','categories',));
+        return view('arm.products.createOrUpdate', compact('modifications', 'ingredients', 'categories'));
     }
 
     public function Create(Request $request)

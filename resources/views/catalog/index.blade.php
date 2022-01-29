@@ -9,6 +9,7 @@
             background-color: #010101;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
         }
+
         .container-modification {
             /*background-color: rgb(243, 243, 247);*/
             background-color: #434343;
@@ -17,6 +18,7 @@
             justify-content: space-between;
             border-radius: 100px;
         }
+
         .modification-button {
             padding: 5px 10px;
             border-radius: 100px;
@@ -27,6 +29,25 @@
 
         .ingredient:not(:last-child):after {
             content: ', ';
+        }
+
+        .popular-and-new-position-container {
+             top: 20px;
+             right: 20px;
+         }
+
+        .popular-and-new-position {
+            padding: 2px 4px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .popular-position-bg-color {
+            background-color: red;
+        }
+
+        .new-position-bg-color {
+            background-color: green;
         }
 
     </style>
@@ -44,35 +65,50 @@
                 <h2 class="w-100 ml-10 mb-10" id="{{$product->categoryId}}">{{$product->categoryTitle}}</h2>
             @endif
 
-                @php($webpFile = (file_exists(public_path() . '/img/png/' . $product->id . '.png') ? 'img/png/' . $product->id . '.png' : 'img-pizza.png') . '?1')
-                @php($imgFile = (file_exists(public_path() . '/img/jpg500/' . $product->id . '.jpg') ? 'img/jpg500/' . $product->id . '.jpg' : 'img-pizza.png') . '?1')
+            @php($webpFile = (file_exists(public_path() . '/img/png/' . $product->id . '.png') ? 'img/png/' . $product->id . '.png' : 'img-pizza.png') . '?1')
+            @php($imgFile = (file_exists(public_path() . '/img/jpg500/' . $product->id . '.jpg') ? 'img/jpg500/' . $product->id . '.jpg' : 'img-pizza.png') . '?1')
 
-                <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}" data-product-img-webp="{{url($webpFile)}}" data-product-img="{{url($imgFile)}}">
+            <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}"
+                 data-product-img-webp="{{url($webpFile)}}" data-product-img="{{url($imgFile)}}">
 
-                    <div class="product-container flex-column border-orange scroll-off">
+                @if($product->is_popular || $product->is_new)
+                    <div class="pos-rel">
+                        <div class="pos-abs popular-and-new-position-container">
+                            @if($product->is_popular)
+                                <div class="mb-5 popular-and-new-position popular-position-bg-color">HIT</div>
+                            @endif
+                            @if($product->is_new)
+                                <div class="popular-and-new-position new-position-bg-color">NEW</div>
+                            @endif
+                        </div>
+                    </div>
+                @endif
 
-                        <div class="container-product-img-and-description">
-                            <div class="container-product-img">
-                                <picture>
-                                    <source class="w-100" srcset="{{url($webpFile)}}" type="image/webp">
-                                    <source class="w-100" srcset="{{url($imgFile)}}" type="image/jpeg">
-                                    <img class="w-100" src="{{url($imgFile)}}" alt="{{$product->title}}">
-                                </picture>
-                            </div>
+                <div class="product-container flex-column border-orange scroll-off">
 
-                            <div class="container-product-description flex-column-center p-10">
-                                <div>
-                                    <div class="text-center mb-10">{{$product->title}}</div>
-                                    <div style="font-weight: 400; font-size: 12px;">{{$product->description}}</div>
-                                </div>
-                                <button class="w-100 bg-orange color-white border-radius-5 clear-button p-5 mt-a cp">{{$product->modificationCount > 1 ? 'от' : ''}} {{$product->minimumPrice}} ₽</button>
-                            </div>
+                    <div class="container-product-img-and-description">
+                        <div class="container-product-img">
+                            <picture>
+                                <source class="w-100" srcset="{{url($webpFile)}}" type="image/webp">
+                                <source class="w-100" srcset="{{url($imgFile)}}" type="image/jpeg">
+                                <img class="w-100" src="{{url($imgFile)}}" alt="{{$product->title}}">
+                            </picture>
                         </div>
 
-
+                        <div class="container-product-description flex-column-center p-10">
+                            <div>
+                                <div class="text-center mb-10">{{$product->title}}</div>
+                                <div style="font-weight: 400; font-size: 12px;">{{$product->description}}</div>
+                            </div>
+                            <button class="w-100 bg-orange color-white border-radius-5 clear-button p-5 mt-a cp">{{$product->modificationCount > 1 ? 'от' : ''}} {{$product->minimumPrice}}
+                                ₽
+                            </button>
+                        </div>
                     </div>
 
                 </div>
+
+            </div>
 
         @endforeach
 

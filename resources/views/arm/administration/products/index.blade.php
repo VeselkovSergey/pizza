@@ -26,6 +26,7 @@
                     <th class="w-0">Категория</th>
                     <th>Описание</th>
                     <th class="w-0">Доп. покупки</th>
+                    <th class="w-0">Новинка</th>
                     <th class="w-0">Порядок в доп покупках</th>
                 </tr>
                 </thead>
@@ -41,6 +42,14 @@
                             <div class="flex-center">
                                 <label class="custom-checkbox-label" for="is_additional_sales-{{$product->id}}">
                                     <input class="edit-field" type="checkbox" id="is_additional_sales-{{$product->id}}" name="is_additional_sales" @if($product->is_additional_sales) checked @endif/>
+                                    <div class="custom-checkbox-slider round"></div>
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="flex-center">
+                                <label class="custom-checkbox-label" for="is_new-{{$product->id}}">
+                                    <input class="edit-field" type="checkbox" id="is_new-{{$product->id}}" name="is_new" @if($product->is_new) checked @endif/>
                                     <div class="custom-checkbox-slider round"></div>
                                 </label>
                             </div>
