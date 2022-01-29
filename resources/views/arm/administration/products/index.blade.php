@@ -29,8 +29,10 @@
                     <th class="w-0">Категория</th>
                     <th>Описание</th>
                     <th class="w-0">Доп. покупки</th>
-                    <th class="w-0">Новинка</th>
                     <th class="w-0">Порядок в доп покупках</th>
+                    <th class="w-0">Новинка</th>
+                    <th class="w-0">Острая</th>
+                    <th class="w-0">На сколько острая</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,6 +51,7 @@
                                 </label>
                             </div>
                         </td>
+                        <td><input name="additional_sales_sort" class="edit-field w-100" readonly type="text" value="{{$product->additional_sales_sort}}"></td>
                         <td>
                             <div class="flex-center">
                                 <label class="custom-checkbox-label" for="is_new-{{$product->id}}">
@@ -57,7 +60,15 @@
                                 </label>
                             </div>
                         </td>
-                        <td><input name="additional_sales_sort" class="edit-field w-100" readonly type="text" value="{{$product->additional_sales_sort}}"></td>
+                        <td>
+                            <div class="flex-center">
+                                <label class="custom-checkbox-label" for="is_spicy-{{$product->id}}">
+                                    <input class="edit-field" type="checkbox" id="is_spicy-{{$product->id}}" name="is_spicy" @if($product->is_spicy) checked @endif/>
+                                    <div class="custom-checkbox-slider round"></div>
+                                </label>
+                            </div>
+                        </td>
+                        <td><input name="is_spicy" class="edit-field w-100" readonly type="text" value="{{$product->is_spicy}}"></td>
                     </tr>
                 @endforeach
                 </tbody>

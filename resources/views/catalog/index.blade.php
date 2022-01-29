@@ -32,15 +32,30 @@
         }
 
         .popular-and-new-position-container {
-             top: 20px;
-             right: 20px;
-         }
+            top: 20px;
+            right: 20px;
+        }
+
+        .spicy-container {
+            top: 15px;
+            left: 10px;
+        }
 
         @media screen and (max-width: 540px) {
             .popular-and-new-position-container {
                 top: 10px;
                 left: 10px;
                 right: unset;
+            }
+
+            .spicy-container {
+                top: 5px;
+                left: unset;
+                right: 5px;
+            }
+
+            .spicy-container > img {
+                width: 15px;
             }
         }
 
@@ -79,7 +94,7 @@
             <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}"
                  data-product-img-webp="{{url($webpFile)}}" data-product-img="{{url($imgFile)}}">
 
-                @if($product->is_popular || $product->is_new)
+                @if($product->is_popular || $product->is_new || $product->is_spicy)
                     <div class="pos-rel">
                         <div class="pos-abs popular-and-new-position-container">
                             @if($product->is_popular)
@@ -89,6 +104,13 @@
                                 <div class="popular-and-new-position new-position-bg-color">NEW</div>
                             @endif
                         </div>
+                        @if($product->is_spicy)
+                            <div class="pos-abs spicy-container">
+                                @for($i = 0; $i < $product->is_spicy; $i++)
+                                    <img width="25" src="{{asset('spicy.png')}}" alt="">
+                                @endfor
+                            </div>
+                        @endif
                     </div>
                 @endif
 

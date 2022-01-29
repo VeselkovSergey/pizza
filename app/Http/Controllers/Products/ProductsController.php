@@ -66,6 +66,7 @@ class ProductsController extends Controller
                 'additional_sales_sort' => $product->additional_sales_sort,
                 'is_popular' => in_array($product->id, $popularPositionsByCategory[$product->category_id]),
                 'is_new' => $product->is_new,
+                'is_spicy' => $product->is_spicy,
                 'categoryId' => $product->category_id,
                 'categoryTitle' => $product->Category->title,
                 'minimumPrice' => $product->MinimumPrice(),
