@@ -50,7 +50,7 @@
                             <div class="border p-5">
                                 <div class="title-order flex-space-between mb-10">
                                     <div class="font-weight-600"># {{$order->id}}</div>
-                                    <div class="font-weight-600">На кухне с {{$order->CurrentStatus()->created_at->format('H:m')}}</div>
+                                    <div class="font-weight-600">На кухне с {{$order->CurrentStatus()->created_at->format('H:i')}}</div>
                                 </div>
 
                                 <div class="products-container flex-column">
