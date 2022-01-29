@@ -101,13 +101,18 @@ class ProductsController extends Controller
                     'ingredients' => [],
                 ];
 
+                $ingredientsAmount = 0;
                 foreach ($modification->Ingredients as $ingredient) {
                     $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id]['modification-' . $modification->id]['ingredients']['ingredient-' . $ingredient->Ingredient->id] = [
                         'id' => $ingredient->Ingredient->id,
                         'title' => $ingredient->Ingredient->title,
                         'visible' => $ingredient->visible,
                     ];
+                    if ($ingredient->visible) {
+                        $ingredientsAmount += $ingredient->ingredient_amount;
+                    }
                 }
+                $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id]['modification-' . $modification->id]['weight'] = (integer)($ingredientsAmount * 1000);
             }
 
             $allProducts['product-' . $product->id]['modificationCount'] = $modificationCount;

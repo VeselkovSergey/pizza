@@ -1412,6 +1412,7 @@ function SelectWithSearch(selector) {
 
 let modificationSelected = null;
 let startSellingPriceModification = 0;
+let startWeightModification = 0;
 function ProductWindowGenerator(productId, productImg, productImgWebP, callback) {
 
     let productTitle = allProducts['product-'+productId].title;
@@ -1436,7 +1437,7 @@ function ProductWindowGenerator(productId, productImg, productImgWebP, callback)
         '</div>' +
         '<div class="container-modification-product flex" style="flex: 1;">' +
         '<div class="w-100 flex-column h-100">' +
-        '<div class="text-center text-up">'+productTitle+'</div>' +
+        '<div class="text-center text-up">'+productTitle+' (<span class="modification-weight"></span>)</div>' +
         '<div class="container-ingredients text-down">' +
         IngredientsGenerator(productId) +
         '</div>'+
@@ -1448,6 +1449,9 @@ function ProductWindowGenerator(productId, productImg, productImgWebP, callback)
     let buttonPutInBasket = productContent.querySelector('.button-put-in-basket');
     buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + startSellingPriceModification + ' ₽';
 
+    let modificationWeight = productContent.querySelector('.modification-weight');
+    modificationWeight.innerHTML = startWeightModification + ' гр.';
+
     productContent.querySelectorAll('.modification-button').forEach((el) => {
         el.addEventListener('click', () => {
             let productId = el.dataset.productId;
@@ -1457,10 +1461,13 @@ function ProductWindowGenerator(productId, productImg, productImgWebP, callback)
 
             let modification = allProducts[productId]['modifications'][modificationType][modificationId];
             let sellingPriceModification = modification.sellingPrice;
+            let weightModification = modification.weight;
             let ingredients = IngredientsGenerator(null, modification);
             let containerIngredients = productContent.querySelector('.container-ingredients');
             containerIngredients.innerHTML = ingredients;
             buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + sellingPriceModification + ' ₽';
+            modificationWeight.innerHTML = weightModification + ' гр.';
+
             modificationSelected = {
                 product: allProducts[productId],
                 modification: allProducts[productId]['modifications'][modificationType][modificationId],
@@ -1505,6 +1512,7 @@ function ModificationsGenerate(productId) {
             let checkedInput = i === 0 ? 'checked' : '';
             if(i === 0) {
                 startSellingPriceModification = modification.sellingPrice;
+                startWeightModification = modification.weight;
                 modificationSelected = {
                     product: allProducts['product-'+productId],
                     modification: modificationType[modificationId],
