@@ -212,7 +212,7 @@ class OrdersController extends Controller
 
         $message = '<b>Клиент:</b>' . PHP_EOL;
         $message .= '<i>Имя:</i> ' . $clientInformation->clientName . PHP_EOL;
-        $message .= '<i>Новый ли клиент?:</i> ' . (($clientInformation->clientPhone !== '70000000000' && $user->Orders->count() === 0) ? 'Да' : 'Нет') . PHP_EOL;
+        $message .= '<i>Новый ли клиент?:</i> ' . (($clientInformation->clientPhone !== '70000000000' && $user->Orders->count() === 1) ? 'Да' : 'Нет') . PHP_EOL;
         $message .= '<i>Телефон:</i> +' . $clientInformation->clientPhone . PHP_EOL;
         $message .= '<i>Оплата:</i> ' . ($clientInformation->typePayment[0] === true ? 'Карта' : 'Наличные') . PHP_EOL;
         $message .= '<i>Адрес:</i> ' . $clientInformation->clientAddressDelivery . PHP_EOL;
