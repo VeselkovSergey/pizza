@@ -264,7 +264,7 @@
         let orderDetailInfoButtons = document.body.querySelectorAll('.order-detail-info');
         orderDetailInfoButtons.forEach((orderDetailInfoButton) => {
             orderDetailInfoButton.addEventListener('click', (event) => {
-                let orderDetailInfoContent = event.target.nextElementSibling.innerHTML;
+                let orderDetailInfoContent = event.target.nextElementSibling;
                 let modal = ModalWindow(orderDetailInfoContent);
                 modal.querySelector('.order-detail-info-content').show();
             });
