@@ -13,6 +13,11 @@
             <a class="chef-invoice orange-button" target="_blank" href="{{route('manager-arm-order-invoice-chef-page', $order->id)}}">Печать чека для повара</a>
         </div>
 
+        <h3>Если в заказе нет соусов/напитков - предлагаем</h3>
+        <h3>Заказали пиццу - предлагаем пасту/салаты/стартеры</h3>
+        <h3>Заказали не пиццу - предлагаем пиццу</h3>
+        <h3>Начинать разговор можно с: "А знаете у на есть популярная %пицца/салат/паста% не хотите попробовать?"</h3>
+
         <div class="mb-10">
             @if(auth()->user()->IsAdmin() && $order->status_id !== \App\Models\Orders::STATUS_TEXT['courier'])
                 <button class="change-courier-in-order clear-button py-5 px-25 mr-10 border-radius-5 cp red-button" data-url="{{route('manager-arm-change-courier-in-order')}}">Изменить курьера</button>
