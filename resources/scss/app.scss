@@ -325,8 +325,16 @@ input[type="radio"]:checked + span {
 }
 
 .promo-code-container {
+
     input[name="clientPromoCode"] {
         text-transform: uppercase;
+    }
+
+    .promo-code-clear-button-container {
+        .promo-code-clear-button {
+            background-color: unset;
+            border: unset;
+        }
     }
 
     .promo-code-apply-button {
