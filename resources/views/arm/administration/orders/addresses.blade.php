@@ -124,8 +124,7 @@
                             }
                         });
 
-                        console.log(orderCount, counter)
-                        if (orderCount === counter) {
+                        if (orderCount == counter) {
                             InitPoints();
                         }
 
@@ -148,7 +147,7 @@
                         }
                     });
 
-                    if (orderCount === counter) {
+                    if (orderCount == counter) {
                         InitPoints();
                     }
                 }
