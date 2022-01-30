@@ -77,6 +77,7 @@
                     <th data-title-column-id="16" class="table-columns ">Комментарий</th>
                     <th data-title-column-id="17" class="table-columns w-0">Тип заказа</th>
                     <th data-title-column-id="18" class="table-columns w-0">Сумма</th>
+                    <th data-title-column-id="18" class="table-columns w-0">Тип оплаты</th>
                     <th data-title-column-id="19" class="table-columns w-0">Подробнее</th>
                     <th data-title-column-id="20" class="table-columns w-0">Себестоимость заказа</th>
                 </tr>
@@ -163,6 +164,7 @@
                         <td data-column-id="16">{{$clientInfo->clientComment}}</td>
                         <td data-column-id="17" class="text-center">{{$orderCreator}}</td>
                         <td data-column-id="18" class="text-center">{{$order->order_amount}}</td>
+                        <td data-column-id="18" class="text-center">{{($clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные')}}</td>
                         <td data-column-id="19" class="text-center">
                             <div class="order-detail-info cp">Подробно</div>
                             <div class="order-detail-info-content hide">
