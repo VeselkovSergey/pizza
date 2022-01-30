@@ -1279,7 +1279,9 @@ function ManagerArmCheckOrderStatusChange(data = null) {
 
     let alarmContainer = document.body.querySelector('.alarm-container');
     if (data !== null) {
-        alarmContainer.classList.add('motion');
+        if (data.newStatusId !== 8) {
+            alarmContainer.classList.add('motion');
+        }
 
         if (location.pathname === '/arm/management/orders') {
             MarkOrderNewStatus(data.orderId, data.oldStatusId, data.newStatusId)
