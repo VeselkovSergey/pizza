@@ -50,26 +50,26 @@
             <table class="w-100 border table-sort" style="width: max-content;">
                 <thead>
                 <tr>
-                    <th class="w-0">ID</th>
-                    <th>Статус</th>
-                    <th>Дата создания</th>
-                    <th>Дата изменения последнего статуса</th>
-                    <th class="w-0">Потрачено времени всего</th>
-                    <th class="w-0">Передан на кухню -> Доставлен</th>
-                    <th class="w-0">Менеджер зашел в заказ</th>
-                    <th class="w-0">Менеджер передал на кухню</th>
-                    <th class="w-0">Кухня приготовила</th>
-                    <th class="w-0">Передан в доставку</th>
-                    <th class="w-0">Доставлен</th>
-                    <th class="w-0">Деньги в кассе</th>
-                    <th class="w-0">Кол-во позиций</th>
-                    <th class="w-0">Курьер</th>
-                    <th class="w-0">Номер заказавшего</th>
-                    <th>Комментарий</th>
-                    <th class="w-0">Тип заказа</th>
-                    <th class="w-0">Сумма</th>
-                    <th class="w-0"></th>
-                    <th class="w-0">Себестоимость заказа</th>
+                    <th data-title-column-id="1" class="change-visible-column w-0">ID</th>
+                    <th data-title-column-id="2" class="change-visible-column ">Статус</th>
+                    <th data-title-column-id="3" class="change-visible-column ">Дата создания</th>
+                    <th data-title-column-id="4" class="change-visible-column ">Дата изменения последнего статуса</th>
+                    <th data-title-column-id="5" class="change-visible-column w-0">Потрачено времени всего</th>
+                    <th data-title-column-id="6" class="change-visible-column w-0">Передан на кухню -> Доставлен</th>
+                    <th data-title-column-id="7" class="change-visible-column w-0">Менеджер зашел в заказ</th>
+                    <th data-title-column-id="8" class="change-visible-column w-0">Менеджер передал на кухню</th>
+                    <th data-title-column-id="9" class="change-visible-column w-0">Кухня приготовила</th>
+                    <th data-title-column-id="10" class="change-visible-column w-0">Передан в доставку</th>
+                    <th data-title-column-id="11" class="change-visible-column w-0">Доставлен</th>
+                    <th data-title-column-id="12" class="change-visible-column w-0">Деньги в кассе</th>
+                    <th data-title-column-id="13" class="change-visible-column w-0">Кол-во позиций</th>
+                    <th data-title-column-id="14" class="change-visible-column w-0">Курьер</th>
+                    <th data-title-column-id="15" class="change-visible-column w-0">Номер заказавшего</th>
+                    <th data-title-column-id="16" class="change-visible-column ">Комментарий</th>
+                    <th data-title-column-id="17" class="change-visible-column w-0">Тип заказа</th>
+                    <th data-title-column-id="18" class="change-visible-column w-0">Сумма</th>
+                    <th data-title-column-id="19" class="change-visible-column w-0"></th>
+                    <th data-title-column-id="20" class="change-visible-column w-0">Себестоимость заказа</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -131,25 +131,25 @@
                     @endif
 
                     <tr class="order">
-                        <td><a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}">{{$order->id}}</a></td>
-                        <td class="order-status-{{$order->status_id}}">{{\App\Models\Orders::STATUS[$order->status_id]}}</td>
-                        <td>{{$order->created_at}}</td>
-                        <td>{{$order->LatestStatus->updated_at}}</td>
-                        <td class="text-center" @if($longTime) style="background-color: #e37e7e;" @endif>{{date_diff($order->created_at, $order->LatestStatus->updated_at)->format('%H:%I:%S')}}</td>
-                        <td class="text-center" @if($longTimeDelivered) style="background-color: #e37e7e;" @endif>{{\App\Models\Orders::TimeBetweenStatuses($order->id, \App\Models\Orders::STATUS_TEXT['kitchen'], \App\Models\Orders::STATUS_TEXT['delivered'])}}</td>
-                        <td class="text-center">{{$order->TimeManagerProcesses()}}</td>
-                        <td class="text-center">{{$order->TimeTransferOnKitchen()}}</td>
-                        <td class="text-center">{{$order->TimeCooked()}}</td>
-                        <td class="text-center">{{$order->TimeCourier()}}</td>
-                        <td class="text-center">{{$order->TimeDelivered()}}</td>
-                        <td class="text-center">{{$order->TimeCompleted()}}</td>
-                        <td class="text-center">{{$productsModificationsInOrder->count()}}</td>
-                        <td>{{$order->courier_id}}&nbsp;{{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
-                        <td>{{$order->User->phone}}</td>
-                        <td>{{$clientInfo->clientComment}}</td>
-                        <td class="text-center">{{$orderCreator}}</td>
-                        <td class="text-center">{{$order->order_amount}}</td>
-                        <td class="text-center">
+                        <td data-column-id="1"><a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}">{{$order->id}}</a></td>
+                        <td data-column-id="2" class="order-status-{{$order->status_id}}">{{\App\Models\Orders::STATUS[$order->status_id]}}</td>
+                        <td data-column-id="3">{{$order->created_at}}</td>
+                        <td data-column-id="4">{{$order->LatestStatus->updated_at}}</td>
+                        <td data-column-id="5" class="text-center" @if($longTime) style="background-color: #e37e7e;" @endif>{{date_diff($order->created_at, $order->LatestStatus->updated_at)->format('%H:%I:%S')}}</td>
+                        <td data-column-id="6" class="text-center" @if($longTimeDelivered) style="background-color: #e37e7e;" @endif>{{\App\Models\Orders::TimeBetweenStatuses($order->id, \App\Models\Orders::STATUS_TEXT['kitchen'], \App\Models\Orders::STATUS_TEXT['delivered'])}}</td>
+                        <td data-column-id="7" class="text-center">{{$order->TimeManagerProcesses()}}</td>
+                        <td data-column-id="8" class="text-center">{{$order->TimeTransferOnKitchen()}}</td>
+                        <td data-column-id="9" class="text-center">{{$order->TimeCooked()}}</td>
+                        <td data-column-id="10" class="text-center">{{$order->TimeCourier()}}</td>
+                        <td data-column-id="11" class="text-center">{{$order->TimeDelivered()}}</td>
+                        <td data-column-id="12" class="text-center">{{$order->TimeCompleted()}}</td>
+                        <td data-column-id="13" class="text-center">{{$productsModificationsInOrder->count()}}</td>
+                        <td data-column-id="14">{{$order->courier_id}}&nbsp;{{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
+                        <td data-column-id="15">{{$order->User->phone}}</td>
+                        <td data-column-id="16">{{$clientInfo->clientComment}}</td>
+                        <td data-column-id="17" class="text-center">{{$orderCreator}}</td>
+                        <td data-column-id="18" class="text-center">{{$order->order_amount}}</td>
+                        <td data-column-id="19" class="text-center">
                             <div class="order-detail-info">Подробно</div>
                             <div class="order-detail-info-content hide">
                                 @php($orderCost = 0)
@@ -181,7 +181,7 @@
                                 @php($sumCost += $orderCost)
                             </div>
                         </td>
-                        <td>{{$orderCost}}</td>
+                        <td data-column-id="20">{{$orderCost}}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -309,6 +309,15 @@
             ctx.fillRect(i*100, 500-dp*5 , 5, dp*5);
             ctx.fillText(data[i+10], ((i * 100)), 490-dp*5);
         }
+
+        document.body.querySelectorAll('.change-visible-column').forEach((columnTitle) => {
+            let columnId = columnTitle.dataset.titleColumnId;
+            columnTitle.addEventListener('dblclick', () => {
+                document.body.querySelectorAll('td[data-column-id="'+columnId+'"]').forEach((column) => {
+                    column.showToggle();
+                });
+            });
+        });
     </script>
 
 @stop
