@@ -16,9 +16,9 @@
         <a class="orange-button" href="{{route('administrator-arm-page')}}">назад в ARM админа</a>
     </div>
 
-    <div>
-        <div>Пользователи</div>
-        <div>
+    <div class="flex-column">
+        <div style="order: 1">Пользователи</div>
+        <div style="order: 3">
             <table class="w-100 border table-sort">
                 <thead>
                 <tr>
@@ -34,6 +34,7 @@
                 </tr>
                 </thead>
                 <tbody>
+                @php($countOrderCancelled = 0)
                 @foreach($users as $user)
                     <?php /** @var \App\Models\User $user */?>
                     <tr class="user-info-container hover-color" data-user-id="{{$user->id}}">
@@ -50,7 +51,11 @@
                             </div>
                         </td>
                         <td class="text-center"><input name="telegram_chat_id" class="edit-field" readonly type="text" value="{{$user->telegram_chat_id}}"></td>
-                        <td class="text-center">{{$user->Orders->count()}}</td>
+                        @php($userOrderCount = $user->Orders->count())
+                        @if($userOrderCount === 0)
+                            @php($countOrderCancelled++)
+                        @endif
+                        <td class="text-center">{{$userOrderCount}}</td>
                         <td class="text-center"><a href="{{route('administrator-arm-user-orders-page', $user->id)}}">к заказам</a></td>
                         <td class="text-center"><a href="{{route('all-sessions-page')}}">к сессиям</a></td>
 
@@ -59,6 +64,8 @@
                 </tbody>
             </table>
         </div>
+        <div style="order: 2">Кол-во пользователей: {{$users->count()}}</div>
+        <div style="order: 2">Кол-во не заказавших: {{$countOrderCancelled}}</div>
     </div>
 
 
