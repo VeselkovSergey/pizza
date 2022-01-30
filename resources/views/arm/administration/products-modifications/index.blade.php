@@ -44,7 +44,7 @@
                     <td class="text-center">{{$productModification->costPrice}}</td>
                     <td class="text-center">{{$productModification->margin}}&nbsp;%</td>
                     <td class="text-center">
-                        <div class="product-modification-ingredients">Ингредиенты</div>
+                        <div class="product-modification-ingredients cp">Ингредиенты</div>
                         <div class="product-modification-ingredients-content hide">
                             <table class="white-border">
                                 <tr>
