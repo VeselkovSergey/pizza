@@ -44,7 +44,7 @@
                         <td>{{$order->courier_id}}</td>
                         <td>{{$order->order_amount}}</td>
                         <td class="text-center">
-                            <div class="order-detail-info">Подробно</div>
+                            <div class="order-detail-info cp">Подробно</div>
                             <div class="order-detail-info-content hide">
                                 @foreach($productsModificationsInOrder as $productModificationInOrder)
                                     <?php /** @var \App\Models\ProductsModificationsInOrders $productModificationInOrder */?>

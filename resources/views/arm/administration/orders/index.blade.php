@@ -164,7 +164,7 @@
                         <td data-column-id="17" class="text-center">{{$orderCreator}}</td>
                         <td data-column-id="18" class="text-center">{{$order->order_amount}}</td>
                         <td data-column-id="19" class="text-center">
-                            <div class="order-detail-info">Подробно</div>
+                            <div class="order-detail-info cp">Подробно</div>
                             <div class="order-detail-info-content hide">
                                 @php($orderCost = 0)
                                 @foreach($productsModificationsInOrder as $productModificationInOrder)
