@@ -114,7 +114,7 @@
                     </div>
                 @endif
 
-                <div class="product-container flex-column border-orange scroll-off">
+                <div class="product-container flex-column border-orange scroll-off" style="background-color: #00000090">
 
                     <div class="container-product-img-and-description">
                         <div class="container-product-img">
