@@ -74,13 +74,13 @@
                     <th data-title-column-id="13" class="table-columns w-0">Кол-во позиций</th>
                     <th data-title-column-id="14" class="table-columns w-0">Курьер</th>
                     <th data-title-column-id="15" class="table-columns w-0">Номер заказавшего</th>
-                    <th data-title-column-id="15" class="table-columns w-0">Адрес</th>
-                    <th data-title-column-id="16" class="table-columns ">Комментарий</th>
-                    <th data-title-column-id="17" class="table-columns w-0">Тип заказа</th>
-                    <th data-title-column-id="18" class="table-columns w-0">Сумма</th>
-                    <th data-title-column-id="18" class="table-columns w-0">Тип оплаты</th>
-                    <th data-title-column-id="19" class="table-columns w-0">Подробнее</th>
-                    <th data-title-column-id="20" class="table-columns w-0">Себестоимость заказа</th>
+                    <th data-title-column-id="16" class="table-columns w-0">Адрес</th>
+                    <th data-title-column-id="17" class="table-columns ">Комментарий</th>
+                    <th data-title-column-id="18" class="table-columns w-0">Тип заказа</th>
+                    <th data-title-column-id="19" class="table-columns w-0">Сумма</th>
+                    <th data-title-column-id="20" class="table-columns w-0">Тип оплаты</th>
+                    <th data-title-column-id="21" class="table-columns w-0">Подробнее</th>
+                    <th data-title-column-id="22" class="table-columns w-0">Себестоимость заказа</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -162,12 +162,12 @@
                         <td data-column-id="13" class="text-center">{{$productsModificationsInOrder->count()}}</td>
                         <td data-column-id="14">{{$order->courier_id}}&nbsp;{{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
                         <td data-column-id="15">{{$order->User->phone}}</td>
-                        <td data-column-id="15">{{$clientInfo->clientAddressDelivery}}</td>
-                        <td data-column-id="16">{{$clientInfo->clientComment}}</td>
-                        <td data-column-id="17" class="text-center">{{$orderCreator}}</td>
-                        <td data-column-id="18" class="text-center">{{$order->order_amount}}</td>
-                        <td data-column-id="18" class="text-center">{{($clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные')}}</td>
-                        <td data-column-id="19" class="text-center">
+                        <td data-column-id="16">{{$clientInfo->clientAddressDelivery}}</td>
+                        <td data-column-id="17">{{$clientInfo->clientComment}}</td>
+                        <td data-column-id="18" class="text-center">{{$orderCreator}}</td>
+                        <td data-column-id="19" class="text-center">{{$order->order_amount}}</td>
+                        <td data-column-id="20" class="text-center">{{($clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные')}}</td>
+                        <td data-column-id="21" class="text-center">
                             <div class="order-detail-info cp">Подробно</div>
                             <div class="order-detail-info-content hide">
                                 @php($orderCost = 0)
@@ -199,7 +199,7 @@
                                 @php($sumCost += $orderCost)
                             </div>
                         </td>
-                        <td data-column-id="20">{{number_format($orderCost, 2, '.', '')}}</td>
+                        <td data-column-id="22">{{number_format($orderCost, 2, '.', '')}}</td>
                     </tr>
                 @endforeach
                 </tbody>
