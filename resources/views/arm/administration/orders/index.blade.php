@@ -195,7 +195,7 @@
                                 @php($sumCost += $orderCost)
                             </div>
                         </td>
-                        <td data-column-id="20">{{number_format($orderCost, 2, '.', ' ')}}</td>
+                        <td data-column-id="20">{{number_format($orderCost, 2, '.', '')}}</td>
                     </tr>
                 @endforeach
                 </tbody>
