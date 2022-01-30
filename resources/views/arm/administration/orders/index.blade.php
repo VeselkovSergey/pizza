@@ -70,7 +70,7 @@
                     <th data-title-column-id="9" class="table-columns w-0">Кухня приготовила</th>
                     <th data-title-column-id="10" class="table-columns w-0">Передан в доставку</th>
                     <th data-title-column-id="11" class="table-columns w-0">Доставлен</th>
-                    <th data-title-column-id="12" class="table-columns w-0">Деньги в кассе</th>
+                    <th data-title-column-id="12" class="table-columns w-0">Выполнен (Деньги в кассе)</th>
                     <th data-title-column-id="13" class="table-columns w-0">Кол-во позиций</th>
                     <th data-title-column-id="14" class="table-columns w-0">Курьер</th>
                     <th data-title-column-id="15" class="table-columns w-0">Номер заказавшего</th>
