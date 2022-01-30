@@ -58,13 +58,13 @@
                         @if($userOrderCount === 0)
                             @php($countOrderCancelled++)
                         @endif
-                        @if($userOrderCount > 1)
+                        @if($userOrderCount === 1)
                             @php($userOrderCountMore1++)
                         @endif
-                        @if($userOrderCount > 2)
+                        @if($userOrderCount === 2)
                             @php($userOrderCountMore2++)
                         @endif
-                        @if($userOrderCount > 3)
+                        @if($userOrderCount > 2)
                             @php($userOrderCountMore3++)
                         @endif
                         <td class="text-center">{{$userOrderCount}}</td>
@@ -78,9 +78,9 @@
         </div>
         <div style="order: 2">Кол-во пользователей: {{$users->count()}}</div>
         <div style="order: 2">Кол-во не заказавших: {{$countOrderCancelled}}</div>
-        <div style="order: 2">Кол-во заказавших больше одного: {{$userOrderCountMore1}}</div>
-        <div style="order: 2">Кол-во заказавших больше двух: {{$userOrderCountMore2}}</div>
-        <div style="order: 2">Кол-во заказавших больше трех: {{$userOrderCountMore3}}</div>
+        <div style="order: 2">Кол-во заказавших один раз: {{$userOrderCountMore1}}</div>
+        <div style="order: 2">Кол-во заказавших два раза: {{$userOrderCountMore2}}</div>
+        <div style="order: 2">Кол-во заказавших больше двух: {{$userOrderCountMore3}}</div>
     </div>
 
 
