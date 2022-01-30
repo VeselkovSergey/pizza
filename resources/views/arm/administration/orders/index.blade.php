@@ -338,8 +338,21 @@
 
             let columnId = columnTitle.dataset.titleColumnId;
 
+            let columnsInOrder = localStorage.getItem('columnsInOrder');
+            let isChecked = '';
+            if (columnsInOrder !== null) {
+                columnsInOrder = JSON.parse(columnsInOrder);
+                if (columnsInOrder['column-id-' + columnId] !== undefined) {
+                    isChecked = columnsInOrder['column-id-' + columnId] ? ' checked ' : '';
+                } else {
+                    isChecked = ' checked ';
+                }
+            } else {
+                isChecked = ' checked ';
+            }
+
             let content = '<label class="custom-checkbox-label" for="column-title-id-'+columnId+'">' +
-                                '<input class="change-visible-column" data-toggler-column-id="" type="checkbox" id="column-title-id-'+columnId+'" checked />' +
+                                '<input class="change-visible-column" data-toggler-column-id="" type="checkbox" id="column-title-id-'+columnId+'" ' + isChecked + ' />' +
                                 '<div class="custom-checkbox-slider round"></div>' +
                             '</label>' +
                             '<span>'+columnTitle.innerHTML+'</span>';
@@ -348,11 +361,34 @@
 
             toggleButtonContainer.append(toggleButton);
 
-            toggleButton.addEventListener('change', () => {
+            if (isChecked === ' checked ') {
+                document.body.querySelector('th[data-title-column-id="' + columnId + '"]').show();
+                document.body.querySelectorAll('td[data-column-id="' + columnId + '"]').forEach((column) => {
+                    column.show();
+                });
+            } else {
+                document.body.querySelector('th[data-title-column-id="' + columnId + '"]').hide();
+                document.body.querySelectorAll('td[data-column-id="' + columnId + '"]').forEach((column) => {
+                    column.hide();
+                });
+            }
+
+            toggleButton.addEventListener('change', (event) => {
+
                 document.body.querySelector('th[data-title-column-id="' + columnId + '"]').showToggle();
                 document.body.querySelectorAll('td[data-column-id="' + columnId + '"]').forEach((column) => {
                     column.showToggle();
                 });
+
+                let columnsInOrder = localStorage.getItem('columnsInOrder');
+                if (columnsInOrder !== null) {
+                    columnsInOrder = JSON.parse(columnsInOrder);
+                } else {
+                    columnsInOrder = {};
+                }
+
+                columnsInOrder['column-id-' + columnId] = event.target.checked;
+                localStorage.setItem('columnsInOrder', JSON.stringify(columnsInOrder));
             });
         });
     </script>
