@@ -105,6 +105,8 @@
         </div>
     </div>
 
+    <div id="map" class="w-100" style="height: calc(100vh - 250px)"></div>
+
 @stop
 
 @section('js')
@@ -270,6 +272,103 @@
         }
 
 
+    </script>
+
+    <script src="//api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=00ad06f6-97e8-4b19-b114-304b35812efb" type="text/javascript"></script>
+
+    <script>
+
+        const APIKEY_YA = '00ad06f6-97e8-4b19-b114-304b35812efb';
+
+        @if($clientInfo->clientPhone !== '70000000000')
+        ymaps.ready(CalculateAndRender);
+        @endif
+
+        @if(empty($order->geo_yandex))
+        function GeoCoder() {
+            Ajax('https://geocode-maps.yandex.ru/1.x?apikey='+APIKEY_YA+'&format=json&geocode=Россия, Московская область, Дубна, ' + {{$clientInfo->clientAddressDelivery}}).then((res) => {
+                let addressText = res.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.Address.formatted;
+                let position = res.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
+                let coordinate = position.split(' ');
+
+                let yandexGeo = {
+                    addressText: addressText,
+                    addressLat: coordinate[0],
+                    addressLon: coordinate[1],
+                }
+
+                Ajax("{{route('order-update-geo-yandex')}}", "POST", {orderId: orderId, yandexGeo: JSON.stringify(yandexGeo)});
+            });
+        }
+        GeoCoder();
+        @endif
+
+        function CalculateAndRender() {
+            // Стоимость за километр.
+            var DELIVERY_TARIFF = 20,
+                // Минимальная стоимость.
+                MINIMUM_COST = 10,
+                myMap = new ymaps.Map('map', {
+                    center: [56.734422, 37.162106],
+                    zoom: 14,
+                    controls: []
+                });//,
+            // Создадим панель маршрутизации.
+            routePanelControl = new ymaps.control.RoutePanel({
+                options: {
+                    // Добавим заголовок панели.
+                    showHeader: false,
+                    title: 'Расчёт доставки'
+                }
+            });
+            // Пользователь сможет построить только автомобильный маршрут.
+            routePanelControl.routePanel.options.set({
+                types: {auto: true}
+            });
+
+            // Если вы хотите задать неизменяемую точку "откуда", раскомментируйте код ниже.
+            routePanelControl.routePanel.state.set({
+                fromEnabled: false,
+                from: 'Россия, Дубна, Московская область, улица Вернова, 9',
+                toEnabled: true,
+                to: "{{isset($order->geo_yandex) ? json_decode($order->geo_yandex)->addressText : 'Россия, Дубна, Московская область,' . $clientInfo->clientAddressDelivery}}",
+            });
+
+            myMap.controls.add(routePanelControl);
+
+            // Получим ссылку на маршрут.
+            routePanelControl.routePanel.getRouteAsync().then(function (route) {
+
+                // Зададим максимально допустимое число маршрутов, возвращаемых мультимаршрутизатором.
+                route.model.setParams({results: 1}, true);
+
+                // Повесим обработчик на событие построения маршрута.
+                route.model.events.add('requestsuccess', function () {
+
+                    var activeRoute = route.getActiveRoute();
+                    if (activeRoute) {
+                        // Получим протяженность маршрута.
+                        var length = route.getActiveRoute().properties.get("distance"),
+                            // Вычислим стоимость доставки.
+                            price = calculate(Math.round(length.value) / 1000),
+                            // Создадим макет содержимого балуна маршрута.
+                            balloonContentLayout = ymaps.templateLayoutFactory.createClass(
+                                '<span>Расстояние: ' + length.text + '.</span><br/>' +
+                                '<span style="font-weight: bold; font-style: italic">Стоимость доставки: ' + price + ' р.</span>');
+                        // Зададим этот макет для содержимого балуна.
+                        route.options.set('routeBalloonContentLayout', balloonContentLayout);
+                        // Откроем балун.
+                        activeRoute.balloon.open();
+                    }
+                });
+
+            });
+            // Функция, вычисляющая стоимость доставки.
+            function calculate(routeLength) {
+                console.log(routeLength)
+                return Math.max(routeLength * DELIVERY_TARIFF, MINIMUM_COST).toFixed(2);
+            }
+        }
     </script>
 
 @stop
