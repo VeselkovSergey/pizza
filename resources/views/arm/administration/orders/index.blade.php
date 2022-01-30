@@ -144,7 +144,7 @@
                         <td>{{$order->TimeDelivered()}}</td>
                         <td>{{$order->TimeCompleted()}}</td>
                         <td>{{$productsModificationsInOrder->count()}}</td>
-                        <td>{{$order->courier_id}} {{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
+                        <td>{{$order->courier_id}}&nbsp;{{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
                         <td>{{$order->User->phone}}</td>
                         <td>{{$clientInfo->clientComment}}</td>
                         <td>{{$orderCreator}}</td>
