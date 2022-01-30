@@ -163,7 +163,7 @@ class OrdersController extends Controller
             'order' => $order,
         ];
 
-        $result = $this->SendTelegram($orderFullInformation, $editOrder);
+        $result = $this->SendTelegram($orderFullInformation, $editOrder, $user);
         $result = json_decode($result);
         if ($result && $result->ok === true) {
             $order->order_telegram_message_id = $result->result->message_id;
@@ -200,7 +200,7 @@ class OrdersController extends Controller
         return $clientInformation;
     }
 
-    private function SendTelegram($orderFullInformation, $editOrder)
+    private function SendTelegram($orderFullInformation, $editOrder, User $user)
     {
         $allProductsInOrder = $orderFullInformation->products;
         $clientInformation = $orderFullInformation->clientInformation;
@@ -212,6 +212,7 @@ class OrdersController extends Controller
 
         $message = '<b>Клиент:</b>' . PHP_EOL;
         $message .= '<i>Имя:</i> ' . $clientInformation->clientName . PHP_EOL;
+        $message .= '<i>Новый ли клиент?:</i> ' . (($clientInformation->clientPhone !== '70000000000' && $user->Orders->count() === 0) ? 'Да' : 'Нет') . PHP_EOL;
         $message .= '<i>Телефон:</i> +' . $clientInformation->clientPhone . PHP_EOL;
         $message .= '<i>Оплата:</i> ' . ($clientInformation->typePayment[0] === true ? 'Карта' : 'Наличные') . PHP_EOL;
         $message .= '<i>Адрес:</i> ' . $clientInformation->clientAddressDelivery . PHP_EOL;
