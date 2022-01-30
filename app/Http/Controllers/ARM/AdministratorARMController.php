@@ -183,12 +183,6 @@ class AdministratorARMController extends Controller
         return view('arm.administration.device-used.index', compact('devicesInfo', 'typeDevice'));
     }
 
-    public function Ingredients()
-    {
-        $ingredients = IngredientsController::AllIngredients();
-        return view('arm.administration.ingredients.index', compact('ingredients'));
-    }
-
     public function IngredientSaveChanges()
     {
         $ingredientId = request()->ingredientId;
