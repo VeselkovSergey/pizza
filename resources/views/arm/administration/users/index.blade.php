@@ -36,7 +36,7 @@
                 <tbody>
                 @foreach($users as $user)
                     <?php /** @var \App\Models\User $user */?>
-                    <tr class="user-info-container" data-user-id="{{$user->id}}">
+                    <tr class="user-info-container hover-color" data-user-id="{{$user->id}}">
                         <td>{{$user->id}}</td>
                         <td><input name="name" class="edit-field" readonly type="text" value="{{$user->name}}"></td>
                         <td>{{$user->phone}}</td>
