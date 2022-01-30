@@ -74,7 +74,7 @@
                     <th data-title-column-id="13" class="table-columns w-0">Кол-во позиций</th>
                     <th data-title-column-id="14" class="table-columns w-0">Курьер</th>
                     <th data-title-column-id="15" class="table-columns w-0">Номер заказавшего</th>
-                    <th data-title-column-id="16" class="table-columns w-0">Адрес</th>
+                    <th data-title-column-id="16" class="table-columns ">Адрес</th>
                     <th data-title-column-id="17" class="table-columns ">Комментарий</th>
                     <th data-title-column-id="18" class="table-columns w-0">Тип заказа</th>
                     <th data-title-column-id="19" class="table-columns w-0">Сумма</th>
