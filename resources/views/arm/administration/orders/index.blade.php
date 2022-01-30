@@ -158,8 +158,7 @@
                         <td data-column-id="11" class="text-center">{{$order->TimeDelivered()}}</td>
                         <td data-column-id="12" class="text-center">{{$order->TimeCompleted()}}</td>
                         <td data-column-id="13" class="text-center">{{$productsModificationsInOrder->count()}}</td>
-                        <td data-column-id="14">{{$order->courier_id}}
-                            &nbsp;{{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
+                        <td data-column-id="14">{{$order->courier_id}}&nbsp;{{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
                         <td data-column-id="15">{{$order->User->phone}}</td>
                         <td data-column-id="16">{{$clientInfo->clientComment}}</td>
                         <td data-column-id="17" class="text-center">{{$orderCreator}}</td>
