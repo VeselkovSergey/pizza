@@ -35,6 +35,9 @@
                 </thead>
                 <tbody>
                 @php($countOrderCancelled = 0)
+                @php($userOrderCountMore1 = 0)
+                @php($userOrderCountMore2 = 0)
+                @php($userOrderCountMore3 = 0)
                 @foreach($users as $user)
                     <?php /** @var \App\Models\User $user */?>
                     <tr class="user-info-container hover-color" data-user-id="{{$user->id}}">
@@ -55,6 +58,15 @@
                         @if($userOrderCount === 0)
                             @php($countOrderCancelled++)
                         @endif
+                        @if($userOrderCount > 1)
+                            @php($userOrderCountMore1++)
+                        @endif
+                        @if($userOrderCount > 2)
+                            @php($userOrderCountMore2++)
+                        @endif
+                        @if($userOrderCount > 3)
+                            @php($userOrderCountMore3++)
+                        @endif
                         <td class="text-center">{{$userOrderCount}}</td>
                         <td class="text-center"><a href="{{route('administrator-arm-user-orders-page', $user->id)}}">к заказам</a></td>
                         <td class="text-center"><a href="{{route('all-sessions-page')}}">к сессиям</a></td>
@@ -66,6 +78,9 @@
         </div>
         <div style="order: 2">Кол-во пользователей: {{$users->count()}}</div>
         <div style="order: 2">Кол-во не заказавших: {{$countOrderCancelled}}</div>
+        <div style="order: 2">Кол-во заказавших больше одного: {{$userOrderCountMore1}}</div>
+        <div style="order: 2">Кол-во заказавших больше двух: {{$userOrderCountMore2}}</div>
+        <div style="order: 2">Кол-во заказавших больше трех: {{$userOrderCountMore3}}</div>
     </div>
 
 
