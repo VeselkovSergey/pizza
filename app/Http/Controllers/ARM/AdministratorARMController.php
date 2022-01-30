@@ -12,6 +12,7 @@ use App\Http\Controllers\Products\ProductsController;
 use App\Models\Ingredients;
 use App\Models\IngredientsInSupply;
 use App\Models\Orders;
+use App\Models\ProductModifications;
 use App\Models\ProductModificationsIngredients;
 use App\Models\Products;
 use App\Models\ProductsModificationsInOrders;
@@ -80,55 +81,46 @@ class AdministratorARMController extends Controller
 
     public function ProductsModification()
     {
-        $orders = Orders::all();
+        $productsModifications = ProductModifications::selectRaw('product_modifications.id as product_modifications_id')
 
-        $productsModifications = [];
-        $sumOrders = 0;
-        $costOrders = 0;
+            ->selectRaw('product_modifications.selling_price as selling_price')
+            ->selectRaw('products.title as product_title')
+            ->selectRaw('modifications.title as modification_title')
+            ->selectRaw('modifications.value as modification_value')
+            ->selectRaw('categories.title as category_title')
 
-        foreach ($orders as $order) {
-            if ($order->IsCancelled()) {
-                continue;
+            ->leftJoin('products', 'products.id', '=', 'product_modifications.product_id')
+            ->leftJoin('modifications', 'modifications.id', '=', 'product_modifications.modification_id')
+            ->leftJoin('categories', 'categories.id', '=', 'products.category_id')
+
+            ->get();
+
+        foreach ($productsModifications as $key => $productModification) {
+            $productModificationIngredients = ProductModificationsIngredients::selectRaw('product_modifications_ingredients.ingredient_amount, product_modifications_ingredients.ingredient_id')
+                ->where('product_modification_id', $productModification->product_modifications_id)
+                ->get();
+
+
+            $soldAmount = ProductsModificationsInOrders::selectRaw('sum(products_modifications_in_orders.product_modification_amount) as soldAmount')
+                ->where('product_modification_id', $productModification->product_modifications_id)
+                ->leftJoin('orders', 'orders.id', '=', 'products_modifications_in_orders.order_id')
+                ->where('orders.status_id', '!=', Orders::STATUS_TEXT['cancelled'])
+                ->first()->soldAmount;
+
+            $productsModifications[$key]->soldAmount = $soldAmount;
+
+
+            $costPrice = 0;
+            foreach ($productModificationIngredients as $productModificationIngredient) {
+                $ingredientCurrentPrice = $productModificationIngredient->Ingredient->CurrentPrice();
+                $costPrice += $ingredientCurrentPrice * $productModificationIngredient->ingredient_amount;
             }
+            $productsModifications[$key]->costPrice = $costPrice;
 
-            $sumOrders += $order->order_amount;
-
-            $productsModificationsInOrder = $order->ProductsModifications;
-            foreach ($productsModificationsInOrder as $productModificationInOrder) {
-                /** @var ProductsModificationsInOrders $productModificationInOrder */
-
-                $title = $productModificationInOrder->ProductModifications->Product->title . ' ' . $productModificationInOrder->ProductModifications->Modification->title . ' ' . $productModificationInOrder->ProductModifications->Modification->value;
-                $price = $productModificationInOrder->ProductModifications->selling_price;
-                $amount = $productModificationInOrder->product_modification_amount;
-                $categoryTitle = $productModificationInOrder->ProductModifications->Product->Category->title;
-
-                $costPrice = 0;
-                $modificationIngredients = $productModificationInOrder->ProductModifications->Ingredients;
-                foreach ($modificationIngredients as $ingredient) {
-                    /** @var ProductModificationsIngredients $ingredient */
-                    $ingredientAmount = $ingredient->ingredient_amount;
-                    $ingredientPrice = $ingredient->Ingredient->CurrentPrice();
-                    $sumIngredient = $ingredientAmount * $ingredientPrice;
-                    $costPrice += $sumIngredient;
-                }
-
-                $costOrders += ($amount * $costPrice);
-
-                if (isset($productsModifications[$productModificationInOrder->product_modification_id])) {
-                    $productsModifications[$productModificationInOrder->product_modification_id]->amount += $amount;
-                } else {
-                    $productsModifications[$productModificationInOrder->product_modification_id] = (object)[
-                        'title' => $title,
-                        'amount' => $amount,
-                        'price' => $price,
-                        'costPrice' => $costPrice,
-                        'categoryTitle' => $categoryTitle,
-                    ];
-                }
-            }
+            $productsModifications[$key]->margin = number_format(((($productModification->selling_price - $productModification->costPrice) / $productModification->costPrice) * 100), 2);
         }
 
-        return view('arm.administration.products-modifications.index', compact('productsModifications', 'sumOrders', 'costOrders'));
+        return view('arm.administration.products-modifications.index', compact('productsModifications'));
     }
 
     public function DeviceUsed()

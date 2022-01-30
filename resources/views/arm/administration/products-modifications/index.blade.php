@@ -8,32 +8,28 @@
 
     <div>
         <div>
-            <div>Стоимость заказов : {{$sumOrders}}</div>
-            <div>Себестоимость заказов : {{$costOrders}}</div>
-        </div>
-        <div>
             <table class="w-100 border table-sort">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Категория</th>
+                    <th class="w-0">ID</th>
+                    <th class="w-0">Категория</th>
                     <th>Наименование</th>
-                    <th>Кол-во</th>
-                    <th>Стоимость одной</th>
-                    <th>Себестоимость одной</th>
-                    <th>Наценка</th>
+                    <th class="w-0">Кол-во</th>
+                    <th class="w-0">Стоимость одной</th>
+                    <th class="w-0">Себестоимость одной</th>
+                    <th class="w-0">Наценка</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($productsModifications as $id => $productModification)
-                <tr>
-                    <td>#{{$id}}</td>
-                    <td>{{$productModification->categoryTitle}}</td>
-                    <td>{{$productModification->title}}</td>
-                    <td>{{$productModification->amount}}</td>
-                    <td>{{$productModification->price}}</td>
-                    <td>{{$productModification->costPrice}}</td>
-                    <td>{{number_format(((($productModification->price - $productModification->costPrice ) / $productModification->costPrice) * 100), 2)}} %</td>
+                <tr class="hover-color">
+                    <td class="text-center">#{{$id}}</td>
+                    <td class="text-center">{{$productModification->category_title}}</td>
+                    <td>{{$productModification->product_title . ' ' . $productModification->modification_title . ' ' . $productModification->modification_value}}</td>
+                    <td class="text-center">{{$productModification->soldAmount}}</td>
+                    <td class="text-center">{{$productModification->selling_price}}</td>
+                    <td class="text-center">{{$productModification->costPrice}}</td>
+                    <td class="text-center">{{$productModification->margin}}&nbsp;%</td>
                 </tr>
                 @endforeach
                 </tbody>
