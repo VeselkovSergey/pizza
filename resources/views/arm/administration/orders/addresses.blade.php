@@ -92,6 +92,9 @@
             let allData = [];
             let orders = document.body.querySelectorAll('.order-block');
             let orderCount = orders.length;
+            if (counter === orderCount) {
+                LoaderHide();
+            }
             orders.forEach((order) => {
                 let orderId = order.dataset.orderId;
                 let yandexOk = order.dataset.yandexOk;
