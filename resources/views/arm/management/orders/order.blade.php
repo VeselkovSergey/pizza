@@ -334,7 +334,14 @@
                 to: "{{isset($order->geo_yandex) ? json_decode($order->geo_yandex)->addressText : 'Россия, Дубна, Московская область,' . $clientInfo->clientAddressDelivery}}",
             });
 
-            myMap.controls.add(routePanelControl);
+            let trafficControl = new ymaps.control.TrafficControl({ state: {
+                    // Отображаются пробки "Сейчас".
+                    providerKey: 'traffic#actual',
+                    // Начинаем сразу показывать пробки на карте.
+                    trafficShown: true
+                }});
+
+            myMap.controls.add(routePanelControl).add(trafficControl);
 
             // Получим ссылку на маршрут.
             routePanelControl.routePanel.getRouteAsync().then(function (route) {
