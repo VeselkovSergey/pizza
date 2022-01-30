@@ -123,12 +123,12 @@
         });
 
         function GenerationProductsUsedIngredient(data) {
-            let content = '';
+            let content = '<table class="white-border"><thead><tr><th>Наименование</th><th>Кол-во</th></tr></thead><tbody>';
             Object.keys(data).forEach((key) => {
                 const product = data[key];
-                content += '<div class="mb-10"><div>'+product.productTitle+'</div><div>Кол-во: '+product.ingredientUsageAmount+'</div></div>'
+                content += '<tr><td>'+product.productTitle+'</td><td class="text-center">'+product.ingredientUsageAmount+'</td></td>'
             });
-            return content;
+            return content += '</tbody></table>';
         }
     </script>
 

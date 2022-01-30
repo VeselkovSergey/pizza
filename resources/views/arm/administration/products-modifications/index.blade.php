@@ -2,18 +2,6 @@
 
 @section('content')
 
-    <style>
-        table.white-border {
-            border: 1px solid #ffffff;
-        }
-        table.white-border th {
-            border: 1px solid #ffffff;
-        }
-        table.white-border td {
-            border: 1px solid #ffffff;
-        }
-    </style>
-
     <div class="mb-10">
         <a class="orange-button" href="{{route('administrator-arm-page')}}">назад в ARM админа</a>
     </div>
@@ -35,36 +23,40 @@
                 </thead>
                 <tbody>
                 @foreach($productsModifications as $id => $productModification)
-                <tr class="hover-color">
-                    <td class="text-center">#{{$productModification->product_modifications_id}}</td>
-                    <td class="text-center">{{$productModification->category_title}}</td>
-                    <td>{{$productModification->product_title . ' ' . $productModification->modification_title . ' ' . $productModification->modification_value}}</td>
-                    <td class="text-center">{{$productModification->soldAmount}}</td>
-                    <td class="text-center">{{$productModification->selling_price}}</td>
-                    <td class="text-center">{{$productModification->costPrice}}</td>
-                    <td class="text-center">{{$productModification->margin}}&nbsp;%</td>
-                    <td class="text-center">
-                        <div class="product-modification-ingredients cp">Ингредиенты</div>
-                        <div class="product-modification-ingredients-content hide">
-                            <table class="white-border">
-                                <tr>
-                                    <th>Наименование</th>
-                                    <th>Стоимость ед.</th>
-                                    <th>Кол-во</th>
-                                    <th>Стоимость</th>
-                                </tr>
-                                @foreach($productsModificationsIngredients[$productModification->product_modifications_id] as $productModificationIngredients)
-                                <tr>
-                                    <td class="text-center">{{$productModificationIngredients->title}}</td>
-                                    <td class="text-center">{{$productModificationIngredients->currentPrice}}</td>
-                                    <td class="text-center">{{$productModificationIngredients->amount}}</td>
-                                    <td class="text-center">{{$productModificationIngredients->currentPrice * $productModificationIngredients->amount}}</td>
-                                </tr>
-                                @endforeach
-                            </table>
-                        </div>
-                    </td>
-                </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">#{{$productModification->product_modifications_id}}</td>
+                        <td class="text-center">{{$productModification->category_title}}</td>
+                        <td>{{$productModification->product_title . ' ' . $productModification->modification_title . ' ' . $productModification->modification_value}}</td>
+                        <td class="text-center">{{$productModification->soldAmount}}</td>
+                        <td class="text-center">{{$productModification->selling_price}}</td>
+                        <td class="text-center">{{$productModification->costPrice}}</td>
+                        <td class="text-center">{{$productModification->margin}}&nbsp;%</td>
+                        <td class="text-center">
+                            <div class="product-modification-ingredients cp">Ингредиенты</div>
+                            <div class="product-modification-ingredients-content hide">
+                                <table class="white-border">
+                                    <thead>
+                                        <tr>
+                                            <th>Наименование</th>
+                                            <th>Стоимость ед.</th>
+                                            <th>Кол-во</th>
+                                            <th>Стоимость</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($productsModificationsIngredients[$productModification->product_modifications_id] as $productModificationIngredients)
+                                        <tr>
+                                            <td class="text-center">{{$productModificationIngredients->title}}</td>
+                                            <td class="text-center">{{$productModificationIngredients->currentPrice}}</td>
+                                            <td class="text-center">{{$productModificationIngredients->amount}}</td>
+                                            <td class="text-center">{{$productModificationIngredients->currentPrice * $productModificationIngredients->amount}}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
                 @endforeach
                 </tbody>
             </table>

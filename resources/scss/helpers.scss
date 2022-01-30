@@ -796,3 +796,13 @@
 .hover-color:hover {
     background-color: wheat;
 }
+
+table.white-border {
+    border: 1px solid #ffffff;
+}
+table.white-border th {
+    border: 1px solid #ffffff;
+}
+table.white-border td {
+    border: 1px solid #ffffff;
+}
