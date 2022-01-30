@@ -101,7 +101,7 @@
                 let orderAddress = order.querySelector('.order-address').innerHTML;
 
                 if (yandexOk === 'false') {
-                    Ajax('https://geocode-maps.yandex.ru/1.x?apikey='+APIKEY_YA+'&format=json&geocode=Россия, Московская область, Дубна, ' + orderAddress).then((res) => {
+                    Ajax('https://geocode-maps.yandex.ru/1.x?apikey='+APIKEY_YA+'&format=json&results=1&geocode=Россия, Московская область, Дубна, ' + orderAddress).then((res) => {
                         let addressText = res.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.Address.formatted;
                         let position = res.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
                         let coordinate = position.split(' ');
