@@ -147,8 +147,8 @@
                         <td>{{$order->courier_id}}&nbsp;{{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
                         <td>{{$order->User->phone}}</td>
                         <td>{{$clientInfo->clientComment}}</td>
-                        <td>{{$orderCreator}}</td>
-                        <td>{{$order->order_amount}}</td>
+                        <td class="text-center">{{$orderCreator}}</td>
+                        <td class="text-center">{{$order->order_amount}}</td>
                         <td class="text-center">
                             <div class="order-detail-info">Подробно</div>
                             <div class="order-detail-info-content hide">
