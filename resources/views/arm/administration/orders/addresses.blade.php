@@ -117,7 +117,7 @@
                             id: counter++,
                             geometry: {
                                 type: 'Point',
-                                coordinates: [yandexGeo.addressLat, yandexGeo.addressLon],
+                                coordinates: [yandexGeo.addressLon, yandexGeo.addressLat],
                             },
                             properties: {
                                 balloonContent: yandexGeo.addressText
