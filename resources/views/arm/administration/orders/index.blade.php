@@ -135,15 +135,15 @@
                         <td class="order-status-{{$order->status_id}}">{{\App\Models\Orders::STATUS[$order->status_id]}}</td>
                         <td>{{$order->created_at}}</td>
                         <td>{{$order->LatestStatus->updated_at}}</td>
-                        <td @if($longTime) style="background-color: #e37e7e;" @endif>{{date_diff($order->created_at, $order->LatestStatus->updated_at)->format('%H:%I:%S')}}</td>
-                        <td @if($longTimeDelivered) style="background-color: #e37e7e;" @endif>{{\App\Models\Orders::TimeBetweenStatuses($order->id, \App\Models\Orders::STATUS_TEXT['kitchen'], \App\Models\Orders::STATUS_TEXT['delivered'])}}</td>
-                        <td>{{$order->TimeManagerProcesses()}}</td>
-                        <td>{{$order->TimeTransferOnKitchen()}}</td>
-                        <td>{{$order->TimeCooked()}}</td>
-                        <td>{{$order->TimeCourier()}}</td>
-                        <td>{{$order->TimeDelivered()}}</td>
-                        <td>{{$order->TimeCompleted()}}</td>
-                        <td>{{$productsModificationsInOrder->count()}}</td>
+                        <td class="text-center" @if($longTime) style="background-color: #e37e7e;" @endif>{{date_diff($order->created_at, $order->LatestStatus->updated_at)->format('%H:%I:%S')}}</td>
+                        <td class="text-center" @if($longTimeDelivered) style="background-color: #e37e7e;" @endif>{{\App\Models\Orders::TimeBetweenStatuses($order->id, \App\Models\Orders::STATUS_TEXT['kitchen'], \App\Models\Orders::STATUS_TEXT['delivered'])}}</td>
+                        <td class="text-center">{{$order->TimeManagerProcesses()}}</td>
+                        <td class="text-center">{{$order->TimeTransferOnKitchen()}}</td>
+                        <td class="text-center">{{$order->TimeCooked()}}</td>
+                        <td class="text-center">{{$order->TimeCourier()}}</td>
+                        <td class="text-center">{{$order->TimeDelivered()}}</td>
+                        <td class="text-center">{{$order->TimeCompleted()}}</td>
+                        <td class="text-center">{{$productsModificationsInOrder->count()}}</td>
                         <td>{{$order->courier_id}}&nbsp;{{isset($order->Courier) ? '('.$order->Courier->name.')' : ''}}</td>
                         <td>{{$order->User->phone}}</td>
                         <td>{{$clientInfo->clientComment}}</td>
