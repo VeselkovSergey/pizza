@@ -14,6 +14,8 @@ namespace App\Models;
  * @property string client_raw_data
  * @property integer order_amount
  * @property integer total_order_amount
+ * @property string geo_yandex
+ *
  * @property ProductsModificationsInOrders ProductsModifications
  * @property OrdersStatusLogs LatestStatus
  * @property User Courier
@@ -34,6 +36,7 @@ class Orders extends BaseModel
         'order_telegram_message_id',
         'order_amount',
         'total_order_amount',
+        'geo_yandex',
     ];
 
     const STATUS = [

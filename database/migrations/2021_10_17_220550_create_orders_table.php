@@ -26,6 +26,7 @@ class CreateOrdersTable extends Migration
             $table->integer('payment_id')->default(0);
             $table->integer('order_amount');
             $table->integer('total_order_amount');
+            $table->json('geo_yandex')->nullable();
             $table->timestamps();
         });
     }

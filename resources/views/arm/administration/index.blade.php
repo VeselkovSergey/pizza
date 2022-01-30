@@ -11,6 +11,9 @@
             <a href="{{route('administrator-arm-orders-page')}}">Заказы</a>
         </div>
         <div>
+            <a href="{{route('administrator-arm-orders-addresses-page')}}">Заказы адреса</a>
+        </div>
+        <div>
             <a href="{{route('administrator-arm-products-page')}}">Продукты</a>
         </div>
         <div>

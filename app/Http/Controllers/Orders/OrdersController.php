@@ -317,4 +317,18 @@ class OrdersController extends Controller
         unset($order->products_raw_data);
         return $order;
     }
+
+    public function UpdateYandexGeo()
+    {
+        $orderId = (int)\request()->orderId;
+        $yandexGeo = \request()->yandexGeo;
+
+        $order = Orders::find($orderId);
+        if ($order) {
+            $order->geo_yandex = $yandexGeo;
+            $order->save();
+        }
+
+        return ResultGenerate::Success();
+    }
 }

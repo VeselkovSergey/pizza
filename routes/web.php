@@ -36,6 +36,8 @@ Route::group(['prefix' => 'orders'], function () {
     Route::post('/create', [Controllers\Orders\OrdersController::class, 'Create'])->name('order-create');
     Route::get('/order-info', [Controllers\Orders\OrdersController::class, 'OrderByIdForKitchenInterface'])->name('order-info');
 
+    Route::post('/order-update-geo-yandex', [Controllers\Orders\OrdersController::class, 'UpdateYandexGeo'])->name('order-update-geo-yandex');
+
 });
 
 Route::group(['prefix' => 'settings'], function () {
@@ -159,6 +161,7 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::post('/user-save-changes', [Controllers\ARM\AdministratorARMController::class, 'UserSaveChanges'])->name('administrator-arm-user-save-changes');
 
         Route::get('/orders', [Controllers\ARM\AdministratorARMController::class, 'Orders'])->name('administrator-arm-orders-page');
+        Route::get('/orders-addresses', [Controllers\ARM\AdministratorARMController::class, 'OrdersAddresses'])->name('administrator-arm-orders-addresses-page');
 
         Route::group(['prefix' => 'products'], function () {
             Route::get('/all', [Controllers\ARM\AdministratorARMController::class, 'Products'])->name('administrator-arm-products-page');

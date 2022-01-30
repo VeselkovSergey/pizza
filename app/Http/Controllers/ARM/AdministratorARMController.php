@@ -54,6 +54,19 @@ class AdministratorARMController extends Controller
         return view('arm.administration.orders.index', compact('orders', 'supplySum', 'startDate', 'endDate'));
     }
 
+    public function OrdersAddresses()
+    {
+        $startDate = (request()->get('start-date') === null) ? date('Y-m-d', time()) : request()->get('start-date');
+        $endDate = (request()->get('end-date') === null) ? date('Y-m-d', time()) : request()->get('end-date');
+        if (request()->get('all')) {
+            $orders = Orders::AllOrders('ASC');
+        } else {
+            $orders = Orders::ByDate($startDate, $endDate, true, 'ASC');
+        }
+
+        return view('arm.administration.orders.addresses', compact('orders', 'startDate', 'endDate'));
+    }
+
     public function Products()
     {
         $products = Products::all();
