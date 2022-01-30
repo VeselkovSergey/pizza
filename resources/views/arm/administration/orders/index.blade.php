@@ -46,7 +46,10 @@
     @php($ordersByCouriers = [])
 
     <div class="flex-column">
-        <div style="order: 2; overflow-x: auto;">
+        <div style="order: 2;">
+            <button class="orange-button show-all-columns">Показать все колонки</button>
+        </div>
+        <div style="order: 3;">
             <table class="w-100 border table-sort" style="width: max-content;">
                 <thead>
                 <tr>
@@ -310,11 +313,22 @@
             ctx.fillText(data[i+10], ((i * 100)), 490-dp*5);
         }
 
+        document.body.querySelector('.show-all-columns').addEventListener('click', () => {
+            document.body.querySelectorAll('.change-visible-column').forEach((columnTitle) => {
+                let columnId = columnTitle.dataset.titleColumnId;
+                columnTitle.show();
+                document.body.querySelectorAll('td[data-column-id="'+columnId+'"]').forEach((column) => {
+                    column.show();
+                });
+            });
+        });
+
         document.body.querySelectorAll('.change-visible-column').forEach((columnTitle) => {
             let columnId = columnTitle.dataset.titleColumnId;
             columnTitle.addEventListener('dblclick', () => {
+                columnTitle.hide();
                 document.body.querySelectorAll('td[data-column-id="'+columnId+'"]').forEach((column) => {
-                    column.showToggle();
+                    column.hide();
                 });
             });
         });
