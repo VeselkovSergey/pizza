@@ -95,6 +95,9 @@ class AdministratorARMController extends Controller
 
             ->get();
 
+
+        $productsModificationsIngredients = [];
+
         foreach ($productsModifications as $key => $productModification) {
             $productModificationIngredients = ProductModificationsIngredients::selectRaw('product_modifications_ingredients.ingredient_amount, product_modifications_ingredients.ingredient_id')
                 ->where('product_modification_id', $productModification->product_modifications_id)
@@ -112,15 +115,23 @@ class AdministratorARMController extends Controller
 
             $costPrice = 0;
             foreach ($productModificationIngredients as $productModificationIngredient) {
-                $ingredientCurrentPrice = $productModificationIngredient->Ingredient->CurrentPrice();
+                $ingredient = $productModificationIngredient->Ingredient;
+                $ingredientCurrentPrice = $ingredient->CurrentPrice();
                 $costPrice += $ingredientCurrentPrice * $productModificationIngredient->ingredient_amount;
+
+                $productsModificationsIngredients[$productModification->product_modifications_id][] = (object)[
+                    'title' => $ingredient->title,
+                    'currentPrice' => $ingredientCurrentPrice,
+                    'amount' => $productModificationIngredient->ingredient_amount,
+                ];
+
             }
             $productsModifications[$key]->costPrice = $costPrice;
 
             $productsModifications[$key]->margin = number_format(((($productModification->selling_price - $productModification->costPrice) / $productModification->costPrice) * 100), 2);
         }
 
-        return view('arm.administration.products-modifications.index', compact('productsModifications'));
+        return view('arm.administration.products-modifications.index', compact('productsModifications', 'productsModificationsIngredients'));
     }
 
     public function DeviceUsed()
