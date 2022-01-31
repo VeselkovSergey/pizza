@@ -6,8 +6,11 @@
         header {
             display: none!important;
         }
+        .orders-container {
+            font-size: 25px;
+        }
         .width-order-info {
-            width: 25%;
+            width: 33%;
         }
         @media screen and (max-width: 720px) {
             .width-order-info {
@@ -34,6 +37,19 @@
         .bg-order-6 {
             background-color: #b0e9f5;
         }
+
+        .time-delimiter {
+            animation: time-delimiter 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+
+        @keyframes time-delimiter {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
     </style>
 
     <div>
@@ -50,7 +66,8 @@
                             <div class="border p-5">
                                 <div class="title-order flex-space-between mb-10">
                                     <div class="font-weight-600"># {{$order->id}}</div>
-                                    <div class="font-weight-600">На кухне с {{$order->CurrentStatus()->created_at->format('H:i')}}</div>
+                                    <div class="start-kitchen-time font-weight-600 hide">{{$order->CurrentStatus()->created_at->format('H:i')}}</div>
+                                    <div class="kitchen-time font-weight-600">00<span class="time-delimiter">:</span>00</div>
                                 </div>
 
                                 <div class="products-container flex-column">
@@ -74,7 +91,7 @@
                                         <div class="flex-space-between py-5 bg-order-{{$flexOrder}}" style="border-bottom: 1px solid black; order: {{$flexOrder}}">
                                             @php($titleText = $product->data->product->categoryTitle . ' ' . $product->data->product->title . ' ' . ($product->data->modification->title !== 'Соло-продукт' ? $product->data->modification->title . ' ' . $product->data->modification->value : ''))
                                             <span>{{$titleText}}</span>
-                                            <span class="font-weight-600">{{$product->amount}}</span>
+                                            <span class="font-weight-600 p-5">{{$product->amount}}</span>
                                         </div>
                                     @endforeach
                                 </div>
@@ -143,7 +160,8 @@
                                     '<div class="border p-5">'+
                                         '<div class="title-order flex-space-between mb-10">'+
                                             '<div class="font-weight-600"># ' + orderInfo.id +'</div>'+
-                                            '<div class="font-weight-600">На кухне с '+orderInfo.sendToKitchen+'</div>'+
+                                            '<div class="start-kitchen-time font-weight-600 hide">'+orderInfo.sendToKitchen+'</div>'+
+                                            '<div class="kitchen-time font-weight-600"><span class="time-delimiter">:</span></div>'+
                                         '</div>'+
                                         '<div class="products-container flex-column">'+
                                             '<div class="font-weight-600" style="order: 1;">Пиццы:</div>'+
@@ -165,11 +183,48 @@
                 content +=
                     '<div class="flex-space-between py-5 bg-order-'+flexOrder+'" style="border-bottom: 1px solid black; order: '+flexOrder+'">'+
                         '<span>'+product.title+'</span>'+
-                        '<span class="font-weight-600">'+product.amount+'</span>'+
+                        '<span class="font-weight-600 p-5">'+product.amount+'</span>'+
                     '</div>';
             });
             return content;
         }
+
+        function CalcOrderTimeInKitchen() {
+            ordersContainer.querySelectorAll('.start-kitchen-time').forEach((startKitchenTimeElement) => {
+                const now = new Date();
+                const nowHour = now.getHours();
+                const nowMinutes = now.getMinutes();
+
+                const startKitchenTime = startKitchenTimeElement.innerHTML.split(':');
+                const startKitchenTimeHour = parseInt(startKitchenTime[0]);
+                const startKitchenTimeMinutes = parseInt(startKitchenTime[1]);
+
+                let kitchenTimeMinutes = nowMinutes - startKitchenTimeMinutes;
+                let kitchenTimeHour = nowHour - startKitchenTimeHour;
+
+                if (kitchenTimeMinutes < 0) {
+                    kitchenTimeHour--;
+                    kitchenTimeMinutes = kitchenTimeMinutes + 60 - kitchenTimeMinutes;
+                }
+
+                if (kitchenTimeMinutes > 30) {
+                    new Audio('{{asset('audio/alarm.mp3')}}').play();
+                }
+
+                kitchenTimeHour = ('0' + kitchenTimeHour).slice(-2);
+                kitchenTimeMinutes = ('0' + kitchenTimeMinutes).slice(-2);
+
+
+                const kitchenTimeContainer = startKitchenTimeElement.nextElementSibling;
+                kitchenTimeContainer.innerHTML = '';
+                CreateElement('div', {content: kitchenTimeHour + '<span class="time-delimiter">:</span>' + kitchenTimeMinutes}, kitchenTimeContainer);
+
+            });
+        }
+        // CalcOrderTimeInKitchen();
+        setInterval(() => {
+            CalcOrderTimeInKitchen()
+        }, 1000 * 45);
 
     </script>
 
