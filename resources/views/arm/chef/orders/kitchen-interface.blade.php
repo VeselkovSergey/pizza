@@ -207,7 +207,7 @@
                     kitchenTimeMinutes = kitchenTimeMinutes + 60 - kitchenTimeMinutes;
                 }
 
-                if (kitchenTimeMinutes > 30) {
+                if (kitchenTimeMinutes > 30 || kitchenTimeHour > 0) {
                     new Audio('{{asset('audio/alarm.mp3')}}').play();
                 }
 
@@ -221,7 +221,7 @@
 
             });
         }
-        // CalcOrderTimeInKitchen();
+
         setInterval(() => {
             CalcOrderTimeInKitchen()
         }, 1000 * 45);
