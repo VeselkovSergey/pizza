@@ -114,6 +114,16 @@
             });
         }
 
+        channel.bind('updateStatuses', function(data) {
+            if (data.newStatusId !== {{\App\Models\Orders::STATUS_TEXT['kitchen']}}) {
+                const orderContainer = ordersContainer.querySelector('.order-id-'+data.orderId);
+                if (orderContainer) {
+                    orderContainer.remove();
+                }
+
+            }
+        });
+
         const ordersContainer = document.body.querySelector('.orders-container');
 
         const kitchenChannel = pusher.subscribe('kitchen-channel');
