@@ -31,6 +31,9 @@
             <div class="mb-10">
                 <label for="">Поставщик
                     <select name="supplier">
+                        @if(empty($supply))
+                            <option selected value="0">Выберите поставщика</option>
+                        @endif
                         @foreach($suppliers as $supplier)
                             <option @if(isset($supply) && $supply->supplier_id === $supplier->id) selected @endif value="{{$supplier->id}}">{{$supplier->title}}</option>
                         @endforeach
@@ -47,6 +50,9 @@
             <div class="mb-10">
                 <label for="">Тип оплаты
                     <select name="paymentType">
+                        @if(empty($supply))
+                            <option selected value="0">Выберите тип оплаты</option>
+                        @endif
                         <option value="1" @if(isset($supply) && $supply->payment_type === 1) selected @endif>Наличные</option>
                         <option value="2" @if(isset($supply) && $supply->payment_type === 2) selected @endif>Безналичные</option>
                         <option value="3" @if(isset($supply) && $supply->payment_type === 3) selected @endif>Перевод</option>
@@ -119,6 +125,13 @@
             let paymentType = document.body.querySelector('select[name="paymentType"]').value;
             let file = document.body.querySelector('input[name="file"]').files[0];
 
+            if (parseInt(supplierId) === 0) {
+                return FlashMessage('Выберите поставщика!');
+            }
+            if (parseInt(paymentType) === 0) {
+                return FlashMessage('Выберите тип оплаты!');
+            }
+
             if (file === undefined && {{empty($supply) ?: 0}}) {
                 return FlashMessage('Выберите файл!');
             }
@@ -136,7 +149,7 @@
                 {{isset($supply) ? 'supplyId: '.$supply->id.',' : ''}}
             }
 
-            Ajax("{{route('supply-save')}}", 'POST', data).then((response) => {
+            Ajax("{{route('supply-save')}}", 'POST', data, true).then((response) => {
                 FlashMessage(response.message);
                 if (response.status === true) {
                     setTimeout(() => {
