@@ -194,15 +194,15 @@
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<label for="">Количество (кг/литр)</label>' +
-                                            '<input class="need-validate" name="amount" '+(ingredientId ? "value='"+amountIngredient+"'" : '' )+' type="text">' +
+                                            '<input class="need-validate" name="amount" value="'+(ingredientId ? amountIngredient : 1 )+'" type="text">' +
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<label for="">Цена за кг/литр</label>' +
-                                            '<input class="need-validate" name="price" type="text" '+(ingredientId ? "value='"+priceIngredient+"'" : '' )+'>' +
+                                            '<input class="need-validate" name="price" type="text" value="'+(ingredientId ? priceIngredient : 1 )+'">' +
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<label for="">Сумма</label>' +
-                                            '<input class="need-validate" name="sum" type="text">' +
+                                            '<input class="need-validate" name="sum" type="text" value="1">' +
                                         '</div>' +
                                         '<div class="m-5">' +
                                             '<button class="delete-ingredient-button cp flex-center">' +
@@ -271,7 +271,6 @@
             let allIngredientsSum = document.body.querySelectorAll('input[name="sum"]');
 
             let totalSumSupply = document.body.querySelector('input[name="totalSumSupply"]');
-            totalSumSupply = totalSumSupply.value.replace(/,/, '.');
 
             let totalSumSupplyValue = 0;
             allIngredientsSum.forEach((sum) => {
