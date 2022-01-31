@@ -14,7 +14,10 @@ function LoaderHide() {
     document.body.querySelector('.loader').remove();
 }
 
-function Ajax(url, method, formDataRAW) {
+function Ajax(url, method, formDataRAW, loader = false) {
+    if (loader) {
+        LoaderShow();
+    }
     return new Promise(function (resolve, reject) {
         let formData = new FormData();
         if (typeof (method) === "undefined" || method === null) {
@@ -45,6 +48,9 @@ function Ajax(url, method, formDataRAW) {
         xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
 
         xhr.onload = function () {
+            if (loader) {
+                LoaderHide();
+            }
             if (this.status === 200) {
                 try {
                     resolve(JSON.parse(this.response));
@@ -59,6 +65,9 @@ function Ajax(url, method, formDataRAW) {
         };
 
         xhr.onerror = function () {
+            if (loader) {
+                LoaderHide();
+            }
             reject(new Error("Network Error"));
         };
 
