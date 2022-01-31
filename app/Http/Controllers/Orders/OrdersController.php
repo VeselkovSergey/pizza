@@ -292,7 +292,7 @@ class OrdersController extends Controller
     {
         $orderId = \request()->orderId;
         $order = Orders::find($orderId);
-        $order->sendToKitchen = OrdersStatusLogs::where('order_id', $order->id)->where('new_status_id', Orders::STATUS_TEXT['kitchen'])->first('created_at')->created_at->format('H:m');
+        $order->sendToKitchen = OrdersStatusLogs::where('order_id', $order->id)->where('new_status_id', Orders::STATUS_TEXT['kitchen'])->first('created_at')->created_at->format('H:i');
 
         $productsInOrder = [];
         foreach (json_decode($order->products_raw_data) as $product) {
