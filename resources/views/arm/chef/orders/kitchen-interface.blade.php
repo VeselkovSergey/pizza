@@ -66,7 +66,7 @@
                             <div class="border p-5">
                                 <div class="title-order flex-space-between mb-10">
                                     <div class="font-weight-600"># {{$order->id}}</div>
-                                    <div class="start-kitchen-time font-weight-600 hide">{{$order->CurrentStatus()->created_at->format('H:i')}}</div>
+                                    <div class="start-kitchen-time font-weight-600">{{$order->CurrentStatus()->created_at->format('H:i')}}</div>
                                     <div class="kitchen-time font-weight-600">00<span class="time-delimiter">:</span>00</div>
                                 </div>
 
@@ -199,17 +199,15 @@
                 const startKitchenTimeHour = parseInt(startKitchenTime[0]);
                 const startKitchenTimeMinutes = parseInt(startKitchenTime[1]);
 
-                let kitchenTimeMinutes = nowMinutes - startKitchenTimeMinutes;
-                let kitchenTimeHour = nowHour - startKitchenTimeHour;
+                let kitchenTimeMinutes = ((nowHour - startKitchenTimeHour) * 60) + nowMinutes - startKitchenTimeMinutes;
 
-                if (kitchenTimeMinutes < 0) {
-                    kitchenTimeHour--;
-                    kitchenTimeMinutes = kitchenTimeMinutes + 60 - kitchenTimeMinutes;
-                }
-
-                if (kitchenTimeMinutes > 30 || kitchenTimeHour > 0) {
+                if (kitchenTimeMinutes > 30) {
                     new Audio('{{asset('audio/alarm.mp3')}}').play();
                 }
+
+                let kitchenTimeHour = Math.trunc(kitchenTimeMinutes / 60);
+
+                kitchenTimeMinutes = kitchenTimeMinutes % 60;
 
                 kitchenTimeHour = ('0' + kitchenTimeHour).slice(-2);
                 kitchenTimeMinutes = ('0' + kitchenTimeMinutes).slice(-2);
