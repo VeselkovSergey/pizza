@@ -219,14 +219,7 @@ class ManagerARMController extends Controller
     {
         $orderId = request()->orderId;
         $order = Orders::find($orderId);
-        OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['delivered']);
-
-        // если оплата по карте, то деньги в кассе
-        $clientInfo = json_decode($order->client_raw_data);
-        if ($clientInfo->typePayment[0] === true) {
-            OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['completed'], $order->courier_id);
-        }
-        return true;
+        return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['delivered']);
     }
 
     public function CheckOrderStatusChange()
