@@ -31,7 +31,7 @@
                         <div class="mb-10">{{\App\Helpers\StringHelper::DateBeautifulFormat($order->created_at)}}</div>
                         <div class="order-status-{{$order->status_id}} w-fit py-5 px-10 border-radius-10">Статус: {{$order->CurrentStatusText()}}</div>
                     </div>
-                    <div class="flex scroll-x-auto w-100">
+                    <div class="flex scroll-x-auto w-100 mb-10">
                         @foreach($products as $product)
                             @php($productTitle = $product->data->product->categoryTitle . ' ' . $product->data->product->title . ' ' . $product->data->modification->title . ' ' . $product->data->modification->value)
                             @php($webpFile = (file_exists(public_path() . '/img/png/' . $product->data->product->id . '.png') ? 'img/png/' . $product->data->product->id . '.png' : 'img-pizza.png') . '?1')
