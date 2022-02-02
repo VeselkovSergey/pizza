@@ -124,6 +124,7 @@
             const routeCheckConfirmationCode = "{{route('check-confirmation-code')}}";
             const routeLogout = "{{route('logout')}}";
             const routeCheckPromoCodeRequest = "{{route('check-promo-code')}}";
+            const routeProfile = "{{route('profile')}}";
         </script>
 
         @if($isStaff)

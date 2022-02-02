@@ -6,6 +6,22 @@ namespace App\Helpers;
 
 class StringHelper
 {
+    const MONTHS = [
+        '-',
+        'января',
+        'февраля',
+        'марта',
+        'aпреля',
+        'мая',
+        'июня',
+        'июля',
+        'августа',
+        'сентября',
+        'октября',
+        'ноября',
+        'декабря',
+    ];
+
     public static function TransliterateURL(string $value): string
     {
         $converter = array(
@@ -48,5 +64,13 @@ class StringHelper
 
         }
         return $phoneBeautifulFormat;
+    }
+
+    public static function DateBeautifulFormat(string $dateRawFormat)
+    {
+        $dateRawFormat = strtotime($dateRawFormat);
+        $month = date('m', $dateRawFormat);
+        $monthText = self::MONTHS[(int)$month];
+        return date('d ' . $monthText . ' Y' . ' H:i');
     }
 }

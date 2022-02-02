@@ -1237,30 +1237,7 @@ function Logout() {
 }
 
 function Profile() {
-    let profileContent = CreateElement('div', {
-        childs: [
-            CreateElement('div', {
-                content: 'Личный кабинет находится в разработке <br /> Ваш номер телефона: +' + userPhone,
-                class: 'mb-10 text-center'
-            }),
-            CreateElement('div', {
-                childs: [
-                    CreateElement('button', {
-                        content: 'Выйти из профиля',
-                        class: 'btn first',
-                        events: {
-                            click: () => {
-                                Logout();
-                            }
-                        }
-                    }),
-                ],
-                class: 'flex-center'
-            }),
-        ]
-    });
-
-    ModalWindow(profileContent);
+    return location.href = routeProfile;
 }
 
 let leftMenuButtons = document.body.querySelectorAll('.button-menu, .shadow-menu, .close-menu-button');

@@ -31,6 +31,13 @@ Route::group(['prefix' => 'catalog'], function () {
 
 });
 
+Route::group(['prefix' => 'profile'], function () {
+
+    Route::get('/', [Controllers\Profile\ProfileController::class, 'Index'])->name('profile');
+    Route::get('/orders', [Controllers\Profile\ProfileController::class, 'Orders'])->name('profile-orders');
+
+});
+
 Route::group(['prefix' => 'orders'], function () {
 
     Route::post('/create', [Controllers\Orders\OrdersController::class, 'Create'])->name('order-create');

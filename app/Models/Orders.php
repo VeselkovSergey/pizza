@@ -85,6 +85,11 @@ class Orders extends BaseModel
         return $this->hasOne(OrdersStatusLogs::class, 'order_id', 'id')->orderBy('id', 'DESC')->first();
     }
 
+    public function CurrentStatusText()
+    {
+        return self::STATUS[$this->status_id];
+    }
+
     public function Statuses()
     {
         return $this->hasMany(OrdersStatusLogs::class, 'order_id', 'id');
