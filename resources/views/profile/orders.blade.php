@@ -17,7 +17,7 @@
         }
     </style>
 
-    <div class="flex">
+    <div class="flex pl-10">
         <h3 class="mr-25"><a class="clear-a {{request()->is('profile') ? 'color-orange' : ''}}" href="{{route('profile')}}">Профиль</a></h3>
         <h3><a class="clear-a {{request()->is('profile/orders') ? 'color-orange' : ''}}" href="{{route('profile-orders')}}">Заказы</a></h3>
     </div>
