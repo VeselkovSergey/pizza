@@ -72,7 +72,7 @@
         let productModificationIngredientsButtons = document.body.querySelectorAll('.product-modification-ingredients');
         productModificationIngredientsButtons.forEach((productModificationIngredientsButton) => {
             productModificationIngredientsButton.addEventListener('click', (event) => {
-                let productModificationIngredientsContent = event.target.nextElementSibling;
+                let productModificationIngredientsContent = event.target.nextElementSibling.innerHTML;
                 let modal = ModalWindow(productModificationIngredientsContent);
                 modal.querySelector('.product-modification-ingredients-content').show();
             });
