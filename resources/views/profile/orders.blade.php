@@ -34,8 +34,8 @@
                     <div class="flex scroll-x-auto w-100 mb-10">
                         @foreach($products as $product)
                             @php($productTitle = $product->data->product->categoryTitle . ' ' . $product->data->product->title . ' ' . $product->data->modification->title . ' ' . $product->data->modification->value)
-                            @php($webpFile = (file_exists(public_path() . '/img/png/' . $product->data->product->id . '.png') ? 'img/png/' . $product->data->product->id . '.png' : 'img-pizza.png') . '?1')
-                            @php($imgFile = (file_exists(public_path() . '/img/jpg500/' . $product->data->product->id . '.jpg') ? 'img/jpg500/' . $product->data->product->id . '.jpg' : 'img-pizza.png') . '?1')
+                            @php($webpFile = (file_exists(public_path() . '/img/png/' . $product->data->product->id . '.png') ? 'img/png/' . $product->data->product->id . '.png' : 'img-pizza.png') . '?2')
+                            @php($imgFile = (file_exists(public_path() . '/img/jpg500/' . $product->data->product->id . '.jpg') ? 'img/jpg500/' . $product->data->product->id . '.jpg' : 'img-pizza.png') . '?2')
                             @for($i = 0; $i < $product->amount; $i++)
                                 <picture style="width: 100px; min-width: 100px;">
                                     <source class="w-100" srcset="{{url($webpFile)}}" type="image/webp">

@@ -88,8 +88,8 @@
                 <h2 class="w-100 ml-10 mb-10" id="{{$product->categoryId}}">{{$product->categoryTitle}}</h2>
             @endif
 
-            @php($webpFile = (file_exists(public_path() . '/img/png/' . $product->id . '.png') ? 'img/png/' . $product->id . '.png' : 'img-pizza.png') . '?1')
-            @php($imgFile = (file_exists(public_path() . '/img/jpg500/' . $product->id . '.jpg') ? 'img/jpg500/' . $product->id . '.jpg' : 'img-pizza.png') . '?1')
+            @php($webpFile = (file_exists(public_path() . '/img/png/' . $product->id . '.png') ? 'img/png/' . $product->id . '.png' : 'img-pizza.png') . '?2')
+            @php($imgFile = (file_exists(public_path() . '/img/jpg500/' . $product->id . '.jpg') ? 'img/jpg500/' . $product->id . '.jpg' : 'img-pizza.png') . '?2')
 
             <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}"
                  data-product-img-webp="{{url($webpFile)}}" data-product-img="{{url($imgFile)}}">
