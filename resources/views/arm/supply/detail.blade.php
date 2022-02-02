@@ -54,7 +54,7 @@
                     @foreach($supply->Ingredients as $ingredient)
                         <?php /** @var \App\Models\IngredientsInSupply $ingredient */ ?>
                         <tr class="hover-color">
-                            <td>{{$ingredient->id}}</td>
+                            <td>{{$ingredient->ingredient_id}}</td>
                             @if(empty($ingredient->Ingredient))
                                 <td>{{$ingredient->ingredient_id}}</td>
                                 <td>-</td>
