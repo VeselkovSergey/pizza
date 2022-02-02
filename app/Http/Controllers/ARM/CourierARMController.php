@@ -11,14 +11,7 @@ class CourierARMController
     {
         $order = Orders::ByCourierMessageTelegram($messageId);
         if ($order) {
-            OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['delivered'], $order->courier_id);
-
-            // если оплата по карте, то деньги в кассе
-            $clientInfo = json_decode($order->client_raw_data);
-            if ($clientInfo->typePayment[0] === true) {
-                OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['completed'], $order->courier_id);
-            }
-            return true;
+            return OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['delivered'], $order->courier_id);
         }
         return false;
     }
