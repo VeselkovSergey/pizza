@@ -797,7 +797,7 @@ function BasketWindow() {
                 '<div class="client-information w-100">' +
                     '<div class="promo-code-container w-100 flex-wrap-center mb-10">' +
                         '<label for="">Промокод (скидки и акции не суммируются)</label>' +
-                        '<div class="pos-rel w-75 mr-a flex promo-code-input-container">' +
+                        '<div class="pos-rel mr-10 flex promo-code-input-container">' +
                             '<input name="clientPromoCode" autocomplete="off" class="w-100" type="text" />' +
                             '<div class="pos-abs right-0 top-0 h-100 flex-center promo-code-clear-button-container"><button class="promo-code-clear-button cp flex-center">'+SvgCloseButton+'</button></div>' +
                         '</div>' +

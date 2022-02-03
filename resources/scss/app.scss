@@ -340,6 +340,10 @@ input[type="radio"]:checked + span {
     .promo-code-apply-button {
         margin-bottom: 0;
     }
+
+    .promo-code-input-container {
+        flex: 1;
+    }
 }
 
 /* переключатель красивый */
