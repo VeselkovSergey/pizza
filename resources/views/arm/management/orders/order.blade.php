@@ -21,6 +21,8 @@
         <div class="mb-10">
             @if(auth()->user()->IsAdmin() && $order->status_id !== \App\Models\Orders::STATUS_TEXT['courier'])
                 <button class="change-courier-in-order clear-button py-5 px-25 mr-10 border-radius-5 cp red-button" data-url="{{route('manager-arm-change-courier-in-order')}}">Изменить курьера</button>
+                <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-8" data-url="{{route('manager-arm-change-status-order-to-completed-page')}}">Выполнен</button>
+                <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-9" data-url="{{route('manager-arm-change-status-order-to-canceled-page')}}">Отказ</button>
             @endif
             @switch($order->status_id)
                 @case(\App\Models\Orders::STATUS_TEXT['newOrder'])
