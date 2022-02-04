@@ -24,7 +24,7 @@
                 <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-1" data-url="{{route('manager-arm-change-status-order-to-new-order-page')}}">Вернуть в статус: Новый</button>
                 <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-3" data-url="{{route('manager-arm-transfer-order-to-kitchen-page')}}">Передать на кухню</button>
                 <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-6" data-url="{{route('manager-arm-transfer-order-to-delivery-page')}}">Передать в доставку</button>
-                <button class="change-courier-in-order clear-button py-5 px-25 mr-10 border-radius-5 cp red-button" data-url="{{route('manager-arm-change-courier-in-order')}}">Изменить курьера</button>
+                <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp red-button" data-url="{{route('manager-arm-change-courier-in-order')}}">Изменить курьера</button>
                 <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-7" data-url="{{route('manager-arm-change-status-order-to-delivered')}}">Доставлен</button>
                 <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-9" data-url="{{route('manager-arm-change-status-order-to-canceled-page')}}">Отказ</button>
             @else
@@ -46,7 +46,7 @@
                     <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-9" data-url="{{route('manager-arm-change-status-order-to-canceled-page')}}">Отказ</button>
                     @break
                 @case(\App\Models\Orders::STATUS_TEXT['courier'])
-                    <button class="change-courier-in-order clear-button py-5 px-25 mr-10 border-radius-5 cp red-button" data-url="{{route('manager-arm-change-courier-in-order')}}">Изменить курьера</button>
+                    <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp red-button" data-url="{{route('manager-arm-change-courier-in-order')}}">Изменить курьера</button>
                     <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-7" data-url="{{route('manager-arm-change-status-order-to-delivered')}}">Доставлен</button>
                     <button class="order-change-status clear-button py-5 px-25 mr-10 border-radius-5 cp order-status-9" data-url="{{route('manager-arm-change-status-order-to-canceled-page')}}">Отказ</button>
                     @break
@@ -123,7 +123,7 @@
         let allProducts = {!! json_encode($allProducts, JSON_UNESCAPED_UNICODE) !!};
         let productsAndModificationsInOrderForOrderEdit = {!! json_encode($productsAndModificationsInOrderForOrderEdit, JSON_UNESCAPED_UNICODE) !!};
 
-        let buttonsOrderChangeStatus = document.body.querySelectorAll('.order-change-status, .change-courier-in-order');
+        let buttonsOrderChangeStatus = document.body.querySelectorAll('.order-change-status');
         buttonsOrderChangeStatus.forEach((button) => {
             button.addEventListener('click', () => {
                 localStorage.removeItem('orderId');
