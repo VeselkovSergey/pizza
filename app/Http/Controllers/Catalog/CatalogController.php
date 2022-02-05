@@ -14,7 +14,10 @@ class CatalogController extends Controller
     public function Index()
     {
         $allProducts = ProductsController::GetAllProducts();
-        $allCategory = Categories::all();
+        $allCategory = cache()->remember('allCategory', 3600, function () {
+            return Categories::all();
+        });
+
         return view('catalog.index', [
             'allProducts' => $allProducts,
             'allCategory' => $allCategory,

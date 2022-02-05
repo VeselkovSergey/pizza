@@ -15,10 +15,13 @@ namespace App\Models;
  * @property integer order_amount
  * @property integer total_order_amount
  * @property string geo_yandex
+ * @property string created_at
+ * @property string updated_at
  *
  * @property ProductsModificationsInOrders ProductsModifications
  * @property OrdersStatusLogs LatestStatus
  * @property User Courier
+ * @property User User
  * @property OrdersStatusLogs Statuses
  * @method Orders find($orderId)
  */
@@ -108,6 +111,14 @@ class Orders extends BaseModel
     public function IsCancelled()
     {
         if ($this->status_id === self::STATUS_TEXT['cancelled']) {
+            return true;
+        }
+        return false;
+    }
+
+    public function IsCompleted()
+    {
+        if ($this->status_id === self::STATUS_TEXT['completed']) {
             return true;
         }
         return false;

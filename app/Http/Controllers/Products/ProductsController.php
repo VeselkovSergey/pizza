@@ -22,13 +22,12 @@ class ProductsController extends Controller
 {
     public static function GetAllProducts()
     {
-        $forceUpdate = request()->get('force-update') ?? false;
-        $allProducts = \Cache::get('allProducts');
-        if (empty($allProducts) || $forceUpdate) {
-            $allProducts = self::UpdateFileAllProducts();
-            \Cache::put('allProducts', $allProducts, now()->addMinutes(3600));
+        if (request()->get('force-update')) {
+            cache()->delete('allProducts');
         }
-        return $allProducts;
+        return cache()->remember('allProducts', 3600, function () {
+            return self::UpdateFileAllProducts();
+        });
     }
 
     public static function UpdateFileAllProducts()
@@ -222,8 +221,6 @@ class ProductsController extends Controller
                 // создаем связь ингредиентов с модификатором
             }
         }
-
-        \Cache::delete('allProducts');
 
         return ResultGenerate::Success();
     }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Orders\OrdersController;
 use App\Services\Telegram\Telegram;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 
@@ -21,6 +22,10 @@ use App\Http\Controllers;
 */
 
 Route::get('/', [Controllers\Catalog\CatalogController::class, 'Index'])->name('home-page');
+Route::get('/cache-clear', function () {
+    Cache::flush();
+    return redirect(\route('home-page'));
+})->name('cache-clear');
 
 Route::get('/resources/{directory}/{fileName}', [Controllers\Resources\ResourceController::class, 'GetResources']);
 Route::get('/files/{fileId}', [\App\Helpers\Files::class, 'GetFileHTTP'])->name('files');

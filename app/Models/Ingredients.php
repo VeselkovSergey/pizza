@@ -28,7 +28,7 @@ class Ingredients extends BaseModel
             return IngredientsInSupply::select('ingredients_in_supply.*', 'supply.supply_date as supply_date')
                 ->where('ingredient_id', $this->id)
                 ->leftJoin('supply', 'supply.id', '=', 'ingredients_in_supply.supply_id')
-                ->orderBy('supply_date', 'DESC')
+                ->orderByDesc('supply_date')
                 ->first();
 
         } catch (\Exception $e) {
