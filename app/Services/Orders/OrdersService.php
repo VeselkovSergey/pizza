@@ -184,9 +184,7 @@ class OrdersService
             $ingredientStd->id = $ingredient->id;
             $ingredientStd->title = $ingredient->title;
 
-
-            $ingredientSupply = $ingredient->SupplyByDate($this->orderCreatedAt);
-            $ingredientStd->ubitPrice = (float)$ingredientSupply->price_ingredient;
+            $ingredientStd->ubitPrice = (float)$ingredient->PriceByDate($this->orderCreatedAt);
             $ingredientStd->price = $ingredientStd->ubitPrice * $ingredientStd->amount;
 
             $ingredients[] = $ingredientStd;
