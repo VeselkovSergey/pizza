@@ -25,6 +25,7 @@ use App\Services\Pusher\Pusher;
 use App\Services\SberBank\SberBank;
 use App\Services\Telegram\Telegram;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Monolog\Handler\TelegramBotHandler;
 
 class OrdersController extends Controller
@@ -261,6 +262,8 @@ class OrdersController extends Controller
         }
 
         $order->save();
+
+        Cache::forget('order-' . $order->id);
 
         event(new Pusher($order->id, $oldStatusId, $statusId));
         return true;

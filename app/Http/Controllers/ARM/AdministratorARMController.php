@@ -18,6 +18,7 @@ use App\Models\Products;
 use App\Models\ProductsModificationsInOrders;
 use App\Models\Supply;
 use App\Models\User;
+use App\Services\Orders\OrdersService;
 
 class AdministratorARMController extends Controller
 {
@@ -52,6 +53,21 @@ class AdministratorARMController extends Controller
         }
 
         return view('arm.administration.orders.index', compact('orders', 'supplySum', 'startDate', 'endDate'));
+    }
+
+    public function Orders2()
+    {
+        $startDate = (request()->get('start-date') === null) ? date('Y-m-d', time()) : request()->get('start-date');
+        $endDate = (request()->get('end-date') === null) ? date('Y-m-d', time()) : request()->get('end-date');
+
+        $orders = (new OrdersService())->GetOrderByPeriod([$startDate, $endDate]);
+
+        $ordersStatistics = $orders['ordersStatistics'];
+        $orders = $orders['orders'];
+
+        $supplySum = Supply::SuppliesSumByDate($startDate, $endDate);
+
+        return view('arm.administration.orders.index2', compact('orders', 'supplySum', 'ordersStatistics', 'startDate', 'endDate'));
     }
 
     public function OrdersAddresses()

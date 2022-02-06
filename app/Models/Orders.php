@@ -103,6 +103,9 @@ class Orders extends BaseModel
         return $this->hasOne(OrdersStatusLogs::class, 'order_id', 'id')->limit(1)->latest('id');
     }
 
+    /**
+     * @return OrdersStatusLogs
+     */
     public function Creator()
     {
         return $this->hasOne(OrdersStatusLogs::class, 'order_id', 'id')->first();
@@ -163,10 +166,12 @@ class Orders extends BaseModel
     {
         $oldStatusLog = OrdersStatusLogs::where('order_id', $orderId)
             ->where('new_status_id', $oldStatus)
+            ->orderByDesc('id')
             ->first();
 
         $newStatusLog = OrdersStatusLogs::where('order_id', $orderId)
             ->where('new_status_id', $newStatus)
+            ->orderByDesc('id')
             ->first();
 
         if (!$oldStatusLog || !$newStatusLog) {
