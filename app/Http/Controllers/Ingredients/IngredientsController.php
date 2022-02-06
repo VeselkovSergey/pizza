@@ -12,6 +12,7 @@ use App\Models\ProductModificationsIngredients;
 use App\Models\Products;
 use App\Models\Modifications;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class IngredientsController extends Controller
 {
@@ -42,6 +43,22 @@ class IngredientsController extends Controller
             })
             ->orderBy('title')
             ->get();
+    }
+
+    public function AllIngredientsToCSV()
+    {
+        $ingredientsModels = Ingredients::select('id', 'title')->get();
+        $output = '';
+        $output .= chr(239) . chr(187) . chr(191);
+        $output .= 'ID; Название' . PHP_EOL;
+
+        foreach ($ingredientsModels as $row) {
+            $output.=  $row->id . ';' . $row->title . PHP_EOL;
+        }
+
+        return \response($output)
+            ->header('Content-Type', 'text/csv; charset=utf-8')
+            ->header('Content-Disposition', 'attachment; filename="Ингредиенты.csv');
     }
 
     public static function SaveChanges(Ingredients $ingredient, array|object $data)

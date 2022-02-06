@@ -116,6 +116,7 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::get('/create', [Controllers\Ingredients\IngredientsController::class, 'Create'])->name('ingredients-create-page');
         Route::post('/save', [Controllers\Ingredients\IngredientsController::class, 'Save'])->name('ingredients-save');
         Route::get('/all', [Controllers\Ingredients\IngredientsController::class, 'AllIngredients'])->name('all-ingredients');
+        Route::get('/all-to-csv', [Controllers\Ingredients\IngredientsController::class, 'AllIngredientsToCSV'])->name('all-ingredients-to-csv');
 
         Route::get('/products-used-ingredient/{ingredientId?}', [Controllers\Ingredients\IngredientsController::class, 'ProductsUsedIngredient'])->name('products-used-ingredient');
 

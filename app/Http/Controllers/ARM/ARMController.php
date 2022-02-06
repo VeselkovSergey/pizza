@@ -38,6 +38,11 @@ class ARMController
                 'role' => [999],
             ],
             [
+                'title' => 'Все ингредиенты (Excel)',
+                'link' => route('all-ingredients-to-csv'),
+                'role' => [999, 777],
+            ],
+            [
                 'title' => 'Поставщики',
                 'link' => route('supplier-create-page'),
                 'role' => [999, 777],
