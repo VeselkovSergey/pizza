@@ -13,6 +13,7 @@ use App\Models\IngredientsInSupply;
 use App\Models\Suppliers;
 use App\Models\Supply;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class SupplyController extends Controller
 {
@@ -127,7 +128,7 @@ class SupplyController extends Controller
             ];
         }
         $newIngredientInSupply = IngredientsInSupply::insert($ingredientInSupply);
-        \Cache::delete('allProducts');
+        Cache::forget('allProducts');
 
         return ResultGenerate::Success();
     }

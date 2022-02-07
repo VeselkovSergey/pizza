@@ -53,6 +53,11 @@ class ARMController
                 'role' => [999, 777],
             ],
             [
+                'title' => 'Списания',
+                'link' => route('write-offs-page'),
+                'role' => [999],
+            ],
+            [
                 'title' => 'Все продукты (Админка)',
                 'link' => route('all-products-admin-page'),
                 'role' => [999],

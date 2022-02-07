@@ -132,6 +132,16 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
     });
 
+    Route::group(['prefix' => 'write-off'], function () {
+
+        Route::get('/', [Controllers\WriteOff\WriteOffController::class, 'Index'])->name('write-offs-page');
+        Route::get('/create', [Controllers\WriteOff\WriteOffController::class, 'Create'])->name('write-off-create-page');
+        Route::get('/detail/{writeOffId}', [Controllers\WriteOff\WriteOffController::class, 'Detail'])->name('write-off-detail-page');
+        Route::get('/edit/{writeOffId}', [Controllers\WriteOff\WriteOffController::class, 'Edit'])->name('write-off-edit-page');
+        Route::post('/save', [Controllers\WriteOff\WriteOffController::class, 'Save'])->name('write-off-save');
+
+    });
+
     Route::group(['prefix' => 'suppliers'], function () {
 
         Route::get('/create', [Controllers\Suppliers\SuppliersController::class, 'Create'])->name('supplier-create-page');

@@ -50,7 +50,7 @@ class IngredientsController extends Controller
         $ingredientsModels = Ingredients::select('id', 'title')->get();
         $output = '';
         $output .= chr(239) . chr(187) . chr(191);
-        $output .= 'ID; Название' . PHP_EOL;
+        $output .= 'ID; Название; Комментарий' . PHP_EOL;
 
         foreach ($ingredientsModels as $row) {
             $output.=  $row->id . ';' . $row->title . PHP_EOL;
