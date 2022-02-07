@@ -8,6 +8,7 @@ use App\Http\Controllers\Products\ProductsController;
 use App\Models\Products;
 use App\Models\PromoCodes;
 use App\Models\PromoCodesUsersUsed;
+use Illuminate\Support\Str;
 
 class PromoCodesController extends Controller
 {
@@ -133,5 +134,39 @@ class PromoCodesController extends Controller
         $promoCode->active = request()->post('promoCodeActive') === 'true' ? 1 : 0;
         $promoCode->save();
         return ResultGenerate::Success();
+    }
+
+    public static function GenerateSale($percent = 0, $description = '')
+    {
+        $title = strtoupper(Str::random(10));
+        $promoCode = [
+            'title' => $title,
+            'conditions' => json_encode((object)[
+                'every' => (object)[
+                    'productModifications' => null,
+                    'reiterationsCounts' => null,
+                    'discountPercent' => null,
+                    'discountSum' => null,
+                    'salePrice' => null,
+                ],
+                'general' => (object)[
+                    'discountPercent' => $percent,
+                    'discountSum' => null,
+                ]
+            ]),
+            'description' => $description,
+            'start_date' => now()->addDays(-1),
+            'end_date' => now()->addMonth(1),
+            'amount' => 1,
+            'user_limit' => 1,
+            'amount_used' => 0,
+            'active' => 1,
+        ];
+
+        if (PromoCodes::where('title', $title)->first()) {
+            return false;
+        }
+        PromoCodes::create($promoCode);
+        return $title;
     }
 }

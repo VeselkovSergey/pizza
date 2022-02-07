@@ -9,6 +9,7 @@ use App\Http\Controllers\ARM\ManagerARMController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Orders\OrdersController;
+use App\Http\Controllers\PromoCodes\PromoCodesController;
 use App\Models\Ingredients;
 use App\Models\Orders;
 use App\Models\ProductModificationsIngredients;
@@ -92,6 +93,27 @@ class TelegramBotController extends Controller
                         $message .= 'Отчёт /monthReport' . PHP_EOL;
                         $message .= 'Отчёт /lastMonthReport' . PHP_EOL;
                         $message .= 'Отчёт /fullReport' . PHP_EOL;
+                    }
+
+                    $telegram->sendMessage($message);
+                    break;
+
+                case '/sale25':
+                    $message = '';
+
+                    $message .= 'Братан. Ты что-то попутал ;)' . PHP_EOL;
+
+                    $user = User::where('telegram_chat_id', $telegram->ChatId())->first();
+                    if ($user && $user->UserIsAdmin()) {
+                        $res = PromoCodesController::GenerateSale(25, 'Промо телеграм-бот 25%');
+                        if ($res !== false) {
+                            $message .= $res . PHP_EOL;
+                        } else {
+                            $message .= 'Попробуй еще раз!' . PHP_EOL;
+                        }
+
+                    } else {
+                        $message .= 'Братан. Ты что-то попутал ;)' . PHP_EOL;
                     }
 
                     $telegram->sendMessage($message);
