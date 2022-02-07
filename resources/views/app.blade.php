@@ -50,6 +50,47 @@
                 }
             </style>
 
+        @else
+
+            <style>
+
+                .snow-blocks {
+                    z-index: -100;
+                    position: fixed;
+                    height: 100vh;
+                    width: 100vw;
+                    overflow: hidden;
+                    background-size:cover;
+                }
+
+                .snow1{
+                    background-image: url({{asset('snow1.png')}});
+                    position:absolute;
+                    width: 100%;
+                    height:100%;
+                    animation: snow1 18s linear infinite;
+                }
+
+                .snow2{
+                    background-image: url({{asset('snow2.png')}}),url({{asset('snow3.png')}});
+                    animation: snow2 10s linear infinite;
+                    width: 100%;
+                    height:100%;
+                    position:absolute;
+                }
+
+                @keyframes snow2{
+                    0%{background-position: 0 0, 0 0;}
+                    100%{background-position: 10% 600px, 10% 600px;}
+                }
+                @keyframes snow1{
+                    from{background-position: 0 -300px;}
+                    20% {background-position: 20% -100px;}
+                    40% {background-position: 30% 100px;}
+                    to{background-position: 20% 700px;}
+                }
+            </style>
+
         @endif
 
         @yield('css')
@@ -60,6 +101,12 @@
 
     <body class="@if(!$isARM) bg-black-custom color-white @endif" @if(!$isARM)style="background-image: url('{{asset('bg-2.jpg')}}'); background-attachment: fixed;"@endif>
 
+    @if(!$isARM)
+    <div class="snow-blocks">
+        <div class="snow1"></div>
+        <div class="snow2"></div>
+    </div>
+    @endif
 
         @php
             $authCheck = auth()->check();
