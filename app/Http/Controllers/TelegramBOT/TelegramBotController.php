@@ -101,8 +101,6 @@ class TelegramBotController extends Controller
                 case '/sale25':
                     $message = '';
 
-                    $message .= 'Братан. Ты что-то попутал ;)' . PHP_EOL;
-
                     $user = User::where('telegram_chat_id', $telegram->ChatId())->first();
                     if ($user && $user->UserIsAdmin()) {
                         $res = PromoCodesController::GenerateSale(25, 'Промо телеграм-бот 25%');
