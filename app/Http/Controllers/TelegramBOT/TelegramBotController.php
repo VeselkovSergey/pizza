@@ -99,17 +99,16 @@ class TelegramBotController extends Controller
                     break;
 
                 case '/sale25':
+                case '/sale50':
                     $message = '';
 
                     $user = User::where('telegram_chat_id', $telegram->ChatId())->first();
                     if ($user && $user->UserIsAdmin()) {
-                        $res = PromoCodesController::GenerateSale(25, 'Промо телеграм-бот 25%');
-                        if ($res !== false) {
-                            $message .= $res . PHP_EOL;
-                        } else {
-                            $message .= 'Попробуй еще раз!' . PHP_EOL;
+                        if ($command === '/sale25') {
+                            $message = self::PromoCodes(25, 'Промо 25%');
+                        } else if ($command === '/sale50') {
+                            $message = self::PromoCodes(50, 'Промо 50%');
                         }
-
                     } else {
                         $message .= 'Братан. Ты что-то попутал ;)' . PHP_EOL;
                     }
@@ -182,6 +181,18 @@ class TelegramBotController extends Controller
         } catch (\Exception $e) {
             \Log::error($e);
         }
+    }
+
+    public static function PromoCodes($percent, $description)
+    {
+        $message = '';
+        $res = PromoCodesController::GenerateSale($percent, $description);
+        if ($res !== false) {
+            $message .= $res . PHP_EOL;
+        } else {
+            $message .= 'Попробуй еще раз!' . PHP_EOL;
+        }
+        return $message;
     }
 
     public static function TodayReportRequest()
