@@ -114,8 +114,7 @@
             let completeButton = CreateElement('button', {content: 'Понеслась;)', class: 'big-button orange-button'});
             let modal = ModalWindow(completeButton);
             completeButton.addEventListener('click', () => {
-                modal.hide();
-                document.body.classList.remove('scroll-off')
+                CloseModal(modal);
             });
         }
 
