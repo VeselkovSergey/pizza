@@ -669,7 +669,7 @@ function ProductWindowGenerator(productId, productImg, productImgWebP, callback)
         IngredientsGenerator(productId) +
         '</div>'+
         ModificationsGenerate(productId) +
-        '<div class="container-button-put-in-basket mt-a mx-a" style="padding-bottom: 50px;"><button class="button-put-in-basket orange-button mt-25">В корзину</button></div>' +
+        '<div class="container-button-put-in-basket mt-a mx-a"><button class="button-put-in-basket orange-button mt-25">В корзину</button></div>' +
         '</div>' +
         '</div>';
 
