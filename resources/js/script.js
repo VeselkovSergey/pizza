@@ -199,6 +199,13 @@ function ModalWindow(content, closingCallback, flash) {
     }
 }
 
+function CloseModal(modal) {
+    modal.remove();
+    if (document.querySelectorAll('.modal-window-component-container').length === 0) {
+        document.body.classList.remove('scroll-off');
+    }
+}
+
 function CloseByScroll(modalWindowComponentContainer, container, content, closingCallback) {
     let widthClientScreen = document.documentElement.clientWidth;
     if (widthClientScreen < 768) {
