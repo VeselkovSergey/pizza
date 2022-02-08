@@ -71,7 +71,7 @@ class OrdersController extends Controller
 
             $flashMessage = 'Заказ обновлен. Не забудь обновить страницу с заказом.';
         } else {
-            $newOrder = Orders::create([
+            $order = Orders::create([
                 'user_id' => $user->id,
                 'status_id' => Orders::STATUS_TEXT['clientCreateOrder'],
                 'client_raw_data' => json_encode($clientInformation),
@@ -79,7 +79,6 @@ class OrdersController extends Controller
                 'all_information_raw_data' => json_encode($request->all()),
                 'order_amount' => $orderAmount,
             ]);
-            $order = $newOrder;
             $orderId = $order->id;
             self::ChangeStatus($order, Orders::STATUS_TEXT['newOrder']);
 

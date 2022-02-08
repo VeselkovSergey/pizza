@@ -2,6 +2,7 @@ const SvgCloseButton = '<svg xmlns="http://www.w3.org/2000/svg" width="16" heigh
 const SvgPlusButton = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16"> <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/> </svg>';
 const SvgMinusButton = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16"> <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/> </svg>';
 const SvgTrashButton = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"> <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/> <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/> </svg>';
+const SvgCheckedButton = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16"> <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/> </svg>';
 
 function LoaderShow() {
     let loader = document.createElement("div");
@@ -835,7 +836,7 @@ function BasketWindow() {
                         '</div>' +
                     '</div>' +
                     '<div class="text-center mt-10">Бесплатная доставка от 500 рублей, иначе 150 рублей по городу</div>' +
-                    '<div class="w-100 flex-center mt-25" style="padding-bottom: 50px;"><button class="cp order-create btn first">' + (orderId ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button>' + (orderId ? '<button class="cp clean-basket btn first ml-10">Очистить данные</button>'  : '') + '</div>' +
+                    '<div class="w-100 flex-center mt-25" style="padding-bottom: 50px;"><button class="cp order-create orange-button">' + (orderId ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button>' + (orderId ? '<button class="cp clean-basket orange-button ml-10">Очистить данные</button>'  : '') + '</div>' +
                 '</div>';
         }
 
@@ -1115,7 +1116,7 @@ function LoginWindow(callback) {
                         childs: [
                             authButton = CreateElement('button', {
                                 content: 'Авторизоваться',
-                                class: 'btn first',
+                                class: 'orange-button',
                                 events: {
                                     click: () => {
                                         if (PhoneValidation(phoneField.value) !== false) {
@@ -1162,7 +1163,7 @@ function LoginWindow(callback) {
                         childs: [
                             approveButton = CreateElement('button', {
                                 content: 'Подтвердить',
-                                class: 'btn first',
+                                class: 'orange-button',
                                 events: {
                                     click: () => {
                                         let confirmationCodeInputValue = confirmationCodeInput.value.replace(/[^\d;]/g, '');
@@ -1442,7 +1443,7 @@ function ProductWindowGenerator(productId, productImg, productImgWebP, callback)
         IngredientsGenerator(productId) +
         '</div>'+
         ModificationsGenerate(productId) +
-        '<div class="container-button-put-in-basket mt-a mx-a" style="padding-bottom: 50px;"><button class="button-put-in-basket btn first mt-25">В корзину</button></div>' +
+        '<div class="container-button-put-in-basket mt-a mx-a" style="padding-bottom: 50px;"><button class="button-put-in-basket orange-button mt-25">В корзину</button></div>' +
         '</div>' +
         '</div>';
 
