@@ -79,15 +79,16 @@
                     position:absolute;
                 }
 
-                @keyframes snow2{
-                    0%{background-position: 0 0, 0 0;}
-                    100%{background-position: 10% 600px, 10% 600px;}
-                }
                 @keyframes snow1{
                     from{background-position: 0 -300px;}
                     20% {background-position: 20% -100px;}
                     40% {background-position: 30% 100px;}
                     to{background-position: 20% 700px;}
+                }
+
+                @keyframes snow2{
+                    0%{background-position: 0 0, 0 0;}
+                    100%{background-position: 10% 100vh, 10% 100vw;}
                 }
             </style>
 
