@@ -81,7 +81,10 @@
                 LoaderShow();
                 Ajax('{{route('chef-arm-change-status-order-to-cooked')}}', 'POST', {orderId: orderId}).then((response) => {
                     document.body.querySelector('.order-id-'+orderId).remove();
-                    CloseModal(modal);
+                    console.log(modal)
+                    setTimeout(() => {
+                        CloseModal(modal);
+                    }, 200)
                 }).finally(() => {
                     LoaderHide();
                 });
