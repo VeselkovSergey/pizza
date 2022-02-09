@@ -200,10 +200,12 @@ function ModalWindow(content, closingCallback, flash) {
 }
 
 function CloseModal(modal) {
-    modal.remove();
-    if (document.querySelectorAll('.modal-window-component-container').length === 0) {
-        document.body.classList.remove('scroll-off');
-    }
+    modal.slowRemove();
+    setTimeout(() => {
+        if (document.querySelectorAll('.modal-window-component-container').length === 0) {
+            document.body.classList.remove('scroll-off');
+        }
+    }, 450);
 }
 
 function CloseByScroll(modalWindowComponentContainer, container, content, closingCallback) {
