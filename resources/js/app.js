@@ -632,6 +632,9 @@ function ManagerArmCheckOrderStatusChange(data = null) {
             MarkOrderNewStatus(data.orderId, data.oldStatusId, data.newStatusId)
         }
 
+        let audio = new Audio('./audio/new-order.mp3'); // Создаём новый элемент Audio
+        audio.play(); // Автоматически запускаем
+
     } else {
         alarmContainer.classList.remove('motion');
     }
