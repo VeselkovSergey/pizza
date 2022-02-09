@@ -49,7 +49,7 @@
             </div>
 
             <div class="mb-10">
-                Средний чек без самовывоза: {{ number_format( ($ordersStatistics->ordersAmountWithoutNotDelivery / $ordersStatistics->ordersNotDelivery) , 2, '.', '\'')}}
+                Средний чек без самовывоза: {{ $ordersStatistics->ordersNotDelivery !== 0 ? number_format( ($ordersStatistics->ordersAmountWithoutNotDelivery / $ordersStatistics->ordersNotDelivery) , 2, '.', '\'') : 0}}
             </div>
 
             <div class="mb-10">Себестоимость: {{number_format($ordersStatistics->ordersCostAmount, 2, '.', '\'')}}</div>
