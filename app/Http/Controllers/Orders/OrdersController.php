@@ -226,10 +226,14 @@ class OrdersController extends Controller
 
         $telegram = new Telegram();
         if ($editOrder) {
-            return $telegram->editMessageText($message, env('TELEGRAM_BOT_ORDERS_CHAT'), $orderFullInformation->order->order_telegram_message_id);
+            $telegramResult = $telegram->editMessageText('Кто-то что-то изменил ;)', env('TELEGRAM_BOT_ORDERS_CHAT'), $orderFullInformation->order->order_telegram_message_id);
         } else {
-            return $telegram->sendMessage($message, env('TELEGRAM_BOT_ORDERS_CHAT'));
+            $telegramResult =  $telegram->sendMessage('Новый заказ. Заходи посмотри ;)', env('TELEGRAM_BOT_ORDERS_CHAT'));
         }
+
+        $telegram->sendMessage($message, env('TELEGRAM_BOT_ORDERS_FULL_CHAT'));
+
+        return $telegramResult;
     }
 
     public static function SearchByPhone(string $phone)
