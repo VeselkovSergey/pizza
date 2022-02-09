@@ -294,30 +294,27 @@ class OrdersController extends Controller
     {
         $orderId = \request()->orderId;
         $order = Orders::find($orderId);
-        $order->sendToKitchen = OrdersStatusLogs::where('order_id', $order->id)->where('new_status_id', Orders::STATUS_TEXT['kitchen'])->first('created_at')->created_at->format('H:i');
+        $sendToKitchen = OrdersStatusLogs::where('order_id', $order->id)->where('new_status_id', Orders::STATUS_TEXT['kitchen'])->first('created_at')->created_at->format('H:i');
 
         $productsInOrder = [];
-        foreach (json_decode($order->products_raw_data) as $product) {
+        /** @var ProductsModificationsInOrders $product */
+        foreach ($order->ProductsModifications as $product) {
+            $modification = $product->ProductModifications->Modification;
+            $productModel = $product->ProductModifications->Product;
+            $productTitle = $productModel->title . ' ' . ($modification->title !== 'Соло-продукт' ? $modification->title . ' ' . $modification->value : '');
+            $categoryId = $productModel->category_id;
             $productsInOrder[] = [
-                'categoryId' => (int)$product->data->product->categoryId,
-                'title' => $product->data->product->categoryTitle . ' ' . $product->data->product->title . ' ' . ($product->data->modification->title !== 'Соло-продукт' ? $product->data->modification->title . ' ' . $product->data->modification->value : ''),
-                'amount' => $product->amount,
+                'categoryId' => (int)$categoryId,
+                'title' => $productTitle,
+                'amount' => $product->product_modification_amount,
             ];
         }
 
-        $order->products = $productsInOrder;
-        unset($order->client_raw_data);
-        unset($order->all_information_raw_data);
-        unset($order->created_at);
-        unset($order->order_amount);
-        unset($order->status_id);
-        unset($order->telegram_message_id);
-        unset($order->total_order_amount);
-        unset($order->updated_at);
-        unset($order->user_id);
-        unset($order->courier_id);
-        unset($order->products_raw_data);
-        return $order;
+        return (object)[
+            'id' => $order->id,
+            'products' => $productsInOrder,
+            'sendToKitchen' => $sendToKitchen,
+        ];
     }
 
     public function UpdateYandexGeo()

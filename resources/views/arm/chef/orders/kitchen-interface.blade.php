@@ -55,51 +55,7 @@
     <div>
         <div>Заказы</div>
         <div class="orders-container flex-wrap">
-            @if(sizeof($orders))
-                @foreach($orders as $order)
-                    <div class="width-order-info mb-25 flex-column order-id-{{$order->id}}" onclick="OrderCompletionWindow({{$order->id}})">
-                        @php($clientInfo = json_decode($order->client_raw_data))
-                        @php($productsRawData = json_decode($order->products_raw_data))
 
-
-                        <div class="p-5">
-                            <div class="border p-5">
-                                <div class="title-order flex-space-between mb-10">
-                                    <div class="font-weight-600"># {{$order->id}}</div>
-                                    <div class="start-kitchen-time font-weight-600">{{$order->CurrentStatus()->created_at->format('H:i')}}</div>
-                                    <div class="kitchen-time font-weight-600">00<span class="time-delimiter">:</span>00</div>
-                                </div>
-
-                                <div class="products-container flex-column">
-
-                                    <div class="font-weight-600" style="order: 1;">Пиццы:</div>
-                                    <div class="font-weight-600 mt-25" style="order: 3;">Горячка:</div>
-                                    <div class="font-weight-600 mt-25" style="order: 5;">Остальное:</div>
-
-                                    @foreach($productsRawData as $product)
-
-                                        <?php
-
-                                        $flexOrder = match ($product->data->product->categoryId) {
-                                            1 => 2,
-                                            2, 3, 4, => 4,
-                                            default => 6,
-                                        };
-
-                                        ?>
-
-                                        <div class="flex-space-between py-5 bg-order-{{$flexOrder}}" style="border-bottom: 1px solid black; order: {{$flexOrder}}">
-                                            @php($titleText = $product->data->product->categoryTitle . ' ' . $product->data->product->title . ' ' . ($product->data->modification->title !== 'Соло-продукт' ? $product->data->modification->title . ' ' . $product->data->modification->value : ''))
-                                            <span>{{$titleText}}</span>
-                                            <span class="font-weight-600 p-5">{{$product->amount}}</span>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            @endif
         </div>
     </div>
 
@@ -122,9 +78,12 @@
             let completeButton = CreateElement('button', {content: 'выполнен', class: 'big-button orange-button'});
             let modal = ModalWindow(completeButton);
             completeButton.addEventListener('click', () => {
+                LoaderShow();
                 Ajax('{{route('chef-arm-change-status-order-to-cooked')}}', 'POST', {orderId: orderId}).then((response) => {
                     document.body.querySelector('.order-id-'+orderId).remove();
                     CloseModal(modal);
+                }).finally(() => {
+                    LoaderHide();
                 });
             });
         }
@@ -143,32 +102,40 @@
 
         const kitchenChannel = pusher.subscribe('kitchen-channel');
         kitchenChannel.bind('newOrderForKitchen', function(data) {
-
             let audio = new Audio('{{asset('audio/new-order.mp3')}}'); // Создаём новый элемент Audio
             audio.play(); // Автоматически запускаем
+            GetOrdersForKitchen(data.orderId)
+        });
 
-            Ajax('{{route('order-info')}}?orderId=' + data.orderId).then((response) => {
+        function GetOrdersForKitchen(orderId) {
+            Ajax('{{route('order-info')}}?orderId=' + orderId).then((response) => {
                 GenerateOrderInfo(response);
             });
-        });
+        }
+
+        @if(sizeof($ordersId))
+                @foreach($ordersId as $orderId)
+                    GetOrdersForKitchen({{$orderId}});
+                @endforeach
+        @endif
 
         function GenerateOrderInfo(orderInfo) {
             let content =
-                                '<div class="p-5">'+
-                                    '<div class="border p-5">'+
-                                        '<div class="title-order flex-space-between mb-10">'+
-                                            '<div class="font-weight-600"># ' + orderInfo.id +'</div>'+
-                                            '<div class="start-kitchen-time font-weight-600 hide">'+orderInfo.sendToKitchen+'</div>'+
-                                            '<div class="kitchen-time font-weight-600"><span class="time-delimiter">:</span></div>'+
-                                        '</div>'+
-                                        '<div class="products-container flex-column">'+
-                                            '<div class="font-weight-600" style="order: 1;">Пиццы:</div>'+
-                                            '<div class="font-weight-600 mt-25" style="order: 3;">Горячка:</div>'+
-                                            '<div class="font-weight-600 mt-25" style="order: 5;">Остальное:</div>'+
-                                            GenerateProductInfo(orderInfo) +
-                                        '</div>'+
-                                    '</div>'+
-                                '</div>';
+                '<div class="p-5">'+
+                    '<div class="border p-5">'+
+                        '<div class="title-order flex-space-between mb-10">'+
+                            '<div class="font-weight-600"># ' + orderInfo.id +'</div>'+
+                            '<div class="start-kitchen-time font-weight-600 hide">'+orderInfo.sendToKitchen+'</div>'+
+                            '<div class="kitchen-time font-weight-600"><span class="time-delimiter">:</span></div>'+
+                        '</div>'+
+                        '<div class="products-container flex-column">'+
+                            '<div class="font-weight-600" style="order: 1;">Пиццы:</div>'+
+                            '<div class="font-weight-600 mt-25" style="order: 3;">Горячка:</div>'+
+                            '<div class="font-weight-600 mt-25" style="order: 5;">Остальное:</div>'+
+                            GenerateProductInfo(orderInfo) +
+                        '</div>'+
+                    '</div>'+
+                '</div>';
 
             return CreateElement('div', {content: content, class: 'width-order-info mb-25 flex-column order-id-'+orderInfo.id, attr: {onclick: 'OrderCompletionWindow('+orderInfo.id+')'}}, ordersContainer);
         }
