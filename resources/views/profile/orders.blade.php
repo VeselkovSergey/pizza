@@ -24,7 +24,7 @@
     <div class="flex-wrap">
         @foreach($userOrders as $order)
             <?php /** @var \App\Models\Orders $order */ ?>
-        @php($products = json_decode($order->products_raw_data))
+        @php($products = $order->ProductsModifications)
             <div class="mb-10 w-100">
                 <div class=" border-orange border-radius-15 p-10" style="background-color: #00000090">
                     <div class="mb-10">
@@ -33,12 +33,13 @@
                     </div>
                     <div class="flex scroll-x-auto w-100 mb-10">
                         @foreach($products as $product)
-                            @php($productTitle = $product->data->product->categoryTitle . ' ' . $product->data->product->title . ' ' . $product->data->modification->title . ' ' . $product->data->modification->value)
-                            @php($webpFile = (file_exists(public_path() . '/img/png/' . $product->data->product->id . '.png') ? 'img/png/' . $product->data->product->id . '.png' : 'img-pizza.png') . '?2')
-                            @php($imgFile = (file_exists(public_path() . '/img/jpg500/' . $product->data->product->id . '.jpg') ? 'img/jpg500/' . $product->data->product->id . '.jpg' : 'img-pizza.png') . '?2')
-                            @for($i = 0; $i < $product->amount; $i++)
+                            @php($modification = $product->ProductModifications->Modification)
+                            @php($productModel = $product->ProductModifications->Product)
+                            @php($productTitle = $productModel->title . ' ' . ($modification->title !== 'Соло-продукт' ? $modification->title . ' ' . $modification->value : ''))
+                            @php($imgFile = asset('img/png/'. $productModel->id .'.png'))
+                            @for($i = 0; $i < $product->product_modification_amount; $i++)
                                 <picture style="width: 100px; min-width: 100px;">
-                                    <source class="w-100" srcset="{{url($webpFile)}}" type="image/webp">
+                                    <source class="w-100" srcset="{{url($imgFile)}}" type="image/webp">
                                     <source class="w-100" srcset="{{url($imgFile)}}" type="image/jpeg">
                                     <img class="w-100" src="{{url($imgFile)}}" alt="{{$productTitle}}">
                                 </picture>

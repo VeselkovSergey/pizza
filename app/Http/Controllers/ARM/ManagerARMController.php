@@ -40,7 +40,6 @@ class ManagerARMController extends Controller
         $productsModificationsInOrder = $order->ProductsModifications;
         $orderStatuses = $order->Statuses;
         $clientInfo = json_decode($order->client_raw_data);
-        $rawData = json_decode($order->all_information_raw_data);
         $promoCode = null;
         if (isset($clientInfo->clientPromoCode)) {
             $promoCode = PromoCodes::where('title', $clientInfo->clientPromoCode)->first();
@@ -57,7 +56,6 @@ class ManagerARMController extends Controller
             'orderStatuses' => $orderStatuses,
             'productsModificationsInOrder' => $productsModificationsInOrder,
             'clientInfo' => $clientInfo,
-            'rawData' => $rawData,
             'couriers' => $couriers,
             'allProducts' => $allProducts,
             'promoCode' => $promoCode,
@@ -77,9 +75,8 @@ class ManagerARMController extends Controller
         $order = Orders::find($orderId);
         $clientInfo = json_decode($order->client_raw_data);
         $productsModificationsInOrder = $order->ProductsModifications;
-        $rawData = json_decode($order->all_information_raw_data);
 
-        return view('arm.management.orders.invoice.invoice', compact('order', 'clientInfo', 'productsModificationsInOrder', 'rawData'));
+        return view('arm.management.orders.invoice.invoice', compact('order', 'clientInfo', 'productsModificationsInOrder'));
     }
 
     public function InvoiceChefPage()

@@ -89,7 +89,6 @@
 
                     @php($clientInfo = json_decode($order->client_raw_data))
                     @php($productsModificationsInOrder = $order->ProductsModifications)
-                    @php($rawData = json_decode($order->all_information_raw_data))
                     @php($longTime = false)
                     @php($longTimeDelivered = false)
 
@@ -343,7 +342,7 @@
             let columnId = columnTitle.dataset.titleColumnId;
 
             let columnsInOrder = localStorage.getItem('columnsInOrder');
-            let isChecked = '';
+            let isChecked;
             if (columnsInOrder !== null) {
                 columnsInOrder = JSON.parse(columnsInOrder);
                 if (columnsInOrder['column-id-' + columnId] !== undefined) {
