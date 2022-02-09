@@ -158,7 +158,7 @@ class AdministratorARMController extends Controller
             $productsModifications[$key]->costPrice = $costPrice;
 
             if ($productModification->costPrice === 0) {
-                throw new \Exception('Ошибка расчёта ' . $productsModifications->Products->title);
+                throw new \Exception('Ошибка расчёта ' . $productsModifications);
             } else {
                 $productsModifications[$key]->margin = number_format(((($productModification->selling_price - $productModification->costPrice) / $productModification->costPrice) * 100), 2);
             }
