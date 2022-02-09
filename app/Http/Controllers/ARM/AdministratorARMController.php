@@ -40,7 +40,7 @@ class AdministratorARMController extends Controller
         return view('arm.administration.users.orders', compact('user', 'orders'));
     }
 
-    public function Orders()
+    public function OrdersOld()
     {
         $startDate = (request()->get('start-date') === null) ? date('Y-m-d', time()) : request()->get('start-date');
         $endDate = (request()->get('end-date') === null) ? date('Y-m-d', time()) : request()->get('end-date');
@@ -52,10 +52,10 @@ class AdministratorARMController extends Controller
             $supplySum = Supply::SuppliesSumByDate($startDate, $endDate);
         }
 
-        return view('arm.administration.orders.index', compact('orders', 'supplySum', 'startDate', 'endDate'));
+        return view('arm.administration.orders.index-old', compact('orders', 'supplySum', 'startDate', 'endDate'));
     }
 
-    public function Orders2()
+    public function Orders()
     {
         $startDate = (request()->get('start-date') === null) ? date('Y-m-d', time()) : request()->get('start-date');
         $endDate = (request()->get('end-date') === null) ? date('Y-m-d', time()) : request()->get('end-date');
@@ -67,7 +67,7 @@ class AdministratorARMController extends Controller
 
         $supplySum = Supply::SuppliesSumByDate($startDate, $endDate);
 
-        return view('arm.administration.orders.index2', compact('orders', 'supplySum', 'ordersStatistics', 'startDate', 'endDate'));
+        return view('arm.administration.orders.index', compact('orders', 'supplySum', 'ordersStatistics', 'startDate', 'endDate'));
     }
 
     public function OrdersAddresses()

@@ -184,7 +184,7 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::post('/user-save-changes', [Controllers\ARM\AdministratorARMController::class, 'UserSaveChanges'])->name('administrator-arm-user-save-changes');
 
         Route::get('/orders', [Controllers\ARM\AdministratorARMController::class, 'Orders'])->name('administrator-arm-orders-page');
-        Route::get('/orders2', [Controllers\ARM\AdministratorARMController::class, 'Orders2'])->name('administrator-arm-orders2-page');
+        Route::get('/orders-old', [Controllers\ARM\AdministratorARMController::class, 'OrdersOld'])->name('administrator-arm-orders-old-page');
         Route::get('/orders-addresses', [Controllers\ARM\AdministratorARMController::class, 'OrdersAddresses'])->name('administrator-arm-orders-addresses-page');
 
         Route::group(['prefix' => 'products'], function () {
