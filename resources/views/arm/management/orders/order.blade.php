@@ -166,7 +166,7 @@
                     '<div class="mb-15">Выберите курьера</div>' +
                     '<label class="p-5 cp"><input type="radio" name="courier" checked  value="0">Самовывоз</label>' +
                 @foreach($couriers as $courier)
-                    '<label class="p-5 cp"><input type="radio" name="courier" value="{{$courier->id}}">{{$courier->name}}</label>' +
+                    '<label class="p-5 cp"><input type="radio" name="courier" value="{{$courier->id}}">({{$courier->id}}) {{$courier->name}}</label>' +
                 @endforeach
                     '<button class="mt-15 select-courier-button">Подтвердить</button>' +
                 '</div>';
