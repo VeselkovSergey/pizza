@@ -230,6 +230,7 @@
                 localStorage.setItem('lastClientName', '{{$clientInfo->clientName}}');
                 localStorage.setItem('lastClientPhone', '{{$clientInfo->clientPhone}}');
                 localStorage.setItem('lastClientAddressDelivery', '{{$clientInfo->clientAddressDelivery}}');
+                localStorage.setItem('lastTypeDelivery', '{{isset($clientInfo->typeDelivery) && $clientInfo->typeDelivery[1] === true ? 'without-delivery' : 'address'}}');
                 localStorage.setItem('lastClientComment', '{{$clientInfo->clientComment}}');
                 localStorage.setItem('lastTypePayment', '{{$clientInfo->typePayment[0] === true ? 'card' : 'cash'}}');
                 localStorage.setItem('orderId', orderId);

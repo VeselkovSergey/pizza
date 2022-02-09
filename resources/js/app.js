@@ -244,6 +244,7 @@ function BasketWindow() {
             DeleteAllProductsInBasket();
             localStorage.removeItem('lastClientName');
             localStorage.removeItem('lastClientPhone');
+            localStorage.removeItem('lastTypeDelivery');
             localStorage.removeItem('lastClientAddressDelivery');
             localStorage.removeItem('lastClientComment');
             localStorage.removeItem('lastTypePayment');
@@ -466,12 +467,13 @@ function BasketWindow() {
         let lastClientAddressDelivery = localStorage.getItem('lastClientAddressDelivery') !== null ? localStorage.getItem('lastClientAddressDelivery') : '';
         let lastClientComment = localStorage.getItem('lastClientComment') !== null ? localStorage.getItem('lastClientComment') : '';
         let lastTypePayment = localStorage.getItem('lastTypePayment') !== null ? localStorage.getItem('lastTypePayment') : '';
+        let lastTypeDelivery = localStorage.getItem('lastTypeDelivery') !== null ? localStorage.getItem('lastTypeDelivery') : '';
 
         let countProductsInBasket = CountProductsInBasket();
         let phoneInput = admin ?
             '<div class="w-100 flex-wrap mt-10">' +
-            '<label for="">Номер телефона</label>' +
-            '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '" />' +
+                '<label for="">Номер телефона</label>' +
+                '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '" />' +
             '</div>' : '';
 
         let content = '';
@@ -479,51 +481,84 @@ function BasketWindow() {
         if (countProductsInBasket !== 0) {
             content =
                 '<div class="client-information w-100">' +
-                '<div class="promo-code-container w-100 flex-wrap-center mb-10">' +
-                '<label for="">Промокод (скидки и акции не суммируются)</label>' +
-                '<div class="pos-rel mr-10 flex promo-code-input-container">' +
-                '<input name="clientPromoCode" autocomplete="off" class="w-100" type="text" />' +
-                '<div class="pos-abs right-0 top-0 h-100 flex-center promo-code-clear-button-container"><button class="promo-code-clear-button cp flex-center">'+SvgCloseButton+'</button></div>' +
-                '</div>' +
-                '<button class="promo-code-apply-button orange-button">Применить</button>' +
-                '</div>' +
-                '<div>Оформление заказа</div>' +
-                '<div class="w-100 flex-wrap mt-10">' +
-                '<label for="">Имя</label>' +
-                '<input name="clientName" placeholder="имя" class="need-validate last-data w-100" type="text" value="' + lastClientName + '" />' +
-                '</div>' +
-                phoneInput +
-                '<div class="w-100 flex-wrap mt-10">' +
-                '<label for="">Адрес для доставки</label>' +
-                '<input name="clientAddressDelivery" placeholder="улица, дом, кв." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '" />' +
-                '</div>' +
-                '<div class="w-100 flex-wrap mt-10">' +
-                '<label for="">Комментарий</label>' +
-                '<textarea  rows="3" name="clientComment" class="w-100 last-data" placeholder="Особые пожелания, сдача, подъезд, код-домофона">' + lastClientComment + '</textarea>' +
-                '</div>' +
-                '<div class="w-100 flex-wrap mt-10">' +
-                '<div class="w-100">Способ оплаты</div>' +
-                '<div class="flex w-100 px-5">' +
-                '<div class="flex w-50">' +
-                '<label for="bank-payment">' +
-                '<input ' + ((lastTypePayment === 'card' || lastTypePayment === '') ? 'checked' : '') + ' name="typePayment" value="card" type="radio" id="bank-payment" class="last-data hide" />' +
-                '<span class="cp py-10 block text-center w-100">Карта</span>' +
-                '</label>' +
-                '</div>' +
-                '<div class="flex w-50">' +
-                '<label for="cash-payment">' +
-                '<input ' + (lastTypePayment === 'cash' ? 'checked' : '') + ' name="typePayment" type="radio" value="cash" id="cash-payment" class="last-data hide" />' +
-                '<span class="cp py-10 block text-center w-100">Наличные</span>' +
-                '</label>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="text-center mt-10">Бесплатная доставка от 500 рублей, иначе 150 рублей по городу</div>' +
-                '<div class="w-100 flex-center mt-25" style="padding-bottom: 50px;"><button class="cp order-create orange-button">' + (orderId ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button>' + (orderId ? '<button class="cp clean-basket orange-button ml-10">Очистить данные</button>'  : '') + '</div>' +
+                    '<div class="promo-code-container w-100 flex-wrap-center mb-10">' +
+                        '<label for="">Промокод (скидки и акции не суммируются)</label>' +
+                        '<div class="pos-rel mr-10 flex promo-code-input-container">' +
+                            '<input name="clientPromoCode" autocomplete="off" class="w-100" type="text" />' +
+                            '<div class="pos-abs right-0 top-0 h-100 flex-center promo-code-clear-button-container"><button class="promo-code-clear-button cp flex-center">'+SvgCloseButton+'</button></div>' +
+                        '</div>' +
+                        '<button class="promo-code-apply-button orange-button">Применить</button>' +
+                    '</div>' +
+                    '<div>Оформление заказа</div>' +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<label for="">Имя</label>' +
+                        '<input name="clientName" placeholder="имя" class="need-validate last-data w-100" type="text" value="' + lastClientName + '" />' +
+                    '</div>' +
+                    phoneInput +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<div class="w-100">Адрес для доставки</div>' +
+
+                        '<div class="flex w-100 px-5 mb-10">' +
+                            '<div class="flex w-50">' +
+                                '<label for="delivery" class="change-type-delivery-button" data-type-delivery="address">' +
+                                    '<input ' + ((lastTypeDelivery === 'address' || lastTypeDelivery === '') ? 'checked' : '') + ' name="typeDelivery" value="address" type="radio" id="delivery" class="last-data hide" />' +
+                                    '<span class="cp py-10 block text-center w-100">Доставка</span>' +
+                                '</label>' +
+                            '</div>' +
+                            '<div class="flex w-50">' +
+                                '<label for="without-delivery" class="change-type-delivery-button" data-type-delivery="without-delivery">' +
+                                    '<input ' + (lastTypeDelivery === 'without-delivery' ? 'checked' : '') + ' name="typeDelivery" type="radio" value="without-delivery" id="without-delivery" class="last-data hide" />' +
+                                    '<span class="cp py-10 block text-center w-100">Самовывоз</span>' +
+                                '</label>' +
+                            '</div>' +
+                        '</div>' +
+
+                        '<input ' + (lastTypeDelivery === 'without-delivery' ? 'readonly' : '') + ' name="clientAddressDelivery" placeholder="улица, дом, кв." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"  class="need-validate delivery-address last-data w-100" type="text"  value="' + lastClientAddressDelivery + '" />' +
+                    '</div>' +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                        '<label for="">Комментарий</label>' +
+                        '<textarea  rows="3" name="clientComment" class="w-100 last-data" placeholder="Особые пожелания, сдача, подъезд, код-домофона">' + lastClientComment + '</textarea>' +
+                    '</div>' +
+                    '<div class="w-100 flex-wrap mt-10">' +
+                    '<div class="w-100">Способ оплаты</div>' +
+                        '<div class="flex w-100 px-5">' +
+                            '<div class="flex w-50">' +
+                                '<label for="bank-payment">' +
+                                    '<input ' + ((lastTypePayment === 'card' || lastTypePayment === '') ? 'checked' : '') + ' name="typePayment" value="card" type="radio" id="bank-payment" class="last-data hide" />' +
+                                    '<span class="cp py-10 block text-center w-100">Карта</span>' +
+                                '</label>' +
+                            '</div>' +
+                            '<div class="flex w-50">' +
+                                '<label for="cash-payment">' +
+                                    '<input ' + (lastTypePayment === 'cash' ? 'checked' : '') + ' name="typePayment" type="radio" value="cash" id="cash-payment" class="last-data hide" />' +
+                                    '<span class="cp py-10 block text-center w-100">Наличные</span>' +
+                                '</label>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="text-center mt-10">Бесплатная доставка от 500 рублей, иначе 150 рублей по городу</div>' +
+                    '<div class="w-100 flex-center mt-25" style="padding-bottom: 50px;"><button class="cp order-create orange-button">' + (orderId ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button>' + (orderId ? '<button class="cp clean-basket orange-button ml-10">Очистить данные</button>'  : '') + '</div>' +
                 '</div>';
         }
 
-        return CreateElement('div', {content: content});
+        const orderInfoGenerationElement = CreateElement('div', {content: content});
+
+        orderInfoGenerationElement.querySelectorAll('.change-type-delivery-button').forEach((button) => {
+            button.addEventListener('click', () => {
+                const typeDelivery = button.dataset.typeDelivery;
+                const addressInput = orderInfoGenerationElement.querySelector('input[name="clientAddressDelivery"]');
+                if (typeDelivery === 'without-delivery') {
+                    addressInput.setAttribute('readonly', 'true');
+                    addressInput.value = 'ул Вернова С.Н., д 9';
+                    localStorage.setItem('lastClientAddressDelivery', 'ул Вернова С.Н., д 9');
+                } else {
+                    addressInput.removeAttribute('readonly');
+                    addressInput.value = '';
+                }
+            });
+        });
+
+        return orderInfoGenerationElement;
     }
 
 }
@@ -590,6 +625,7 @@ function CreateOrder(orderId) {
             if (orderId) {
                 localStorage.removeItem('lastClientName');
                 localStorage.removeItem('lastClientPhone');
+                localStorage.removeItem('lastTypeDelivery');
                 localStorage.removeItem('lastClientAddressDelivery');
                 localStorage.removeItem('lastClientComment');
                 localStorage.removeItem('lastTypePayment');
