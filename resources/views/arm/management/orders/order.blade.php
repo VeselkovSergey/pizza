@@ -65,7 +65,7 @@
             <div class="toggle-button cp" data-toogle="status-log-container">Изменения статуса:</div>
             <div class="ml-10 status-log-container">
                 @foreach($orderStatuses as $orderStatus)
-                    <div class="p-5 m-5 flex-center-vertical flex-wrap" style="border: 1px solid grey;">
+                    <div class="p-5 m-5 flex-center-vertical flex-wrap border">
                         <div class="mr-5" style="min-width: 200px">{{$orderStatus->created_at}}</div>
                         <div class="mr-5 p-5 order-status-{{$orderStatus->old_status_id}}">{{\App\Models\Orders::STATUS[$orderStatus->old_status_id]}}</div>
                         <div class="mr-5">></div>
