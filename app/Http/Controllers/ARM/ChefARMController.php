@@ -25,7 +25,7 @@ class ChefARMController extends Controller
 
     public function OrdersKitchenInterface()
     {
-        $orders = Orders::where('id', 500)->get();
+        $orders = Orders::KitchenStatusOnly();
         $ordersId = [];
         foreach ($orders as $order) {
             $ordersId[] = $order->id;
