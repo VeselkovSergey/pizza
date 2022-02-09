@@ -87,7 +87,7 @@ function PriceSumProductsInBasket() {
             if (promoCode.general.discountPercent === null && promoCode.general.discountSum === null) {       // если НЕ установлена скидка на весь заказ в процентах или сумме
                 if (promoCode.every.productModifications.indexOf(modificationId) !== -1) {
                     if (reiterationsCounts > 0) {
-                        let tempReiterationsCounts = reiterationsCounts > productModificationAmount ? productModificationAmount : reiterationsCounts;
+                        let tempReiterationsCounts = reiterationsCounts > amount ? amount : reiterationsCounts;
                         reiterationsCounts -= tempReiterationsCounts;
                         if (promoCode.every.discountPercent !== null) {     // скидка на каждую позицию в процентах
                             discountAmount += (price / 100 * promoCode.every.discountPercent) * tempReiterationsCounts;
