@@ -48,6 +48,10 @@
                 Средний чек: {{( sizeof($orders) - $ordersStatistics->amountOrdersCancelled ) !== 0 ? ( number_format( ($ordersStatistics->ordersAmount / (sizeof($orders) - $ordersStatistics->amountOrdersCancelled) ), 2, '.', '\'') ) : 0}}
             </div>
 
+            <div class="mb-10">
+                Средний чек без самовывоза: {{ number_format( ($ordersStatistics->ordersAmountWithoutNotDelivery / $ordersStatistics->ordersNotDelivery) , 2, '.', '\'')}}
+            </div>
+
             <div class="mb-10">Себестоимость: {{number_format($ordersStatistics->ordersCostAmount, 2, '.', '\'')}}</div>
             <div class="mb-10">Поставки: {{number_format($supplySum, 2, '.', '\'')}}</div>
 

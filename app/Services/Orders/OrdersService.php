@@ -33,8 +33,12 @@ class OrdersService
         $this->ordersStatistics = new \stdClass();
         
         $this->ordersStatistics->ordersAmount = 0;
+        $this->ordersStatistics->ordersAmountWithoutNotDelivery = 0;
         $this->ordersStatistics->ordersAmountCash = 0;
         $this->ordersStatistics->ordersAmountBank = 0;
+
+
+        $this->ordersStatistics->ordersNotDelivery = 0;
 
         $this->ordersStatistics->ordersCostAmount = 0;
 
@@ -153,7 +157,7 @@ class OrdersService
 
             $productStd->title = $categoryTitle . ' ' . $productTitle . ' ' . $modificationTitle . ' ' . $modificationValue;
 
-            $modificationIngredients = $this->ModificationIngredients($productModification);
+            $modificationIngredients = $this->ModificationIngredients($productModification, $this->orderCreatedAt);
 
             $productStd->ingredients = $modificationIngredients->ingredients;
             $productStd->cost = $modificationIngredients->productModificationCost;
@@ -167,12 +171,13 @@ class OrdersService
         return $products;
     }
 
-    public function ModificationIngredients(ProductModifications $productModification)
+    public static function ModificationIngredients(ProductModifications $productModification, $date)
     {
         $productModificationIngredients = $productModification->Ingredients;
 
         $ingredients = [];
         $productModificationCost = 0;
+        $productModificationWeight = 0;
 
         /** @var ProductModificationsIngredients $productModificationIngredient */
         foreach ($productModificationIngredients as $productModificationIngredient) {
@@ -184,17 +189,21 @@ class OrdersService
             $ingredientStd->id = $ingredient->id;
             $ingredientStd->title = $ingredient->title;
 
-            $ingredientStd->ubitPrice = (float)$ingredient->PriceByDate($this->orderCreatedAt);
+            $ingredientStd->visible = (bool)$productModificationIngredient->visible;
+
+            $ingredientStd->ubitPrice = (float)$ingredient->PriceByDate($date);
             $ingredientStd->price = $ingredientStd->ubitPrice * $ingredientStd->amount;
 
             $ingredients[] = $ingredientStd;
 
             $productModificationCost += $ingredientStd->price;
+            $productModificationWeight += $ingredientStd->visible ? $ingredientStd->amount : 0;
         }
 
         $obj = new \stdClass();
         $obj->ingredients = $ingredients;
         $obj->productModificationCost = $productModificationCost;
+        $obj->productModificationWeight = $productModificationWeight;
         return $obj;
     }
 
@@ -224,6 +233,12 @@ class OrdersService
         if ($order->isCompleted) {
 
             $this->ordersStatistics->ordersAmount += $order->amount;
+
+            if ($order->courierId !== '-') {
+                $this->ordersStatistics->ordersNotDelivery++;
+                $this->ordersStatistics->ordersAmountWithoutNotDelivery += $order->amount;
+            }
+
             $this->ordersStatistics->ordersCostAmount += $order->cost;
             $order->clientInfo->typePaymentId === 0 ? $this->ordersStatistics->ordersAmountBank += $order->amount : $this->ordersStatistics->ordersAmountCash += $order->amount;
             $order->creatorTypeId === 1 ? $this->ordersStatistics->ordersCreatorWeb++ : ($order->creatorTypeId === 777 ? $this->ordersStatistics->ordersCreatorManager++ : $this->ordersStatistics->ordersCreatorAdmin++);
