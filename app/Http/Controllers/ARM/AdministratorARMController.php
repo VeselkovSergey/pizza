@@ -157,7 +157,11 @@ class AdministratorARMController extends Controller
             }
             $productsModifications[$key]->costPrice = $costPrice;
 
-            $productsModifications[$key]->margin = number_format(((($productModification->selling_price - $productModification->costPrice) / $productModification->costPrice) * 100), 2);
+            try {
+                $productsModifications[$key]->margin = number_format(((($productModification->selling_price - $productModification->costPrice) / $productModification->costPrice) * 100), 2);
+            } catch (\Exception $e) {
+                throw new \Exception('Ошибка расчёта ' . $productsModifications->Products->title);
+            }
         }
 
         return view('arm.administration.products-modifications.index', compact('productsModifications', 'productsModificationsIngredients'));
