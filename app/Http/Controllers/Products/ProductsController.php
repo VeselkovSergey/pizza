@@ -116,7 +116,7 @@ class ProductsController extends Controller
                 'modificationTitle' => $modification->title,
                 'modificationValue' => $modification->value,
                 'modificationTypeId' => $modification->type_id,
-                'modificationTypeDiscountPrice' => !in_array($this->productModel->id, [24, 31, 32]) ? self::DiscountSale($modification->id) : false,
+                'modificationTypeDiscountPrice' => !in_array($this->productModel->id, [24, 31, 32, 65]) ? self::DiscountSale($modification->id) : false,
                 'price' => $productModificationModel->selling_price,
                 'stopList' => (bool)$productModificationModel->stop_list,
                 'ingredients' => $ingredients->ingredients,
