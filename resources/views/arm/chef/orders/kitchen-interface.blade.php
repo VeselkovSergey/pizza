@@ -80,11 +80,7 @@
             completeButton.addEventListener('click', () => {
                 LoaderShow();
                 Ajax('{{route('chef-arm-change-status-order-to-cooked')}}', 'POST', {orderId: orderId}).then((response) => {
-                    document.body.querySelector('.order-id-'+orderId).remove();
-                    console.log(modal)
-                    setTimeout(() => {
-                        CloseModal(modal);
-                    }, 200)
+                    CloseModal(modal);
                 }).finally(() => {
                     LoaderHide();
                 });
