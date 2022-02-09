@@ -9,6 +9,7 @@ namespace App\Models;
  * @property integer new_status_id
  * @property integer user_id
  * @property User User
+ * @property Orders Order
  */
 class OrdersStatusLogs extends BaseModel
 {
@@ -22,5 +23,10 @@ class OrdersStatusLogs extends BaseModel
     public function User()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function Order()
+    {
+        return $this->hasOne(Orders::class, 'id', 'order_id');
     }
 }

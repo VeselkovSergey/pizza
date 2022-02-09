@@ -224,6 +224,8 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::post('/change-status-order-to-completed', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToCompleted'])->name('manager-arm-change-status-order-to-completed-page');
         Route::post('/change-status-order-to-canceled', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToCanceled'])->name('manager-arm-change-status-order-to-canceled-page');
 
+        Route::post('/delete-order-status', [Controllers\ARM\ManagerARMController::class, 'DeleteOrderStatus'])->name('manager-arm-delete-order-status');
+
         Route::post('/check-order-status-change', [Controllers\ARM\ManagerARMController::class, 'CheckOrderStatusChange'])->name('manager-arm-check-order-status-change');
 
         #todo на курьера

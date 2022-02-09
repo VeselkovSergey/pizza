@@ -67,6 +67,7 @@
         <div>
             <div class="toggle-button cp" data-toogle="status-log-container">Изменения статуса:</div>
             <div class="ml-10 status-log-container">
+                <?php /** @var \App\Models\OrdersStatusLogs $orderStatus */?>
                 @foreach($orderStatuses as $orderStatus)
                     <div class="p-5 m-5 flex-center-vertical flex-wrap border">
                         <div class="mr-5" style="min-width: 200px">{{$orderStatus->created_at}}</div>
@@ -77,9 +78,11 @@
                         @if($orderStatus->new_status_id === \App\Models\Orders::STATUS_TEXT['courier'])
                             {{$order->Courier ? $order->Courier->name . ' ' . $order->Courier->phone : 'Самовывоз'}}
                         @endif
-                        <div class="delete-status flex-center ml-10 cp">
+                        @if(auth()->user()->IsAdmin() && $orderStatus->old_status_id !== 0)
+                        <div class="delete-order-status flex-center ml-10 cp" data-status-id="{{$orderStatus->id}}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16"> <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"/> </svg>
                         </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
@@ -143,6 +146,16 @@
                     });
                 }
 
+            });
+        });
+        
+        let buttonsDeleteOrderStatus = document.body.querySelectorAll('.delete-order-status');
+        buttonsDeleteOrderStatus.forEach((button) => {
+            button.addEventListener('click', () => {
+                const statusId = button.dataset.statusId
+                Ajax('{{route('manager-arm-delete-order-status')}}', 'POST', {statusId: statusId}).then(() => {
+                    location.reload();
+                });
             });
         });
 

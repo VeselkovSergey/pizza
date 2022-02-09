@@ -8,11 +8,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Orders\OrdersController;
 use App\Http\Controllers\Products\ProductsController;
 use App\Models\Orders;
+use App\Models\OrdersStatusLogs;
 use App\Models\PromoCodes;
 use App\Models\Supply;
 use App\Models\User;
 use App\Services\Pusher\NewOrderForKitchen;
 use App\Services\Telegram\Telegram;
+use Illuminate\Support\Facades\Cache;
 
 class ManagerARMController extends Controller
 {
@@ -196,6 +198,18 @@ class ManagerARMController extends Controller
             return $telegram->sendMessage($message, $chatId);
         }
         return false;
+    }
+
+    public function DeleteOrderStatus()
+    {
+        $statusId = request()->post('statusId');
+        $orderStatusLogModel = OrdersStatusLogs::where('id', $statusId)->first();
+        $order = $orderStatusLogModel->Order;
+        $orderStatusLogModel->delete();
+        $order->status_id = $order->LatestStatus->new_status_id;
+        $order->save();
+        Cache::forget('order-' . $order->id);
+        return ResultGenerate::Success();
     }
 
     public function ChangeStatusOrderToCompleted()
