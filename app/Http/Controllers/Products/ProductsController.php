@@ -15,19 +15,136 @@ use App\Models\ProductModificationsIngredients;
 use App\Models\Products;
 use App\Models\Modifications;
 use App\Models\ProductsModificationsInOrders;
+use App\Services\Orders\OrdersService;
 use Illuminate\Http\Request;
 use function GuzzleHttp\Promise\all;
 
 class ProductsController extends Controller
 {
+    private Products $productModel;
+    private \stdClass $product;
+
     public static function GetAllProducts()
     {
         if (request()->get('force-update')) {
             cache()->delete('allProducts');
         }
         return cache()->remember('allProducts', 3600, function () {
+
+            $pro = new self();
+            $prod = $pro->AllProducts();
+            return $prod;
+
             return self::UpdateFileAllProducts();
         });
+    }
+
+    public function AllProducts()
+    {
+        $categories = Categories::all();
+        $popularPositionsByCategory = [];
+        foreach ($categories as $category) {
+            $popularPositions = ProductsModificationsInOrders::selectRaw('product_modifications.product_id as product_id, products.title as product_title, sum(products_modifications_in_orders.product_modification_amount) as amount')
+                ->where('products_modifications_in_orders.created_at', '>=', now()->addDays(-10)->format('Y-m-d ') . '00:00:00')
+                ->where('products.category_id', $category->id)
+                ->leftJoin('product_modifications', 'products_modifications_in_orders.product_modification_id', '=', 'product_modifications.id')
+                ->leftJoin('products', 'products.id', '=', 'product_modifications.product_id')
+                ->groupBy('product_id')
+                ->orderBy('amount', 'DESC')
+                ->limit(2)
+                ->get();
+
+            $pp = [];
+            foreach ($popularPositions as $popularPosition) {
+                $pp[] = $popularPosition->product_id;
+            }
+
+            $popularPositionsByCategory[$category->id] = $pp;
+        }
+
+        $productsModels = Products::orderBy('category_id')->orderBy('sort')->get();
+        $products = (object)[];
+        foreach ($productsModels as $productModel) {
+
+            $this->productModel = $productModel;
+            $this->product = new \stdClass();
+
+            $id = $productModel->id;
+            $this->product->id = $id;
+            $this->product->title = $productModel->title;
+            $this->product->description = $productModel->description;
+            $this->product->minimumPrice = $productModel->MinimumPrice();
+            $this->product->showInCatalog = $productModel->show_in_catalog;
+            $this->product->isAdditionalSales = $productModel->is_additional_sales;
+            $this->product->additionalSalesSort = $productModel->additional_sales_sort;
+            $this->product->isNew = $productModel->is_new;
+            $this->product->isSpicy = $productModel->is_spicy;
+            $this->product->isPopular = in_array($productModel->id, $popularPositionsByCategory[$productModel->category_id]);
+
+            $this->product->categoryId = $productModel->category_id;
+            $this->product->categoryTitle = $productModel->Category->title;
+
+            $this->product->modifications = $this->Modifications();
+            $this->product->modificationCount = sizeof($this->product->modifications);
+
+            $this->product->imgUrl = asset('img/png/' . $id . '.png');
+
+            $products->$id = $this->product;
+        }
+
+        return $products;
+    }
+
+    public function Modifications()
+    {
+        $productModifications = [];
+        $productModificationsModels = $this->productModel->Modifications;
+        /** @var ProductModifications $productModificationModel*/
+        foreach ($productModificationsModels as $productModificationModel) {
+
+            $modification = $productModificationModel->Modification;
+            $id = $productModificationModel->id;
+
+            $ingredients = OrdersService::ModificationIngredients($productModificationModel, now());
+
+            $modificationTitle = $modification->title === 'Соло-продукт' ? '' : ' ' . $modification->title . ' ' . $modification->value;
+            $title = $this->product->title . $modificationTitle;
+
+            $productModifications[] = (object)[
+                'id' => $id,
+                'title' => $title,
+                'modificationTitle' => $modification->title,
+                'modificationValue' => $modification->value,
+                'modificationTypeId' => $modification->type_id,
+                'modificationTypeDiscountPrice' => !in_array($this->productModel->id, [24, 31, 32]) ? self::DiscountSale($modification->id) : false,
+                'price' => $productModificationModel->selling_price,
+                'stopList' => (bool)$productModificationModel->stop_list,
+                'ingredients' => $ingredients->ingredients,
+                'cost' => $ingredients->productModificationCost,
+                'weight' => $this->productModel->category_id !== 5 ? (integer)($ingredients->productModificationWeight * 1000) : 0,
+            ];
+        }
+        return $productModifications;
+    }
+
+    public function Ingredients(ProductModifications $modification)
+    {
+        $modificationIngredients = [];
+        $modificationIngredientsModels = $modification->Ingredients;
+        /** @var  ProductModificationsIngredients $modificationIngredientsModel */
+        foreach ($modificationIngredientsModels as $modificationIngredientsModel) {
+            $ingredient = $modificationIngredientsModel->Ingredient;
+
+            $modificationIngredients[] = (object)[
+                'id' => $ingredient->id,
+                'title' => $ingredient->title,
+                'amount' => $modificationIngredientsModel->ingredient_amount,
+                'visible' => $modificationIngredientsModel->visible,
+            ];
+
+        }
+
+        dd($modificationIngredients);
     }
 
     public static function UpdateFileAllProducts()

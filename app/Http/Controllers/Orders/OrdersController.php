@@ -121,8 +121,7 @@ class OrdersController extends Controller
         $modificationsId = [];
         $amountProductModificationInOrder = [];
         foreach ($basket as $product) {
-            $productModification = $product->data->modification;
-            $productModificationId = $productModification->id;
+            $productModificationId = $product->data->modificationId;
             $amountProductModification = $product->amount;
             $amountProductModificationInOrder[$productModificationId] = $amountProductModification;
             $modificationsId[] = $productModificationId;

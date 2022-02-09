@@ -1,48 +1,43 @@
+allProducts = {};
+
+if (localStorage.getItem('refactoring') === null) {
+    localStorage.setItem('basket', JSON.stringify({}));
+    localStorage.setItem('refactoring', Date.now().toString());
+}
+
 if (localStorage.getItem('basket') === null) {
     localStorage.setItem('basket', JSON.stringify({}));
 }
 
-UpdateBasketCounter(CountProductsInBasket())
+UpdateBasketCounter();
 
-function AddProductInBasket(data) {
-    let modificationId = data.modification.id
+function AddItemInBasket(key, data) {
     let basket = JSON.parse(localStorage.getItem('basket'));
-    let modificationInBasket = basket['modification-' + modificationId];
-    if (modificationInBasket === undefined) {
-        basket['modification-' + modificationId] = {
+    let amount = 1;
+    if (basket[key] === undefined) {
+        basket[key] = {
             amount: 1,
             data: data,
         };
     } else {
-        basket['modification-' + modificationId].amount = modificationInBasket.amount + 1;
+        amount = basket[key].amount = parseInt(basket[key].amount) + 1;
     }
     localStorage.setItem('basket', JSON.stringify(basket));
-    UpdateBasketCounter(CountProductsInBasket())
+    UpdateBasketCounter();
+    return amount;
 }
 
-function DeleteProductInBasket(data) {
-    let modificationId = data.modification.id
+function DeleteItemInBasket(key) {
     let basket = JSON.parse(localStorage.getItem('basket'));
-    let modificationInBasket = basket['modification-' + modificationId];
-    if (basket['modification-' + modificationId] !== undefined) { // есть в корзине
-        if (basket['modification-' + modificationId].amount > 1) {
-            basket['modification-' + modificationId].amount = modificationInBasket.amount - 1;
-        } else {
-            delete basket['modification-' + modificationId];
-        }
-
-        localStorage.setItem('basket', JSON.stringify(basket));
-        UpdateBasketCounter(CountProductsInBasket())
+    let amount = 0;
+    if (basket[key].amount > 1) {
+        amount = basket[key].amount = parseInt(basket[key].amount) - 1;
+    } else {
+        delete basket[key];
     }
-}
-
-function ClearProductInBasket(data) {
-    let modificationId = data.modification.id
-    let basket = JSON.parse(localStorage.getItem('basket'));
-    delete basket['modification-' + modificationId];
-
     localStorage.setItem('basket', JSON.stringify(basket));
-    UpdateBasketCounter(CountProductsInBasket())
+    UpdateBasketCounter();
+    return amount;
 }
 
 function CountProductsInBasket() {
@@ -54,25 +49,18 @@ function CountProductsInBasket() {
     return count;
 }
 
-function AmountProductInBasket(modificationId) {
-    let basket = JSON.parse(localStorage.getItem('basket'));
-    if (basket['modification-' + modificationId] === undefined) {
-        return 0;
-    } else {
-        return basket['modification-' + modificationId].amount
-    }
-}
-
 function DeleteAllProductsInBasket() {
     localStorage.setItem('basket', JSON.stringify({}));
-    UpdateBasketCounter(CountProductsInBasket())
+    UpdateBasketCounter();
 }
 
 function PriceSumProductsInBasket() {
+
     let sum = 0;
+    let sumPizza = 0;
     let sumIdentModifications = {};
     let basket = JSON.parse(localStorage.getItem('basket'));
-    let sumAllDiscountProduct = 0;
+    let discountAmount = 0;
 
     let reiterationsCounts = 0;
 
@@ -82,112 +70,111 @@ function PriceSumProductsInBasket() {
         reiterationsCounts = promoCode.every.reiterationsCounts;
     }
 
-    //  сортируем массив по возрастанию цены
-    let arrTemp = [];
     Object.keys(basket).forEach((key) => {
-        arrTemp.push(basket[key]);
-    });
+        const item = basket[key];
+        const amount = item.amount;
+        const price =  item.data.price;
+        sum += amount * price;
 
-    arrTemp.sort((prev, next) => prev.data.modification.sellingPrice - next.data.modification.sellingPrice);
-    basket = arrTemp;
-
-    Object.keys(basket).forEach((key) => {
-        let modificationTypeId = basket[key].data.modification.modificationTypeId;
-        let productModification = basket[key].data.modification;
-        let productModificationAmount = parseInt(basket[key].amount);
+        const product = allProducts[item.data.productId];
+        const modifications = product.modifications;
+        const modification = modifications.find(modification => modification.id === item.data.modificationId);
+        const modificationId = modification.id;
+        const modificationTypeId = modification.modificationTypeId;
+        const modificationTypeDiscountPrice = modification.modificationTypeDiscountPrice;
 
         if (promoCode) {        // если есть промокод
-            if (promoCode.general.discountPercent === null && promoCode.general.discountSum === null) {       // если НЕ установлена скидка на весь заказа в процентах или сумме
-                if (promoCode.every.productModifications.indexOf(productModification.id) !== -1) {
+            if (promoCode.general.discountPercent === null && promoCode.general.discountSum === null) {       // если НЕ установлена скидка на весь заказ в процентах или сумме
+                if (promoCode.every.productModifications.indexOf(modificationId) !== -1) {
                     if (reiterationsCounts > 0) {
                         let tempReiterationsCounts = reiterationsCounts > productModificationAmount ? productModificationAmount : reiterationsCounts;
                         reiterationsCounts -= tempReiterationsCounts;
-                        if (promoCode.every.discountPercent !== null) {
-                            sumAllDiscountProduct += (basket[key].data.modification.sellingPrice / 100 * promoCode.every.discountPercent) * tempReiterationsCounts;
-                        } else if (promoCode.every.discountSum !== null) {
-                            sumAllDiscountProduct += promoCode.every.discountSum * tempReiterationsCounts;
-                        } else if (promoCode.every.salePrice !== null) {
-                            sumAllDiscountProduct += (basket[key].data.modification.sellingPrice - promoCode.every.salePrice) * tempReiterationsCounts;
+                        if (promoCode.every.discountPercent !== null) {     // скидка на каждую позицию в процентах
+                            discountAmount += (price / 100 * promoCode.every.discountPercent) * tempReiterationsCounts;
+                        } else if (promoCode.every.discountSum !== null) {      // скидка на каждую позицию в деньгах
+                            discountAmount += promoCode.every.discountSum * tempReiterationsCounts;
+                        } else if (promoCode.every.salePrice !== null) {        // фиксированная стоимость продукта
+                            discountAmount += (price - promoCode.every.salePrice) * tempReiterationsCounts;
                         }
                     }
                 }
             }
         } else {
-            if (basket[key].data.modification.modificationTypeDiscountPrice !== false) {
+            if (modificationTypeDiscountPrice !== false) {
                 if (!!!sumIdentModifications[modificationTypeId]) {
                     sumIdentModifications[modificationTypeId] = {
                         count: 0,
-                        maxPrice: basket[key].data.modification.sellingPrice,
-                        minPrice: basket[key].data.modification.sellingPrice,
-                        discountPrice: basket[key].data.modification.modificationTypeDiscountPrice,
+                        maxPrice: price,
+                        minPrice: price,
+                        discountPrice: modificationTypeDiscountPrice,
                     };
                 }
 
                 let oldCount = sumIdentModifications[modificationTypeId]['count'];
-                sumIdentModifications[modificationTypeId]['count'] = oldCount + basket[key].amount;
+                sumIdentModifications[modificationTypeId]['count'] = oldCount + amount;
 
-                let maxPrice = sumIdentModifications[modificationTypeId]['maxPrice'] > basket[key].data.modification.sellingPrice
+                let maxPrice = sumIdentModifications[modificationTypeId]['maxPrice'] > price
                     ? sumIdentModifications[modificationTypeId]['maxPrice']
-                    : basket[key].data.modification.sellingPrice;
+                    : price;
 
-                let minPrice = sumIdentModifications[modificationTypeId]['minPrice'] < basket[key].data.modification.sellingPrice
+                let minPrice = sumIdentModifications[modificationTypeId]['minPrice'] < price
                     ? sumIdentModifications[modificationTypeId]['minPrice']
-                    : basket[key].data.modification.sellingPrice;
+                    : price;
 
                 sumIdentModifications[modificationTypeId]['maxPrice'] = maxPrice;
                 sumIdentModifications[modificationTypeId]['minPrice'] = minPrice;
-                sumAllDiscountProduct += (basket[key].data.modification.sellingPrice * basket[key].amount);
+                sumPizza += (price * amount);
             }
         }
-
-        sum += (basket[key].data.modification.sellingPrice * basket[key].amount);
     });
+
+
+    let discountAmountPizza = 0;
 
     if (promoCode) {
         if (promoCode.general.discountPercent !== null) {
-            sumAllDiscountProduct = (((sum / 100).toFixed(2)) * promoCode.general.discountPercent);
+            discountAmount = (((sum / 100).toFixed(2)) * promoCode.general.discountPercent);
         } else if(promoCode.general.discountSum !== null) {
-            sumAllDiscountProduct = promoCode.general.discountSum;
+            discountAmount = promoCode.general.discountSum;
         }
+    } else {
+        Object.keys(sumIdentModifications).forEach((key) => {
+            let count = sumIdentModifications[key]['count'];
+            let discountPrice = sumIdentModifications[key]['discountPrice'];
+            let maxPrice = sumIdentModifications[key]['maxPrice'];
+
+            if (count === 1) {
+                discountAmountPizza += parseInt(maxPrice);
+            } else if (count % 2 === 0) {
+                discountAmountPizza += (count / 2) * parseInt(discountPrice);
+            } else if ((count - 1) % 2 === 0) {
+                discountAmountPizza += ((count - 1) / 2) * parseInt(discountPrice);
+                discountAmountPizza += parseInt(maxPrice);
+            }
+        });
+
+        discountAmount = sumPizza - discountAmountPizza;
+
     }
 
-    sumAllDiscountProduct = Math.ceil(sumAllDiscountProduct);
-
-    let sumDiscount = 0;
-    Object.keys(sumIdentModifications).forEach((key) => {
-        let count = sumIdentModifications[key]['count'];
-        let discountPrice = sumIdentModifications[key]['discountPrice'];
-        let maxPrice = sumIdentModifications[key]['maxPrice'];
-
-        if (count === 1) {
-            sumDiscount += parseInt(maxPrice);
-        } else if (count % 2 === 0) {
-            sumDiscount += (count / 2) * parseInt(discountPrice);
-        } else if ((count - 1) % 2 === 0) {
-            sumDiscount += ((count - 1) / 2) * parseInt(discountPrice);
-            sumDiscount += parseInt(maxPrice);
-        }
-
-    });
-
-
-    let total = sum - sumAllDiscountProduct + sumDiscount;
+    discountAmount = Math.ceil(discountAmount);
 
     return {
         sum: sum,
-        discount: sumDiscount === 0 ? sumAllDiscountProduct : sum - total,
-        total: total
+        discount: discountAmount,
+        total: sum - discountAmount,
     };
 }
 
-function UpdateBasketCounter(value) {
+function UpdateBasketCounter() {
+    const amount = CountProductsInBasket();
     let basketCounter = document.body.querySelector('.amount-item-in-basket');
-    if (value > 0) {
+    if (amount > 0) {
         basketCounter.show();
     } else {
         basketCounter.hide();
     }
-    basketCounter.innerHTML = value;
+    basketCounter.innerHTML = amount;
 }
 
 function UpdateBasketSum() {
@@ -215,6 +202,13 @@ basketButton.addEventListener('click', () => {
 let basketWindow;
 
 function BasketWindow() {
+
+    if (Object.keys(allProducts).length === 0) {
+        localStorage.setItem('execFunction', 'BasketWindow();');
+        location.href = '/';
+        return;
+    }
+
     let orderId = localStorage.getItem('orderId');
     let basketContent = document.createElement('div');
 
@@ -321,10 +315,8 @@ function BasketWindow() {
 
     document.body.querySelectorAll('.product-additional-sales-container').forEach((productAdditionalSales) => {
         productAdditionalSales.addEventListener('click', () => {
-            const productId = productAdditionalSales.dataset.productId;
-            let productImg = '/img/jpg500/' + productId + '.img';
-            let productImgWebP = '/img/png/' + productId + '.png';
-            ProductWindowGenerator(productId, productImg, productImgWebP, () => {
+            const productId = parseInt(productAdditionalSales.dataset.productId);
+            ProductWindowGenerator(productId, () => {
                 ProductsInBasketGenerationElement.innerHTML = '';
                 ProductsInBasketGenerationElement.append(ProductsInBasketGenerationHTML());
             });
@@ -341,84 +333,63 @@ function BasketWindow() {
             let basket = GetAllProductsInBasket();
 
             Object.keys(basket).forEach((key) => {
-                let product = basket[key].data.product;
-                let modification = basket[key].data.modification;
-                let modificationId = modification.id
-                let amount = basket[key].amount
+                const item = basket[key];
+                const amount = item.amount;
+                const data = item.data;
+                const modificationId = data.modificationId;
+                const productId = data.productId;
+                const title = data.title;
+                const price = data.price;
 
                 let modificationHTML =
-                    '<div class="container-product-in-basket w-100 py-10">' +
-                    '<div class="p-10 mr-a">' +
-                    '<div>' + product.categoryTitle + ': ' + product.title + '</div>' +
-                    '<div>' + (modification.title !== 'Соло-продукт' ? modification.title + ': ' : '') + (modification.value !== 'Отсутствует' ? modification.value : '') + '</div>' +
-                    '</div>' +
-                    '<div class="flex-space-between">' +
-                    '<div class="flex-center">' +
-                    '<div class="p-10">' + modification.sellingPrice + ' ₽</div>' +
-                    '<button class="clear-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgTrashButton + '</button>' +
-                    '</div>' +
-                    '<div class="buttons-edit-amount-product border-radius-25 flex-center">' +
-                    '<button class="delete-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgMinusButton + '</button>' +
-                    '<div class="amount-product flex-center color-black" data-modification-id="' + modificationId + '">' + amount + '</div>' +
-                    '<button class="add-product-button flex-center clear-button cp" data-modification-id="' + modificationId + '">' + SvgPlusButton + '</button>' +
-                    '</div>' +
-                    '</div>' +
+                    '<div class="container-product-in-basket w-100 py-10" data-product-id="' + productId + '" data-modification-id="' + modificationId + '">' +
+                        '<div class="p-10 mr-a">' +
+                            '<div>' + title + '</div>' +
+                        '</div>' +
+                        '<div class="flex-space-between">' +
+                            '<div class="flex-center">' +
+                                '<div class="p-10">' + price + ' ₽</div>' +
+                            '</div>' +
+                            '<div class="buttons-edit-amount-product border-radius-25 flex-center">' +
+                                '<button class="delete-product-button flex-center clear-button cp">' + SvgMinusButton + '</button>' +
+                                '<div class="amount-product flex-center color-black">' + amount + '</div>' +
+                                '<button class="add-product-button flex-center clear-button cp">' + SvgPlusButton + '</button>' +
+                            '</div>' +
+                        '</div>' +
                     '</div>';
-                productsInBasketGenerationHTML += modificationHTML
+                productsInBasketGenerationHTML += modificationHTML;
             });
+
             let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
-            productsInBasketGenerationHTML +=   '<div class="price-sum-products-in-basket py-10 w-100 text-right">' +
-                '<div>Сумма: ' + resultPriceSumProductsInBasket.sum.toFixed(2) + ' ₽</div>' +
-                '<div>Скидка: ' + resultPriceSumProductsInBasket.discount.toFixed(2) + ' ₽</div>' +
-                '<div>Итого: ' + resultPriceSumProductsInBasket.total.toFixed(2) + ' ₽</div>' +
+            productsInBasketGenerationHTML +=
+                '<div class="price-sum-products-in-basket py-10 w-100 text-right">' +
+                    '<div>Сумма: ' + resultPriceSumProductsInBasket.sum.toFixed(2) + ' ₽</div>' +
+                    '<div>Скидка: ' + resultPriceSumProductsInBasket.discount.toFixed(2) + ' ₽</div>' +
+                    '<div>Итого: ' + resultPriceSumProductsInBasket.total.toFixed(2) + ' ₽</div>' +
                 '</div>';
         }
 
         productsInBasketGenerationElement.innerHTML = productsInBasketGenerationHTML;
 
-
         let deleteProductButtons = productsInBasketGenerationElement.querySelectorAll('.delete-product-button');
         deleteProductButtons.forEach((el) => {
             el.addEventListener('click', () => {
-                let modificationId = el.dataset.modificationId;
-                let amountProduct = document.body.querySelector('.amount-product[data-modification-id="' + modificationId + '"]');
-                let modification = {
-                    modification: {id: modificationId},
-                }
-                DeleteProductInBasket(modification);
-                let amountProductInBasket = AmountProductInBasket(modificationId);
-                amountProduct.innerHTML = amountProductInBasket;
-                if (amountProductInBasket === 0) {
-                    let containerProductInBasket = el.closest('.container-product-in-basket');
-                    containerProductInBasket.remove();
-                }
-                let resultPriceSumProductsInBasket = UpdateBasketSum();
-                if (resultPriceSumProductsInBasket.sum === 0) {
-                    basketWindow.slowRemove();
-                    document.body.classList.remove('scroll-off');
-                }
-            });
-        });
 
-        let clearProductButton = productsInBasketGenerationElement.querySelectorAll('.clear-product-button');
-        clearProductButton.forEach((el) => {
-            el.addEventListener('click', () => {
-                let modificationId = el.dataset.modificationId;
-                let amountProduct = document.body.querySelector('.amount-product[data-modification-id="' + modificationId + '"]');
-                let modification = {
-                    modification: {id: modificationId},
+                const productContainer = el.closest('.container-product-in-basket');
+                const productId = parseInt(productContainer.dataset.productId);
+                const modificationId = parseInt(productContainer.dataset.modificationId);
+
+                const amount = DeleteItemInBasket('product-' + productId + '-modification-' + modificationId);
+
+                let amountProduct = productContainer.querySelector('.amount-product');
+                amountProduct.innerHTML = amount;
+
+                if (amount === 0) {
+                    productContainer.remove();
                 }
-                ClearProductInBasket(modification);
-                let amountProductInBasket = AmountProductInBasket(modificationId);
-                amountProduct.innerHTML = amountProductInBasket;
-                if (amountProductInBasket === 0) {
-                    let containerProductInBasket = el.closest('.container-product-in-basket');
-                    containerProductInBasket.remove();
-                }
-                let resultPriceSumProductsInBasket = UpdateBasketSum();
-                if (resultPriceSumProductsInBasket.sum === 0) {
-                    basketWindow.slowRemove();
-                    document.body.classList.remove('scroll-off');
+
+                if (UpdateBasketSum().total === 0) {
+                    CloseModal(basketWindow);
                 }
             });
         });
@@ -426,13 +397,26 @@ function BasketWindow() {
         let addProductButtons = productsInBasketGenerationElement.querySelectorAll('.add-product-button');
         addProductButtons.forEach((el) => {
             el.addEventListener('click', () => {
-                let modificationId = el.dataset.modificationId;
-                let amountProduct = document.body.querySelector('.amount-product[data-modification-id="' + modificationId + '"]');
-                let modification = {
-                    modification: {id: modificationId},
-                }
-                AddProductInBasket(modification);
-                amountProduct.innerHTML = AmountProductInBasket(modificationId);
+                const productContainer = el.closest('.container-product-in-basket');
+                const productId = parseInt(productContainer.dataset.productId);
+                const modificationId = parseInt(productContainer.dataset.modificationId);
+
+                const product = allProducts[productId];
+                const modifications = product.modifications;
+                const modification = modifications.find(modification => modification.id === modificationId);
+                const modificationTitle = modification.title;
+                const modificationPrice = modification.price;
+
+                const amount = AddItemInBasket('product-' + productId + '-modification-' + modificationId, {
+                    productId: productId,
+                    modificationId: modificationId,
+                    title: modificationTitle,
+                    price: modificationPrice,
+                });
+
+                let amountProduct = productContainer.querySelector('.amount-product');
+                amountProduct.innerHTML = amount;
+
                 UpdateBasketSum();
             });
         });
@@ -443,34 +427,33 @@ function BasketWindow() {
     function AdditionalSales() {
 
         let content = '';
-        if (typeof allProducts !== 'undefined' && CountProductsInBasket() !== 0) {
+
+        if (CountProductsInBasket() !== 0) {
 
             content =   '<div style="max-width: 600px; scroll-snap-type: x mandatory;" class="flex scroll-x-auto additional-sales-scroll mb-10">';
 
             Object.keys(allProducts).forEach((key) => {
                 let product = allProducts[key];
 
-                if (product.is_additional_sales === 1) {
+                if (product.isAdditionalSales === 1) {
                     let productId = product.id;
                     let productTitle = product.title;
-                    let productSort = product.additional_sales_sort;
-                    let productImg = '/img/jpg500/' + productId + '.img';
-                    let productImgWebP = '/img/png/' + productId + '.png';
+                    let productSort = product.additionalSalesSort;
+                    let productImg = product.imgUrl;
 
                     content +=
                         '<div class="mr-5 product-additional-sales-container cp" style="width: 100px;" data-product-id="'+productId+'" style="scroll-snap-align: start; order: '+productSort+'">' +
-                        '<picture>' +
-                        '<source srcset="'+productImgWebP+'" type="image/webp">' +
-                        '<source class="w-100" srcset="'+productImg+'" type="image/jpeg">' +
-                        '<img width="100" height="100" src="'+productImg+'" alt="">' +
-                        '</picture>' +
-                        '<div class="text-center">'+productTitle+'</div>' +
+                            '<picture>' +
+                                '<source srcset="'+productImg+'" type="image/webp">' +
+                                '<source class="w-100" srcset="'+productImg+'" type="image/jpeg">' +
+                                '<img width="100" height="100" src="'+productImg+'" alt="">' +
+                            '</picture>' +
+                            '<div class="text-center">'+productTitle+'</div>' +
                         '</div>';
                 }
             });
 
             content +=  '</div>';
-
         }
 
         return CreateElement('div', {content: content});
@@ -643,37 +626,35 @@ function ManagerArmCheckOrderStatusChange(data = null) {
 let modificationSelected = null;
 let startSellingPriceModification = 0;
 let startWeightModification = 0;
-function ProductWindowGenerator(productId, productImg, productImgWebP, callback) {
+function ProductWindowGenerator(productId, callback) {
 
-    let productTitle = allProducts['product-'+productId].title;
-
-    let imgUrl = productImg;
-    let webpUrl = productImgWebP;
+    const product = allProducts[productId];
+    const productTitle = product.title;
+    const productImgUrl = product.imgUrl;
 
     let productContent = document.createElement('div');
     productContent.className = 'flex product-content h-100';
     productContent.innerHTML =
         '<div class="container-img-and-about-product">' +
-        '<div class="w-100">' +
-        '<div>' +
-        '<picture>'+
-        '<source class="w-100" srcset="' + webpUrl + '" type="image/webp">'+
-        '<source class="w-100" srcset="' + imgUrl + '" type="image/jpeg">'+
-        '<img class="w-100" src="' + imgUrl + '" alt="">'+
-        '</picture>'+
-        '</div>' +
-        // '<p>Традиционное итальянское блюдо в виде тонкой круглой лепёшки (пирога) из дрожжевого теста, выпекаемой с уложенной сверху начинкой из томатного соуса, кусочков сыра, мяса, овощей, грибов и других продуктов.</p>' +
-        '</div>' +
+            '<div class="w-100">' +
+                '<div>' +
+                    '<picture>'+
+                        '<source class="w-100" srcset="' + productImgUrl + '" type="image/webp">'+
+                        '<source class="w-100" srcset="' + productImgUrl + '" type="image/jpeg">'+
+                        '<img class="w-100" src="' + productImgUrl + '" alt="">'+
+                    '</picture>'+
+                '</div>' +
+            '</div>' +
         '</div>' +
         '<div class="container-modification-product flex" style="flex: 1;">' +
-        '<div class="w-100 flex-column h-100">' +
-        '<div class="text-center text-up">'+productTitle+' <span class="modification-weight"></span></div>' +
-        '<div class="container-ingredients text-down">' +
-        IngredientsGenerator(productId) +
-        '</div>'+
-        ModificationsGenerate(productId) +
-        '<div class="container-button-put-in-basket mt-a mx-a"><button class="button-put-in-basket orange-button mt-25">В корзину</button></div>' +
-        '</div>' +
+            '<div class="w-100 flex-column h-100">' +
+                '<div class="text-center text-up">'+productTitle+' <span class="modification-weight"></span></div>' +
+                '<div class="container-ingredients text-down">' +
+                    IngredientsGenerator(productId) +
+                '</div>'+
+                ModificationsGenerate(productId) +
+                '<div class="container-button-put-in-basket mt-a mx-a"><button class="button-put-in-basket orange-button mt-25">В корзину</button></div>' +
+            '</div>' +
         '</div>';
 
     let buttonPutInBasket = productContent.querySelector('.button-put-in-basket');
@@ -687,102 +668,112 @@ function ProductWindowGenerator(productId, productImg, productImgWebP, callback)
 
     productContent.querySelectorAll('.modification-button').forEach((el) => {
         el.addEventListener('click', () => {
-            let productId = el.dataset.productId;
-            let modificationType = el.dataset.modificationType;
-            let modificationId = el.dataset.modificationId;
-            let stopList = parseInt(el.dataset.stopList);
+            const modifications = allProducts[productId].modifications;
+            const modificationId = parseInt(el.dataset.modificationId);
+            const modificationIndex = modifications.findIndex(modification => modification.id === modificationId);
+            const modification = modifications[modificationIndex];
+            const modificationPrice = modification.price;
+            const modificationWeight = modification.weight;
+            const modificationStopList = modification.stopList;
 
-            let modification = allProducts[productId]['modifications'][modificationType][modificationId];
-            let sellingPriceModification = modification.sellingPrice;
-            let weightModification = modification.weight;
-            let ingredients = IngredientsGenerator(null, modification);
-            let containerIngredients = productContent.querySelector('.container-ingredients');
-            containerIngredients.innerHTML = ingredients;
-            buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + sellingPriceModification + ' ₽';
-            if (modification.weight === 0) {
+            productContent.querySelector('.container-ingredients').innerHTML = IngredientsGenerator(productId, modificationIndex);
+
+            buttonPutInBasket.innerHTML = 'Добавить в корзину за ' + modificationPrice + ' ₽';
+            if (modificationWeight === 0) {
                 modificationWeightContainer.hide();
             }
-            modificationWeightContainer.innerHTML = '(' + weightModification + ' гр.)';
+            modificationWeightContainer.innerHTML = '(' + modificationWeight + ' гр.)';
 
             modificationSelected = {
-                product: allProducts[productId],
-                modification: allProducts[productId]['modifications'][modificationType][modificationId],
-                stopList: stopList,
-            }
+                productId: productId,
+                modificationId: modificationId,
+            };
 
-            if (stopList === 1) {
+            if (modificationStopList) {
                 ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
             }
         });
     });
 
     buttonPutInBasket.addEventListener('click', () => {
-        if (modificationSelected.stopList === 1) {
+        const product = allProducts[modificationSelected.productId];
+        const productId = product.id;
+        const modifications = product.modifications;
+        const modification = modifications.find(modification => modification.id === modificationSelected.modificationId);
+        const modificationId = modification.id;
+        const modificationTitle = modification.title;
+        const modificationPrice = modification.price;
+        const modificationStopList = modification.stopList;
+
+        if (modificationStopList) {
             ModalWindow('Позиция находится в стоп листе. Приносим свои извинения.');
             return;
         }
-        FlashMessage('Добавлено: <br/>' + modificationSelected.product.title + (modificationSelected.modification.value !== 'Отсутствует' ? (', ' + modificationSelected.modification.title + ' ' + modificationSelected.modification.value) : ''));
-        AddProductInBasket(modificationSelected);
-        modalWindow.slowRemove();
-        document.body.classList.remove('scroll-off');
+
+        FlashMessage('<div class="text-center">Добавлено: <br/>' + modificationTitle + '</div>');
+
+        AddItemInBasket('product-' + productId + '-modification-' + modificationId, {
+            productId: productId,
+            modificationId: modificationId,
+            title: modificationTitle,
+            price: modificationPrice,
+        });
+
+        CloseModal(modalWindow);
 
         if (callback) {
             callback();
         }
-
     });
 
     let modalWindow = ModalWindow(productContent);
 }
 
 function ModificationsGenerate(productId) {
-    let containerAllModificationsTemp = '';
-    let disableModificationContainer = false;
+
+    const product = allProducts[productId];
+    const productModifications = product.modifications;
+    const modificationCount = product.modificationCount;
+
     let stopList = false;
-    Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
-        let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
-        let modificationTypeHTML = '<div class="container-modification">';
-        let i = 0;
-        Object.keys(modificationType).forEach(function (modificationId) {
-            let modification = modificationType[modificationId];
-            let checkedInput = i === 0 ? 'checked' : '';
-            if(i === 0) {
-                startSellingPriceModification = modification.sellingPrice;
-                startWeightModification = modification.weight;
-                modificationSelected = {
-                    product: allProducts['product-'+productId],
-                    modification: modificationType[modificationId],
-                    stopList: modification.stop_list,
-                }
-            }
 
-            if (modification.value === 'Отсутствует') {
-                disableModificationContainer = true;
-            }
+    const buttonWidth = 'width:' + (100 / modificationCount) + '%;';
 
-            if (modification.stop_list === 1 && i === 0) {
-                stopList = true;
-            }
-
-            let buttonWidth = 'width:' + (100 / modification.modificationTypeCount) + '%;';
-            let modificationIdHTML =
-                '<div class="text-center flex" style="' + buttonWidth + '">' +
-                '<input name="' + modificationTypeId + '" class="hide modification-input" id="' + modificationId + '" type="radio" ' + checkedInput + '/>' +
-                // '<label class="modification-button"data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.title + ' - ' + modification.value + '</label>' +
-                '<label class="modification-button" data-stop-list="' + modification.stop_list + '" data-product-id="product-' + productId + '" data-modification-type="' + modificationTypeId + '" data-modification-id="' + modificationId + '" for="' + modificationId + '">' + modification.value + '</label>' +
-                '</div>';
-            modificationTypeHTML += modificationIdHTML;
-            i++;
-        });
-        modificationTypeHTML += '</div>';
-        containerAllModificationsTemp += modificationTypeHTML;
-    });
-    let containerAllModifications;
-    if (disableModificationContainer) {
-        containerAllModifications = '<div class="hide">'+ containerAllModificationsTemp +'</div>';
-    } else {
-        containerAllModifications = '<div>'+ containerAllModificationsTemp +'</div>';
+    let hideClass = '';
+    if (modificationCount === 1) {
+        hideClass = ' hide ';
     }
+
+    let modificationsContainerElement = '<div class="modifications-container ' + hideClass + '">';
+
+    let i = 0;
+    Object.keys(productModifications).forEach((key) => {
+        const modification = productModifications[key];
+        const modificationId = productModifications[key].id;
+        const modificationValue = modification.modificationValue;
+        const modificationWeight = modification.weight;
+        const modificationStopList = modification.stopList;
+        const modificationPrice = modification.price;
+
+        let checkedInput = '';
+        if (i === 0) {
+            modificationSelected = {
+                productId: productId,
+                modificationId: modificationId,
+            };
+            startWeightModification = modificationWeight;
+            startSellingPriceModification = modificationPrice;
+            checkedInput = ' checked ';
+            stopList = modificationStopList;
+        }
+
+        modificationsContainerElement +=
+            '<div class="text-center flex" style="' + buttonWidth + '">' +
+                '<input name="modification" class="hide modification-input" id="' + modificationId + '" type="radio" ' + checkedInput + '/>' +
+                '<label class="modification-button" for="' + modificationId + '" data-modification-id=" ' + modificationId + ' ">' + modificationValue + '</label>' +
+            '</div>';
+        i++;
+    });
 
     if (stopList) {
         setTimeout(() => {
@@ -790,38 +781,27 @@ function ModificationsGenerate(productId) {
         }, 200);
     }
 
-    return containerAllModifications;
+    modificationsContainerElement += '</div>';
+
+    return modificationsContainerElement;
 }
 
-function IngredientsGenerator(productId, modification) {
+function IngredientsGenerator(productId, modificationIndex = 0) {
+    const product = allProducts[productId];
+
     let containerAllModifications = '<div class="flex-wrap-center">';
-    if (modification === undefined) {
-        Object.keys(allProducts['product-'+productId]['modifications']).forEach(function (modificationTypeId) {
-            let modificationType = allProducts['product-'+productId]['modifications'][modificationTypeId];
-            let i = 0;
-            Object.keys(modificationType).forEach(function (modificationId) {
-                let modification = modificationType[modificationId];
-                let ingredients = modification.ingredients;
-                Object.keys(ingredients).forEach(function (ingredientId) {
-                    let ingredient = ingredients[ingredientId];
-                    if (ingredient.visible !== 0) {
-                        if (i === 0) {
-                            containerAllModifications += '<div class="pl-5 flex-center ingredient"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label class="ingredient-title" for="' + ingredientId + '">' + ingredient.title + '</label></div>';
-                        }
-                    }
-                });
-                i++;
-            });
-        });
-    } else {
-        let ingredients = modification.ingredients;
-        Object.keys(ingredients).forEach(function (ingredientId) {
-            let ingredient = ingredients[ingredientId];
-            if (ingredient.visible !== 0) {
-                containerAllModifications += '<div class="pl-5 flex-center ingredient"><input checked class="hide" type="checkbox" id="' + ingredientId + '"><label class="ingredient-title" for="' + ingredientId + '">' + ingredient.title + '</label></div>';
-            }
-        });
-    }
+
+    const firstModificationIngredients = product.modifications[modificationIndex].ingredients;
+
+    Object.keys(firstModificationIngredients).forEach((key) => {
+        const ingredient = firstModificationIngredients[key];
+        const ingredientTitle = ingredient.title;
+        const ingredientVisible = ingredient.visible;
+        if (ingredientVisible) {
+            containerAllModifications += '<div class="pl-5 flex-center ingredient">' + ingredientTitle + '</div>';
+        }
+    });
+
     containerAllModifications += '</div>';
     return containerAllModifications;
 }

@@ -188,16 +188,23 @@
                 DeleteAllProductsInBasket();
 
                 Object.keys(productsAndModificationsInOrderForOrderEdit).forEach((key) => {
+                    const productId = productsAndModificationsInOrderForOrderEdit[key].productId;
+                    const modificationId = productsAndModificationsInOrderForOrderEdit[key].modificationId;
 
-                    let modification = {
-                        product: allProducts['product-'+productsAndModificationsInOrderForOrderEdit[key].productId],
-                        modification: allProducts['product-'+productsAndModificationsInOrderForOrderEdit[key].productId]['modifications']['modification-type-'+productsAndModificationsInOrderForOrderEdit[key].modificationTypeId]['modification-'+productsAndModificationsInOrderForOrderEdit[key].modificationId],
-                    }
+                    const product = allProducts[productId];
+                    const modifications = product.modifications;
+                    const modification = modifications.find(modification => modification.id === modificationId);
+                    const modificationTitle = modification.title;
+                    const modificationPrice = modification.price;
 
                     for (let i = 0; i < productsAndModificationsInOrderForOrderEdit[key].amount; i++) {
-                        AddProductInBasket(modification);
+                        AddItemInBasket('product-' + productId + '-modification-' + modificationId, {
+                            productId: productId,
+                            modificationId: modificationId,
+                            title: modificationTitle,
+                            price: modificationPrice,
+                        });
                     }
-
                 });
 
                 localStorage.setItem('lastClientName', '{{$clientInfo->clientName}}');

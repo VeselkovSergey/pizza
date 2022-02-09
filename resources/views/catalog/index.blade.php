@@ -10,7 +10,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
         }
 
-        .container-modification {
+        .modifications-container:not(.hide) {
             /*background-color: rgb(243, 243, 247);*/
             background-color: #434343;
             padding: 5px;
@@ -88,25 +88,21 @@
                 <h2 class="w-100 ml-10 mb-10" id="{{$product->categoryId}}">{{$product->categoryTitle}}</h2>
             @endif
 
-            @php($webpFile = (file_exists(public_path() . '/img/png/' . $product->id . '.png') ? 'img/png/' . $product->id . '.png' : 'img-pizza.png') . '?2')
-            @php($imgFile = (file_exists(public_path() . '/img/jpg500/' . $product->id . '.jpg') ? 'img/jpg500/' . $product->id . '.jpg' : 'img-pizza.png') . '?2')
+            <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}">
 
-            <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}"
-                 data-product-img-webp="{{url($webpFile)}}" data-product-img="{{url($imgFile)}}">
-
-                @if($product->is_popular || $product->is_new || $product->is_spicy)
+                @if($product->isPopular || $product->isNew || $product->isSpicy)
                     <div class="pos-rel">
                         <div class="pos-abs popular-and-new-position-container">
-                            @if($product->is_popular)
+                            @if($product->isPopular)
                                 <div class="mb-5 popular-and-new-position popular-position-bg-color">HIT</div>
                             @endif
-                            @if($product->is_new)
+                            @if($product->isNew)
                                 <div class="popular-and-new-position new-position-bg-color">NEW</div>
                             @endif
                         </div>
-                        @if($product->is_spicy)
+                        @if($product->isSpicy)
                             <div class="pos-abs spicy-container">
-                                @for($i = 0; $i < $product->is_spicy; $i++)
+                                @for($i = 0; $i < $product->isSpicy; $i++)
                                     <img width="25" src="{{asset('spicy.png')}}" alt="">
                                 @endfor
                             </div>
@@ -119,9 +115,9 @@
                     <div class="container-product-img-and-description">
                         <div class="container-product-img">
                             <picture>
-                                <source class="w-100" srcset="{{url($webpFile)}}" type="image/webp">
-                                <source class="w-100" srcset="{{url($imgFile)}}" type="image/jpeg">
-                                <img class="w-100" src="{{url($imgFile)}}" alt="{{$product->title}}">
+                                <source class="w-100" srcset="{{$product->imgUrl}}" type="image/webp">
+                                <source class="w-100" srcset="{{$product->imgUrl}}" type="image/jpeg">
+                                <img class="w-100" src="{{$product->imgUrl}}" alt="{{$product->title}}">
                             </picture>
                         </div>
 
@@ -152,14 +148,12 @@
 
         document.body.querySelectorAll('.button-open-product').forEach((el) => {
             el.addEventListener('click', () => {
-                let productId = el.dataset.productId;
-                let productImg = el.dataset.productImg;
-                let productImgWebP = el.dataset.productImgWebp;
-                ProductWindowGenerator(productId, productImg, productImgWebP);
+                let productId = parseInt(el.dataset.productId);
+                ProductWindowGenerator(productId);
             });
         });
 
-        let allProducts = {!! json_encode($allProducts, JSON_UNESCAPED_UNICODE) !!};
+        allProducts = {!! json_encode($allProducts, JSON_UNESCAPED_UNICODE) !!};
 
         document.body.querySelectorAll('.navigation').forEach((anchor) => {
             anchor.addEventListener('click', (event) => {
