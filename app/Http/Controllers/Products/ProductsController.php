@@ -35,7 +35,6 @@ class ProductsController extends Controller
             $prod = $pro->AllProducts();
             return $prod;
 
-            return self::UpdateFileAllProducts();
         });
     }
 
@@ -145,96 +144,6 @@ class ProductsController extends Controller
         }
 
         dd($modificationIngredients);
-    }
-
-    public static function UpdateFileAllProducts()
-    {
-        $categories = Categories::all();
-        $popularPositionsByCategory = [];
-        foreach ($categories as $category) {
-            $popularPositions = ProductsModificationsInOrders::selectRaw('product_modifications.product_id as product_id, products.title as product_title, sum(products_modifications_in_orders.product_modification_amount) as amount')
-                ->where('products_modifications_in_orders.created_at', '>=', now()->addDays(-10)->format('Y-m-d ') . '00:00:00')
-                ->where('products.category_id', $category->id)
-                ->leftJoin('product_modifications', 'products_modifications_in_orders.product_modification_id', '=', 'product_modifications.id')
-                ->leftJoin('products', 'products.id', '=', 'product_modifications.product_id')
-                ->groupBy('product_id')
-                ->orderBy('amount', 'DESC')
-                ->limit(2)
-                ->get();
-
-            $pp = [];
-            foreach ($popularPositions as $popularPosition) {
-                $pp[] = $popularPosition->product_id;
-            }
-
-            $popularPositionsByCategory[$category->id] = $pp;
-        }
-
-        $allProductsDB = Products::orderBy('category_id')->orderBy('sort')->get();
-        $allProducts = [];
-        foreach ($allProductsDB as $product) {
-
-            $allProducts['product-' . $product->id] = [
-                'id' => $product->id,
-                'title' => $product->title,
-                'description' => $product->description,
-                'is_additional_sales' => $product->is_additional_sales,
-                'additional_sales_sort' => $product->additional_sales_sort,
-                'is_popular' => in_array($product->id, $popularPositionsByCategory[$product->category_id]),
-                'is_new' => $product->is_new,
-                'is_spicy' => $product->is_spicy,
-                'categoryId' => $product->category_id,
-                'categoryTitle' => $product->Category->title,
-                'minimumPrice' => $product->MinimumPrice(),
-                'modifications' => [],
-            ];
-
-            $arrModifications = [];
-
-            $modificationCount = 0;
-
-            foreach ($product->Modifications as $modification) {
-                /** @var ProductModifications $modification */
-
-                if (!in_array($modification->Modification->type_id, $arrModifications)) {
-                    $arrModifications[] = $modification->Modification->type_id;  // добавляем тип модификации который еще не добавляли
-
-                    $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id] = [];
-
-                }
-
-                $modificationCount++;
-
-                $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id]['modification-' . $modification->id] = [
-                    'id' => $modification->id,
-                    'title' => $modification->Modification->title,
-                    'value' => $modification->Modification->value,
-                    'stop_list' => $modification->stop_list,
-                    'modificationTypeId' => $modification->Modification->id,
-                    'modificationTypeDiscountPrice' => !in_array($product->id, [24, 31, 32, 65]) ? self::DiscountSale($modification->Modification->id) : false,
-                    'sellingPrice' => $modification->selling_price,
-                    'modificationTypeCount' => sizeof($product->Modifications),
-                    'ingredients' => [],
-                ];
-
-                $ingredientsAmount = 0;
-                foreach ($modification->Ingredients as $ingredient) {
-                    $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id]['modification-' . $modification->id]['ingredients']['ingredient-' . $ingredient->Ingredient->id] = [
-                        'id' => $ingredient->Ingredient->id,
-                        'title' => $ingredient->Ingredient->title,
-                        'visible' => $ingredient->visible,
-                    ];
-                    if ($ingredient->visible) {
-                        $ingredientsAmount += $ingredient->ingredient_amount;
-                    }
-                }
-                $allProducts['product-' . $product->id]['modifications']['modification-type-' . $modification->Modification->type_id]['modification-' . $modification->id]['weight'] = $product->category_id !== 5 ? (integer)($ingredientsAmount * 1000) : 0;
-            }
-
-            $allProducts['product-' . $product->id]['modificationCount'] = $modificationCount;
-        }
-
-        return ArrayHelper::ArrayToObject($allProducts);
     }
 
     private static function DiscountSale($type)
