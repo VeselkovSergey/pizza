@@ -18,6 +18,7 @@
                     <th class="w-0">Стоимость одной</th>
                     <th class="w-0">Себестоимость одной</th>
                     <th class="w-0">Наценка</th>
+                    <th class="w-0">Наценка %</th>
                     <th class="w-0">Ингредиенты</th>
                 </tr>
                 </thead>
@@ -30,6 +31,7 @@
                         <td class="text-center">{{$productModification->soldAmount}}</td>
                         <td class="text-center">{{$productModification->selling_price}}</td>
                         <td class="text-center">{{$productModification->costPrice}}</td>
+                        <td class="text-center">{{$productModification->selling_price - $productModification->costPrice}}</td>
                         <td class="text-center">{{$productModification->margin}}&nbsp;%</td>
                         <td class="text-center">
                             <div class="product-modification-ingredients cp">Ингредиенты</div>
