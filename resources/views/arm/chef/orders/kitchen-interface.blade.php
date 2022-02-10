@@ -125,7 +125,7 @@
                         '<div class="title-order flex-space-between mb-10">'+
                             '<div class="font-weight-600"># ' + orderInfo.id +'</div>'+
                             '<div class="start-kitchen-time font-weight-600 hide">'+orderInfo.sendToKitchen+'</div>'+
-                            '<div class="kitchen-time font-weight-600"><span class="time-delimiter">:</span></div>'+
+                            '<div class="kitchen-time font-weight-600">00<span class="time-delimiter">:</span>00</div>'+
                         '</div>'+
                         '<div class="products-container flex-column">'+
                             '<div class="font-weight-600" style="order: 1;">Пиццы:</div>'+
