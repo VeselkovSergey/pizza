@@ -11,7 +11,7 @@ if (localStorage.getItem('basket') === null) {
 
 UpdateBasketCounter();
 
-function AddItemInBasket(key, data) {
+function AddItemInBasket(key, data = null) {
     let basket = JSON.parse(localStorage.getItem('basket'));
     let amount = 1;
     if (basket[key] === undefined) {
