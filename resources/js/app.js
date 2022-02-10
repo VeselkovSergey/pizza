@@ -337,13 +337,12 @@ function BasketWindow() {
                 const item = basket[key];
                 const amount = item.amount;
                 const data = item.data;
-                const modificationId = data.modificationId;
-                const productId = data.productId;
+
                 const title = data.title;
                 const price = data.price;
 
                 let modificationHTML =
-                    '<div class="container-product-in-basket w-100 py-10" data-product-id="' + productId + '" data-modification-id="' + modificationId + '">' +
+                    '<div class="container-product-in-basket w-100 py-10" data-key="' + key + '">' +
                         '<div class="p-10 mr-a">' +
                             '<div>' + title + '</div>' +
                         '</div>' +
@@ -377,10 +376,10 @@ function BasketWindow() {
             el.addEventListener('click', () => {
 
                 const productContainer = el.closest('.container-product-in-basket');
-                const productId = parseInt(productContainer.dataset.productId);
-                const modificationId = parseInt(productContainer.dataset.modificationId);
 
-                const amount = DeleteItemInBasket('product-' + productId + '-modification-' + modificationId);
+                const key = productContainer.dataset.key;
+
+                const amount = DeleteItemInBasket(key);
 
                 let amountProduct = productContainer.querySelector('.amount-product');
                 amountProduct.innerHTML = amount;
@@ -399,21 +398,10 @@ function BasketWindow() {
         addProductButtons.forEach((el) => {
             el.addEventListener('click', () => {
                 const productContainer = el.closest('.container-product-in-basket');
-                const productId = parseInt(productContainer.dataset.productId);
-                const modificationId = parseInt(productContainer.dataset.modificationId);
 
-                const product = allProducts[productId];
-                const modifications = product.modifications;
-                const modification = modifications.find(modification => modification.id === modificationId);
-                const modificationTitle = modification.title;
-                const modificationPrice = modification.price;
+                const key = productContainer.dataset.key;
 
-                const amount = AddItemInBasket('product-' + productId + '-modification-' + modificationId, {
-                    productId: productId,
-                    modificationId: modificationId,
-                    title: modificationTitle,
-                    price: modificationPrice,
-                });
+                const amount = AddItemInBasket(key);
 
                 let amountProduct = productContainer.querySelector('.amount-product');
                 amountProduct.innerHTML = amount;
