@@ -62,7 +62,7 @@ class ProductsController extends Controller
             $popularPositionsByCategory[$category->id] = $pp;
         }
 
-        $productsModels = Products::orderBy('category_id')->orderBy('sort')->get();
+        $productsModels = Products::select('products.*')->leftJoin('categories', 'categories.id', '=', 'products.category_id')->orderBy('categories.sort')->orderBy('categories.id')->orderBy('products.sort')->get();
         $products = (object)[];
         foreach ($productsModels as $productModel) {
 
