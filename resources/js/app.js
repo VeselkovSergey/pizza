@@ -651,8 +651,10 @@ function ManagerArmCheckOrderStatusChange(data = null) {
             MarkOrderNewStatus(data.orderId, data.oldStatusId, data.newStatusId)
         }
 
-        let audio = new Audio(location.origin + '/audio/new-order.mp3'); // Создаём новый элемент Audio
-        audio.play(); // Автоматически запускаем
+        if (location.pathname !== '/arm/chef/orders-kitchen') {
+            let audio = new Audio(location.origin + '/audio/new-order.mp3'); // Создаём новый элемент Audio
+            audio.play(); // Автоматически запускаем
+        }
 
     } else {
         alarmContainer.classList.remove('motion');
