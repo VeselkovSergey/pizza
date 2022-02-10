@@ -103,7 +103,8 @@ class TelegramBotController extends Controller
                     $message = '';
 
                     $user = User::where('telegram_chat_id', $telegram->ChatId())->first();
-                    if ($user && $user->UserIsAdmin()) {
+                    if ($user && $user->UserIsAdmin() && false) {
+                        #todo доделать для комбо
                         if ($command === '/sale25') {
                             $message = self::PromoCodes(25, 'Промо 25%');
                         } else if ($command === '/sale50') {
