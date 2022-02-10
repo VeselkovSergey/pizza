@@ -233,8 +233,7 @@
         orderDetailInfoButtons.forEach((orderDetailInfoButton) => {
             orderDetailInfoButton.addEventListener('click', (event) => {
                 let orderDetailInfoContent = event.target.nextElementSibling.innerHTML;
-                let modal = ModalWindow(orderDetailInfoContent);
-                modal.querySelector('.order-detail-info-content').show();
+                ModalWindow(orderDetailInfoContent);
             });
         });
 
