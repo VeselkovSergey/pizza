@@ -143,7 +143,7 @@
             let content = '';
             Object.keys(orderInfo.products).forEach((key) => {
                 let product = orderInfo.products[key];
-                let flexOrder = product.categoryId === 1 ? 2 : ([2, 3, 4].indexOf(product.categoryId) !== -1 ? 4 : 6);
+                let flexOrder = product.categoryId === 1 ? 2 : ([2, 3, 4, 7].indexOf(product.categoryId) !== -1 ? 4 : 6);
                 content +=
                     '<div class="flex-space-between py-5 bg-order-'+flexOrder+'" style="border-bottom: 1px solid black; order: '+flexOrder+'">'+
                         '<span>'+product.title+'</span>'+
