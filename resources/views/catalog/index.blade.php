@@ -530,7 +530,7 @@ $combos1 = [
                 let title = '<div class="color-orange">'+comboTitle+'</div>' + '<div class="product-in-combo" style="font-size: 12px;">(';
                 products.forEach((data) => {
                     key += '-' + data.modificationId;
-                    title += ' ' + data.modificationTitle
+                    title += '<div>'+data.modificationTitle+'</div>'
                 });
                 title += ' )</div>';
 
