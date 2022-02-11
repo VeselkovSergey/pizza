@@ -256,25 +256,6 @@ $combos1 = [
             justify-content: space-around;
         }
 
-        .slot:hover {
-            /*animation: long-hover-bg-color 500ms forwards;*/
-            /*border-width: 5px;*/
-            transform: scale(0.95);
-        }
-
-        .fake-hide {
-            display: none;
-        }
-
-        @keyframes long-hover-bg-color {
-            0% {
-                border-width: 1px;
-            }
-            100% {
-                border-width: 3px;
-            }
-         }
-
         .combo-content-main {
             max-height: 70vh;
         }
@@ -461,24 +442,31 @@ $combos1 = [
             Object.keys(comboSections).forEach((i) => {
                 const section = comboSections[i];
 
-                const sectionButton = CreateElement('div', {content: 'Изменить слот', class: 'slot cp flex-center border-orange border-radius-10 mb-10', attr: {style: 'height: 200px;'}}, sectionMain3Container);
+                const sectionButton = CreateElement('div', {content: 'Изменить слот', class: 'slot cp flex-center border-grey border-radius-10 mb-10', attr: {style: 'height: 200px;'}}, sectionMain3Container);
                 sectionButton.dataset.sectionId = i;
                 sectionButton.addEventListener('click', () => {
                     sectionMain2Container.querySelectorAll('.section-container').forEach((el) => {
                         el.hide();
                     });
+                    sectionMain3Container.querySelectorAll('.slot').forEach((el) => {
+                        el.classList.remove('border-orange');
+                        el.classList.add('border-grey');
+                    });
+                    sectionButton.classList.add('border-orange');
                     sectionMain2Container.querySelector('.section-container[data-section-id="'+sectionButton.dataset.sectionId+'"]').show();
-                    buttonContainer.classList.remove('fake-hide');
                 });
 
                 const sectionContainer = CreateElement('div', {class: 'section-container hide mb-10 pb-5'}, sectionMain2Container);
                 sectionContainer.dataset.sectionId = i;
+                if (parseInt(i) === 0) {
+                    sectionContainer.show();
+                    sectionButton.classList.add('border-grey');
+                    sectionButton.classList.add('border-orange');
+                }
 
                 let checked = true;
 
                 Object.keys(section).forEach((j) => {
-
-
 
                     const data = section[j];
                     const productId = data.productId;
@@ -494,14 +482,22 @@ $combos1 = [
                     const productContainer = CreateElement('label', {class: 'cp pos-rel w-25', attr: {for: 'section-' + i + '-product-' + j, style: 'min-width: 200px; min-height: 265px;'}}, sectionContainer);
                     productContainer.dataset.sectionId = i;
                     productContainer.addEventListener('click', () => {
-                        sectionMain3Container.querySelector('.slot[data-section-id="'+productContainer.dataset.sectionId+'"]').innerHTML = /*'<img width="200" height="200" src="'+productImg+'">';*/
-
-                        '<picture>' +
-                        '<source srcset="'+productImgWebp+'" type="image/webp">' +
-                        '<source class="w-100" srcset="'+productImg+'" type="image/png">' +
-                        '<img width="200" height="200" src="'+productImg+'" alt="">' +
-                        '</picture>';
+                        sectionMain3Container.querySelector('.slot[data-section-id="'+productContainer.dataset.sectionId+'"]').innerHTML =
+                            '<picture>' +
+                                '<source srcset="'+productImgWebp+'" type="image/webp">' +
+                                '<source class="w-100" srcset="'+productImg+'" type="image/png">' +
+                                '<img width="200" height="200" src="'+productImg+'" alt="">' +
+                            '</picture>';
                     });
+
+                    if (parseInt(j) === 0) {
+                        sectionMain3Container.querySelector('.slot[data-section-id="'+productContainer.dataset.sectionId+'"]').innerHTML =
+                            '<picture>' +
+                                '<source srcset="'+productImgWebp+'" type="image/webp">' +
+                                '<source class="w-100" srcset="'+productImg+'" type="image/png">' +
+                                '<img width="200" height="200" src="'+productImg+'" alt="">' +
+                            '</picture>';
+                    }
 
                     const productInput = CreateElement('input', {class: 'for-combo hide', attr: {type: 'radio', name: 'section-' + i, id: 'section-' + i + '-product-' + j}}, productContainer);
 
@@ -520,7 +516,7 @@ $combos1 = [
                 });
             });
 
-            const buttonContainer = CreateElement('div', {class: 'flex-center fake-hide container-button-put-in-basket mt-25'}, comboContainer);
+            const buttonContainer = CreateElement('div', {class: 'flex-center container-button-put-in-basket mt-25'}, comboContainer);
             const putInBasketButton = CreateElement('button', {class: 'orange-button', content: 'Добавить в корзину за ' + comboPrice + ' ₽'}, buttonContainer);
             putInBasketButton.addEventListener('click', () => {
                 let products = [];
