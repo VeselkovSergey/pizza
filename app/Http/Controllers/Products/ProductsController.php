@@ -153,7 +153,7 @@ class ProductsController extends Controller
             $this->product->modificationCount = sizeof($this->product->modifications);
 
             $this->product->imgUrl = asset('img/png/' . $id . '.png');
-            $this->product->imgWebpUrl = asset('img/webp/' . $id . '.webp');
+            $this->product->imgWebpUrl = asset('img/png/' . $id . '.png');//asset('img/webp/' . $id . '.webp');
 
             $products->$id = $this->product;
         }
