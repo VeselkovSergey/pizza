@@ -527,12 +527,12 @@ $combos1 = [
                 });
                 products = products.sort((prev, next) => prev.modificationId - next.modificationId);
                 let key = 'combo-' + comboId;
-                let title = '<div class="color-orange">'+comboTitle+'</div>' + '<div class="product-in-combo" style="font-size: 12px;">(';
+                let title = '<div class="color-orange">'+comboTitle+'</div>' + '<div class="product-in-combo" style="font-size: 12px;">';
                 products.forEach((data) => {
                     key += '-' + data.modificationId;
                     title += '<div>'+data.modificationTitle+'</div>'
                 });
-                title += ' )</div>';
+                title += '</div>';
 
                 AddItemInBasket(key, {
                     title: title,
