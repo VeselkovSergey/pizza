@@ -488,7 +488,7 @@ $combos1 = [
                     const modification = modifications.find(modification => modification.id === modificationId);
                     const modificationTitle = modification.title;
 
-                    const productContainer = CreateElement('label', {class: 'cp pos-rel w-25', attr: {for: 'section-' + i + '-product-' + j, style: 'min-width: 200px; min-height: 265px;'}}, sectionContainer);
+                    const productContainer = CreateElement('label', {class: 'cp pos-rel w-25 flex-column-center', attr: {for: 'section-' + i + '-product-' + j, style: 'min-width: 200px; min-height: 265px;'}}, sectionContainer);
                     productContainer.dataset.sectionId = i;
                     productContainer.addEventListener('click', () => {
                         sectionMain3Container.querySelector('.slot[data-section-id="'+productContainer.dataset.sectionId+'"]').innerHTML =
