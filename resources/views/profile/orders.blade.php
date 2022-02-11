@@ -40,7 +40,7 @@
                             @for($i = 0; $i < $product->product_modification_amount; $i++)
                                 <picture style="width: 100px; min-width: 100px;">
                                     <source class="w-100" srcset="{{url($imgFile)}}" type="image/webp">
-                                    <source class="w-100" srcset="{{url($imgFile)}}" type="image/jpeg">
+                                    <source class="w-100" srcset="{{url($imgFile)}}" type="image/png">
                                     <img class="w-100" src="{{url($imgFile)}}" alt="{{$productTitle}}">
                                 </picture>
                             @endfor

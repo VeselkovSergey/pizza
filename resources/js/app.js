@@ -57,8 +57,6 @@ function DeleteAllProductsInBasket() {
 function PriceSumProductsInBasket() {
 
     let sum = 0;
-    let sumPizza = 0;
-    let sumIdentModifications = {};
     let basket = JSON.parse(localStorage.getItem('basket'));
     let discountAmount = 0;
 
@@ -375,16 +373,17 @@ function BasketWindow() {
                 let product = allProducts[key];
 
                 if (product.isAdditionalSales === 1) {
-                    let productId = product.id;
-                    let productTitle = product.title;
-                    let productSort = product.additionalSalesSort;
-                    let productImg = product.imgUrl;
+                    const productId = product.id;
+                    const productTitle = product.title;
+                    const productSort = product.additionalSalesSort;
+                    const productImg = product.imgUrl;
+                    const productImgWebp = product.imgWebpUrl;
 
                     content +=
                         '<div class="mr-5 product-additional-sales-container cp" style="width: 100px;" data-product-id="'+productId+'" style="scroll-snap-align: start; order: '+productSort+'">' +
                             '<picture>' +
-                                '<source srcset="'+productImg+'" type="image/webp">' +
-                                '<source class="w-100" srcset="'+productImg+'" type="image/jpeg">' +
+                                '<source srcset="'+productImgWebp+'" type="image/webp">' +
+                                '<source class="w-100" srcset="'+productImg+'" type="image/png">' +
                                 '<img width="100" height="100" src="'+productImg+'" alt="">' +
                             '</picture>' +
                             '<div class="text-center">'+productTitle+'</div>' +
@@ -607,6 +606,7 @@ function ProductWindowGenerator(productId, callback) {
     const product = allProducts[productId];
     const productTitle = product.title;
     const productImgUrl = product.imgUrl;
+    const productImgWebp = product.imgWebpUrl;
 
     let productContent = document.createElement('div');
     productContent.className = 'flex product-content h-100';
@@ -615,8 +615,8 @@ function ProductWindowGenerator(productId, callback) {
             '<div class="w-100">' +
                 '<div>' +
                     '<picture>'+
-                        '<source class="w-100" srcset="' + productImgUrl + '" type="image/webp">'+
-                        '<source class="w-100" srcset="' + productImgUrl + '" type="image/jpeg">'+
+                        '<source class="w-100" srcset="' + productImgWebp + '" type="image/webp">'+
+                        '<source class="w-100" srcset="' + productImgUrl + '" type="image/png">'+
                         '<img class="w-100" src="' + productImgUrl + '" alt="">'+
                     '</picture>'+
                 '</div>' +

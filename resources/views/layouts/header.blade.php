@@ -3,7 +3,7 @@
         <div class="logo w-100 h-100">
             <picture>
                 <source class="w-100" srcset="{{asset('logo.webp')}}" type="image/webp">
-                <source class="w-100" srcset="{{asset('logo.png')}}" type="image/jpeg">
+                <source class="w-100" srcset="{{asset('logo.png')}}" type="image/png">
                 <img class="w-100" src="{{asset('logo.webp')}}" alt="logo">
             </picture>
         </div>

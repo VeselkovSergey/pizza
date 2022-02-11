@@ -327,7 +327,11 @@ $combos1 = [
     </style>
 
     <div class="promo-container flex pb-20 m-10">
-        <img class="border-radius-10" src="{{asset('promo/promo-2.png')}}" width="100%" alt="promo">
+        <picture class="border-radius-10">
+            <source srcset="{{asset('img/webp/promo-2.webp')}}" type="image/webp">
+            <source class="w-100" srcset="{{asset('img/promo/promo-2.png')}}" type="image/png">
+            <img class="border-radius-10" width="100%" src="{{asset('img/promo/promo-2.png')}}" alt="promo">
+        </picture>
     </div>
 
     <div class="flex-wrap catalog">
@@ -343,8 +347,8 @@ $combos1 = [
                     <div class="container-product-img-and-description">
                         <div class="container-product-img">
                             <picture>
-                                <source class="w-100" srcset="{{asset('img/combo-png/' . $combo->id.'-combo.png')}}" type="image/webp">
-                                <source class="w-100" srcset="{{asset('img/combo-png/' . $combo->id.'-combo.png')}}" type="image/jpeg">
+                                <source class="w-100" srcset="{{asset('img/webp/' . $combo->id.'-combo.webp/')}}" type="image/webp">
+                                <source class="w-100" srcset="{{asset('img/combo-png/' . $combo->id.'-combo.png')}}" type="image/png">
                                 <img class="w-100" src="{{asset('img/combo-png/' . $combo->id.'-combo.png')}}" alt="{{$combo->title}}">
                             </picture>
                         </div>
@@ -376,7 +380,7 @@ $combos1 = [
                     <div class="pos-rel">
                         <div class="pos-abs popular-and-new-position-container">
                             @if($product->isPopular)
-                                <div class="mb-5 popular-and-new-position popular-position-bg-color">HIT</div>
+                                <div class="mb-5 popular-and-new-position popular-position-bg-color color-black">HIT</div>
                             @endif
                             @if($product->isNew)
                                 <div class="popular-and-new-position new-position-bg-color">NEW</div>
@@ -397,8 +401,8 @@ $combos1 = [
                     <div class="container-product-img-and-description">
                         <div class="container-product-img">
                             <picture>
-                                <source class="w-100" srcset="{{$product->imgUrl}}" type="image/webp">
-                                <source class="w-100" srcset="{{$product->imgUrl}}" type="image/jpeg">
+                                <source class="w-100" srcset="{{$product->imgWebpUrl}}" type="image/webp">
+                                <source class="w-100" srcset="{{$product->imgUrl}}" type="image/png">
                                 <img class="w-100" src="{{$product->imgUrl}}" alt="{{$product->title}}">
                             </picture>
                         </div>
@@ -474,12 +478,15 @@ $combos1 = [
 
                 Object.keys(section).forEach((j) => {
 
+
+
                     const data = section[j];
                     const productId = data.productId;
                     const modificationId = data.modificationId;
 
                     const product = allProducts[productId];
                     const productImg = product.imgUrl;
+                    const productImgWebp = product.imgWebpUrl;
                     const modifications = product.modifications;
                     const modification = modifications.find(modification => modification.id === modificationId);
                     const modificationTitle = modification.title;
@@ -487,7 +494,13 @@ $combos1 = [
                     const productContainer = CreateElement('label', {class: 'cp pos-rel w-25', attr: {for: 'section-' + i + '-product-' + j, style: 'min-width: 200px; min-height: 265px;'}}, sectionContainer);
                     productContainer.dataset.sectionId = i;
                     productContainer.addEventListener('click', () => {
-                        sectionMain3Container.querySelector('.slot[data-section-id="'+productContainer.dataset.sectionId+'"]').innerHTML = '<img width="200" height="200" src="'+productImg+'">';
+                        sectionMain3Container.querySelector('.slot[data-section-id="'+productContainer.dataset.sectionId+'"]').innerHTML = /*'<img width="200" height="200" src="'+productImg+'">';*/
+
+                        '<picture>' +
+                        '<source srcset="'+productImgWebp+'" type="image/webp">' +
+                        '<source class="w-100" srcset="'+productImg+'" type="image/png">' +
+                        '<img width="200" height="200" src="'+productImg+'" alt="">' +
+                        '</picture>';
                     });
 
                     const productInput = CreateElement('input', {class: 'for-combo hide', attr: {type: 'radio', name: 'section-' + i, id: 'section-' + i + '-product-' + j}}, productContainer);
