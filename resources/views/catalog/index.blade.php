@@ -343,9 +343,9 @@ $combos1 = [
                     <div class="container-product-img-and-description">
                         <div class="container-product-img">
                             <picture>
-                                <source class="w-100" srcset="{{asset($combo->id.'-combo.png')}}" type="image/webp">
-                                <source class="w-100" srcset="{{asset($combo->id.'-combo.png')}}" type="image/jpeg">
-                                <img class="w-100" src="{{asset($combo->id.'-combo.png')}}" alt="{{$combo->title}}">
+                                <source class="w-100" srcset="{{asset('img/combo-png/' . $combo->id.'-combo.png')}}" type="image/webp">
+                                <source class="w-100" srcset="{{asset('img/combo-png/' . $combo->id.'-combo.png')}}" type="image/jpeg">
+                                <img class="w-100" src="{{asset('img/combo-png/' . $combo->id.'-combo.png')}}" alt="{{$combo->title}}">
                             </picture>
                         </div>
 
