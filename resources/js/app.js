@@ -107,6 +107,11 @@ function PriceSumProductsInBasket() {
 
     discountAmount = Math.ceil(discountAmount);
 
+    let lastTypeDelivery = localStorage.getItem('lastTypeDelivery') !== null ? localStorage.getItem('lastTypeDelivery') : '';
+    if (lastTypeDelivery !== 'without-delivery' && sum < 500) {
+        sum += 150;
+    }
+
     return {
         sum: sum,
         discount: discountAmount,
@@ -164,9 +169,9 @@ function BasketWindow() {
     const AdditionalSalesElement = CreateElement('div', {});
     const OrderInfoGenerationHTMLElement = CreateElement('div', {});
 
-    ProductsInBasketGenerationElement.append(ProductsInBasketGenerationHTML());
     AdditionalSalesElement.append(AdditionalSales());
     OrderInfoGenerationHTMLElement.append(OrderInfoGenerationHTML(orderId));
+    ProductsInBasketGenerationElement.append(ProductsInBasketGenerationHTML());
 
     basketContent.append(ProductsInBasketGenerationElement);
     basketContent.append(AdditionalSalesElement);
@@ -492,6 +497,7 @@ function BasketWindow() {
                     addressInput.removeAttribute('readonly');
                     addressInput.value = '';
                 }
+                UpdateBasketSum();
             });
         });
 
