@@ -103,7 +103,7 @@
                             </svg>
                         </span>
                     </div>
-                    <div>Адрес доставки: {{$clientInfo->clientAddressDelivery}}</div>
+                    <div>Адрес доставки: {{$clientInfo->clientAddressDelivery}}{{isset($clientInfo->typeDelivery) && $clientInfo->typeDelivery[1] === true ? ' (самовывоз)' : ''}}</div>
                     <div>Комментарий: {{$clientInfo->clientComment}}</div>
                 </div>
             </div>

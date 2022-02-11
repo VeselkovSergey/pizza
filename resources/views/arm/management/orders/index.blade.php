@@ -64,7 +64,7 @@
                                     <div>Номер: {{$clientInfo->clientPhone}}</div>
                                 </div>
                                 <div class="mb-10 px-25">
-                                    <div>Адрес: {{$clientInfo->clientAddressDelivery}}</div>
+                                    <div>Адрес: {{$clientInfo->clientAddressDelivery}}{{isset($clientInfo->typeDelivery) && $clientInfo->typeDelivery[1] === true ? ' (самовывоз)' : ''}}</div>
                                     <div>Комментарий: {{$clientInfo->clientComment}}</div>
                                 </div>
                                 <div class="mb-10 px-25">
