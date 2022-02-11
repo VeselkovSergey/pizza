@@ -38,6 +38,72 @@ class ProductsController extends Controller
         });
     }
 
+    public static function GetCombos()
+    {
+
+        $modifications25 = [];
+        $modifications33 = [];
+        $modifications40 = [];
+
+        $products = Products::whereNotIn('id', [31, 32, 65])->where('category_id', 1)->get();
+        foreach ($products as $product) {
+            $modification25 = $product->Modifications()->where('modification_id', 2)->where('stop_list', 0)->first(); // 25
+            $modification33 = $product->Modifications()->where('modification_id', 1)->where('stop_list', 0)->first(); // 33
+            $modification40 = $product->Modifications()->where('modification_id', 3)->where('stop_list', 0)->first(); // 40
+
+            if (isset($modification25)) {
+                $modifications25[] = (object)[
+                    'productId' => $product->id,
+                    'modificationId' => $modification25->id,
+                ];
+            }
+
+            if (isset($modification33)) {
+                $modifications33[] = (object)[
+                    'productId' => $product->id,
+                    'modificationId' => $modification33->id,
+                ];
+            }
+
+            if (isset($modification40)) {
+                $modifications40[] = (object)[
+                    'productId' => $product->id,
+                    'modificationId' => $modification40->id,
+                ];
+            }
+        }
+
+        return [
+            (object)[
+                'id' => 1,
+                'title' => 'Комбо - 25',
+                'price' => '535',
+                'sections' => [
+                    $modifications25,
+                    $modifications25,
+                ],
+            ],
+            (object)[
+                'id' => 2,
+                'title' => 'Комбо - 33',
+                'price' => '645',
+                'sections' => [
+                    $modifications33,
+                    $modifications33,
+                ],
+            ],
+            (object)[
+                'id' => 3,
+                'title' => 'Комбо - 40',
+                'price' => '799',
+                'sections' => [
+                    $modifications40,
+                    $modifications40,
+                ],
+            ],
+        ];
+    }
+
     public function AllProducts()
     {
         $categories = Categories::all();

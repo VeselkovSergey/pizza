@@ -14,6 +14,11 @@ class CatalogController extends Controller
     public function Index()
     {
         $allProducts = ProductsController::GetAllProducts();
+
+        $combos = cache()->remember('combos', 3600, function () {
+            return ProductsController::GetCombos();
+        });
+
         $allCategory = cache()->remember('allCategory', 3600, function () {
             return Categories::all();
         });
@@ -21,6 +26,7 @@ class CatalogController extends Controller
         return view('catalog.index', [
             'allProducts' => $allProducts,
             'allCategory' => $allCategory,
+            'combos' => $combos,
             'footer' => true,
         ]);
     }

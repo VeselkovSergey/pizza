@@ -1,6 +1,7 @@
 @media screen and (max-width: 1440px) {
 
-  .button-open-product {
+  .button-open-product,
+  .combo-container {
     width: 20%;
   }
 
@@ -12,11 +13,16 @@
     max-width: calc(35% - 96px);
   }
 
+  .combo-content {
+    width: 80vw;
+  }
+
 }
 
 @media screen and (max-width: 1140px) {
 
-  .button-open-product {
+  .button-open-product,
+  .combo-container {
     width: 25%;
   }
 
@@ -28,7 +34,8 @@
 
 @media screen and (max-width: 960px) {
 
-  .button-open-product {
+  .button-open-product,
+  .combo-container {
     width: 50%;
   }
 
@@ -148,7 +155,8 @@
     margin-right: unset;
   }
 
-  .button-open-product {
+  .button-open-product,
+  .combo-container {
     width: 100%;
   }
 
@@ -192,6 +200,10 @@
 
   .first:hover {
     box-shadow: unset;
+  }
+
+  .combo-content {
+    width: 100%;
   }
 
   /* модальное окно */

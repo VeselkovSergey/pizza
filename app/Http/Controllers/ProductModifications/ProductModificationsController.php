@@ -32,6 +32,7 @@ class ProductModificationsController extends Controller
             ]);
         }
         \Cache::delete('allProducts');
+        \Cache::delete('combos');
         return ResultGenerate::Success();
     }
 }

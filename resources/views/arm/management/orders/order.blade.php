@@ -108,9 +108,7 @@
                 </div>
             </div>
             <div>
-                @php($productsAndModificationsInOrderForOrderEdit = [])
                 @foreach($productsModificationsInOrder as $productModificationInOrder)
-                    @php($productsAndModificationsInOrderForOrderEdit[] = (object)['productId' => $productModificationInOrder->ProductModifications->Product->id, 'modificationId' => $productModificationInOrder->product_modification_id, 'amount' => $productModificationInOrder->product_modification_amount, 'modificationTypeId' => $productModificationInOrder->ProductModifications->Modification->type_id])
                     <div class="p-5 mb-10 product-in-order-status-{{$productModificationInOrder->status_id}}">
                         <div>{{\App\Models\ProductsModificationsInOrders::STATUS[$productModificationInOrder->status_id]}}</div>
                         <div>{{$productModificationInOrder->ProductModifications->Product->title . ' ' . $productModificationInOrder->ProductModifications->Modification->title . ' ' . $productModificationInOrder->ProductModifications->Modification->value}}</div>
@@ -131,7 +129,6 @@
     <script>
 
         let allProducts = {!! json_encode($allProducts, JSON_UNESCAPED_UNICODE) !!};
-        let productsAndModificationsInOrderForOrderEdit = {!! json_encode($productsAndModificationsInOrderForOrderEdit, JSON_UNESCAPED_UNICODE) !!};
 
         let buttonsOrderChangeStatus = document.body.querySelectorAll('.order-change-status');
         buttonsOrderChangeStatus.forEach((button) => {
@@ -207,26 +204,6 @@
 
                 DeleteAllProductsInBasket();
 
-                Object.keys(productsAndModificationsInOrderForOrderEdit).forEach((key) => {
-                    const productId = productsAndModificationsInOrderForOrderEdit[key].productId;
-                    const modificationId = productsAndModificationsInOrderForOrderEdit[key].modificationId;
-
-                    const product = allProducts[productId];
-                    const modifications = product.modifications;
-                    const modification = modifications.find(modification => modification.id === modificationId);
-                    const modificationTitle = modification.title;
-                    const modificationPrice = modification.price;
-
-                    for (let i = 0; i < productsAndModificationsInOrderForOrderEdit[key].amount; i++) {
-                        AddItemInBasket('product-' + productId + '-modification-' + modificationId, {
-                            productId: productId,
-                            modificationId: modificationId,
-                            title: modificationTitle,
-                            price: modificationPrice,
-                        });
-                    }
-                });
-
                 localStorage.setItem('lastClientName', '{{$clientInfo->clientName}}');
                 localStorage.setItem('lastClientPhone', '{{$clientInfo->clientPhone}}');
                 localStorage.setItem('lastClientAddressDelivery', '{{$clientInfo->clientAddressDelivery}}');
@@ -234,9 +211,10 @@
                 localStorage.setItem('lastClientComment', '{{$clientInfo->clientComment}}');
                 localStorage.setItem('lastTypePayment', '{{$clientInfo->typePayment[0] === true ? 'card' : 'cash'}}');
                 localStorage.setItem('orderId', orderId);
+                localStorage.setItem('basket', @json($clientBasket));
 
                 @if($promoCode)
-                localStorage.setItem('promoCode', JSON.stringify({!! json_encode($promoCode->conditions, JSON_UNESCAPED_UNICODE) !!}));
+                localStorage.setItem('promoCode', @json($promoCode->conditions));
                 @endif
 
                 localStorage.setItem('execFunction', 'BasketWindow()');

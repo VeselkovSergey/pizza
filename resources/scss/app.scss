@@ -63,7 +63,8 @@ main {
 }
 
 /* ADAPTIVE*/
-.button-open-product {
+.button-open-product,
+.combo-container {
     width: 20%;
 }
 
@@ -75,6 +76,10 @@ header {
 .product-content {
     width: 25vw;
     flex-direction: column;
+}
+
+.combo-content {
+    width: 50vw;
 }
 
 .container-img-and-about-product, .container-modification-product {

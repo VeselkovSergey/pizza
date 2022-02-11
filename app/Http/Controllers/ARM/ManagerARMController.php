@@ -42,6 +42,7 @@ class ManagerARMController extends Controller
         $productsModificationsInOrder = $order->ProductsModifications;
         $orderStatuses = $order->Statuses;
         $clientInfo = json_decode($order->client_raw_data);
+        $clientBasket = $order->products_raw_data;
         $promoCode = null;
         if (isset($clientInfo->clientPromoCode)) {
             $promoCode = PromoCodes::where('title', $clientInfo->clientPromoCode)->first();
@@ -58,6 +59,7 @@ class ManagerARMController extends Controller
             'orderStatuses' => $orderStatuses,
             'productsModificationsInOrder' => $productsModificationsInOrder,
             'clientInfo' => $clientInfo,
+            'clientBasket' => $clientBasket,
             'couriers' => $couriers,
             'allProducts' => $allProducts,
             'promoCode' => $promoCode,

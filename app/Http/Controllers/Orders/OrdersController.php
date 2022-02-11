@@ -121,10 +121,17 @@ class OrdersController extends Controller
         $modificationsId = [];
         $amountProductModificationInOrder = [];
         foreach ($basket as $product) {
-            $productModificationId = $product->data->modificationId;
-            $amountProductModification = $product->amount;
-            $amountProductModificationInOrder[$productModificationId] = $amountProductModification;
-            $modificationsId[] = $productModificationId;
+            if (isset($product->data->combo)) {
+                foreach ($product->data->combo as $comboProduct) {
+                    $modificationsId[] = $comboProduct->modificationId;
+                    $amountProductModificationInOrder[$comboProduct->modificationId] = $product->amount;
+                }
+            } else {
+                $productModificationId = $product->data->modificationId;
+                $amountProductModification = $product->amount;
+                $amountProductModificationInOrder[$productModificationId] = $amountProductModification;
+                $modificationsId[] = $productModificationId;
+            }
         }
         $productsModifications = ProductModifications::whereIn('id', $modificationsId)->get();
 
