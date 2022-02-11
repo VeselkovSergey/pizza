@@ -543,7 +543,7 @@ $combos1 = [
                 CloseModal(modal);
             });
 
-            const modal = ModalWindow(comboContainer);
+            const modal = ModalWindow(comboContainer, null, null, false);
         }
 
         const allCombos = {!! json_encode($combos, JSON_UNESCAPED_UNICODE) !!};

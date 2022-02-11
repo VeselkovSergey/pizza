@@ -123,7 +123,7 @@ function CheckingFieldForEmptiness(container, ShowFlashMessage = false) {
     return check;
 }
 
-function ModalWindow(content, closingCallback, flash) {
+function ModalWindow(content, closingCallback, flash, noCloseByScroll = true) {
     let documentBody = document.body;
     !flash ? documentBody.classList.add('scroll-off') : '';
     let closeButtonSVG = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.6365 13.3996L13.4001 12.636L7.76373 6.99961L13.4001 1.36325L12.6365 0.599609L7.0001 6.23597L1.36373 0.599609L0.600098 1.36325L6.23646 6.99961L0.600098 12.636L1.36373 13.3996L7.0001 7.76325L12.6365 13.3996Z" fill="#000000"></path> </svg>';
@@ -182,11 +182,13 @@ function ModalWindow(content, closingCallback, flash) {
 
     document.body.append(modalWindowComponentContainer);
 
-    CloseByScroll(modalWindowComponentContainer, modalWindowContainer, modalWindowContent, () => {
-        closingCallback ? closingCallback() : '';
-        modalWindowComponentContainer.slowRemove();
-        ScrollOff(flash);
-    });
+    if (noCloseByScroll) {
+        CloseByScroll(modalWindowComponentContainer, modalWindowContainer, modalWindowContent, () => {
+            closingCallback ? closingCallback() : '';
+            modalWindowComponentContainer.slowRemove();
+            ScrollOff(flash);
+        });
+    }
 
     return modalWindowComponentContainer;
 
