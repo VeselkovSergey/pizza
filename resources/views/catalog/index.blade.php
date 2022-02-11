@@ -282,6 +282,10 @@ $combos1 = [
             .fake-hide {
                 display: flex;
             }
+
+            .section-container:not(.hide) {
+                flex-wrap: nowrap;
+            }
         }
         @media screen and (max-width: 540px) {
             .combo-content-main {
