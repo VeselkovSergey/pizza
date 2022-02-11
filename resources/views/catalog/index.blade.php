@@ -285,6 +285,7 @@ $combos1 = [
 
             .section-container:not(.hide) {
                 flex-wrap: nowrap;
+                justify-content: unset;
             }
         }
         @media screen and (max-width: 540px) {
