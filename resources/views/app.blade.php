@@ -41,7 +41,7 @@
         <link href="{{asset('resources/scss/app.scss')}}" rel="stylesheet">
         <link href="{{asset('resources/scss/adaptive.scss')}}" rel="stylesheet">
 
-        @if(auth()->check() && auth()->user()->IsAdmin() ?? false)
+        @if(auth()->check() && auth()->user()->IsAdmin() && false)
 
             <meta name="mobile-web-app-capable" content="yes">
             <meta name="apple-mobile-web-app-capable" content="yes">
