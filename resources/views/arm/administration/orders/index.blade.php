@@ -177,7 +177,7 @@
                         <td data-column-id="12" class="text-center">{{$order->statuses->timeCompleted}}</td>
                         <td data-column-id="13" class="text-center">{{$order->productsAmount}}</td>
                         <td data-column-id="14">({{$order->courierId}})&nbsp;{{$order->courierName}}</td>
-                        <td data-column-id="15">{{$order->clientInfo->clientPhone}}</td>
+                        <td data-column-id="15"><a target="_blank" href="{{route('administrator-arm-user-orders-page', $order->clientInfo->userId)}}">{{$order->clientInfo->clientPhone}}</a></td>
                         <td data-column-id="16" class="text-center">{{$order->clientInfo->ordersCount}}</td>
                         <td data-column-id="17">{{$order->clientInfo->clientAddressDelivery}}</td>
                         <td data-column-id="18">{{$order->clientInfo->clientComment}}</td>

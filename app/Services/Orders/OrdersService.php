@@ -88,6 +88,7 @@ class OrdersService
         $clientInfo->typePaymentId = ($clientInfo->typePayment[0] === true ? 0 : 1);
         $clientInfo->typePaymentText = ($clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные');
         $clientInfo->ordersCount = $this->order->User->Orders->count();
+        $clientInfo->userId = $this->order->User->id;
         $orderStd->clientInfo = $clientInfo;
         $orderStd->clientInfo = $clientInfo;
 
