@@ -57,7 +57,7 @@
                 if ('serviceWorker' in navigator) {
                     // Весь код регистрации у нас асинхронный.
                     window.addEventListener('load', function() {
-                        navigator.serviceWorker.register('{{asset('res/js/service-worker.js')}}', {scope: '/'})
+                        navigator.serviceWorker.register('{{asset('service-worker.js')}}', {scope: '/'})
                             .then(() => navigator.serviceWorker.ready.then((worker) => {
                                 worker.sync.register('syncdata');
                             }))
