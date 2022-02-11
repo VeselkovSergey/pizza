@@ -327,7 +327,7 @@ $combos1 = [
     </style>
 
     <div class="promo-container flex pb-20 m-10">
-        <img class="border-radius-10" src="{{asset('promo/promo-1.jpg')}}" width="100%" alt="promo">
+        <img class="border-radius-10" src="{{asset('promo/promo-2.png')}}" width="100%" alt="promo">
     </div>
 
     <div class="flex-wrap catalog">
