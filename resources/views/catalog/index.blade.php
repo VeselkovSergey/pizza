@@ -519,7 +519,12 @@ $combos1 = [
                     }
 
                     const productSpan = CreateElement('span', {class: 'pos-abs hide', content: SvgCheckedButton}, productContainer);
-                    const productImgElement = CreateElement('img', {attr: {src: productImg, style: 'width: 200px;'}}, productContainer);
+                    const productImgElement = CreateElement('picture', {}, productContainer);
+                    productImgElement.innerHTML =
+                        '<source srcset="'+productImgWebp+'" type="image/webp">' +
+                        '<source class="w-100" srcset="'+productImg+'" type="image/png">' +
+                        '<img width="200" height="200" src="'+productImg+'" alt="">';
+
                     const productTitleElement = CreateElement('div', {content: modificationTitle, class: 'text-center'}, productContainer);
 
                 });
