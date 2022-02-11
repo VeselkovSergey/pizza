@@ -34,7 +34,7 @@
                 @foreach($orders as $order)
                     <?php /** @var \App\Models\Orders $order */?>
                     @php($productsModificationsInOrder = $order->ProductsModifications)
-                    <tr>
+                    <tr class="hover-color">
                         <td><a target="_blank" href="{{route('manager-arm-order-page', $order->id)}}">{{$order->id}}</a></td>
                         <td>{{\App\Models\Orders::STATUS[$order->status_id]}}</td>
                         <td>{{$order->created_at}}</td>
