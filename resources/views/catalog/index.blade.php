@@ -527,10 +527,10 @@ $combos1 = [
                 });
                 products = products.sort((prev, next) => prev.modificationId - next.modificationId);
                 let key = 'combo-' + comboId;
-                let title = '<div>'+comboTitle+'</div>' + '<div class="product-in-combo">(';
+                let title = '<div class="color-orange">'+comboTitle+'</div>' + '<div class="product-in-combo">(';
                 products.forEach((data) => {
                     key += '-' + data.modificationId;
-                    title += ' / ' + data.modificationTitle
+                    title += ' ' + data.modificationTitle
                 });
                 title += ' )</div>';
 
