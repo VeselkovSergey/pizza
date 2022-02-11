@@ -178,7 +178,7 @@
                         <td data-column-id="13" class="text-center">{{$order->productsAmount}}</td>
                         <td data-column-id="14">({{$order->courierId}})&nbsp;{{$order->courierName}}</td>
                         <td data-column-id="15">{{$order->clientInfo->clientPhone}}</td>
-                        <td data-column-id="16">{{$order->clientInfo->ordersCount}}</td>
+                        <td data-column-id="16" class="text-center">{{$order->clientInfo->ordersCount}}</td>
                         <td data-column-id="17">{{$order->clientInfo->clientAddressDelivery}}</td>
                         <td data-column-id="18">{{$order->clientInfo->clientComment}}</td>
                         <td data-column-id="19" class="text-center">{{$order->creatorType}}</td>
