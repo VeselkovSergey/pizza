@@ -23,7 +23,8 @@
                     <th>Статус</th>
                     <th>Дата создания</th>
                     <th>Дата изменения последнего статуса</th>
-                    <th>Потрачено времени</th>
+                    <th>Потрачено времени всего</th>
+                    <th>Кухня+доставка</th>
                     <th>Кол-во позиций</th>
                     <th>Курьер</th>
                     <th>Сумма</th>
@@ -40,6 +41,7 @@
                         <td>{{$order->created_at}}</td>
                         <td>{{$order->LatestStatus->updated_at}}</td>
                         <td>{{date_diff($order->created_at, $order->LatestStatus->updated_at)->format('%h:%i:%s')}}</td>
+                        <td>{{\App\Models\Orders::TimeBetweenStatuses($order->id, \App\Models\Orders::STATUS_TEXT['kitchen'], \App\Models\Orders::STATUS_TEXT['delivered'])}}</td>
                         <td>{{$productsModificationsInOrder->count()}}</td>
                         <td>{{$order->courier_id}}</td>
                         <td>{{$order->order_amount}}</td>
