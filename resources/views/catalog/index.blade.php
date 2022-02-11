@@ -530,7 +530,7 @@ $combos1 = [
                 let title = '<div>'+comboTitle+'</div>' + '<div class="product-in-combo">(';
                 products.forEach((data) => {
                     key += '-' + data.modificationId;
-                    title += ' ' + data.modificationTitle
+                    title += ' / ' + data.modificationTitle
                 });
                 title += ' )</div>';
 
@@ -539,6 +539,7 @@ $combos1 = [
                     price: comboPrice,
                     combo: products
                 });
+                FlashMessage(comboTitle);
                 CloseModal(modal);
             });
 
