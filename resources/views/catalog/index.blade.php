@@ -459,6 +459,10 @@ $combos1 = [
                     });
                     sectionButton.classList.add('border-orange');
                     sectionMain2Container.querySelector('.section-container[data-section-id="'+sectionButton.dataset.sectionId+'"]').show();
+                    sectionMain2Container.scroll({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                 });
 
                 const sectionContainer = CreateElement('div', {class: 'section-container hide mb-10 pb-5'}, sectionMain2Container);
