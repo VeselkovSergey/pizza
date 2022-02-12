@@ -52,6 +52,7 @@
                 Средний чек без самовывоза: {{ $ordersStatistics->ordersNotDelivery !== 0 ? number_format( ($ordersStatistics->ordersAmountWithoutNotDelivery / $ordersStatistics->ordersNotDelivery) , 2, '.', '\'') : 0}} ₽
             </div>
 
+            <div class="mb-10">Прибыль: {{number_format($ordersStatistics->ordersMarginAmount, 2, '.', '\'')}} ₽</div>
             <div class="mb-10">Себестоимость: {{number_format($ordersStatistics->ordersCostAmount, 2, '.', '\'')}} ₽</div>
             <div class="mb-10">Поставки: {{number_format($supplySum, 2, '.', '\'')}} ₽</div>
 
@@ -156,7 +157,8 @@
                     <th data-title-column-id="20" class="table-columns w-0">Тип оплаты</th>
                     <th data-title-column-id="21" class="table-columns w-0">Сумма</th>
                     <th data-title-column-id="22" class="table-columns w-0">Себестоимость заказа</th>
-                    <th data-title-column-id="23" class="table-columns w-0">Подробнее</th>
+                    <th data-title-column-id="23" class="table-columns w-0">Прибыль</th>
+                    <th data-title-column-id="24" class="table-columns w-0">Подробнее</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -185,7 +187,8 @@
                         <td data-column-id="20" class="text-center">{{$order->clientInfo->typePaymentText}}</td>
                         <td data-column-id="21" class="text-center">{{$order->amount}}</td>
                         <td data-column-id="22" class="text-center">{{number_format($order->cost, 2, '.', '')}}</td>
-                        <td data-column-id="23" class="text-center">
+                        <td data-column-id="23" class="text-center">{{number_format($order->margin, 2, '.', '')}}</td>
+                        <td data-column-id="24" class="text-center">
                             <div class="order-detail-info cp">Подробно</div>
                             <div class="order-detail-info-content hide">
 

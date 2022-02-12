@@ -42,6 +42,8 @@ class OrdersService
 
         $this->ordersStatistics->ordersCostAmount = 0;
 
+        $this->ordersStatistics->ordersMarginAmount = 0;
+
         $this->ordersStatistics->ordersCreatorWeb = 0;
         $this->ordersStatistics->ordersCreatorManager = 0;
         $this->ordersStatistics->ordersCreatorAdmin = 0;
@@ -114,6 +116,8 @@ class OrdersService
 
         $orderStd->products = $this->OrderProductsInfo();
         $orderStd->cost = $this->orderCost;
+
+        $orderStd->margin = $orderStd->totalAmount - $this->orderCost;
 
         $orderStd->statuses = $this->OrderStatuses();
         $orderStd->isLongTime = $this->orderIsLongTime;
@@ -242,6 +246,7 @@ class OrdersService
             }
 
             $this->ordersStatistics->ordersCostAmount += $order->cost;
+            $this->ordersStatistics->ordersMarginAmount += $order->margin;
             $order->clientInfo->typePaymentId === 0 ? $this->ordersStatistics->ordersAmountBank += $order->amount : $this->ordersStatistics->ordersAmountCash += $order->amount;
             $order->creatorTypeId === 1 ? $this->ordersStatistics->ordersCreatorWeb++ : ($order->creatorTypeId === 777 ? $this->ordersStatistics->ordersCreatorManager++ : $this->ordersStatistics->ordersCreatorAdmin++);
             empty($this->ordersStatistics->ordersNumberInHour[(int)$order->createdAt->format('H')]) ? $this->ordersStatistics->ordersNumberInHour[(int)$order->createdAt->format('H')] = 1 : $this->ordersStatistics->ordersNumberInHour[(int)$order->createdAt->format('H')] += 1;
