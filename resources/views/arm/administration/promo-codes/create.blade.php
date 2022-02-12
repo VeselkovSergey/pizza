@@ -69,21 +69,34 @@
                 </label>
                 <label class="mb-10">
                     <input type="text" id="everyReiterationsCounts" value="0" class="need-validate">
-                    На какое количество модификаций применится
+                    На какое общее количество модификаций применится
                 </label>
             </div>
 
             <div>
                 <div>Модификаторы участники</div>
                 <div>
+
+                    <div class="flex mb-15">
+                        <label class="custom-checkbox-label" for="all-modifications">
+                            <input type="checkbox" id="all-modifications"/>
+                            <div class="custom-checkbox-slider round"></div>
+                        </label>
+                        <span>Все</span>
+                    </div>
+
                     @foreach($products as $product)
                         <?php /** @var \App\Models\Products $product */ ?>
                         @foreach($product->Modifications as $productModification)
                                 <?php /** @var \App\Models\ProductModifications $productModification */ ?>
-                                    <label>
-                                        <input type="checkbox" name="modifications[{{$productModification->id}}]">
-                                        {{$product->title . ' ' . $productModification->Modification->title . ' ' . $productModification->Modification->value}}
-                                    </label>
+
+                                    <div class="flex mb-5">
+                                        <label class="custom-checkbox-label" for="modification-{{$productModification->id}}">
+                                            <input class="modification-checkbox" type="checkbox" id="modification-{{$productModification->id}}" name="modifications[{{$productModification->id}}]"/>
+                                            <div class="custom-checkbox-slider round"></div>
+                                        </label>
+                                        <span>{{$product->title . ' ' . $productModification->Modification->title . ' ' . $productModification->Modification->value}}</span>
+                                    </div>
                         @endforeach
                     @endforeach
                 </div>
@@ -125,6 +138,13 @@
                 }
             });
         }
+
+        document.getElementById('all-modifications').addEventListener('change', (event) => {
+            const checked = event.target.checked;
+            document.body.querySelectorAll('.modification-checkbox').forEach((input) => {
+                input.checked = checked;
+            });
+        });
 
     </script>
 
