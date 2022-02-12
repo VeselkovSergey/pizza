@@ -114,11 +114,45 @@ class ManagerARMController extends Controller
     public function TransferOrderToKitchen()
     {
         $orderId = request()->orderId;
+        $courierId = (int)request()->courierId;
+
         $order = Orders::find($orderId);
         OrdersController::ChangeStatus($order, Orders::STATUS_TEXT['kitchen']);
+
+        self::NotificationCourier($courierId, $order);
+
         event(new NewOrderForKitchen($order->id));
         return true;
 
+    }
+
+    public static function NotificationCourier($courierId, $order)
+    {
+        if ($courierId !== 0) {
+            $user = User::find($courierId);
+
+            $chatId = $user->telegram_chat_id;
+
+            if (!empty($chatId)) {
+
+                $clientData = json_decode($order->client_raw_data);
+
+                $typePayment = ($clientData->typePayment[0] === true ? 'Карта' : 'Наличные') ;
+                $clientAddressDelivery = $clientData->clientAddressDelivery;
+                $clientComment = $clientData->clientComment;
+
+                $message = '<b>Заказ передан на кухню. Готовься! </b>' . PHP_EOL;
+                $message .= PHP_EOL;
+
+                $message .= '<i>Оплата:</i> ' . $typePayment . PHP_EOL;
+                $message .= '<i>Адрес:</i> ' . $clientAddressDelivery . PHP_EOL;
+                $message .= '<i>Комментарий:</i> ' . $clientComment . PHP_EOL;
+
+                $telegram = new Telegram();
+
+                $telegram->sendMessage($message, $chatId);
+            }
+        }
     }
 
     public function TransferOrderToDelivery()

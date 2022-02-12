@@ -135,7 +135,7 @@
             button.addEventListener('click', () => {
                 localStorage.removeItem('orderId');
                 let url = button.dataset.url;
-                if (url === "{{route('manager-arm-transfer-order-to-delivery-page')}}" || url === "{{route('manager-arm-change-courier-in-order')}}") {
+                if (url === "{{route('manager-arm-transfer-order-to-delivery-page')}}" || url === "{{route('manager-arm-change-courier-in-order')}}" || url === "{{route('manager-arm-transfer-order-to-kitchen-page')}}") {
                     CreateModalWindowForCourierSelection(url);
                 } else {
                     Ajax(url, 'post', {orderId: {{$order->id}}}).then(() => {
@@ -177,7 +177,6 @@
                 Ajax(url, 'post', {orderId: {{$order->id}}, courierId: courierId}).then(() => {
                     location.reload();
                 });
-
             });
         }
 
