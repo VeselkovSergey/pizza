@@ -44,7 +44,7 @@
             <div>
                 <div>Скидка на весь заказ</div>
                 <label class="mb-10">
-                    <input type="text" id="generalDiscountPercent" value="0" readonly class="need-validate">
+                    <input type="text" id="generalDiscountPercent" value="0" class="need-validate">
                     Общая скидка на заказ в процентах
                 </label>
                 <label class="mb-10">

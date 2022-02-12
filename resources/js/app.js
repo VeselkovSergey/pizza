@@ -76,36 +76,39 @@ function PriceSumProductsInBasket() {
         const combo =  item.data.combo;
         sum += amount * price;
 
-        if (combo === undefined && promoCode && promoCode.general.discountPercent === null && promoCode.general.discountSum === null && promoCode.every.productModifications.length > 0) {       // если НЕ установлена скидка на весь заказ в процентах или сумме
-            const product = allProducts[item.data.productId];
-            const modifications = product.modifications;
-            const modification = modifications.find(modification => modification.id === item.data.modificationId);
-            const modificationId = modification.id;
+        if (combo === undefined && promoCode) {       // если есть промокод и не комбо
 
-            if (promoCode.every.productModifications.indexOf(modificationId) !== -1) {
-                if (generalReiterationsCounts > 0) {
-                    let tempEveryReiterationCounts = promoCode.every.reiterationsCounts <= amount ? promoCode.every.reiterationsCounts : amount;
-                    let tempReiterationsCounts = generalReiterationsCounts <= tempEveryReiterationCounts ? generalReiterationsCounts : tempEveryReiterationCounts
-                    generalReiterationsCounts -= tempReiterationsCounts;
-                    if (promoCode.every.discountPercent !== null) {     // скидка на каждую позицию в процентах
-                        discountAmount += (price / 100 * promoCode.every.discountPercent) * tempReiterationsCounts;
-                    } else if (promoCode.every.discountSum !== null) {      // скидка на каждую позицию в деньгах
-                        discountAmount += promoCode.every.discountSum * tempReiterationsCounts;
-                    } else if (promoCode.every.salePrice !== null) {        // фиксированная стоимость продукта
-                        discountAmount += (price - promoCode.every.salePrice) * tempReiterationsCounts;
+            if (promoCode.every.productModifications.length > 0) {       // если скидка на каждую модификацию
+
+                const product = allProducts[item.data.productId];
+                const modifications = product.modifications;
+                const modification = modifications.find(modification => modification.id === item.data.modificationId);
+                const modificationId = modification.id;
+
+                if (promoCode.every.productModifications.indexOf(modificationId) !== -1) {
+                    if (generalReiterationsCounts > 0) {
+                        let tempEveryReiterationCounts = promoCode.every.reiterationsCounts <= amount ? promoCode.every.reiterationsCounts : amount;
+                        let tempReiterationsCounts = generalReiterationsCounts <= tempEveryReiterationCounts ? generalReiterationsCounts : tempEveryReiterationCounts
+                        generalReiterationsCounts -= tempReiterationsCounts;
+                        if (promoCode.every.discountPercent !== null) {     // скидка на каждую позицию в процентах
+                            discountAmount += (price / 100 * promoCode.every.discountPercent) * tempReiterationsCounts;
+                        } else if (promoCode.every.discountSum !== null) {      // скидка на каждую позицию в деньгах
+                            discountAmount += promoCode.every.discountSum * tempReiterationsCounts;
+                        } else if (promoCode.every.salePrice !== null) {        // фиксированная стоимость продукта
+                            discountAmount += (price - promoCode.every.salePrice) * tempReiterationsCounts;
+                        }
                     }
+                }
+
+            } else {
+                if (promoCode.general.discountPercent !== null) {
+                    discountAmount += (price / 100 * promoCode.general.discountPercent) * amount;
+                } else if(promoCode.general.discountSum !== null) {
+                    // discountAmount = promoCode.general.discountSum;
                 }
             }
         }
     });
-
-    // if (promoCode) {
-    //     if (promoCode.general.discountPercent !== null) {
-    //         discountAmount = (((sum / 100).toFixed(2)) * promoCode.general.discountPercent);
-    //     } else if(promoCode.general.discountSum !== null) {
-    //         discountAmount = promoCode.general.discountSum;
-    //     }
-    // }
 
     discountAmount = Math.ceil(discountAmount);
 

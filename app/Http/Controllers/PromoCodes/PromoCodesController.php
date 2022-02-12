@@ -83,7 +83,7 @@ class PromoCodesController extends Controller
 
         //  если не установлена глобальная скидка на заказ
         if (empty($generalDiscountPercent) && empty($generalDiscountSum)) {
-            if ($everyReiterationsCounts === 0) {
+            if ($everyReiterationsCounts === 0 || $generalReiterationsCounts === 0) {
                 return ResultGenerate::Error('Забыл указать количество повторяющихся позиций');
             }
             foreach ($modificationsRaw as $id => $modificationRaw) {
