@@ -76,6 +76,7 @@ class PromoCodesController extends Controller
         $everyDiscountSum = (int)request()->post('everyDiscountSum');
         $everySalePrice = (int)request()->post('everySalePrice');
         $everyReiterationsCounts = (int)request()->post('everyReiterationsCounts');
+        $generalReiterationsCounts = (int)request()->post('generalReiterationsCounts');
 
         $modificationsRaw = request()->post('modifications');
         $modifications = [];
@@ -105,6 +106,7 @@ class PromoCodesController extends Controller
             'conditions' => json_encode((object)[
                 'every' => (object)[
                     'productModifications' => $modifications,
+                    'generalReiterationsCounts' => $generalReiterationsCounts,
                     'reiterationsCounts' => $everyReiterationsCounts,
                     'discountPercent' => !empty($everyDiscountPercent) ? $everyDiscountPercent : null,
                     'discountSum' => !empty($everyDiscountSum) ? $everyDiscountSum : null,

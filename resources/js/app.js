@@ -61,7 +61,13 @@ function PriceSumProductsInBasket() {
     let discountAmount = 0;
     let deliveryAmount = 0;
 
+    let generalReiterationsCounts = 0;
+
     let promoCode = localStorage.getItem('promoCode') !== null ? JSON.parse(localStorage.getItem('promoCode')) : null;
+
+    if (promoCode) {
+        generalReiterationsCounts = promoCode.every.generalReiterationsCounts === undefined ? promoCode.every.reiterationsCounts : promoCode.every.generalReiterationsCounts;       // фикс для старых промокодов
+    }
 
     Object.keys(basket).forEach((key) => {
         const item = basket[key];
@@ -77,33 +83,36 @@ function PriceSumProductsInBasket() {
             const modificationId = modification.id;
 
             if (promoCode.every.productModifications.indexOf(modificationId) !== -1) {
-                let reiterationsCounts = promoCode.every.reiterationsCounts < amount ? promoCode.every.reiterationsCounts : amount;
-                if (promoCode.every.discountPercent !== null) {     // скидка на каждую позицию в процентах
-                    discountAmount += (price / 100 * promoCode.every.discountPercent) * reiterationsCounts;
-                } else if (promoCode.every.discountSum !== null) {      // скидка на каждую позицию в деньгах
-                    discountAmount += promoCode.every.discountSum * reiterationsCounts;
-                } else if (promoCode.every.salePrice !== null) {        // фиксированная стоимость продукта
-                    discountAmount += (price - promoCode.every.salePrice) * reiterationsCounts;
+                if (generalReiterationsCounts > 0) {
+                    let tempEveryReiterationCounts = promoCode.every.reiterationsCounts <= amount ? promoCode.every.reiterationsCounts : amount;
+                    let tempReiterationsCounts = generalReiterationsCounts <= tempEveryReiterationCounts ? generalReiterationsCounts : tempEveryReiterationCounts
+                    generalReiterationsCounts -= tempReiterationsCounts;
+                    if (promoCode.every.discountPercent !== null) {     // скидка на каждую позицию в процентах
+                        discountAmount += (price / 100 * promoCode.every.discountPercent) * tempReiterationsCounts;
+                    } else if (promoCode.every.discountSum !== null) {      // скидка на каждую позицию в деньгах
+                        discountAmount += promoCode.every.discountSum * tempReiterationsCounts;
+                    } else if (promoCode.every.salePrice !== null) {        // фиксированная стоимость продукта
+                        discountAmount += (price - promoCode.every.salePrice) * tempReiterationsCounts;
+                    }
                 }
             }
         }
     });
 
-    if (promoCode) {
-        if (promoCode.general.discountPercent !== null) {
-            discountAmount = (((sum / 100).toFixed(2)) * promoCode.general.discountPercent);
-        } else if(promoCode.general.discountSum !== null) {
-            discountAmount = promoCode.general.discountSum;
-        }
-    }
+    // if (promoCode) {
+    //     if (promoCode.general.discountPercent !== null) {
+    //         discountAmount = (((sum / 100).toFixed(2)) * promoCode.general.discountPercent);
+    //     } else if(promoCode.general.discountSum !== null) {
+    //         discountAmount = promoCode.general.discountSum;
+    //     }
+    // }
 
     discountAmount = Math.ceil(discountAmount);
 
 
     let lastTypeDelivery = localStorage.getItem('lastTypeDelivery') !== null ? localStorage.getItem('lastTypeDelivery') : '';
-    console.log(sum, lastTypeDelivery)
 
-    if (lastTypeDelivery !== 'without-delivery' && sum < 500 && sum !== 0) {
+    if (lastTypeDelivery !== 'without-delivery' && sum - discountAmount < 500 && sum !== 0) {
         deliveryAmount = 150;
     }
 

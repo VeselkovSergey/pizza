@@ -68,8 +68,12 @@
                     Стоимость модификации продукта в деньгах
                 </label>
                 <label class="mb-10">
+                    <input type="text" id="generalReiterationsCounts" value="0" class="need-validate">
+                    На какое общее количество модификаций применится
+                </label>
+                <label class="mb-10">
                     <input type="text" id="everyReiterationsCounts" value="0" class="need-validate">
-                    На какое количество модификаций применится
+                    На какое количество каждой модификаций применится
                 </label>
             </div>
 
