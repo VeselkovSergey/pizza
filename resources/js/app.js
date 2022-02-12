@@ -468,7 +468,7 @@ function BasketWindow() {
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                         '<label for="">Комментарий</label>' +
-                        '<textarea  rows="3" name="clientComment" class="w-100 last-data" placeholder="Особые пожелания, сдача, подъезд, код-домофона">' + lastClientComment + '</textarea>' +
+                        '<textarea  rows="3" name="clientComment" class="w-100 last-data" placeholder="Особые пожелания, сдача,этаж, подъезд, код-домофона">' + lastClientComment + '</textarea>' +
                     '</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
                     '<div class="w-100">Способ оплаты</div>' +
