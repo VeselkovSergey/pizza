@@ -36,29 +36,77 @@
 
         <div>
 
-            <div class="mb-10">Итого: {{number_format($ordersStatistics->ordersAmount, 0, '.', '\'')}} ₽ (Наличные: {{number_format($ordersStatistics->ordersAmountCash, 0, '.', '\'')}} ₽ / Банк: {{number_format($ordersStatistics->ordersAmountBank, 0, '.', '\'')}} ₽)</div>
-
             <div class="mb-10">
-                Кол-во заказов: {{$ordersStatistics->ordersQuantity}} (Сайт: {{$ordersStatistics->ordersCreatorWeb}} /
-                Менеджер {{$ordersStatistics->ordersCreatorManager}} / Собственник {{$ordersStatistics->ordersCreatorAdmin}} /
-                Отказ {{$ordersStatistics->amountOrdersCancelled}})
+
+                <table>
+                    <tbody>
+                    <tr class="hover-color">
+                        <td class="text-center">Итого</td>
+                        <td class="text-center">{{number_format($ordersStatistics->ordersAmount, 0, '.', '\'')}} ₽</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Наличные</td>
+                        <td class="text-center">{{number_format($ordersStatistics->ordersAmountCash, 0, '.', '\'')}} ₽</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Банк</td>
+                        <td class="text-center">{{number_format($ordersStatistics->ordersAmountBank, 0, '.', '\'')}} ₽</td>
+                    </tr>
+                    </tbody>
+                </table>
+
             </div>
 
             <div class="mb-10">
-                Средний чек: {{ number_format( ($ordersStatistics->middleInvoice) , 2, '.', '\'') }} ₽
+                <table>
+                    <tbody>
+                    <tr class="hover-color">
+                        <td class="text-center">Кол-во заказов</td>
+                        <td class="text-center">{{$ordersStatistics->ordersQuantity}}</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Кол-во заказов с сайта</td>
+                        <td class="text-center">{{$ordersStatistics->ordersCreatorWeb}}</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Кол-во заказов от менеджера</td>
+                        <td class="text-center">{{$ordersStatistics->ordersCreatorManager}}</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Кол-во заказов от собственника</td>
+                        <td class="text-center">{{$ordersStatistics->ordersCreatorAdmin}}</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Кол-во отказов</td>
+                        <td class="text-center">{{$ordersStatistics->amountOrdersCancelled}}</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Средний чек</td>
+                        <td class="text-center">{{ number_format( ($ordersStatistics->middleInvoice) , 2, '.', '\'') }} ₽</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Средний чек без самовывоза</td>
+                        <td class="text-center">{{ number_format( ($ordersStatistics->middleInvoiceNotDelivery) , 2, '.', '\'') }} ₽</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Прибыль</td>
+                        <td class="text-center">{{number_format($ordersStatistics->ordersMarginAmount, 2, '.', '\'')}} ₽</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Себестоимость</td>
+                        <td class="text-center">{{number_format($ordersStatistics->ordersCostAmount, 2, '.', '\'')}} ₽</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Поставки</td>
+                        <td class="text-center">{{number_format($supplySum, 2, '.', '\'')}} ₽</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-
-            <div class="mb-10">
-                Средний чек без самовывоза: {{ number_format( ($ordersStatistics->middleInvoiceNotDelivery) , 2, '.', '\'') }} ₽
-            </div>
-
-            <div class="mb-10">Прибыль: {{number_format($ordersStatistics->ordersMarginAmount, 2, '.', '\'')}} ₽</div>
-            <div class="mb-10">Себестоимость: {{number_format($ordersStatistics->ordersCostAmount, 2, '.', '\'')}} ₽</div>
-            <div class="mb-10">Поставки: {{number_format($supplySum, 2, '.', '\'')}} ₽</div>
 
             <div class="mb-10">
                 <div class="toggle-button cp" data-toogle="amount-orders-in-days-container">Кол-во заказов по дням</div>
-                <div class="amount-orders-in-days-container">
+                <div class="amount-orders-in-days-container mt-10">
 
                     <table>
                         <thead>
@@ -92,7 +140,7 @@
 
             <div class="mb-10">
                 <div class="toggle-button cp" data-toogle="orders-by-couriers">Распределение по курьерам</div>
-                <div class="orders-by-couriers">
+                <div class="orders-by-couriers mt-10">
 
                     <table>
                         <thead>
@@ -124,7 +172,7 @@
 
         </div>
 
-        <div>
+        <div class="mb-10">
             <div class="toggle-button cp" data-toogle="toggle-buttons-container">Фильтр колонок</div>
             <div>
                 <div class="toggle-buttons-container"></div>

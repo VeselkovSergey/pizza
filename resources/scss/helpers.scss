@@ -826,6 +826,8 @@
 
 .toggle-button {
   cursor: pointer;
+  display: flex;
+  align-items: center;
 
   &:after {
     content: " ";
@@ -835,6 +837,12 @@
     display: inline-block;
     background-size: contain;
     background-position-y: 2px;
+    transform: rotate(270deg);
+    transition: transform 150ms;
+  }
+
+  &.rotate-icon:after {
+    transform: rotate(360deg);
   }
 }
 

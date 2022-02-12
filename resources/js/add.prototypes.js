@@ -59,6 +59,7 @@ function ToggleShow() {
         toggleContainer.hide();
         toggleButton.addEventListener('click', () => {
             toggleContainer.showToggle();
+            toggleButton.classList.toggle('rotate-icon')
         });
     });
 }
