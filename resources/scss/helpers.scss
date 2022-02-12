@@ -828,6 +828,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  width: fit-content;
 
   &:after {
     content: " ";
