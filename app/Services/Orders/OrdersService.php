@@ -117,7 +117,7 @@ class OrdersService
         $orderStd->products = $this->OrderProductsInfo();
         $orderStd->cost = $this->orderCost;
 
-        $orderStd->margin = $orderStd->totalAmount - $this->orderCost;
+        $orderStd->margin = $orderStd->totalAmount - $orderStd->cost;
 
         $orderStd->statuses = $this->OrderStatuses();
         $orderStd->isLongTime = $this->orderIsLongTime;
