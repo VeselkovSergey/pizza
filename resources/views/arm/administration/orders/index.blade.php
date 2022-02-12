@@ -39,17 +39,17 @@
             <div class="mb-10">Итого: {{number_format($ordersStatistics->ordersAmount, 0, '.', '\'')}} ₽ (Наличные: {{number_format($ordersStatistics->ordersAmountCash, 0, '.', '\'')}} ₽ / Банк: {{number_format($ordersStatistics->ordersAmountBank, 0, '.', '\'')}} ₽)</div>
 
             <div class="mb-10">
-                Кол-во заказов: {{sizeof($orders) - $ordersStatistics->amountOrdersCancelled}} (Сайт: {{$ordersStatistics->ordersCreatorWeb}} /
+                Кол-во заказов: {{$ordersStatistics->ordersQuantity}} (Сайт: {{$ordersStatistics->ordersCreatorWeb}} /
                 Менеджер {{$ordersStatistics->ordersCreatorManager}} / Собственник {{$ordersStatistics->ordersCreatorAdmin}} /
                 Отказ {{$ordersStatistics->amountOrdersCancelled}})
             </div>
 
             <div class="mb-10">
-                Средний чек: {{( sizeof($orders) - $ordersStatistics->amountOrdersCancelled ) !== 0 ? ( number_format( ($ordersStatistics->ordersAmount / (sizeof($orders) - $ordersStatistics->amountOrdersCancelled) ), 2, '.', '\'') ) : 0}} ₽
+                Средний чек: {{ number_format( ($ordersStatistics->middleInvoice) , 2, '.', '\'') }} ₽
             </div>
 
             <div class="mb-10">
-                Средний чек без самовывоза: {{ $ordersStatistics->ordersNotDelivery !== 0 ? number_format( ($ordersStatistics->ordersAmountWithoutNotDelivery / $ordersStatistics->ordersNotDelivery) , 2, '.', '\'') : 0}} ₽
+                Средний чек без самовывоза: {{ number_format( ($ordersStatistics->middleInvoiceNotDelivery) , 2, '.', '\'') }} ₽
             </div>
 
             <div class="mb-10">Прибыль: {{number_format($ordersStatistics->ordersMarginAmount, 2, '.', '\'')}} ₽</div>

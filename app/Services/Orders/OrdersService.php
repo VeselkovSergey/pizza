@@ -32,11 +32,15 @@ class OrdersService
 
         $this->ordersStatistics = new \stdClass();
         
+        $this->ordersStatistics->ordersQuantity = 0;
+
         $this->ordersStatistics->ordersAmount = 0;
         $this->ordersStatistics->ordersAmountWithoutNotDelivery = 0;
         $this->ordersStatistics->ordersAmountCash = 0;
         $this->ordersStatistics->ordersAmountBank = 0;
 
+        $this->ordersStatistics->middleInvoice = 0;
+        $this->ordersStatistics->middleInvoiceNotDelivery = 0;
 
         $this->ordersStatistics->ordersNotDelivery = 0;
 
@@ -66,8 +70,8 @@ class OrdersService
             }
 
             $this->OrderStatistics($order);
-
-            
+            $this->ordersStatistics->middleInvoice = $this->ordersStatistics->ordersQuantity !== 0 ? $this->ordersStatistics->ordersAmount / $this->ordersStatistics->ordersQuantity : 0;
+            $this->ordersStatistics->middleInvoiceNotDelivery = $this->ordersStatistics->ordersNotDelivery !== 0 ? $this->ordersStatistics->ordersAmountWithoutNotDelivery / $this->ordersStatistics->ordersNotDelivery : 0;
 
             $ordersWithInfo[] = $order;
         }
@@ -238,6 +242,7 @@ class OrdersService
     {
         if ($order->isCompleted) {
 
+            $this->ordersStatistics->ordersQuantity++;
             $this->ordersStatistics->ordersAmount += $order->amount;
 
             if ($order->courierId !== '-') {
@@ -273,7 +278,7 @@ class OrdersService
                 $this->ordersStatistics->ordersAmountInDays[$order->createdAt->format('Y-m-d')]['ordersAmountCash'] += $order->amount;
             }
 
-        } else {
+        } else if ($order->isCancelled) {
             $this->ordersStatistics->amountOrdersCancelled++;
         }
 
