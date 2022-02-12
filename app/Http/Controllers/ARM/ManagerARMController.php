@@ -270,7 +270,7 @@ class ManagerARMController extends Controller
         if ($user) {
             /** @var Orders $order */
             $order = $user->Orders()->latest('id')->first();
-            if ($order->client_raw_data) {
+            if ($order && $order->client_raw_data) {
                 return ResultGenerate::Success('Авто-подстановка адреса', ['clientAddress' => json_decode($order->client_raw_data)->clientAddressDelivery]);
             }
         }
