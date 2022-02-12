@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Products\ProductsController;
 use App\Models\Ingredients;
 use App\Models\IngredientsInSupply;
+use App\Models\ProductModificationsIngredients;
+use App\Models\ProductsModificationsInOrders;
 use App\Models\Suppliers;
 use App\Models\Supply;
 use Illuminate\Http\Request;
@@ -118,8 +120,10 @@ class SupplyController extends Controller
             ]);
         }
 
+        $ingredientsIds = [];
         $ingredientInSupply = [];
         foreach ($allIngredientsInSupplyData as $ingredientInSupplyData) {
+            $ingredientsIds[] = $ingredientInSupplyData->id;
             $ingredientInSupply[] = [
                 'supply_id' => $newSupply->id,
                 'ingredient_id' => $ingredientInSupplyData->id,
@@ -127,6 +131,23 @@ class SupplyController extends Controller
                 'price_ingredient' => $ingredientInSupplyData->price,
             ];
         }
+
+        $productsModifications = ProductModificationsIngredients::select('product_modification_id as id')->whereIn('ingredient_id', $ingredientsIds)->get()->toArray();
+        $productsModificationsIds = [];
+        foreach ($productsModifications as $productsModification) {
+            $productsModificationsIds[] = $productsModification['id'];
+        }
+        $orders = ProductsModificationsInOrders::select('orders.id')
+            ->whereIn('product_modification_id', $productsModificationsIds)
+            ->where('orders.created_at', '>=', $dateSupply)
+            ->leftJoin('orders', 'orders.id', '=', 'products_modifications_in_orders.order_id')
+            ->groupBy('orders.id')
+            ->get()->toArray();
+
+        foreach ($orders as $order) {
+            Cache::forget('order-' . $order['id']);
+        }
+
         $newIngredientInSupply = IngredientsInSupply::insert($ingredientInSupply);
         Cache::forget('allProducts');
 
