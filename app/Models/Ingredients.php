@@ -4,12 +4,14 @@ namespace App\Models;
 
 /**
  * @property integer id Ид ингредиента
- * @property integer title Название ингредиента
+ * @property string title Название ингредиента
+ * @property string description Описание ингредиента
  */
 class Ingredients extends BaseModel
 {
     protected $fillable = [
         'title',
+        'description',
     ];
 
     public function CurrentPrice()

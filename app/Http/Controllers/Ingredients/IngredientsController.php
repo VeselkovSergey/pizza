@@ -24,12 +24,14 @@ class IngredientsController extends Controller
     public function Save(Request $request)
     {
         $title = $request->title;
+        $description = $request->description;
         if (empty($title)) {
             return ResultGenerate::Error('Пустое название');
         }
 
         Ingredients::create([
-            'title' => $title
+            'title' => $title,
+            'description' => $description,
         ]);
         return ResultGenerate::Success();
     }
