@@ -93,9 +93,10 @@ function PriceSumProductsInBasket() {
                         if (promoCode.every.discountPercent !== null) {     // скидка на каждую позицию в процентах
                             discountAmount += (price / 100 * promoCode.every.discountPercent) * tempReiterationsCounts;
                         } else if (promoCode.every.discountSum !== null) {      // скидка на каждую позицию в деньгах
-                            discountAmount += promoCode.every.discountSum * tempReiterationsCounts;
+                            discountAmount += (promoCode.every.discountSum > price ? price : promoCode.every.discountSum) * tempReiterationsCounts;
                         } else if (promoCode.every.salePrice !== null) {        // фиксированная стоимость продукта
-                            discountAmount += (price - promoCode.every.salePrice) * tempReiterationsCounts;
+                            let salePriceProduct = price - promoCode.every.salePrice;
+                            discountAmount += (salePriceProduct > price ? 0 : salePriceProduct) * tempReiterationsCounts;
                         }
                     }
                 }
