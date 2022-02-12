@@ -5,8 +5,11 @@ namespace App\Services\Orders;
 /**
  * @property mixed clientName
  * @property mixed clientPhone
+ * @property mixed ordersCount
  * @property mixed typePaymentId
  * @property mixed typePaymentText
+ * @property mixed typeDeliveryId
+ * @property mixed typeDeliveryText
  * @property mixed clientComment
  * @property mixed clientAddressDelivery
  */

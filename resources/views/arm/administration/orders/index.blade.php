@@ -197,16 +197,17 @@
                     <th data-title-column-id="12" class="table-columns w-0">Выполнен (Деньги в кассе)</th>
                     <th data-title-column-id="13" class="table-columns w-0">Кол-во позиций</th>
                     <th data-title-column-id="14" class="table-columns w-0">Курьер</th>
-                    <th data-title-column-id="15" class="table-columns w-0">Номер заказавшего</th>
-                    <th data-title-column-id="16" class="table-columns w-0">Кол-во заказов у клиента</th>
-                    <th data-title-column-id="17" class="table-columns ">Адрес</th>
-                    <th data-title-column-id="18" class="table-columns ">Комментарий</th>
-                    <th data-title-column-id="19" class="table-columns w-0">Тип заказа</th>
-                    <th data-title-column-id="20" class="table-columns w-0">Тип оплаты</th>
-                    <th data-title-column-id="21" class="table-columns w-0">Сумма</th>
-                    <th data-title-column-id="22" class="table-columns w-0">Себестоимость заказа</th>
-                    <th data-title-column-id="23" class="table-columns w-0">Прибыль</th>
-                    <th data-title-column-id="24" class="table-columns w-0">Подробнее</th>
+                    <th data-title-column-id="15" class="table-columns w-0">Тип доставки</th>
+                    <th data-title-column-id="16" class="table-columns w-0">Номер заказавшего</th>
+                    <th data-title-column-id="17" class="table-columns w-0">Кол-во заказов у клиента</th>
+                    <th data-title-column-id="18" class="table-columns ">Адрес</th>
+                    <th data-title-column-id="19" class="table-columns ">Комментарий</th>
+                    <th data-title-column-id="20" class="table-columns w-0">Откуда заказ</th>
+                    <th data-title-column-id="21" class="table-columns w-0">Тип оплаты</th>
+                    <th data-title-column-id="22" class="table-columns w-0">Сумма</th>
+                    <th data-title-column-id="23" class="table-columns w-0">Себестоимость заказа</th>
+                    <th data-title-column-id="24" class="table-columns w-0">Прибыль</th>
+                    <th data-title-column-id="25" class="table-columns w-0">Подробнее</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -227,16 +228,17 @@
                         <td data-column-id="12" class="text-center">{{$order->statuses->timeCompleted}}</td>
                         <td data-column-id="13" class="text-center">{{$order->productsAmount}}</td>
                         <td data-column-id="14">({{$order->courierId}})&nbsp;{{$order->courierName}}</td>
-                        <td data-column-id="15"><a target="_blank" href="{{route('administrator-arm-user-orders-page', $order->clientInfo->userId)}}">{{$order->clientInfo->clientPhone}}</a></td>
-                        <td data-column-id="16" class="text-center">{{$order->clientInfo->ordersCount}}</td>
-                        <td data-column-id="17">{{$order->clientInfo->clientAddressDelivery}}</td>
-                        <td data-column-id="18">{{$order->clientInfo->clientComment}}</td>
-                        <td data-column-id="19" class="text-center">{{$order->creatorType}}</td>
-                        <td data-column-id="20" class="text-center">{{$order->clientInfo->typePaymentText}}</td>
-                        <td data-column-id="21" class="text-center">{{$order->amount}}</td>
-                        <td data-column-id="22" class="text-center">{{number_format($order->cost, 2, '.', '')}}</td>
-                        <td data-column-id="23" class="text-center">{{number_format($order->margin, 2, '.', '')}}</td>
-                        <td data-column-id="24" class="text-center">
+                        <td data-column-id="15" class="text-center">{{$order->clientInfo->typeDeliveryText}}</td>
+                        <td data-column-id="16"><a target="_blank" href="{{route('administrator-arm-user-orders-page', $order->clientInfo->userId)}}">{{$order->clientInfo->clientPhone}}</a></td>
+                        <td data-column-id="17" class="text-center">{{$order->clientInfo->ordersCount}}</td>
+                        <td data-column-id="18">{{$order->clientInfo->clientAddressDelivery}}</td>
+                        <td data-column-id="19">{{$order->clientInfo->clientComment}}</td>
+                        <td data-column-id="20" class="text-center">{{$order->creatorType}}</td>
+                        <td data-column-id="21" class="text-center">{{$order->clientInfo->typePaymentText}}</td>
+                        <td data-column-id="22" class="text-center">{{$order->amount}}</td>
+                        <td data-column-id="23" class="text-center">{{number_format($order->cost, 2, '.', '')}}</td>
+                        <td data-column-id="24" class="text-center">{{number_format($order->margin, 2, '.', '')}}</td>
+                        <td data-column-id="25" class="text-center">
                             <div class="order-detail-info cp">Подробно</div>
                             <div class="order-detail-info-content hide">
 

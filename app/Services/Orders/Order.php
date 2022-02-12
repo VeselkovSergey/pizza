@@ -28,6 +28,7 @@ namespace App\Services\Orders;
  * @property Products products
  *
  * @property mixed cost
+ * @property mixed margin
  *
  * @property Statuses statuses
  *
