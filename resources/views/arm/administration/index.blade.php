@@ -34,6 +34,9 @@
         <div>
             <a href="{{route('salary-page')}}">Зарплатный блок</a>
         </div>
+        <div>
+            <a href="{{route('send-sms-index-page')}}">Отправка СМС с номера 89151640548</a>
+        </div>
     </div>
 
 @stop

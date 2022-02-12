@@ -261,6 +261,14 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
     });
 
+    Route::group(['prefix' => 'send-sms'], function () {
+
+        Route::get('/', [Controllers\SMSSender\SMSSenderController::class, 'Index'])->name('send-sms-index-page');
+
+        Route::post('/send', [Controllers\SMSSender\SMSSenderController::class, 'SendSMS'])->name('send-sms');
+
+    });
+
 });
 
 //Route::get('/payment-paid', [Controllers\Payments\PaymentsController::class, 'PaymentPaidRequest'])->name('payment-paid');
