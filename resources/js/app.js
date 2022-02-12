@@ -61,13 +61,7 @@ function PriceSumProductsInBasket() {
     let discountAmount = 0;
     let deliveryAmount = 0;
 
-    let reiterationsCounts = 0;
-
     let promoCode = localStorage.getItem('promoCode') !== null ? JSON.parse(localStorage.getItem('promoCode')) : null;
-
-    if (promoCode) {
-        reiterationsCounts = promoCode.every.reiterationsCounts;
-    }
 
     Object.keys(basket).forEach((key) => {
         const item = basket[key];
@@ -83,16 +77,13 @@ function PriceSumProductsInBasket() {
             const modificationId = modification.id;
 
             if (promoCode.every.productModifications.indexOf(modificationId) !== -1) {
-                if (reiterationsCounts > 0) {
-                    let tempReiterationsCounts = reiterationsCounts > amount ? amount : reiterationsCounts;
-                    reiterationsCounts -= tempReiterationsCounts;
-                    if (promoCode.every.discountPercent !== null) {     // скидка на каждую позицию в процентах
-                        discountAmount += (price / 100 * promoCode.every.discountPercent) * tempReiterationsCounts;
-                    } else if (promoCode.every.discountSum !== null) {      // скидка на каждую позицию в деньгах
-                        discountAmount += promoCode.every.discountSum * tempReiterationsCounts;
-                    } else if (promoCode.every.salePrice !== null) {        // фиксированная стоимость продукта
-                        discountAmount += (price - promoCode.every.salePrice) * tempReiterationsCounts;
-                    }
+                let reiterationsCounts = promoCode.every.reiterationsCounts < amount ? promoCode.every.reiterationsCounts : amount;
+                if (promoCode.every.discountPercent !== null) {     // скидка на каждую позицию в процентах
+                    discountAmount += (price / 100 * promoCode.every.discountPercent) * reiterationsCounts;
+                } else if (promoCode.every.discountSum !== null) {      // скидка на каждую позицию в деньгах
+                    discountAmount += promoCode.every.discountSum * reiterationsCounts;
+                } else if (promoCode.every.salePrice !== null) {        // фиксированная стоимость продукта
+                    discountAmount += (price - promoCode.every.salePrice) * reiterationsCounts;
                 }
             }
         }
