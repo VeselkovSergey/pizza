@@ -262,4 +262,16 @@ class ManagerARMController extends Controller
         OrdersController::ChangePaymentType($order, $paymentType);
         return ResultGenerate::Success();
     }
+
+    public function ClientLastAddress()
+    {
+        $clientPhone = request()->post('clientPhone');
+        $user = User::where('phone', $clientPhone)->first();
+        if ($user) {
+            /** @var Orders $order */
+            $order = $user->Orders()->latest('id')->first();
+            return ResultGenerate::Success('Авто-подстановка адреса', ['clientAddress' => json_decode($order->client_raw_data)->clientAddressDelivery]);
+        }
+        return ResultGenerate::Error('У клиента нет адреса');
+    }
 }

@@ -513,7 +513,30 @@ function BasketWindow() {
             });
         });
 
+        const clientPhoneInput = orderInfoGenerationElement.querySelector('input[name="clientPhone"]');
+        if (clientPhoneInput) {
+            clientPhoneInput.addEventListener('keyup', () => {
+                let clientPhone = (clientPhoneInput.value).replace(/[^\d;]/g, '');
+                if (clientPhone.length === 11) {
+                    ClientLastAddress(clientPhone);
+                }
+            });
+        }
+
         return orderInfoGenerationElement;
+    }
+
+    function ClientLastAddress(clientPhone) {
+        LoaderShow();
+        Ajax(routeClientLastAddress, "POST", {clientPhone: clientPhone}).then((response) => {
+            FlashMessage(response.message);
+            if (response.status === true) {
+                document.getElementById('delivery').checked = true;
+                const clientAddressDeliveryInput = document.querySelector('input[name="clientAddressDelivery"]');
+                clientAddressDeliveryInput.removeAttribute('readonly');
+                clientAddressDeliveryInput.value = response.result.clientAddress;
+            }
+        }).finally(() => LoaderHide());
     }
 
 }

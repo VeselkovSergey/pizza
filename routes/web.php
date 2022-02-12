@@ -228,6 +228,8 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
         Route::post('/check-order-status-change', [Controllers\ARM\ManagerARMController::class, 'CheckOrderStatusChange'])->name('manager-arm-check-order-status-change');
 
+        Route::post('/client-last-address', [Controllers\ARM\ManagerARMController::class, 'ClientLastAddress'])->name('manager-arm-client-last-address');
+
         #todo на курьера
         Route::post('/change-status-order-to-delivered', [Controllers\ARM\ManagerARMController::class, 'ChangeStatusOrderToDelivered'])->name('manager-arm-change-status-order-to-delivered');
 

@@ -200,6 +200,8 @@
             const routeLogout = "{{route('logout')}}";
             const routeCheckPromoCodeRequest = "{{route('check-promo-code')}}";
             const routeProfile = "{{route('profile')}}";
+
+            const routeClientLastAddress = "{{route('manager-arm-client-last-address')}}";
         </script>
 
         @if($isStaff)
