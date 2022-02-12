@@ -270,7 +270,9 @@ class ManagerARMController extends Controller
         if ($user) {
             /** @var Orders $order */
             $order = $user->Orders()->latest('id')->first();
-            return ResultGenerate::Success('Авто-подстановка адреса', ['clientAddress' => json_decode($order->client_raw_data)->clientAddressDelivery]);
+            if ($order->client_raw_data) {
+                return ResultGenerate::Success('Авто-подстановка адреса', ['clientAddress' => json_decode($order->client_raw_data)->clientAddressDelivery]);
+            }
         }
         return ResultGenerate::Error('У клиента нет адреса');
     }
