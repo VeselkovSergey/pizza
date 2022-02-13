@@ -85,6 +85,10 @@
                         <td class="text-center">{{$ordersStatistics->amountOrdersCancelled}}</td>
                     </tr>
                     <tr class="hover-color">
+                        <td class="text-center">Среднее кол-во заказов в день</td>
+                        <td class="text-center">{{ number_format( ($ordersStatistics->ordersQuantity / $dayCount) , 2, '.', '\'')}}</td>
+                    </tr>
+                    <tr class="hover-color">
                         <td class="text-center">Средний чек</td>
                         <td class="text-center">{{ number_format( ($ordersStatistics->middleInvoice) , 2, '.', '\'') }} ₽</td>
                     </tr>
