@@ -106,7 +106,7 @@
                     </tr>
                     <tr class="hover-color">
                         <td class="text-center">Прогноз на 30 дней</td>
-                        <td class="text-center">{{number_format(($ordersStatistics->ordersAmount / $dayCount * 30), 2, '.', '\'')}} ₽</td>
+                        <td class="text-center">{{number_format(($ordersStatistics->ordersMarginAmount / $dayCount * 30), 2, '.', '\'')}} ₽</td>
                     </tr>
                     </tbody>
                 </table>
