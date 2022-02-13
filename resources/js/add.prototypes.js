@@ -86,3 +86,8 @@ const getSort = ({ target }) => {
         cell.classList.toggle('sorted', cell === target);
     }
 };
+
+//  масштабирование на айфон
+document.addEventListener('touchmove', function (event) {
+    if (event.scale !== 1) { event.preventDefault(); }
+}, false);
