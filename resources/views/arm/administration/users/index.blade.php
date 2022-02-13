@@ -54,7 +54,7 @@
                             </div>
                         </td>
                         <td class="text-center"><input name="telegram_chat_id" class="edit-field" readonly type="text" value="{{$user->telegram_chat_id}}"></td>
-                        @php($userOrderCount = $user->Orders->count())
+                        @php($userOrderCount = $user->Orders()->where('status_id', \App\Models\Orders::STATUS_TEXT['completed'])->count())
                         @if($userOrderCount === 0)
                             @php($countOrderCancelled++)
                         @endif
