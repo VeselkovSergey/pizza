@@ -93,8 +93,8 @@ class OrdersService
         $clientInfo = json_decode($this->order->client_raw_data);
         $clientInfo->typePaymentId = ($clientInfo->typePayment[0] === true ? 0 : 1);
         $clientInfo->typePaymentText = ($clientInfo->typePayment[0] === true ? 'Карта' : 'Наличные');
-        $clientInfo->typeDeliveryId = ($clientInfo->typeDelivery[0] === true ? 0 : 1);
-        $clientInfo->typeDeliveryText = ($clientInfo->typeDelivery[0] === true ? 'Доставка' : 'Самовывоз');
+        $clientInfo->typeDeliveryId = isset($clientInfo->typeDelivery) ? ($clientInfo->typeDelivery[0] === true ? 0 : 1) : '-';
+        $clientInfo->typeDeliveryText = isset($clientInfo->typeDelivery) ? ($clientInfo->typeDelivery[0] === true ? 'Доставка' : 'Самовывоз') : '-';
         $clientInfo->ordersCount = $this->order->User->Orders()->where('status_id', Orders::STATUS_TEXT['completed'])->count();
         $clientInfo->userId = $this->order->User->id;
         $orderStd->clientInfo = $clientInfo;
