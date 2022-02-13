@@ -336,9 +336,13 @@ input[type="radio"]:checked + span {
     }
 
     .promo-code-clear-button-container {
+        width: 41px;
         .promo-code-clear-button {
             background-color: unset;
             border: unset;
+            & > svg {
+                color: grey;
+            }
         }
     }
 
