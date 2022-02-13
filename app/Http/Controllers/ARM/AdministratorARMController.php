@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Ingredients\IngredientsController;
 use App\Http\Controllers\Orders\OrdersController;
 use App\Http\Controllers\Products\ProductsController;
+use App\Http\Controllers\Supply\SupplyController;
 use App\Models\Ingredients;
 use App\Models\IngredientsInSupply;
 use App\Models\Orders;
@@ -219,6 +220,15 @@ class AdministratorARMController extends Controller
         $data = json_decode(request()->data);
         $ingredient = Ingredients::find($ingredientId);
         IngredientsController::SaveChanges($ingredient, $data);
+        return ResultGenerate::Success();
+    }
+
+    public function IngredientInSupplySaveChanges()
+    {
+        $ingredientInSupplyId = request()->ingredientInSupplyId;
+        $data = json_decode(request()->data);
+        $ingredientInSupply = IngredientsInSupply::find($ingredientInSupplyId);
+        SupplyController::SaveChanges($ingredientInSupply, $data);
         return ResultGenerate::Success();
     }
 

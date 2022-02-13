@@ -20,6 +20,8 @@ class IngredientsInSupply extends BaseModel
         'price_ingredient',
     ];
 
+    public $timestamps = false;
+
     public function Ingredient()
     {
         $ingredient = $this->hasOne(Ingredients::class, 'id', 'ingredient_id');

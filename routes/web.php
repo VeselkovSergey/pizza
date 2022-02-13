@@ -120,13 +120,15 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
         Route::get('/products-used-ingredient/{ingredientId?}', [Controllers\Ingredients\IngredientsController::class, 'ProductsUsedIngredient'])->name('products-used-ingredient');
 
+        Route::get('/ingredient-supply/{ingredientId?}', [Controllers\Ingredients\IngredientsController::class, 'IngredientSupply'])->name('ingredient-supply');
+
     });
 
     Route::group(['prefix' => 'supplies'], function () {
 
         Route::get('/', [Controllers\Supply\SupplyController::class, 'Index'])->name('supplies-page');
         Route::get('/create', [Controllers\Supply\SupplyController::class, 'Create'])->name('supply-create-page');
-        Route::get('/detail/{supplyId}', [Controllers\Supply\SupplyController::class, 'Detail'])->name('supply-detail-page');
+        Route::get('/detail/{supplyId?}', [Controllers\Supply\SupplyController::class, 'Detail'])->name('supply-detail-page');
         Route::get('/edit/{supplyId}', [Controllers\Supply\SupplyController::class, 'Edit'])->name('supply-edit-page');
         Route::post('/save', [Controllers\Supply\SupplyController::class, 'Save'])->name('supply-save');
 
@@ -195,6 +197,7 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
         Route::group(['prefix' => 'ingredients'], function () {
             Route::get('/spent', [Controllers\ARM\AdministratorARMController::class, 'SpentIngredients'])->name('administrator-arm-spent-ingredients-page');
             Route::post('/ingredient-save-changes', [Controllers\ARM\AdministratorARMController::class, 'IngredientSaveChanges'])->name('administrator-arm-ingredient-save-changes');
+            Route::post('/ingredient-in-supply-save-changes', [Controllers\ARM\AdministratorARMController::class, 'IngredientInSupplySaveChanges'])->name('administrator-arm-ingredient-in-supply-save-changes');
         });
 
         Route::get('/products-modifications', [Controllers\ARM\AdministratorARMController::class, 'ProductsModification'])->name('administrator-arm-products-modifications-page');

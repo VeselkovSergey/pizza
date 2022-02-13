@@ -153,4 +153,13 @@ class SupplyController extends Controller
 
         return ResultGenerate::Success();
     }
+
+    public static function SaveChanges(IngredientsInSupply $ingredientInSupply, array|object $data)
+    {
+        foreach ($data as $title => $value) {
+            $ingredientInSupply->$title = $value;
+        }
+        $ingredientInSupply->save();
+        return $ingredientInSupply;
+    }
 }

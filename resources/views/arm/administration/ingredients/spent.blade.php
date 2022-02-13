@@ -68,6 +68,7 @@
                         <td class="text-center">{{$ingredient->sent}}</td>
                         <td class="text-center @if($balance <= 0) bg-red @endif">{{$balance}}</td>
                         <td class="text-center used cp">Где юзается</td>
+                        <td class="text-center supply cp">Поставки</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -128,9 +129,49 @@
             let content = '<table class="white-border"><thead><tr><th>Наименование</th><th>Кол-во</th></tr></thead><tbody>';
             Object.keys(data).forEach((key) => {
                 const product = data[key];
-                content += '<tr><td>'+product.productTitle+'</td><td class="text-center">'+product.ingredientUsageAmount+'</td></td>'
+                content += '<tr><td>'+product.productTitle+'</td><td class="text-center">'+product.ingredientUsageAmount+'</td></tr>'
             });
             return content += '</tbody></table>';
+        }
+
+        document.body.querySelectorAll('.supply').forEach((ingredient) => {
+            ingredient.addEventListener('click', () => {
+                const ingredientId = ingredient.closest('.ingredient-container').dataset.ingredientId;
+                Ajax("{{route('ingredient-supply')}}?ingredientId=" + ingredientId, 'GET').then((response) => {
+                    let modal = ModalWindow(GenerationIngredientSupply(response));
+
+                    modal.querySelectorAll('.edit-field').forEach((field) => {
+                        field.addEventListener('dblclick', (event) => {
+                            event.target.removeAttribute('readonly');
+                        });
+
+                        field.addEventListener('blur', (event) => {
+                            event.target.setAttribute('readonly', 'readonly');
+                            let supplyContainer = event.target.closest('.supply-container');
+                            let ingredientInSupplyId = supplyContainer.dataset.ingredientInSupplyId;
+                            let value = {};
+                            value[event.target.name] = event.target.value.replace(/,/, '.');
+                            SaveChangesSupply(ingredientInSupplyId, value);
+                        });
+                    });
+
+                });
+            });
+        });
+
+        function GenerationIngredientSupply(data) {
+            let content = '<table class="white-border"><thead><tr><th>Дата</th><th>Кол-во</th><th>Цена за единицу</th><th>В поставку</th></tr></thead><tbody>';
+            Object.keys(data).forEach((key) => {
+                const supply = data[key];
+                content += '<tr class="supply-container" data-ingredient-in-supply-id="'+supply.id+'"><td>'+supply.date+'</td><td class="text-center">'+supply.amount+'</td><td class="text-center"><input name="price_ingredient" class="edit-field" readonly type="text" value="'+supply.price+'"></td><td class="text-center cp"><a class="color-orange" target="_blank" href="{{route('supply-detail-page')}}/'+supply.supplyId+'">тык</a></td></tr>'
+            });
+            return content += '</tbody></table>';
+        }
+
+        function SaveChangesSupply(ingredientInSupplyId, data) {
+            Ajax("{{route('administrator-arm-ingredient-in-supply-save-changes')}}", "POST", {ingredientInSupplyId: ingredientInSupplyId, data: JSON.stringify(data)}).then((response) => {
+                FlashMessage(response.message);
+            });
         }
     </script>
 

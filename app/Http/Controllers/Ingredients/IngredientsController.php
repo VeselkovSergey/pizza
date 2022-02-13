@@ -90,4 +90,29 @@ class IngredientsController extends Controller
 
         return $products;
     }
+
+    public static function IngredientSupply()
+    {
+        $ingredientId = (int)\request()->ingredientId;
+        $supplyRaw = IngredientsInSupply::selectRaw('ingredients_in_supply.amount_ingredient as amount')
+            ->selectRaw('ingredients_in_supply.price_ingredient as price')
+            ->selectRaw('ingredients_in_supply.supply_id as supply_id')
+            ->selectRaw('ingredients_in_supply.id as id')
+            ->selectRaw('supply.supply_date as date')
+            ->leftJoin('supply', 'supply.id', '=', 'ingredients_in_supply.supply_id')
+            ->orderByDesc('date')
+            ->where('ingredient_id', $ingredientId)->get();
+
+        $supply = [];
+        foreach ($supplyRaw as $s) {
+            $supply[] = [
+                'amount' => $s->amount,
+                'price' => $s->price,
+                'date' => $s->date,
+                'supplyId' => $s->supply_id,
+                'id' => $s->id,
+            ];
+        }
+        return $supply;
+    }
 }
