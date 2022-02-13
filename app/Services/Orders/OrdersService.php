@@ -276,6 +276,8 @@ class OrdersService
             $this->ordersStatistics->ordersAmountInDays[$order->createdAt->format('Y-m-d')]['ordersNumber']++;
             $this->ordersStatistics->ordersAmountInDays[$order->createdAt->format('Y-m-d')]['ordersAmount'] += $order->amount;
 
+            $this->ordersStatistics->ordersAmountInDays[$order->createdAt->format('Y-m-d')]['middleInvoice'] = $this->ordersStatistics->ordersAmountInDays[$order->createdAt->format('Y-m-d')]['ordersAmount'] / $this->ordersStatistics->ordersAmountInDays[$order->createdAt->format('Y-m-d')]['ordersNumber'];
+
             if ($order->clientInfo->typePaymentId === 0) {
                 $this->ordersStatistics->ordersAmountInDays[$order->createdAt->format('Y-m-d')]['ordersNumberBank']++;
                 $this->ordersStatistics->ordersAmountInDays[$order->createdAt->format('Y-m-d')]['ordersAmountBank'] += $order->amount;
