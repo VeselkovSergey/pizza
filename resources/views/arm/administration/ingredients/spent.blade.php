@@ -160,7 +160,7 @@
         });
 
         function GenerationIngredientSupply(data) {
-            let content = '<table class="white-border"><thead><tr><th>Дата</th><th>Кол-во</th><th>Цена за единицу</th><th>В поставку</th></tr></thead><tbody>';
+            let content = '<div class="mb-10">'+data[0].title+'</div><table class="white-border"><thead><tr><th>Дата</th><th>Кол-во</th><th>Цена за единицу</th><th>В поставку</th></tr></thead><tbody>';
             Object.keys(data).forEach((key) => {
                 const supply = data[key];
                 content += '<tr class="supply-container" data-ingredient-in-supply-id="'+supply.id+'"><td>'+supply.date+'</td><td class="text-center">'+supply.amount+'</td><td class="text-center"><input name="price_ingredient" class="edit-field" readonly type="text" value="'+supply.price+'"></td><td class="text-center cp"><a class="color-orange" target="_blank" href="{{route('supply-detail-page')}}/'+supply.supplyId+'">тык</a></td></tr>'

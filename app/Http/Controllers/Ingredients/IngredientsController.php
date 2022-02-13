@@ -98,8 +98,10 @@ class IngredientsController extends Controller
             ->selectRaw('ingredients_in_supply.price_ingredient as price')
             ->selectRaw('ingredients_in_supply.supply_id as supply_id')
             ->selectRaw('ingredients_in_supply.id as id')
+            ->selectRaw('ingredients.title as title')
             ->selectRaw('supply.supply_date as date')
             ->leftJoin('supply', 'supply.id', '=', 'ingredients_in_supply.supply_id')
+            ->leftJoin('ingredients', 'ingredients.id', '=', 'ingredients_in_supply.ingredient_id')
             ->orderByDesc('date')
             ->where('ingredient_id', $ingredientId)->get();
 
@@ -111,6 +113,7 @@ class IngredientsController extends Controller
                 'date' => $s->date,
                 'supplyId' => $s->supply_id,
                 'id' => $s->id,
+                'title' => $s->title,
             ];
         }
         return $supply;
