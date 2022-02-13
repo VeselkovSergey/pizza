@@ -237,6 +237,23 @@ $combos1 = [
             height: 6px;
         }
 
+        .slots-container::-webkit-scrollbar-thumb {
+            background-color: #ff7300;
+            border-radius: 2px;
+            border: 1px solid hsla(0,0%,50.2%,.1);
+        }
+        .slots-container::-webkit-scrollbar-track {
+            background: hsla(0,0%,50.2%,.1);
+        }
+        .slots-container::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .slot {
+            margin-right: 10px;
+        }
+
         .sections-container::-webkit-scrollbar-thumb {
             background-color: #ff7300;
             border-radius: 2px;
