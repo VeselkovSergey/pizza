@@ -31,9 +31,9 @@ class SupplyController extends Controller
                     $suppliesId[] = $supplyId->supply_id;
                 }
             }
-            $supplies = Supply::whereIn('id', $suppliesId)->orderByDesc('id')->get();
+            $supplies = Supply::whereIn('id', $suppliesId)->orderByDesc('supply_date')->get();
         } else {
-            $supplies = Supply::orderByDesc('id')->get();
+            $supplies = Supply::orderByDesc('supply_date')->get();
         }
         return view('arm.supply.index', compact('supplies', 'ingredients'));
     }
