@@ -61,7 +61,7 @@ class AdministratorARMController extends Controller
         $startDate = (request()->get('start-date') === null) ? date('Y-m-d', time()) : request()->get('start-date');
         $endDate = (request()->get('end-date') === null) ? date('Y-m-d', time()) : request()->get('end-date');
 
-        $dayCount = (int)(date_diff(date_create_from_format('Y-m-d', $startDate), date_create_from_format('Y-m-d', $endDate))->format('%d')) + 1;
+        $dayCount = (int)(date_diff(date_create_from_format('Y-m-d', $startDate), date_create_from_format('Y-m-d', $endDate))->days) + 1;
 
         $orders = (new OrdersService())->GetOrderByPeriod([$startDate, $endDate]);
 
