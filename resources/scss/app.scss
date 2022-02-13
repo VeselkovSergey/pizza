@@ -150,9 +150,8 @@ header {
     height: 30px;
     background-color: rgb(243, 243, 247);
     > * {
-        height: 30px;
+        height: 100%;
         min-width: 30px;
-        vertical-align: center;
 
         &.delete-product-button {
             border-radius: 25px 0 0 25px;
