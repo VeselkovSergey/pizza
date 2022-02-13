@@ -61,6 +61,10 @@
                 <table>
                     <tbody>
                     <tr class="hover-color">
+                        <td class="text-center">Кол-во дней</td>
+                        <td class="text-center">{{$dayCount}}</td>
+                    </tr>
+                    <tr class="hover-color">
                         <td class="text-center">Кол-во заказов</td>
                         <td class="text-center">{{$ordersStatistics->ordersQuantity}}</td>
                     </tr>
@@ -99,6 +103,10 @@
                     <tr class="hover-color">
                         <td class="text-center">Поставки</td>
                         <td class="text-center">{{number_format($supplySum, 2, '.', '\'')}} ₽</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Прогноз на 30 дней</td>
+                        <td class="text-center">{{number_format(($ordersStatistics->ordersAmount / $dayCount * 30), 2, '.', '\'')}} ₽</td>
                     </tr>
                     </tbody>
                 </table>

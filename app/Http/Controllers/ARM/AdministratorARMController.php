@@ -61,6 +61,8 @@ class AdministratorARMController extends Controller
         $startDate = (request()->get('start-date') === null) ? date('Y-m-d', time()) : request()->get('start-date');
         $endDate = (request()->get('end-date') === null) ? date('Y-m-d', time()) : request()->get('end-date');
 
+        $dayCount = (int)(date_diff(date_create_from_format('Y-m-d', $startDate), date_create_from_format('Y-m-d', $endDate))->format('%d')) + 1;
+
         $orders = (new OrdersService())->GetOrderByPeriod([$startDate, $endDate]);
 
         $ordersStatistics = $orders['ordersStatistics'];
@@ -68,7 +70,7 @@ class AdministratorARMController extends Controller
 
         $supplySum = Supply::SuppliesSumByDate($startDate, $endDate);
 
-        return view('arm.administration.orders.index', compact('orders', 'supplySum', 'ordersStatistics', 'startDate', 'endDate'));
+        return view('arm.administration.orders.index', compact('orders', 'supplySum', 'ordersStatistics', 'startDate', 'endDate', 'dayCount'));
     }
 
     public function OrdersAddresses()
