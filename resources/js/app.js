@@ -488,7 +488,7 @@ function BasketWindow() {
                         '</div>' +
                     '</div>' +
                     '<div class="text-center mt-10">Бесплатная доставка от 500 рублей, иначе 150 рублей по городу</div>' +
-                    '<div class="w-100 flex-center mt-25" style="padding-bottom: 50px;"><button class="cp order-create orange-button">' + (orderId ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button>' + (orderId ? '<button class="cp clean-basket orange-button ml-10">Очистить данные</button>'  : '') + '</div>' +
+                    '<div class="w-100 flex-center mt-25" style="padding-bottom: 100px;"><button class="cp order-create orange-button">' + (orderId ? 'Сохранить изменения' : (auth ? 'Оформить заказ' : 'Авторизоваться')) + '</button>' + (orderId ? '<button class="cp clean-basket orange-button ml-10">Очистить данные</button>'  : '') + '</div>' +
                 '</div>';
         }
 
