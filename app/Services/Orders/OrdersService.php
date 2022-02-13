@@ -2,6 +2,7 @@
 
 namespace App\Services\Orders;
 
+use App\Helpers\StringHelper;
 use App\Models\Orders;
 use App\Models\ProductModifications;
 use App\Models\ProductModificationsIngredients;
@@ -259,6 +260,9 @@ class OrdersService
             empty($this->ordersStatistics->ordersNumberInHour[(int)$order->createdAt->format('H')]) ? $this->ordersStatistics->ordersNumberInHour[(int)$order->createdAt->format('H')] = 1 : $this->ordersStatistics->ordersNumberInHour[(int)$order->createdAt->format('H')] += 1;
 
             if (empty($this->ordersStatistics->ordersAmountInDays[$order->createdAt->format('Y-m-d')])) {
+
+                $this->ordersStatistics->ordersAmountInDays[$order->createdAt->format('Y-m-d')]['dayOfWeek'] = StringHelper::DAY_NAME[$order->createdAt->dayOfWeek];
+
                 $this->ordersStatistics->ordersAmountInDays[$order->createdAt->format('Y-m-d')]['ordersNumber'] = 0;
                 $this->ordersStatistics->ordersAmountInDays[$order->createdAt->format('Y-m-d')]['ordersAmount'] = 0;
 

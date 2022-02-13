@@ -112,6 +112,7 @@
                         <thead>
                         <tr>
                             <th>Дата</th>
+                            <th>День недели</th>
                             <th>Кол-во нал</th>
                             <th>Кол-во банк</th>
                             <th>Всего</th>
@@ -124,6 +125,7 @@
                         @foreach($ordersStatistics->ordersAmountInDays as $date => $values)
                             <tr class="hover-color">
                                 <td class="text-center">{{$date}}</td>
+                                <td class="text-center">{{$values['dayOfWeek']}}</td>
                                 <td class="text-center">{{$values['ordersNumberCash']}}</td>
                                 <td class="text-center">{{$values['ordersNumberBank']}}</td>
                                 <td class="text-center">{{$values['ordersNumberCash'] + $values['ordersNumberBank']}}</td>
