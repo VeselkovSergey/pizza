@@ -54,7 +54,7 @@ function DeleteAllProductsInBasket() {
     UpdateBasketCounter();
 }
 
-function PriceSumProductsInBasket(deliveryFree = false) {
+function PriceSumProductsInBasket() {
 
     let sum = 0;
     let basket = JSON.parse(localStorage.getItem('basket'));
@@ -116,7 +116,7 @@ function PriceSumProductsInBasket(deliveryFree = false) {
 
     let lastTypeDelivery = localStorage.getItem('lastTypeDelivery') !== null ? localStorage.getItem('lastTypeDelivery') : '';
 
-    if (lastTypeDelivery !== 'without-delivery' && sum - discountAmount < 500 && sum !== 0 && deliveryFree === false) {
+    if (lastTypeDelivery !== 'without-delivery' && sum - discountAmount < 500 && sum !== 0) {
         deliveryAmount = 150;
     }
 
@@ -141,48 +141,16 @@ function UpdateBasketCounter() {
     basketCounter.innerHTML = amount;
 }
 
-function UpdateBasketSum(deliveryFree = false) {
-    let resultPriceSumProductsInBasket = PriceSumProductsInBasket(deliveryFree);
-
-    let deliveryFreeHide = ' hide ';
-    if (admin) {
-        deliveryFreeHide = '';
-    }
-
-    let deliveryFreeChecked = ' checked ';
-    if (deliveryFree) {
-        deliveryFreeChecked = '';
-    }
+function UpdateBasketSum() {
+    let resultPriceSumProductsInBasket = PriceSumProductsInBasket();
 
     let basketSumField = document.body.querySelector('.price-sum-products-in-basket');
     if (basketSumField) {
         basketSumField.innerHTML =
             '<div>Сумма: ' + resultPriceSumProductsInBasket.sum.toFixed(2) + ' ₽</div>' +
-            '<div class="flex-center-vertical" style="justify-content: right;">' +
-                '<div class="flex-center-vertical ' + deliveryFreeHide + '" style="justify-content: right">'+
-                    '<label class="custom-checkbox-label" for="delivery_free">'+
-                        '<input type="checkbox" id="delivery_free" name="delivery_free" ' + deliveryFreeChecked + ' />'+
-                        '<div class="custom-checkbox-slider round"></div>'+
-                    '</label>'+
-                '</div>'+
-            '<div class="ml-5">Доставка: ' + resultPriceSumProductsInBasket.deliveryAmount.toFixed(2) + ' ₽</div>'+
-            '</div>'+
+            '<div>Доставка: ' + resultPriceSumProductsInBasket.deliveryAmount.toFixed(2) + ' ₽</div>' +
             '<div>Скидка: ' + resultPriceSumProductsInBasket.discount.toFixed(2) + ' ₽</div>' +
             '<div>Итого: ' + resultPriceSumProductsInBasket.total.toFixed(2) + ' ₽</div>';
-
-        const deliveryFreeButton = basketSumField.querySelector('input[id="delivery_free"]');
-        if (deliveryFreeButton) {
-            deliveryFreeButton.addEventListener('change', () => {
-                setTimeout(() => {
-                    if (deliveryFreeButton.checked) {
-                        UpdateBasketSum();
-                    } else {
-                        UpdateBasketSum(true);
-                    }
-                }, 500);
-            });
-        }
-
     }
 
     return resultPriceSumProductsInBasket;
