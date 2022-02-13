@@ -8,6 +8,14 @@
 
     <div class="sms-container">
         <label>
+            <div>deviceID</div>
+            <input class="need-validate w-100" type="text" name="deviceID">
+        </label>
+        <label>
+            <div>secret</div>
+            <input class="need-validate w-100" type="text" name="secret">
+        </label>
+        <label>
             <div>Номер телефона</div>
             <input class="need-validate w-100 phone-mask" type="text" name="phone" placeholder="89151640548">
         </label>

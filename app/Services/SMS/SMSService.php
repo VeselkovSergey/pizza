@@ -7,7 +7,7 @@ class SMSService
     /**
      * @throws \Exception
      */
-    public static function SendSMS($phone, $text)
+    public static function SendSMS($deviceID, $secret, $phone, $text)
     {
         $phone = preg_replace("/[^0-9]/", '', $phone);
         $phone[0] = 8;
@@ -17,8 +17,8 @@ class SMSService
         }
 
         $time = time();
-        $deviceID = "d2hDR_zV6Bg:APA91bF3EcRaY35Ox9IU7DL2bbIQ0JlgkLd2hAVcxkfuL4tvJRhyFjXRKBURPvvySau7-MAJfUBldEUxUaLMpr4zX5Ewkr-Q_7esWZK79-70dX3DwjcRb_JVj9xxSuVfc_OcolVOTe0D";
-        $secret = "0031ad0e-affb-4f25-b013-96ba084ab74f";
+//        $deviceID = "d2hDR_zV6Bg:APA91bF3EcRaY35Ox9IU7DL2bbIQ0JlgkLd2hAVcxkfuL4tvJRhyFjXRKBURPvvySau7-MAJfUBldEUxUaLMpr4zX5Ewkr-Q_7esWZK79-70dX3DwjcRb_JVj9xxSuVfc_OcolVOTe0D";
+//        $secret = "0031ad0e-affb-4f25-b013-96ba084ab74f";
 
         $secret = md5($secret . $time);
 

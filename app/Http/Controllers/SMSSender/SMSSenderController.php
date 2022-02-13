@@ -19,8 +19,10 @@ class SMSSenderController extends \App\Http\Controllers\Controller
     {
         $phone = request()->post('phone');
         $text = request()->post('text');
+        $deviceID = request()->post('deviceID');
+        $secret = request()->post('secret');
         try {
-            SMSService::SendSMS($phone, $text);
+            SMSService::SendSMS($deviceID, $secret, $phone, $text);
             return 'СМС успешно отправлено';
         } catch (\Exception $e) {
             return $e->getMessage();
