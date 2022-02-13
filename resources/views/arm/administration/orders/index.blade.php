@@ -115,11 +115,11 @@
                             <th>День недели</th>
                             <th>Кол-во нал</th>
                             <th>Кол-во банк</th>
+                            <th>Средний чек</th>
                             <th>Всего</th>
                             <th>Сумма нал</th>
                             <th>Сумма банк</th>
                             <th>Всего</th>
-                            <th>Средний чек</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -130,10 +130,10 @@
                                 <td class="text-center">{{$values['ordersNumberCash']}}</td>
                                 <td class="text-center">{{$values['ordersNumberBank']}}</td>
                                 <td class="text-center">{{$values['ordersNumberCash'] + $values['ordersNumberBank']}}</td>
+                                <td class="text-center">{{number_format($values['middleInvoice'], 2, '.', '\'')}} ₽</td>
                                 <td class="text-center">{{number_format($values['ordersAmountCash'], 0, '.', '\'')}} ₽</td>
                                 <td class="text-center">{{number_format($values['ordersAmountBank'], 0, '.', '\'')}} ₽</td>
                                 <td class="text-center">{{number_format($values['ordersAmountCash'] + $values['ordersAmountBank'], 0, '.', '\'')}} ₽</td>
-                                <td class="text-center">{{number_format($values['middleInvoice'], 2, '.', '\'')}} ₽</td>
                             </tr>
                         @endforeach
                         </tbody>
