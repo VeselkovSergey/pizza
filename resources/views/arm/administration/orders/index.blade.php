@@ -108,7 +108,7 @@
                 <div class="toggle-button cp" data-toogle="amount-orders-in-days-container">Кол-во заказов по дням</div>
                 <div class="amount-orders-in-days-container mt-10">
 
-                    <table>
+                    <table id="amount-orders-in-days-table">
                         <thead>
                         <tr>
                             <th>Дата</th>
@@ -138,6 +138,8 @@
                         @endforeach
                         </tbody>
                     </table>
+
+                    <div class="cp" onclick="fnExcelReport('amount-orders-in-days-table')" >Скачать</div>
 
                 </div>
             </div>
@@ -184,7 +186,7 @@
         </div>
 
         <div>
-            <table class="w-100 border table-sort" style="width: max-content;">
+            <table class="w-100 border table-sort" id="orders-report" style="width: max-content;">
                 <thead>
                 <tr>
                     <th data-title-column-id="1" class="table-columns w-0">ID</th>
@@ -275,6 +277,9 @@
 
                 </tbody>
             </table>
+
+            <div class="cp" onclick="fnExcelReport('orders-report')" >Скачать</div>
+
         </div>
 
     </div>
@@ -406,6 +411,29 @@
                 localStorage.setItem('columnsInOrder', JSON.stringify(columnsInOrder));
             });
         });
+
+        function fnExcelReport(tableId) {
+            var tab_text = "<table border='2px'><tr bgcolor='#FFFFFF'>";
+            var j = 0;
+            tab = document.getElementById(tableId);
+
+            for (j = 1; j < tab.rows.length; j++) {
+                tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+            }
+
+            tab_text = tab_text + "</table>";
+            tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");
+            tab_text = tab_text.replace(/<img[^>]*>/gi, "");
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, "");
+
+            var uri = 'data:application/vnd.ms-excel,';
+            var a = document.createElement('a');
+            a.setAttribute("href", uri + encodeURIComponent(tab_text))
+            a.setAttribute('download', new Date() + '.xls');
+            document.body.appendChild(a);
+            a.click()
+        }
+
     </script>
 
 @stop
