@@ -296,6 +296,7 @@ function BasketWindow() {
             ProductWindowGenerator(productId, () => {
                 ProductsInBasketGenerationElement.innerHTML = '';
                 ProductsInBasketGenerationElement.append(ProductsInBasketGenerationHTML());
+                UpdateBasketSum();
             });
         });
     });
@@ -340,8 +341,6 @@ function BasketWindow() {
         }
 
         productsInBasketGenerationElement.innerHTML = productsInBasketGenerationHTML;
-
-        UpdateBasketSum();
 
         let deleteProductButtons = productsInBasketGenerationElement.querySelectorAll('.delete-product-button');
         deleteProductButtons.forEach((el) => {
