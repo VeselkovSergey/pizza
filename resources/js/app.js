@@ -337,6 +337,7 @@ function BasketWindow() {
             });
 
             productsInBasketGenerationHTML += '<div class="price-sum-products-in-basket py-10 w-100 text-right"></div>';
+            UpdateBasketSum();
         }
 
         productsInBasketGenerationElement.innerHTML = productsInBasketGenerationHTML;
