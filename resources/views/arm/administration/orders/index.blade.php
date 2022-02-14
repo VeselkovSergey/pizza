@@ -89,6 +89,14 @@
                         <td class="text-center">{{$ordersStatistics->amountOrdersCancelled}}</td>
                     </tr>
                     <tr class="hover-color">
+                        <td class="text-center">Кол-во заказов сотрудниками</td>
+                        <td class="text-center">{{$ordersStatistics->ordersByStaff}}</td>
+                    </tr>
+                    <tr class="hover-color">
+                        <td class="text-center">Сумма заказов сотрудников</td>
+                        <td class="text-center">{{$ordersStatistics->ordersAmountByStaff}}</td>
+                    </tr>
+                    <tr class="hover-color">
                         <td class="text-center">Среднее кол-во заказов в день</td>
                         <td class="text-center">{{ number_format( ($ordersStatistics->ordersQuantity / $dayCount) , 2, '.', '\'')}}</td>
                     </tr>

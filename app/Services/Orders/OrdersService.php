@@ -45,6 +45,9 @@ class OrdersService
 
         $this->ordersStatistics->ordersByDelivery = 0;
 
+        $this->ordersStatistics->ordersByStaff = 0;
+        $this->ordersStatistics->ordersAmountByStaff = 0;
+
         $this->ordersStatistics->ordersCostAmount = 0;
 
         $this->ordersStatistics->ordersMarginAmount = 0;
@@ -98,7 +101,7 @@ class OrdersService
         $clientInfo->typeDeliveryText = isset($clientInfo->typeDelivery) ? ($clientInfo->typeDelivery[0] === true ? 'Доставка' : 'Самовывоз') : '-';
         $clientInfo->ordersCount = $this->order->User->Orders()->where('status_id', Orders::STATUS_TEXT['completed'])->count();
         $clientInfo->userId = $this->order->User->id;
-        $orderStd->clientInfo = $clientInfo;
+        $clientInfo->userIsStaff = $this->order->User->IsStaff();
         $orderStd->clientInfo = $clientInfo;
 
         $courier = $this->order->Courier;
@@ -251,6 +254,11 @@ class OrdersService
             if ($order->courierId !== '-') {
                 $this->ordersStatistics->ordersByDelivery++;
                 $this->ordersStatistics->ordersAmountByDelivery += $order->amount;
+            }
+
+            if ($order->clientInfo->userIsStaff) {
+                $this->ordersStatistics->ordersByStaff++;
+                $this->ordersStatistics->ordersAmountByStaff += $order->amount;
             }
 
             $this->ordersStatistics->ordersCostAmount += $order->cost;
