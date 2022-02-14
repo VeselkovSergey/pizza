@@ -120,6 +120,7 @@ class AdministratorARMController extends Controller
             ->selectRaw('modifications.title as modification_title')
             ->selectRaw('modifications.value as modification_value')
             ->selectRaw('categories.title as category_title')
+            ->selectRaw('product_modifications.product_id as product_id')
 
             ->leftJoin('products', 'products.id', '=', 'product_modifications.product_id')
             ->leftJoin('modifications', 'modifications.id', '=', 'product_modifications.modification_id')

@@ -12,6 +12,7 @@
                 <thead>
                 <tr>
                     <th class="w-0">ID</th>
+                    <th class="w-0">ID продукта</th>
                     <th class="w-0">Категория</th>
                     <th>Наименование</th>
                     <th class="w-0">Кол-во</th>
@@ -26,6 +27,7 @@
                 @foreach($productsModifications as $id => $productModification)
                     <tr class="hover-color">
                         <td class="text-center">#{{$productModification->product_modifications_id}}</td>
+                        <td class="text-center">#{{$productModification->product_id}}</td>
                         <td class="text-center">{{$productModification->category_title}}</td>
                         <td>{{$productModification->product_title . ' ' . $productModification->modification_title . ' ' . $productModification->modification_value}}</td>
                         <td class="text-center">{{$productModification->soldAmount}}</td>
