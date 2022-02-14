@@ -57,7 +57,7 @@
         @endforeach
 
         <div class="w-100 mb-10">
-            <div class="w-100 text-right">Сумма заказа: {{$order->total_order_amount}} ₽</div>
+            <div class="w-100 text-right">Сумма заказа: {{$order->total_order_amount >= $order->order_amount ? $order->total_order_amount : $order->order_amount}} ₽</div>
             @if(($order->total_order_amount - $order->order_amount) > 0)
                 <div class="w-100 text-right">Скидка: {{$order->total_order_amount - $order->order_amount}} ₽</div>
             @endif
