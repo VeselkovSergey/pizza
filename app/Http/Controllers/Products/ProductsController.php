@@ -156,7 +156,7 @@ class ProductsController extends Controller
             (object)[
                 'id' => 4,
                 'title' => 'Комбо на двоих',
-                'price' => '899',
+                'price' => '849',
                 'sections' => [
                     $modifications33,
                     array_merge($modificationsSoups, $modificationsPastas, $modificationsSalads),
