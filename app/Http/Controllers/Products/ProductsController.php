@@ -45,30 +45,82 @@ class ProductsController extends Controller
         $modifications33 = [];
         $modifications40 = [];
 
-        $products = Products::whereNotIn('id', [31, 32, 65])->where('category_id', 1)->get();
-        foreach ($products as $product) {
-            $modification25 = $product->Modifications()->where('modification_id', 2)->where('stop_list', 0)->first(); // 25
-            $modification33 = $product->Modifications()->where('modification_id', 1)->where('stop_list', 0)->first(); // 33
-            $modification40 = $product->Modifications()->where('modification_id', 3)->where('stop_list', 0)->first(); // 40
+        $modificationsSoups = [];
+
+        $modificationsPastas = [];
+
+        $modificationsSalads = [];
+
+        $modificationsDrinks = [];
+
+        $pizzas = Products::whereNotIn('id', [31, 32, 65])->where('category_id', 1)->get();
+        foreach ($pizzas as $pizza) {
+            $modification25 = $pizza->Modifications()->where('modification_id', 2)->where('stop_list', 0)->first(); // 25
+            $modification33 = $pizza->Modifications()->where('modification_id', 1)->where('stop_list', 0)->first(); // 33
+            $modification40 = $pizza->Modifications()->where('modification_id', 3)->where('stop_list', 0)->first(); // 40
 
             if (isset($modification25)) {
                 $modifications25[] = (object)[
-                    'productId' => $product->id,
+                    'productId' => $pizza->id,
                     'modificationId' => $modification25->id,
                 ];
             }
 
             if (isset($modification33)) {
                 $modifications33[] = (object)[
-                    'productId' => $product->id,
+                    'productId' => $pizza->id,
                     'modificationId' => $modification33->id,
                 ];
             }
 
             if (isset($modification40)) {
                 $modifications40[] = (object)[
-                    'productId' => $product->id,
+                    'productId' => $pizza->id,
                     'modificationId' => $modification40->id,
+                ];
+            }
+        }
+
+        $soups = Products::whereIn('id', [66])->get();
+        foreach ($soups as $soup) {
+            $modification = $soup->Modifications()->where('stop_list', 0)->first();
+            if (isset($modification)) {
+                $modificationsSoups[] = (object)[
+                    'productId' => $soup->id,
+                    'modificationId' => $modification->id,
+                ];
+            }
+        }
+
+        $pastas = Products::whereIn('id', [33, 34, 38])->get();
+        foreach ($pastas as $pasta) {
+            $modification = $pasta->Modifications()->where('stop_list', 0)->first();
+            if (isset($modification)) {
+                $modificationsPastas[] = (object)[
+                    'productId' => $pasta->id,
+                    'modificationId' => $modification->id,
+                ];
+            }
+        }
+
+        $salads = Products::whereNotIn('id', [43])->where('category_id', 3)->get();
+        foreach ($salads as $salad) {
+            $modification = $salad->Modifications()->where('stop_list', 0)->first();
+            if (isset($modification)) {
+                $modificationsSalads[] = (object)[
+                    'productId' => $salad->id,
+                    'modificationId' => $modification->id,
+                ];
+            }
+        }
+
+        $drinks = Products::where('category_id', 5)->get();
+        foreach ($drinks as $drink) {
+            $modification = $drink->Modifications()->where('modification_id', 8)->where('stop_list', 0)->first();
+            if (isset($modification)) {
+                $modificationsDrinks[] = (object)[
+                    'productId' => $drink->id,
+                    'modificationId' => $modification->id,
                 ];
             }
         }
@@ -77,7 +129,7 @@ class ProductsController extends Controller
             (object)[
                 'id' => 1,
                 'title' => 'Комбо - 25',
-                'price' => '535',
+                'price' => '555',
                 'sections' => [
                     $modifications25,
                     $modifications25,
@@ -86,7 +138,7 @@ class ProductsController extends Controller
             (object)[
                 'id' => 2,
                 'title' => 'Комбо - 33',
-                'price' => '645',
+                'price' => '685',
                 'sections' => [
                     $modifications33,
                     $modifications33,
@@ -95,10 +147,31 @@ class ProductsController extends Controller
             (object)[
                 'id' => 3,
                 'title' => 'Комбо - 40',
-                'price' => '799',
+                'price' => '849',
                 'sections' => [
                     $modifications40,
                     $modifications40,
+                ],
+            ],
+            (object)[
+                'id' => 4,
+                'title' => 'Комбо на двоих',
+                'price' => '899',
+                'sections' => [
+                    $modifications33,
+                    array_merge($modificationsSoups, $modificationsPastas, $modificationsSalads),
+                    array_merge($modificationsSoups, $modificationsPastas, $modificationsSalads),
+                    $modificationsDrinks,
+                ],
+            ],
+            (object)[
+                'id' => 5,
+                'title' => 'Комбо на одного',
+                'price' => '599',
+                'sections' => [
+                    $modifications25,
+                    array_merge($modificationsSoups, $modificationsPastas, $modificationsSalads),
+                    $modificationsDrinks,
                 ],
             ],
         ];

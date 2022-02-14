@@ -331,9 +331,9 @@ $combos1 = [
 
     <div class="promo-container flex pb-20 m-10">
         <picture class="border-radius-10">
-            <source srcset="{{asset('img/webp/promo-2.webp')}}" type="image/webp">
-            <source class="w-100" srcset="{{asset('img/promo/promo-2.png')}}" type="image/png">
-            <img class="border-radius-10" width="100%" src="{{asset('img/promo/promo-2.png')}}" alt="promo">
+            <source srcset="{{asset('img/webp/promo-3.webp')}}" type="image/webp">
+            <source class="w-100" srcset="{{asset('img/promo/promo-3.png')}}" type="image/png">
+            <img class="border-radius-10" width="100%" src="{{asset('img/promo/promo-3.png')}}" alt="promo">
         </picture>
     </div>
 
