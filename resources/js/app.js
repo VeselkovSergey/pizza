@@ -63,7 +63,15 @@ function PriceSumProductsInBasket() {
 
     let generalReiterationsCounts = 0;
 
-    let promoCode = localStorage.getItem('promoCode') !== null ? JSON.parse(localStorage.getItem('promoCode')) : null;
+    let promoCode = null;
+
+    try {
+        promoCode  = localStorage.getItem('promoCode') !== null ? JSON.parse(localStorage.getItem('promoCode')) : null;
+    } catch (e) {
+        console.error('Ошибка промокода');
+        localStorage.removeItem('promoCode');
+        promoCode = null;
+    }
 
     if (promoCode) {
         generalReiterationsCounts = promoCode.every.generalReiterationsCounts === undefined ? promoCode.every.reiterationsCounts : promoCode.every.generalReiterationsCounts;       // фикс для старых промокодов
