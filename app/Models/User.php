@@ -128,6 +128,14 @@ class User extends Authenticatable
         return false;
     }
 
+    public function UserIsStaff()
+    {
+        if ($this->role_id > 100) {
+            return true;
+        }
+        return false;
+    }
+
     public function checkAccess($permissionCategory, $permission = null, $subPermission = null)
     {
         $roleId = $this->role_id;
