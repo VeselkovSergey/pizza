@@ -276,6 +276,10 @@ class OrdersController extends Controller
 
         $order->save();
 
+        if ($order->status_id === Orders::STATUS_TEXT['cancelled']) {
+            PromoCodesUsersUsed::where('order_id', $order->id)->delete();
+        }
+
         Cache::forget('order-' . $order->id);
 
         event(new Pusher($order->id, $oldStatusId, $statusId));
