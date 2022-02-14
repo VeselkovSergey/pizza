@@ -69,6 +69,10 @@
                         <td class="text-center">{{$ordersStatistics->ordersQuantity}}</td>
                     </tr>
                     <tr class="hover-color">
+                        <td class="text-center">Кол-во заказов доставка</td>
+                        <td class="text-center">{{$ordersStatistics->ordersNotDelivery}}</td>
+                    </tr>
+                    <tr class="hover-color">
                         <td class="text-center">Кол-во заказов с сайта</td>
                         <td class="text-center">{{$ordersStatistics->ordersCreatorWeb}}</td>
                     </tr>
