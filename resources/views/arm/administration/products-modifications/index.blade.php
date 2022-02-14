@@ -8,7 +8,7 @@
 
     <div>
         <div>
-            <table class="w-100 border table-sort">
+            <table class="w-100 border table-sort" id="products-modifications-table">
                 <thead>
                 <tr>
                     <th class="w-0">ID</th>
@@ -64,6 +64,9 @@
                 @endforeach
                 </tbody>
             </table>
+
+            <div class="cp" onclick="fnExcelReport('products-modifications-table')" >Скачать</div>
+
         </div>
     </div>
 
