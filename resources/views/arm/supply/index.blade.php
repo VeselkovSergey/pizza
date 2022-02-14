@@ -34,7 +34,7 @@
                 <tbody>
                 @foreach($supplies as $supply)
                     <?php /** @var \App\Models\Supply $supply */ ?>
-                    <tr>
+                    <tr class="hover-color">
                         <td class="text-center">{{$supply->id}}</td>
                         <td class="text-center">{{$supply->Supplier->title}}</td>
                         <td>{{$supply->supply_date}}</td>
