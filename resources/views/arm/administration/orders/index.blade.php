@@ -180,9 +180,9 @@
                                 <td>{{$courier['name']}}</td>
                                 <td>{{$courier['phone']}}</td>
                                 <td class="text-center">{{$courier['orderAmount']}}</td>
-                                <td class="text-center">{{number_format($courier['orderAmount'] * 70, 0, '.', '\'')}} ₽</td>
+                                <td class="text-center">{{number_format($courier['orderAmount'] * 100, 0, '.', '\'')}} ₽</td>
                             </tr>
-                            @php($sumCourier += $courier['orderAmount'] * 70)
+                            @php($sumCourier += $courier['orderAmount'] * 100)
                         @endforeach
                         </tbody>
                     </table>
