@@ -36,14 +36,14 @@ class OrdersService
         $this->ordersStatistics->ordersQuantity = 0;
 
         $this->ordersStatistics->ordersAmount = 0;
-        $this->ordersStatistics->ordersAmountWithoutNotDelivery = 0;
+        $this->ordersStatistics->ordersAmountByDelivery = 0;
         $this->ordersStatistics->ordersAmountCash = 0;
         $this->ordersStatistics->ordersAmountBank = 0;
 
         $this->ordersStatistics->middleInvoice = 0;
-        $this->ordersStatistics->middleInvoiceNotDelivery = 0;
+        $this->ordersStatistics->middleInvoiceByDelivery = 0;
 
-        $this->ordersStatistics->ordersNotDelivery = 0;
+        $this->ordersStatistics->ordersByDelivery = 0;
 
         $this->ordersStatistics->ordersCostAmount = 0;
 
@@ -72,7 +72,7 @@ class OrdersService
 
             $this->OrderStatistics($order);
             $this->ordersStatistics->middleInvoice = $this->ordersStatistics->ordersQuantity !== 0 ? $this->ordersStatistics->ordersAmount / $this->ordersStatistics->ordersQuantity : 0;
-            $this->ordersStatistics->middleInvoiceNotDelivery = $this->ordersStatistics->ordersNotDelivery !== 0 ? $this->ordersStatistics->ordersAmountWithoutNotDelivery / $this->ordersStatistics->ordersNotDelivery : 0;
+            $this->ordersStatistics->middleInvoiceByDelivery = $this->ordersStatistics->ordersByDelivery !== 0 ? $this->ordersStatistics->ordersAmountByDelivery / $this->ordersStatistics->ordersByDelivery : 0;
 
             $ordersWithInfo[] = $order;
         }
@@ -249,8 +249,8 @@ class OrdersService
             $this->ordersStatistics->ordersAmount += $order->amount;
 
             if ($order->courierId !== '-') {
-                $this->ordersStatistics->ordersNotDelivery++;
-                $this->ordersStatistics->ordersAmountWithoutNotDelivery += $order->amount;
+                $this->ordersStatistics->ordersByDelivery++;
+                $this->ordersStatistics->ordersAmountByDelivery += $order->amount;
             }
 
             $this->ordersStatistics->ordersCostAmount += $order->cost;

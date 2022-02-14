@@ -70,7 +70,7 @@
                     </tr>
                     <tr class="hover-color">
                         <td class="text-center">Кол-во заказов доставка</td>
-                        <td class="text-center">{{$ordersStatistics->ordersNotDelivery}}</td>
+                        <td class="text-center">{{$ordersStatistics->ordersByDelivery}}</td>
                     </tr>
                     <tr class="hover-color">
                         <td class="text-center">Кол-во заказов с сайта</td>
@@ -98,7 +98,7 @@
                     </tr>
                     <tr class="hover-color">
                         <td class="text-center">Средний чек без самовывоза</td>
-                        <td class="text-center">{{ number_format( ($ordersStatistics->middleInvoiceNotDelivery) , 2, '.', '\'') }} ₽</td>
+                        <td class="text-center">{{ number_format( ($ordersStatistics->middleInvoiceByDelivery) , 2, '.', '\'') }} ₽</td>
                     </tr>
                     <tr class="hover-color">
                         <td class="text-center">Прибыль</td>
