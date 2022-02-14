@@ -124,7 +124,11 @@ class OrdersController extends Controller
             if (isset($product->data->combo)) {
                 foreach ($product->data->combo as $comboProduct) {
                     $modificationsId[] = $comboProduct->modificationId;
-                    $amountProductModificationInOrder[$comboProduct->modificationId] = $product->amount;
+                    if (isset($amountProductModificationInOrder[$comboProduct->modificationId])) {
+                        $amountProductModificationInOrder[$comboProduct->modificationId] += $product->amount;
+                    } else {
+                        $amountProductModificationInOrder[$comboProduct->modificationId] = $product->amount;
+                    }
                 }
             } else {
                 $productModificationId = $product->data->modificationId;
