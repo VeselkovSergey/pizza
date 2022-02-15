@@ -84,9 +84,9 @@ function PriceSumProductsInBasket() {
         const combo =  item.data.combo;
         sum += amount * price;
 
-        if (combo === undefined && promoCode) {       // если есть промокод и не комбо
+        if (promoCode) {       // если есть промокод и не комбо
 
-            if (promoCode.every.productModifications.length > 0) {       // если скидка на каждую модификацию
+            if (promoCode.every.productModifications.length > 0 && combo === undefined) {       // если скидка на каждую модификацию
 
                 const product = allProducts[item.data.productId];
                 const modifications = product.modifications;
