@@ -81,8 +81,8 @@ class Supply extends BaseModel
 
         $supplies = new self();
 
-        $supplies = $supplies->where('created_at', '>=', $startDate);
-        $supplies = $supplies->where('created_at', '<=', $endDate);
+        $supplies = $supplies->where('supply_date', '>=', $startDate);
+        $supplies = $supplies->where('supply_date', '<=', $endDate);
 
         $supplies = $supplies->get();
 
