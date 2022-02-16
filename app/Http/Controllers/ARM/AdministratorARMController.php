@@ -113,6 +113,9 @@ class AdministratorARMController extends Controller
 
     public function ProductsModification()
     {
+        $startDate = (request()->get('start-date') === null) ? date('Y-m-d', time()) : request()->get('start-date');
+        $endDate = (request()->get('end-date') === null) ? date('Y-m-d', time()) : request()->get('end-date');
+
         $productsModifications = ProductModifications::selectRaw('product_modifications.id as product_modifications_id')
 
             ->selectRaw('product_modifications.selling_price as selling_price')
@@ -141,10 +144,11 @@ class AdministratorARMController extends Controller
                 ->where('product_modification_id', $productModification->product_modifications_id)
                 ->leftJoin('orders', 'orders.id', '=', 'products_modifications_in_orders.order_id')
                 ->where('orders.status_id', '!=', Orders::STATUS_TEXT['cancelled'])
+                ->where('orders.created_at', '>=', $startDate)
+                ->where('orders.created_at', '<=', $endDate)
                 ->first()->soldAmount;
 
-            $productsModifications[$key]->soldAmount = $soldAmount;
-
+            $productsModifications[$key]->soldAmount = $soldAmount ?? 0;
 
             $costPrice = 0;
             foreach ($productModificationIngredients as $productModificationIngredient) {
@@ -165,7 +169,7 @@ class AdministratorARMController extends Controller
 
         }
 
-        return view('arm.administration.products-modifications.index', compact('productsModifications', 'productsModificationsIngredients'));
+        return view('arm.administration.products-modifications.index', compact('productsModifications', 'productsModificationsIngredients', 'startDate', 'endDate'));
     }
 
     public function DeviceUsed()
