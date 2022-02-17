@@ -269,6 +269,8 @@ class AdministratorARMController extends Controller
 
         $orders = Orders::ByDate($startDate, $endDate, true, 'ASC');
 
+//        $csv = chr(239) . chr(187) . chr(191);
+
         $amountSpent = 0;
         foreach ($orders as $order) {
             if ($order->IsCancelled()) {
@@ -292,6 +294,17 @@ class AdministratorARMController extends Controller
                 }
             }
         }
+
+//        ksort($ingredients);
+//
+//        foreach ($ingredients as $ingredient) {
+//            $csv .= $ingredient->title . ';' . number_format(round($ingredient->quantityPurchased - $ingredient->sent, 2), 2, ',', '') . PHP_EOL;
+//        }
+//
+//        return \response($csv)
+//            ->header('Content-Type', 'text/csv; charset=utf-8')
+//            ->header('Content-Disposition', 'attachment; filename="Ингредиенты.csv');
+
         return view('arm.administration.ingredients.spent', compact('ingredients', 'amountSpent', 'startDate', 'endDate'));
     }
 }
