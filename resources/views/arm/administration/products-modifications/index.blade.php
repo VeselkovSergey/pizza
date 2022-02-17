@@ -6,6 +6,16 @@
         <a class="orange-button" href="{{route('administrator-arm-page')}}">назад в ARM админа</a>
     </div>
 
+    <div class="flex-wrap mb-10">
+        <div class="mr-10 flex-center">
+            <label>
+                <span>Период</span>
+                <input class="start-date" type="date" value="{{$startDate}}">
+                <input class="end-date" type="date" value="{{$endDate}}">
+            </label>
+        </div>
+    </div>
+
     <div>
         <div>
             <table class="w-100 border table-sort" id="products-modifications-table">
@@ -82,6 +92,18 @@
                 let productModificationIngredientsContent = event.target.nextElementSibling.innerHTML;
                 let modal = ModalWindow(productModificationIngredientsContent);
                 modal.querySelector('.product-modification-ingredients-content').show();
+            });
+        });
+
+        let changeDateFields = document.body.querySelectorAll('.start-date, .end-date');
+        changeDateFields.forEach((changeDateField) => {
+            changeDateField.addEventListener('change', () => {
+                LoaderShow();
+                let startDate = document.body.querySelector('.start-date').value;
+                let endDate = document.body.querySelector('.end-date').value;
+                if (startDate && endDate) {
+                    location.href = "{{route('administrator-arm-products-modifications-page')}}?start-date=" + startDate + "&end-date=" + endDate;
+                }
             });
         });
     </script>
