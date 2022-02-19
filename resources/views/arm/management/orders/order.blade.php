@@ -213,7 +213,7 @@
                 localStorage.setItem('basket', @json($clientBasket));
 
                 @if($promoCode)
-                localStorage.setItem('promoCode', @json($promoCode->conditions));
+                localStorage.setItem('promoCode', JSON.stringify(@json($promoCode->conditions)));
                 @endif
 
                 localStorage.setItem('execFunction', 'BasketWindow()');
