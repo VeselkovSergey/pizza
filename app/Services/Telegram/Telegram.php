@@ -21,6 +21,8 @@ class Telegram
     private $type = 'inline_keyboard';
     private $permissionToMessageId = false;
     private string|false $messageRaw;
+    private $latitude;
+    private $longitude;
 
     public function __construct($token = '')
     {
@@ -38,6 +40,8 @@ class Telegram
         $message['chat_id'] = $this->chatId;
         $message['parse_mode'] = 'html';
         empty($this->textMessage) ?: $message['text'] = $this->textMessage;
+        empty($this->latitude) ?: $message['latitude'] = $this->latitude;
+        empty($this->longitude) ?: $message['longitude'] = $this->longitude;
         empty($this->buttons) ?: $message['reply_markup'] = json_encode($this->buttons);
         $this->permissionToMessageId === false ?: $message['message_id'] = $this->messageId;
 
@@ -94,6 +98,18 @@ class Telegram
         $this->textMessage = $textMessage;
         $this->buttons = $this->inlineKeyboard; //$buttons;
         $this->method = 'sendMessage';
+        $this->permissionToMessageId = false;
+        if (!empty($chatId)) {
+            $this->chatId = $chatId;
+        }
+        return $this->_send();
+    }
+
+    public function sendLocation($latitude, $longitude, $chatId = null)
+    {
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+        $this->method = 'sendLocation';
         $this->permissionToMessageId = false;
         if (!empty($chatId)) {
             $this->chatId = $chatId;
@@ -188,6 +204,11 @@ class Telegram
         }
         $this->inlineKeyboard[$this->type][] = $arrBtn;
 
+    }
+
+    public function deleteButtons()
+    {
+        $this->buttons = false;
     }
 
     public function RequestContact($text = 'Отправить номер для связывания аккаунта на сайте и в телеграм')

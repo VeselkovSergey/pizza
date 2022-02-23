@@ -231,7 +231,12 @@ class ManagerARMController extends Controller
             $telegram->addButton('Доставлен', 'Delivered');
             $telegram->addButton('Отказ', 'Refused');
             $telegram->addButton('Ошибка', 'Error');
-            return $telegram->sendMessage($message, $chatId);
+            $sendMessage = $telegram->sendMessage($message, $chatId);
+
+            $telegram->deleteButtons();
+            $telegram->sendLocation(json_decode($order->geo_yandex)->addressLon, json_decode($order->geo_yandex)->addressLat, $chatId);
+
+            return $sendMessage;
         }
         return false;
     }

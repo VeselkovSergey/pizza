@@ -50,14 +50,6 @@ Route::group(['prefix' => 'orders'], function () {
 
     Route::post('/order-update-geo-yandex', [Controllers\Orders\OrdersController::class, 'UpdateYandexGeo'])->name('order-update-geo-yandex');
 
-    Route::get('/route-to-address/{orderId}', function () {
-        $orderId = request()->orderId;
-        $order = \App\Models\Orders::findOrFail($orderId);
-        $url = 'geo:' . json_decode($order->geo_yandex)->addressLon . ',' . json_decode($order->geo_yandex)->addressLat;
-        return view('arm.courier.orders.routeToAddress', compact('url'));
-        //http://pizza.local/orders/route-to-address/1373
-    })->name('route-to-address');
-
 });
 
 Route::group(['prefix' => 'settings'], function () {
