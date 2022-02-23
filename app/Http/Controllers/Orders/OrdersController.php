@@ -158,7 +158,11 @@ class OrdersController extends Controller
                 'product_modification_id' => $productsModification->id,
                 'product_modification_amount' => $amountProductModificationInOrder[$productsModification->id]
             ]);
-            self::OrderProductChangeStatus($newProductModificationInNewOrder, ProductsModificationsInOrders::STATUS_TEXT['new']);
+            if ((!$editOrder && $order->status_id < Orders::STATUS_TEXT['cooked']) || $order->status_id === Orders::STATUS_TEXT['cancelled']) {
+                self::OrderProductChangeStatus($newProductModificationInNewOrder, ProductsModificationsInOrders::STATUS_TEXT['new']);
+            } else {
+                self::OrderProductChangeStatus($newProductModificationInNewOrder, ProductsModificationsInOrders::STATUS_TEXT['cooked']);
+            }
         }
 
         $order->total_order_amount = $totalOrderAmount;
