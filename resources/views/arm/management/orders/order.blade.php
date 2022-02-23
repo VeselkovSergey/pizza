@@ -105,6 +105,7 @@
                     </div>
                     <div>Адрес доставки: {{$clientInfo->clientAddressDelivery}}{{isset($clientInfo->typeDelivery) && $clientInfo->typeDelivery[1] === true ? ' (самовывоз)' : ''}}</div>
                     <div>Комментарий: {{$clientInfo->clientComment}}</div>
+                    <a href="geo:{{json_decode($order->geo_yandex)->addressLon}},{{json_decode($order->geo_yandex)->addressLat}}">Не тыкать</a>
                 </div>
             </div>
             <div>
