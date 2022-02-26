@@ -325,6 +325,11 @@ Route::get('/ucaller-balance', function () {
     $balance = $ucaller->GetBalance();
     dd($balance);
 });
+
+Route::get('/test-queue', function () {
+    $job = \App\Jobs\ProcessPodcast::dispatch('Text');
+    dd($job);
+});
 //
 //Route::get('/test-bot', function () {
 ////    return ;

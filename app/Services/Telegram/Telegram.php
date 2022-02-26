@@ -28,7 +28,7 @@ class Telegram
     {
         $this->token = !empty($token) ? $token : env('TELEGRAM_BOT_TOKEN');
         $this->remoteUrl = 'https://api.telegram.org/bot' . $this->token . '/';
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->_incomingMessageProcessing();
         }
     }
