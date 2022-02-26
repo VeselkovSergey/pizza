@@ -327,7 +327,7 @@ Route::get('/ucaller-balance', function () {
 });
 
 Route::get('/test-queue', function () {
-    $job = \App\Jobs\ProcessPodcast::dispatch('Text');
+    $job = \App\Jobs\ProcessPodcast::dispatch('Text')->delay(now()->addMinute());
     dd($job);
 });
 //
