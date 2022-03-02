@@ -796,13 +796,16 @@
   background-color: #ff7300;
   color: white;
   font-size: 14px;
-  display: inline-block;
   box-sizing: border-box;
   text-align: center;
   margin-bottom: 5px;
 
   &:not(:last-child) {
     margin-right: 5px;
+  }
+
+  &:not(.hide) {
+    display: inline-block;
   }
 
   &:hover {

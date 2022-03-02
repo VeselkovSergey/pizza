@@ -183,6 +183,10 @@ function BasketWindow() {
         return;
     }
 
+    if (!auth) {
+        localStorage.removeItem('promoCode');
+    }
+
     let orderId = localStorage.getItem('orderId');
     let basketContent = document.createElement('div');
 
@@ -444,10 +448,10 @@ function BasketWindow() {
                     '<div class="promo-code-container w-100 flex-wrap-center mb-10">' +
                         '<label for="">Промокод (скидки и акции не суммируются)</label>' +
                         '<div class="pos-rel mr-10 flex promo-code-input-container">' +
-                            '<input name="clientPromoCode" autocomplete="off" class="w-100" type="text" />' +
+                            '<input name="clientPromoCode" autocomplete="off" class="w-100" type="text" placeholder="'+ (auth ? '' : 'Только для авторизованных пользователей') +'" />' +
                             '<div class="pos-abs right-0 top-0 h-100 flex-center promo-code-clear-button-container"><button class="promo-code-clear-button cp flex-center">'+SvgCloseButton+'</button></div>' +
                         '</div>' +
-                        '<button class="promo-code-apply-button orange-button">Применить</button>' +
+                        '<button class="promo-code-apply-button orange-button ' + (auth ? '' : ' hide ') + '">Применить</button>' +
                     '</div>' +
                     '<div>Оформление заказа</div>' +
                     '<div class="w-100 flex-wrap mt-10">' +
