@@ -58,8 +58,20 @@ class Telegram
             CURLOPT_SSL_VERIFYHOST => false
         ));
 
+        $status = false;
+
         $server_output = curl_exec($curl);
-        $this->execLog(json_encode($server_output));
+        try {
+            $status = json_decode($server_output)->ok;
+        } catch (\Exception $e) {
+
+        }
+
+        if ($status) {
+            $this->execLog(json_encode($server_output));
+        } else {
+            $this->errorLog(json_encode($server_output));
+        }
 
         $server_error = curl_error($curl);
         $this->errorLog(json_encode($server_error));
