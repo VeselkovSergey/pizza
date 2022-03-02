@@ -15,3 +15,5 @@ yarn-error.log
 /.vscode
 /public/errorLog.txt
 /public/execLog.txt
+errorLog.txt
+execLog.txt
