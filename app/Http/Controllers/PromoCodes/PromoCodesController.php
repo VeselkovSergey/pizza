@@ -35,7 +35,7 @@ class PromoCodesController extends Controller
             if ($promoCode->user_limit === 0) {
                 return $promoCode;
             } else {
-                if ($userId === 0) {
+                if ($userId === 0 && auth()->check()) {
                     $userId = auth()->user()->id;
                 }
                 $userUsage = PromoCodesUsersUsed::where('user_id', $userId)->where('promo_code_id', $promoCode->id)->count('id');
