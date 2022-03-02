@@ -327,8 +327,8 @@ Route::get('/ucaller-balance', function () {
 });
 
 Route::get('/test-queue', function () {
-    $job = \App\Jobs\ProcessPodcast::dispatch('Text')->delay(now()->addMinute());
-    dd($job);
+    $job = \App\Jobs\ProcessPodcast::dispatch(now()->format('Y-m-d H:i:s'))->delay(now()->addMinute());
+    dd('Good job');
 });
 //
 //Route::get('/test-bot', function () {
