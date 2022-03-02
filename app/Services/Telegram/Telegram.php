@@ -75,8 +75,10 @@ class Telegram
         if ($fileCleaning) {
             file_put_contents($file, $text);
         } else {
-            file_put_contents($file, PHP_EOL, FILE_APPEND);
-            file_put_contents($file, $text, FILE_APPEND);
+            if ($text !== '""') {
+                file_put_contents($file, PHP_EOL, FILE_APPEND);
+                file_put_contents($file, $text, FILE_APPEND);
+            }
         }
 
     }
