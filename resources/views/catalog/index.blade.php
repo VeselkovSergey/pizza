@@ -332,8 +332,8 @@ $combos1 = [
     <div class="promo-container flex pb-20 m-10">
         <picture class="border-radius-10">
             <source srcset="{{asset('img/webp/promo-3.webp')}}" type="image/webp">
-            <source class="w-100" srcset="{{asset('img/promo/promo-3.png')}}" type="image/png">
-            <img class="border-radius-10" width="100%" src="{{asset('img/promo/promo-3.png')}}" alt="promo">
+            <source class="w-100" srcset="{{asset('img/png/promo-3.png')}}" type="image/png">
+            <img class="border-radius-10" width="100%" src="{{asset('img/png/promo-3.png')}}" alt="promo">
         </picture>
     </div>
 
@@ -351,8 +351,8 @@ $combos1 = [
                         <div class="container-product-img">
                             <picture>
                                 <source class="w-100" srcset="{{asset('img/webp/' . $combo->id.'-combo.webp/')}}" type="image/webp">
-                                <source class="w-100" srcset="{{asset('img/combo-png/' . $combo->id.'-combo.png')}}" type="image/png">
-                                <img class="w-100" src="{{asset('img/combo-png/' . $combo->id.'-combo.png')}}" alt="{{$combo->title}}">
+                                <source class="w-100" srcset="{{asset('img/png/' . $combo->id.'-combo.png')}}" type="image/png">
+                                <img class="w-100" src="{{asset('img/png/' . $combo->id.'-combo.png')}}" alt="{{$combo->title}}">
                             </picture>
                         </div>
 
