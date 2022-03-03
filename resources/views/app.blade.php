@@ -129,12 +129,13 @@
 
     <body class="@if(!$isARM) bg-black-custom color-white @endif" @if(!$isARM)style="background-image: url('{{asset('bg-2.jpg')}}'); background-attachment: fixed;"@endif>
 
-    @if(!$isARM)
-    <div class="snow-blocks">
-        <div class="snow1"></div>
-        <div class="snow2"></div>
-    </div>
-    @endif
+        {{-- Зима --}}
+{{--    @if(!$isARM)--}}
+{{--    <div class="snow-blocks">--}}
+{{--        <div class="snow1"></div>--}}
+{{--        <div class="snow2"></div>--}}
+{{--    </div>--}}
+{{--    @endif--}}
 
         @php
             $authCheck = auth()->check();
@@ -183,7 +184,12 @@
             </div>
         @endif
 
-        <main @if(!$isARM) style="max-width: 1440px;"@endif>@yield('content')</main>
+        <main style=" @if(!$isARM) max-width: 1440px; @endif min-height: calc(100vh - 100px);">@yield('content')</main>
+
+        {{-- Весна --}}
+{{--        @if(!$isARM)--}}
+            <div style="background-image: url('{{asset('grass.png')}}'); height: 361px; position: sticky; bottom: 0;"></div>
+{{--        @endif--}}
 
         @if(isset($footer) && $footer === true)
             <footer>@include('layouts.footer')</footer>
