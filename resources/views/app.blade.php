@@ -119,6 +119,21 @@
                 }
             </style>
 
+            <style>
+                .spring {
+                    background-image: url("{{asset('grass2.png')}}");
+                    height: 140px;
+                    position: sticky;
+                    bottom: 0;
+                }
+
+                @media screen and (max-width: 720px) {
+                    .spring {
+                        bottom: -50px;
+                    }
+                }
+            </style>
+
         @endif
 
         @yield('css')
@@ -188,7 +203,7 @@
 
         {{-- Весна --}}
 {{--        @if(!$isARM)--}}
-            <div style="background-image: url('{{asset('grass2.png')}}'); height: 140px; position: sticky; bottom: 0;"></div>
+            <div class="spring"></div>
 {{--        @endif--}}
 
         @if(isset($footer) && $footer === true)
