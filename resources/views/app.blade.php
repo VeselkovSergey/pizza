@@ -188,7 +188,7 @@
 
         {{-- Весна --}}
 {{--        @if(!$isARM)--}}
-            <div style="background-image: url('{{asset('grass.png')}}'); height: 361px; position: sticky; bottom: 0;"></div>
+            <div style="background-image: url('{{asset('grass2.png')}}'); height: 140px; position: sticky; bottom: 0;"></div>
 {{--        @endif--}}
 
         @if(isset($footer) && $footer === true)
