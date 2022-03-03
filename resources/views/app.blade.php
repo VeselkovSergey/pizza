@@ -119,22 +119,22 @@
                 }
             </style>
 
-            <style>
-                .spring {
-                    background-image: url("{{asset('grass2.png')}}");
-                    height: 140px;
-                    position: sticky;
-                    bottom: 0;
-                }
-
-                @media screen and (max-width: 720px) {
-                    .spring {
-                        bottom: -50px;
-                    }
-                }
-            </style>
-
         @endif
+
+        <style>
+            .spring {
+                background-image: url("{{asset('grass2.png')}}");
+                height: 140px;
+                position: sticky;
+                bottom: 0;
+            }
+
+            @media screen and (max-width: 720px) {
+                .spring {
+                    bottom: -50px;
+                }
+            }
+        </style>
 
         @yield('css')
 
