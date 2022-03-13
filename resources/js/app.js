@@ -434,12 +434,14 @@ function BasketWindow() {
         let lastTypeDelivery = localStorage.getItem('lastTypeDelivery') !== null ? localStorage.getItem('lastTypeDelivery') : '';
 
         let countProductsInBasket = CountProductsInBasket();
-        let phoneInput = admin ?
-            '<div class="w-100 flex-wrap mt-10">' +
-                '<label for="">Номер телефона</label>' +
-                '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '" />' +
-            '</div>' : '';
-
+        let phoneInput = '';
+        if (admin && !orderId) {
+            phoneInput =
+                '<div class="w-100 flex-wrap mt-10">' +
+                    '<label for="">Номер телефона</label>' +
+                    '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '" />' +
+                '</div>';
+        }
         let content = '';
 
         if (countProductsInBasket !== 0) {
