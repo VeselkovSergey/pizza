@@ -435,9 +435,9 @@ function BasketWindow() {
 
         let countProductsInBasket = CountProductsInBasket();
         let phoneInput = '';
-        if (admin && !orderId) {
+        if (admin) {
             phoneInput =
-                '<div class="w-100 flex-wrap mt-10">' +
+                '<div class="w-100 flex-wrap mt-10 '+ (orderId ? ' hide ' : '') +' ">' +
                     '<label for="">Номер телефона</label>' +
                     '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '" />' +
                 '</div>';
