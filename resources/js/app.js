@@ -230,7 +230,7 @@ function BasketWindow() {
             localStorage.removeItem('lastTypePayment');
             localStorage.removeItem('orderId');
             localStorage.removeItem('promoCode');
-            basketWindow.slowRemove();
+            CloseModal(basketWindow);
         });
     }
 
@@ -611,8 +611,7 @@ function CreateOrder(orderId) {
         // } else {
         FlashMessage(response.message);
         if (response.status === true) {
-            basketWindow.slowRemove();
-            document.body.classList.remove('scroll-off');
+            CloseModal(basketWindow)
             DeleteAllProductsInBasket();
             localStorage.removeItem('promoCode');
             if (orderId) {
