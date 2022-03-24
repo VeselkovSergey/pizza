@@ -230,7 +230,7 @@ function BasketWindow() {
             localStorage.removeItem('lastTypePayment');
             localStorage.removeItem('orderId');
             localStorage.removeItem('promoCode');
-            basketWindow.slowRemove();
+            CloseModal(basketWindow);
         });
     }
 
@@ -434,12 +434,14 @@ function BasketWindow() {
         let lastTypeDelivery = localStorage.getItem('lastTypeDelivery') !== null ? localStorage.getItem('lastTypeDelivery') : '';
 
         let countProductsInBasket = CountProductsInBasket();
-        let phoneInput = admin ?
-            '<div class="w-100 flex-wrap mt-10">' +
-                '<label for="">Номер телефона</label>' +
-                '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '" />' +
-            '</div>' : '';
-
+        let phoneInput = '';
+        if (admin) {
+            phoneInput =
+                '<div class="w-100 flex-wrap mt-10 '+ (orderId ? ' hide ' : '') +' ">' +
+                    '<label for="">Номер телефона</label>' +
+                    '<input name="clientPhone" class="need-validate phone-mask last-data w-100" maxlength="16" type="text" value="' + lastClientPhone + '" />' +
+                '</div>';
+        }
         let content = '';
 
         if (countProductsInBasket !== 0) {
@@ -609,8 +611,7 @@ function CreateOrder(orderId) {
         // } else {
         FlashMessage(response.message);
         if (response.status === true) {
-            basketWindow.slowRemove();
-            document.body.classList.remove('scroll-off');
+            CloseModal(basketWindow)
             DeleteAllProductsInBasket();
             localStorage.removeItem('promoCode');
             if (orderId) {

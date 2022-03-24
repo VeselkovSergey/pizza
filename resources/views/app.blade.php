@@ -203,7 +203,7 @@
 
         {{-- Весна --}}
 {{--        @if(!$isARM)--}}
-            <div class="spring"></div>
+{{--            <div class="spring"></div>--}}
 {{--        @endif--}}
 
         @if(isset($footer) && $footer === true)
