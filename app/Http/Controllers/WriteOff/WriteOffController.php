@@ -84,7 +84,7 @@ class WriteOffController extends Controller
             $ingredientInWriteOff[] = [
                 'write_off_id' => $writeOff->id,
                 'ingredient_id' => $ingredientData->id,
-                'amount_ingredient' => $ingredientData->amount,
+                'amount_ingredient' => number_format($ingredientData->amount, 2, ',', ''),
             ];
         }
         IngredientsInWriteOff::insert($ingredientInWriteOff);
