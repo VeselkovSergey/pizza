@@ -36,7 +36,7 @@ class AdministratorARMController extends Controller
 
     public function UserOrders($userId)
     {
-        $user = User::find($userId);
+        $user = User::findOrFail($userId);
         $orders = $user->Orders;
         return view('arm.administration.users.orders', compact('user', 'orders'));
     }
