@@ -127,7 +127,7 @@ class SupplyController extends Controller
             $ingredientInSupply[] = [
                 'supply_id' => $newSupply->id,
                 'ingredient_id' => $ingredientInSupplyData->id,
-                'amount_ingredient' => number_format($ingredientInSupplyData->amount, 2, ',', ''),
+                'amount_ingredient' => number_format($ingredientInSupplyData->amount, 2, '.', ''),
                 'price_ingredient' => $ingredientInSupplyData->price,
             ];
         }
