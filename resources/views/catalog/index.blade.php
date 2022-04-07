@@ -329,7 +329,7 @@ $combos1 = [
         }
     </style>
 
-    <div class="promo-container flex pb-20 m-10">
+    <div class="promo-container flex pb-20 m-10 hide">
         <picture class="border-radius-10">
             <source srcset="{{asset('img/webp/promo-3.webp')}}" type="image/webp">
             <source class="w-100" srcset="{{asset('img/png/promo-3.png')}}" type="image/png">
