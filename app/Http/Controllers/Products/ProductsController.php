@@ -185,8 +185,8 @@ class ProductsController extends Controller
                 'price' => '890',
                 'sections' => [
                     $modifications25,
-                    $modifications25,
                     array_merge($modificationsPastas, $modificationsSalads, $modificationsSoups, $modifications25, $modificationsDrinks),
+                    $modifications25,
                 ],
                 'hidden' => false,
             ],
