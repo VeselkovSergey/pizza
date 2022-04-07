@@ -198,7 +198,7 @@ class ProductsController extends Controller
                     $modifications25,
                     array_merge($modificationsPastas, $modificationsSalads, $modificationsSoups, $modifications25, $modificationsDrinks),
                     $modifications25,
-                    array_merge($modificationsPastas, $modificationsSalads, $modificationsSoups, $modifications25, $modificationsDrinks),
+                    array_merge($modificationsSalads, $modificationsPastas, $modificationsSoups, $modifications25, $modificationsDrinks),
                     $modifications25,
                 ],
                 'hidden' => false,
