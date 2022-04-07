@@ -190,6 +190,19 @@ class ProductsController extends Controller
                 ],
                 'hidden' => false,
             ],
+            (object)[
+                'id' => 7,
+                'title' => 'Комбо ПЯТЬ',
+                'price' => '890',
+                'sections' => [
+                    $modifications25,
+                    array_merge($modificationsPastas, $modificationsSalads, $modificationsSoups, $modifications25, $modificationsDrinks),
+                    $modifications25,
+                    array_merge($modificationsPastas, $modificationsSalads, $modificationsSoups, $modifications25, $modificationsDrinks),
+                    $modifications25,
+                ],
+                'hidden' => false,
+            ],
         ];
     }
 
