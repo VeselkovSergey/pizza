@@ -186,18 +186,18 @@ class ProductsController extends Controller
                 'sections' => [
                     $modifications25,
                     array_merge($modificationsPastas, $modificationsSalads, $modificationsSoups, $modifications25, $modificationsDrinks),
-                    $modifications25,
+                    asort($modifications25),
                 ],
                 'hidden' => false,
             ],
             (object)[
                 'id' => 7,
                 'title' => 'Комбо ПЯТЬ',
-                'price' => '890',
+                'price' => '1399',
                 'sections' => [
                     $modifications25,
                     array_merge($modificationsPastas, $modificationsSalads, $modificationsSoups, $modifications25, $modificationsDrinks),
-                    $modifications25,
+                    asort($modifications25),
                     array_merge($modificationsSalads, $modificationsPastas, $modificationsSoups, $modifications25, $modificationsDrinks),
                     $modifications25,
                 ],
