@@ -182,7 +182,7 @@ class ProductsController extends Controller
             (object)[
                 'id' => 6,
                 'title' => 'Комбо ТРИ',
-                'price' => '890',
+                'price' => '899',
                 'sections' => [
                     $modifications25,
                     array_merge($modificationsPastas, $modificationsSalads, $modificationsSoups, $modifications25, $modificationsDrinks),
