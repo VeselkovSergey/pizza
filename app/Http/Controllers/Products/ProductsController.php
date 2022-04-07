@@ -174,6 +174,16 @@ class ProductsController extends Controller
                     $modificationsDrinks,
                 ],
             ],
+            (object)[
+                'id' => 6,
+                'title' => 'Комбо ТРИ',
+                'price' => '890',
+                'sections' => [
+                    $modifications25,
+                    $modifications25,
+                    array_merge($modificationsSoups, $modificationsPastas, $modificationsSalads, $modificationsDrinks),
+                ],
+            ],
         ];
     }
 
