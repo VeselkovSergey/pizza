@@ -181,7 +181,7 @@ class ProductsController extends Controller
                 'sections' => [
                     $modifications25,
                     $modifications25,
-                    array_merge($modificationsSoups, $modificationsPastas, $modificationsSalads, $modificationsDrinks),
+                    array_merge($modifications25, $modificationsSoups, $modificationsPastas, $modificationsSalads, $modificationsDrinks),
                 ],
             ],
         ];
