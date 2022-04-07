@@ -134,6 +134,7 @@ class ProductsController extends Controller
                     $modifications25,
                     $modifications25,
                 ],
+                'hidden' => true,
             ],
             (object)[
                 'id' => 2,
@@ -143,6 +144,7 @@ class ProductsController extends Controller
                     $modifications33,
                     $modifications33,
                 ],
+                'hidden' => true,
             ],
             (object)[
                 'id' => 3,
@@ -152,6 +154,7 @@ class ProductsController extends Controller
                     $modifications40,
                     $modifications40,
                 ],
+                'hidden' => true,
             ],
             (object)[
                 'id' => 4,
@@ -163,6 +166,7 @@ class ProductsController extends Controller
                     array_merge($modificationsSoups, $modificationsPastas, $modificationsSalads),
                     $modificationsDrinks,
                 ],
+                'hidden' => true,
             ],
             (object)[
                 'id' => 5,
@@ -173,6 +177,7 @@ class ProductsController extends Controller
                     array_merge($modificationsSoups, $modificationsPastas, $modificationsSalads),
                     $modificationsDrinks,
                 ],
+                'hidden' => true,
             ],
             (object)[
                 'id' => 6,
@@ -183,6 +188,7 @@ class ProductsController extends Controller
                     $modifications25,
                     array_merge($modificationsPastas, $modificationsSalads, $modificationsSoups, $modifications25, $modificationsDrinks),
                 ],
+                'hidden' => false,
             ],
         ];
     }

@@ -343,7 +343,7 @@ $combos1 = [
 
         @foreach($combos as $combo)
 
-            <div class="combo-container w-100 flex-column cp" data-combo-id="{{$combo->id}}">
+            <div class="combo-container w-100 flex-column cp {{$combo->hidden ? ' hide ' : ''}}" data-combo-id="{{$combo->id}}">
 
                 <div class="product-container flex-column border-orange scroll-off" style="background-color: #00000090">
 
