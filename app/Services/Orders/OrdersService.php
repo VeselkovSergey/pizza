@@ -26,7 +26,7 @@ class OrdersService
         $startDate = date('Y-m-d 00:00:00', strtotime($period[0]));
         $endDate = date('Y-m-d 23:59:59', strtotime($period[1]));
 
-        $ordersModels = Orders::select('id', 'client_raw_data', 'courier_id', 'user_id', 'order_amount', 'total_order_amount', 'created_at', 'status_id')
+        $ordersModels = Orders::select('id', 'client_raw_data', 'products_raw_data', 'courier_id', 'user_id', 'order_amount', 'total_order_amount', 'created_at', 'status_id')
             ->where('created_at', '>=', $startDate)
             ->where('created_at', '<=', $endDate)
             ->get();
