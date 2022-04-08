@@ -101,6 +101,7 @@ class OrdersService
         $clientInfo->typeDeliveryText = isset($clientInfo->typeDelivery) ? ($clientInfo->typeDelivery[0] === true ? 'Доставка' : 'Самовывоз') : '-';
         $clientInfo->ordersCount = $this->order->User->Orders()->where('status_id', Orders::STATUS_TEXT['completed'])->count();
         $clientInfo->userId = $this->order->User->id;
+        $clientInfo->clientName = $this->order->User->name;
         $clientInfo->userIsStaff = $this->order->User->UserIsStaff();
         $orderStd->clientInfo = $clientInfo;
 
