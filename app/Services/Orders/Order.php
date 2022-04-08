@@ -7,6 +7,8 @@ namespace App\Services\Orders;
  *
  * @property Client clientInfo
  *
+ * @property string issetCombo
+ *
  * @property mixed courierId
  * @property mixed courierName
  * @property mixed courierPhone

@@ -106,6 +106,8 @@ class OrdersService
         $clientInfo->userIsStaff = $this->order->User->UserIsStaff();
         $orderStd->clientInfo = $clientInfo;
 
+        $orderStd->issetCombo = str_contains($this->order->products_raw_data, 'combo') ? 'Да' : 'Нет';
+
         $courier = $this->order->Courier;
         $orderStd->courierId = $courier ? $courier->id : '-';
         $orderStd->courierName = $courier ? $courier->name : '-';
