@@ -231,7 +231,8 @@ class OrdersController extends Controller
         $message .= '<i>Оплата:</i> ' . ($clientInformation->typePayment[0] === true ? 'Карта' : 'Наличные') . PHP_EOL;
         $message .= '<i>Адрес:</i> ' . $clientInformation->clientAddressDelivery . PHP_EOL;
         $message .= '<i>Комментарий:</i> ' . $clientInformation->clientComment . PHP_EOL;
-//        $message .= '<i>Промокод:</i> ' . $clientInformation->clientPromoCode . PHP_EOL;
+        $message .= '<i>Промокод:</i> ' . $clientInformation->clientPromoCode . PHP_EOL;
+        $message .= '<i>Было комбо?:</i> ' . (str_contains($orderFullInformation->order->products_raw_data, 'combo') ? 'Да' : 'Нет') . PHP_EOL;
         $message .= PHP_EOL;
         $message .= '<b>Заказ:</b>' . PHP_EOL;
         $message .= $products . PHP_EOL;
