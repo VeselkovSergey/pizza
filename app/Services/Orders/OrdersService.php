@@ -102,6 +102,7 @@ class OrdersService
         $clientInfo->ordersCount = $this->order->User->Orders()->where('status_id', Orders::STATUS_TEXT['completed'])->count();
         $clientInfo->userId = $this->order->User->id;
         $clientInfo->clientName = $this->order->User->name;
+        $clientInfo->clientPromoCode = $clientInfo->clientPromoCode ?? '-';
         $clientInfo->userIsStaff = $this->order->User->UserIsStaff();
         $orderStd->clientInfo = $clientInfo;
 
