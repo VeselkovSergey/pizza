@@ -10,6 +10,7 @@
             @endif
             <button class="ml-a orange-button stack-invoices">Печать комплекта чеков</button>
             <a class="orange-button full-invoice" target="_blank" href="{{route('manager-arm-order-invoice-page', $order->id)}}">Печать полного чека</a>
+            <a class="orange-button full-invoice-many" href="#">Печать полного чека (несколько штук)</a>
             <a class="chef-invoice orange-button" target="_blank" href="{{route('manager-arm-order-invoice-chef-page', $order->id)}}">Печать чека для повара</a>
         </div>
 
@@ -388,6 +389,30 @@
                 return Math.max(routeLength * DELIVERY_TARIFF, MINIMUM_COST).toFixed(2);
             }
         }
+
+        document.body.querySelectorAll('.full-invoice-many').forEach((element) => {
+            element.addEventListener('click', FullInvoiceManyWindow);
+
+            function FullInvoiceManyWindow() {
+                const container = CreateElement('div', {})
+                const input = CreateElement('input', {
+                    attr: {
+                        type: 'number',
+                        value: 3,
+                        class: 'w-100 mb-10 text-center'
+                    }
+                }, container);
+                const button = CreateElement('button', {content: 'Печать', class: 'orange-button w-100'}, container);
+                const modal = ModalWindow(container);
+
+                button.addEventListener('click', () => {
+                    const count = input.value.length < 1 ? 1 : input.value;
+                    for (let i = 0; i < count; i++) {
+                        window.open("{{route('manager-arm-order-invoice-page', $order->id)}}", '_blank');
+                    }
+                });
+            }
+        });
     </script>
 
 @stop
