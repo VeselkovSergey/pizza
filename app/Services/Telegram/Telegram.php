@@ -14,6 +14,7 @@ class Telegram
     private $textMessage;
     private $buttons = null;
     private $messageId = null;
+    private $senderChat = null;
     private $incomingMessage;
     private $callbackQuery;
     private $messageText = null;
@@ -175,6 +176,7 @@ class Telegram
             $this->incomingMessage = $request->message;
             $this->chatId = $this->incomingMessage->from->id;
             $this->messageId = $this->incomingMessage->message_id;
+            $this->senderChat = $this->incomingMessage->sender_chat;
             //$this->checkContact();
         } else if (!empty($request->callback_query)) {
             $this->callbackQuery = $request->callback_query;
@@ -240,6 +242,11 @@ class Telegram
     public function ChatId()
     {
         return $this->chatId;
+    }
+
+    public function SenderChat()
+    {
+        return $this->senderChat;
     }
 
     public function MessageRaw()
