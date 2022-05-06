@@ -113,7 +113,7 @@ function PriceSumProductsInBasket() {
                 if (promoCode.general.discountPercent !== null) {
                     discountAmount += (price / 100 * promoCode.general.discountPercent) * amount;
                 } else if(promoCode.general.discountSum !== null) {
-                    // discountAmount = promoCode.general.discountSum;
+                    discountAmount = promoCode.general.discountSum;
                 }
             }
         }
