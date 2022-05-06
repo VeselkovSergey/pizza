@@ -12,7 +12,10 @@ function LoaderShow() {
 }
 
 function LoaderHide() {
-    document.body.querySelector('.loader').remove();
+    const loader = document.body.querySelector('.loader');
+    if (loader) {
+        loader.remove();
+    }
 }
 
 function Ajax(url, method, formDataRAW, loader = false) {

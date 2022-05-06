@@ -35,6 +35,13 @@ Route::group(['prefix' => 'catalog'], function () {
     Route::get('/', [Controllers\Catalog\CatalogController::class, 'Index'])->name('catalog');
 
 });
+Route::group(['prefix' => 'review'], function () {
+
+    Route::get('/', [Controllers\Reviews\ReviewsController::class, 'Index'])->name('review');
+
+    Route::post('/create', [Controllers\Reviews\ReviewsController::class, 'Create'])->name('review-create');
+
+});
 
 Route::group(['prefix' => 'profile'], function () {
 
