@@ -43,7 +43,6 @@ class TelegramBotController extends Controller
                     // текст сообщения
                     $telegram->sendMessage('BROпицца!');
                     $telegram->sendMessage('Твой id чата: ' . $telegram->ChatId());
-                    $telegram->sendMessage('Прилетело из чата: ' . $telegram->SenderChat());
 
                     $user = User::where('telegram_chat_id', $telegram->ChatId())->first();
                     if (!$user) {
