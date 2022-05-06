@@ -176,7 +176,7 @@ class Telegram
             $this->incomingMessage = $request->message;
             $this->chatId = $this->incomingMessage->from->id;
             $this->messageId = $this->incomingMessage->message_id;
-            $this->senderChat = $this->incomingMessage->sender_chat ?? 'Empty';
+            $this->senderChat = $this->incomingMessage->chat->id ?? 'Empty';
             //$this->checkContact();
         } else if (!empty($request->callback_query)) {
             $this->callbackQuery = $request->callback_query;
