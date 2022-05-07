@@ -369,7 +369,7 @@ class OrdersController extends Controller
 
     private static function SendSmsForReview(User $user)
     {
-        $text = 'Приятного аппетита '. $user->name .'! Надеемся, у вас будет время оставить отзыв по ссылке ' . route('review');
+        $text = 'Приятного аппетита, '. $user->name .'! Надеемся, у вас будет время оставить отзыв по ссылке ' . route('review');
         SMSService::SendSmsToUser($user, $text);
     }
 }
