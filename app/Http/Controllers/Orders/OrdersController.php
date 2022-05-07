@@ -23,6 +23,7 @@ use App\Models\UsedDevices;
 use App\Models\User;
 use App\Services\Pusher\Pusher;
 use App\Services\SberBank\SberBank;
+use App\Services\SMS\SMSService;
 use App\Services\Telegram\Telegram;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -293,6 +294,10 @@ class OrdersController extends Controller
             }
         }
 
+        if ($order->IsDelivered()) {
+            self::SendSmsForReview($order->User);
+        }
+
         Cache::forget('order-' . $order->id);
 
         event(new Pusher($order->id, $oldStatusId, $statusId));
@@ -360,5 +365,11 @@ class OrdersController extends Controller
         }
 
         return ResultGenerate::Success();
+    }
+
+    private static function SendSmsForReview(User $user)
+    {
+        $text = 'Приятного аппетита '. $user->name .'! Надеемся, у вас будет время оставить отзыв по ссылке ' . route('review');
+        SMSService::SendSmsToUser($user, $text);
     }
 }

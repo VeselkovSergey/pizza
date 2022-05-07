@@ -68,6 +68,15 @@ class Orders extends BaseModel
         'cancelled' => 9,
     ];
 
+    /**
+     * Статус заказа доставлен?
+     * @return bool
+     */
+    public function IsDelivered()
+    {
+        return $this->status_id === Orders::STATUS_TEXT['delivered'];
+    }
+
     public function User()
     {
         return $this->hasOne(User::class, 'id', 'user_id');

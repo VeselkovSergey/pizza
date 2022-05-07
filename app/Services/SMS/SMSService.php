@@ -2,12 +2,14 @@
 
 namespace App\Services\SMS;
 
+use App\Models\User;
+
 class SMSService
 {
     /**
      * @throws \Exception
      */
-    public static function SendSMS($deviceID, $secret, $phone, $text)
+    public static function Send($deviceID, $secret, $phone, $text)
     {
         $phone = preg_replace("/[^0-9]/", '', $phone);
         $phone[0] = 8;
@@ -17,8 +19,8 @@ class SMSService
         }
 
         $time = time();
-//        $deviceID = "d2hDR_zV6Bg:APA91bF3EcRaY35Ox9IU7DL2bbIQ0JlgkLd2hAVcxkfuL4tvJRhyFjXRKBURPvvySau7-MAJfUBldEUxUaLMpr4zX5Ewkr-Q_7esWZK79-70dX3DwjcRb_JVj9xxSuVfc_OcolVOTe0D";
-//        $secret = "0031ad0e-affb-4f25-b013-96ba084ab74f";
+//        $deviceID = "d2hDR_zV6Bg:APA91bF3EcRaY35Ox9IU7DL2bbIQ0JlgkLd2hAVcxkfuL4tvJRhyFjXRKBURPvvySau7-MAJfUBldEUxUaLMpr4zX5Ewkr-Q_7esWZK79-70dX3DwjcRb_JVj9xxSuVfc_OcolVOTe0D";       // mi6
+//        $secret = "0031ad0e-affb-4f25-b013-96ba084ab74f";       // mi6
 
         $secret = md5($secret . $time);
 
@@ -52,5 +54,15 @@ class SMSService
         curl_close ( $ch );
 
         return $result;
+    }
+
+
+
+    public static function SendSmsToUser(User $user, $text)
+    {
+        $deviceId = 'cLVirCPqeHc:APA91bHTXTCAWTJAjBB4JqKZzHGqMgXKrRvz93TNOkuzl9HN7uGhVBLzuku5R8YbyrC-I3wowd-yhH8LHPKSI_spvHrKz69vxQUjcN5w7ilYUS68m6j3DVwn2__bjYh9IOTqBmEPykIe';
+        $secret = '8d526200-8b06-4ef0-bf03-dc8426db21a8';
+
+        self::Send($deviceId, $secret, $user->phone, $text);
     }
 }
