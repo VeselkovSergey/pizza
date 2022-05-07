@@ -100,7 +100,7 @@
                 LoaderHide();
                 ModalWindow('Спасибо за отзыв!');
                 setTimeout(() => {
-                    // location.href = '/';
+                    location.href = '/';
                 }, 2000);
             })
 
