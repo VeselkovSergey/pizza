@@ -15,6 +15,7 @@ namespace App\Models;
  * @property integer additional_sales_sort
  * @property integer is_new
  * @property integer is_spicy
+ * @property integer is_hidden
  *
  * @property ProductModifications Modifications
  */

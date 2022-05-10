@@ -377,7 +377,7 @@ $combos1 = [
                 <h2 class="w-100 ml-10 mb-10" id="{{$product->categoryId}}">{{$product->categoryTitle}}</h2>
             @endif
 
-            <div class="button-open-product w-100 flex-column cp" data-product-id="{{$product->id}}">
+            <div class="button-open-product w-100 flex-column cp @if($product->isHidden) hide @endif" data-product-id="{{$product->id}}">
 
                 @if($product->isPopular || $product->isNew || $product->isSpicy)
                     <div class="pos-rel">

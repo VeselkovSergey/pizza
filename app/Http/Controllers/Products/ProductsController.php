@@ -246,6 +246,7 @@ class ProductsController extends Controller
             $this->product->additionalSalesSort = $productModel->additional_sales_sort;
             $this->product->isNew = $productModel->is_new;
             $this->product->isSpicy = $productModel->is_spicy;
+            $this->product->isHidden = $productModel->is_hidden;
             $this->product->isPopular = in_array($productModel->id, $popularPositionsByCategory[$productModel->category_id]);
 
             $this->product->categoryId = $productModel->category_id;

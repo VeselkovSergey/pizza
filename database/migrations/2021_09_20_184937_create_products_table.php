@@ -24,6 +24,7 @@ class CreateProductsTable extends Migration
             $table->integer('additional_sales_sort')->default(0);
             $table->tinyInteger('is_new')->default(1);
             $table->tinyInteger('is_spicy')->default(0);
+            $table->tinyInteger('is_hidden')->default(0);
             $table->timestamps();
         });
     }
