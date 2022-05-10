@@ -480,6 +480,8 @@ function LoginWindow(callback) {
     let approveButton;
     let confirmationContainer;
     let confirmationCodeInput;
+    let callRepeatButton;
+    let countRepeat = 0;
     let loginWindowContent = CreateElement('div', {
         childs: [
             CreateElement('div', {
@@ -515,9 +517,15 @@ function LoginWindow(callback) {
                                 events: {
                                     click: () => {
                                         if (PhoneValidation(phoneField.value) !== false) {
-                                            phoneContainer.remove();
+                                            phoneContainer.hide();
                                             confirmationContainer.show();
                                             confirmationCodeInput.focus();
+                                            setInterval(() => {
+                                                const num = callRepeatButton.querySelector('span').innerHTML;
+                                                if (num - 1 >= 0) {
+                                                    callRepeatButton.querySelector('span').innerHTML = num - 1;
+                                                }
+                                            }, 1000);
                                         }
                                     }
                                 }
@@ -587,8 +595,26 @@ function LoginWindow(callback) {
                                     }
                                 }
                             }),
+                            callRepeatButton = CreateElement('button', {
+                                content: 'Повторить (<span>30</span>)',
+                                class: 'orange-button',
+                                events: {
+                                    click: () => {
+                                        const num = callRepeatButton.querySelector('span').innerHTML;
+                                        if (parseInt(num) === 0 && countRepeat < 2) {
+                                            countRepeat++;
+                                            callRepeatButton.querySelector('span').innerHTML = '30';
+                                            PhoneValidation(phoneField.value);
+                                        }
+
+                                        if (countRepeat === 2) {
+                                            callRepeatButton.hide();
+                                        }
+                                    }
+                                }
+                            }),
                         ],
-                        class: 'flex-center mt-10',
+                        class: 'mt-10 flex-column-center-adaptive',
                     }),
                 ],
                 class: 'mb-10 flex-column hide',

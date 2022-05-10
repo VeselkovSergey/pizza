@@ -31,7 +31,7 @@ class Ucaller
         $request = json_decode($request, true);
 
         if($request['status'] == true) { // Подробнее о том, какой ответ мы возврашаем в случае успеха, мы описываем ниже
-            session('key', $request['ucaller_id']);
+            session()->put('ucallerId', $request['ucaller_id']);
         }
         return $request;
     }
@@ -52,6 +52,8 @@ class Ucaller
         $request = json_decode($request, true);
 
         if($request['status'] == true) { // Подробнее о том, какой ответ мы возврашаем в случае успеха, мы описываем ниже
+            session()->put('ucallerId', $request['ucaller_id']);
+            session()->put('confirmationCode', $request['code']);
             /*
             Повторная бесплатная авторизация успешно инициализирована
             */

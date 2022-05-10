@@ -530,6 +530,18 @@
   align-items: center;
 }
 
+.flex-column-center-adaptive {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 540px) {
+  .flex-column-center-adaptive {
+    flex-direction: column;
+  }
+}
+
 .flex-center-vertical {
   display: flex;
   align-items: center;
