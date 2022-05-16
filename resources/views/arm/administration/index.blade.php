@@ -37,10 +37,27 @@
         <div>
             <a href="{{route('send-sms-index-page')}}">Отправка СМС с номера 89151640548</a>
         </div>
+        <div class="flex-center-vertical">
+            <span>Выключить звук заказов</span>
+            <label class="custom-checkbox-label" for="new-order-audio">
+                <input type="checkbox" id="new-order-audio" name="new-order-audio"/>
+                <div class="custom-checkbox-slider round"></div>
+            </label>
+        </div>
     </div>
 
 @stop
 
 @section('js')
+
+    <script>
+        document.getElementById('new-order-audio').addEventListener('change', (event) => {
+            localStorage.setItem('newOrderAudioIsDisabled', event.target.checked);
+        });
+
+        if (localStorage.getItem('newOrderAudioIsDisabled') === 'true') {
+            document.getElementById('new-order-audio').checked = true;
+        }
+    </script>
 
 @stop

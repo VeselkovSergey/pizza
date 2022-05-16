@@ -644,8 +644,10 @@ function ManagerArmCheckOrderStatusChange(data = null) {
         }
 
         if (location.pathname !== '/arm/chef/orders-kitchen') {
-            let audio = new Audio(location.origin + '/audio/new-order.mp3'); // Создаём новый элемент Audio
-            audio.play(); // Автоматически запускаем
+            if (localStorage.getItem('newOrderAudioIsDisabled') !== 'true') {       // для отключения страшных звуков)))
+                let audio = new Audio(location.origin + '/audio/new-order.mp3'); // Создаём новый элемент Audio
+                audio.play(); // Автоматически запускаем
+            }
         }
 
     } else {
