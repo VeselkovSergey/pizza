@@ -239,17 +239,12 @@
             });
 
             inputIngredientPrice.addEventListener('input', () => {
-                inputIngredientPrice.value = inputIngredientPrice.value.replace(/,/, '.');
-                inputIngredientAmount.value = inputIngredientAmount.value.replace(/,/, '.');
-                let countSum = CountSum(inputIngredientPrice.value, inputIngredientAmount.value);
-                inputIngredientSum.value = parseFloat(countSum).toFixed(2);
-                CountSumTotal();
+                ReSum();
             });
 
             inputIngredientSum.addEventListener('input', () => {
-                let amount = inputIngredientAmount.value.replace(/,/, '.');
-                let sum = inputIngredientSum.value.replace(/,/, '.');
-                let countSum = sum / amount;
+                FormattingValues();
+                let countSum = inputIngredientSum.value / inputIngredientAmount.value;
                 inputIngredientPrice.value = parseFloat(countSum).toFixed(2);
                 CountSumTotal();
             });
@@ -258,9 +253,16 @@
                 ReSum();
             }
 
-            function ReSum() {
+            function FormattingValues() {
                 inputIngredientAmount.value = inputIngredientAmount.value.replace(/,/, '.');
+                inputIngredientAmount.value = inputIngredientAmount.value.replace(/[^0-9\.]/g,"");
+
                 inputIngredientPrice.value = inputIngredientPrice.value.replace(/,/, '.');
+                inputIngredientPrice.value = inputIngredientPrice.value.replace(/[^0-9\.]/g,"");
+            }
+
+            function ReSum() {
+                FormattingValues();
                 let countSum = CountSum(inputIngredientAmount.value, inputIngredientPrice.value);
                 inputIngredientSum.value = parseFloat(countSum).toFixed(2);
                 CountSumTotal();
