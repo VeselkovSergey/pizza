@@ -60,8 +60,17 @@ class SMSService
 
     public static function SendSmsToUser(User $user, $text)
     {
-        $deviceId = 'cLVirCPqeHc:APA91bHTXTCAWTJAjBB4JqKZzHGqMgXKrRvz93TNOkuzl9HN7uGhVBLzuku5R8YbyrC-I3wowd-yhH8LHPKSI_spvHrKz69vxQUjcN5w7ilYUS68m6j3DVwn2__bjYh9IOTqBmEPykIe';
-        $secret = '8d526200-8b06-4ef0-bf03-dc8426db21a8';
+        /**
+         * mi8
+         */
+//        $deviceId = 'cLVirCPqeHc:APA91bHTXTCAWTJAjBB4JqKZzHGqMgXKrRvz93TNOkuzl9HN7uGhVBLzuku5R8YbyrC-I3wowd-yhH8LHPKSI_spvHrKz69vxQUjcN5w7ilYUS68m6j3DVwn2__bjYh9IOTqBmEPykIe';
+//        $secret = '8d526200-8b06-4ef0-bf03-dc8426db21a8';
+
+        /**
+         * j1
+         */
+        $deviceId = 'eN66_HSSQHw:APA91bHe7DP8ztUPpWEtK_mXgV5srQ4x-YYIYTvwe1i0r4HzePMdXU1-qU97hH3VHynCPaLphMdvb0pPNzPiku040W4c_NJZ6OwyrrfXuxNpnRA4Lhu0nBMcTV0H5l39MNOJAOMA2aKx';
+        $secret = '47ec1e63-f901-4f73-ba17-443dafc79262';
 
         self::Send($deviceId, $secret, $user->phone, $text);
     }
