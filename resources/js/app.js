@@ -132,9 +132,9 @@ function PriceSumProductsInBasket() {
 
     return {
         sum: sum,
-        discount: discountAmount,
+        discount: discountAmount > sum ? sum : discountAmount,
         deliveryAmount: deliveryAmount,
-        total: sum - discountAmount,
+        total: (sum - discountAmount) < 0 ? 0 : sum - discountAmount,
     };
 }
 
