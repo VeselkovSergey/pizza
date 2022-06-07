@@ -19,8 +19,6 @@ class SMSService
         }
 
         $time = time();
-//        $deviceID = "d2hDR_zV6Bg:APA91bF3EcRaY35Ox9IU7DL2bbIQ0JlgkLd2hAVcxkfuL4tvJRhyFjXRKBURPvvySau7-MAJfUBldEUxUaLMpr4zX5Ewkr-Q_7esWZK79-70dX3DwjcRb_JVj9xxSuVfc_OcolVOTe0D";       // mi6
-//        $secret = "0031ad0e-affb-4f25-b013-96ba084ab74f";       // mi6
 
         $secret = md5($secret . $time);
 
@@ -69,9 +67,21 @@ class SMSService
         /**
          * j1
          */
-        $deviceId = 'eN66_HSSQHw:APA91bHe7DP8ztUPpWEtK_mXgV5srQ4x-YYIYTvwe1i0r4HzePMdXU1-qU97hH3VHynCPaLphMdvb0pPNzPiku040W4c_NJZ6OwyrrfXuxNpnRA4Lhu0nBMcTV0H5l39MNOJAOMA2aKx';
-        $secret = '47ec1e63-f901-4f73-ba17-443dafc79262';
+//        $deviceId = 'eN66_HSSQHw:APA91bHe7DP8ztUPpWEtK_mXgV5srQ4x-YYIYTvwe1i0r4HzePMdXU1-qU97hH3VHynCPaLphMdvb0pPNzPiku040W4c_NJZ6OwyrrfXuxNpnRA4Lhu0nBMcTV0H5l39MNOJAOMA2aKx';
+//        $secret = '47ec1e63-f901-4f73-ba17-443dafc79262';
 
-        self::Send($deviceId, $secret, $user->phone, $text);
+        /**
+         * mi6
+         */
+//        $deviceId = "d2hDR_zV6Bg:APA91bF3EcRaY35Ox9IU7DL2bbIQ0JlgkLd2hAVcxkfuL4tvJRhyFjXRKBURPvvySau7-MAJfUBldEUxUaLMpr4zX5Ewkr-Q_7esWZK79-70dX3DwjcRb_JVj9xxSuVfc_OcolVOTe0D";
+//        $secret = "0031ad0e-affb-4f25-b013-96ba084ab74f";
+
+        /**
+         * redmi
+         */
+        $deviceId = "cSyqaU0x4NA:APA91bGio8tmVgUyl9byb5t4HzbbZMvpLVIKhqRUkmGUqvSSX3-MTVhOUsSiuVygz3utaiU9JEDkgbpCqYdnurIP5mmB3UOFnhw14nCEscaPedqubUQPxnPGJ1vkzSyNdy0Xfsd8QGVn";
+        $secret = "92ff2daa-1555-49c3-97ae-14a8952bd7e4";
+
+        return self::Send($deviceId, $secret, $user->phone, $text);
     }
 }
