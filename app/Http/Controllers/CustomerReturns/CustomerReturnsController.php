@@ -44,7 +44,7 @@ class CustomerReturnsController extends Controller
     public function SendSms()
     {
         $pageSize = 100;
-        $page = 1;
+        $page = 2;
 
         $res = CustomerReturns::query()
             ->limit($pageSize)
