@@ -67,7 +67,7 @@ class CustomerReturnsController extends Controller
 pizza-dubna.ru/?promo='.$promoCode.'
 Для "плохих" отзывов😈
 pizza-dubna.ru/review';
-                SendSmsForUser::dispatch($user, $text, $promoCode)->delay(now()->addMinute($key));
+                SendSmsForUser::dispatch($user, $text, $promoCode, $key)->delay(now()->addMinute($key));
                 $last = $key + 1;
             }
         }
