@@ -279,6 +279,13 @@ Route::group(['prefix' => 'arm', 'middleware' => 'permission:ARM'], function () 
 
     });
 
+    Route::group(['prefix' => 'customer-returns'], function () {
+
+        Route::get('/', [Controllers\CustomerReturns\CustomerReturnsController::class, 'Index'])->name('customer-returns-index');
+        Route::get('/send', [Controllers\CustomerReturns\CustomerReturnsController::class, 'SendSms'])->name('customer-returns-send');
+
+    });
+
 });
 
 //Route::get('/payment-paid', [Controllers\Payments\PaymentsController::class, 'PaymentPaidRequest'])->name('payment-paid');
