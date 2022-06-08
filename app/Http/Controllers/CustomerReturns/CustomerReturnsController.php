@@ -71,8 +71,8 @@ pizza-dubna.ru/review';
                 $last = $key + 1;
             }
         }
-        SendSmsForUser::dispatch(User::where('phone', '79151640548')->first(), 'Рассылка завершена!', 'Рассылка завершена!')->delay(now()->addMinute($last));
-        SendSmsForUser::dispatch(User::where('phone', '79035023983')->first(), 'Рассылка завершена!', 'Рассылка завершена!')->delay(now()->addMinute($last));
+        SendSmsForUser::dispatch(User::where('phone', '79151640548')->first(), 'Рассылка завершена!', 'Рассылка завершена!', $last)->delay(now()->addMinute($last));
+        SendSmsForUser::dispatch(User::where('phone', '79035023983')->first(), 'Рассылка завершена!', 'Рассылка завершена!', $last)->delay(now()->addMinute($last));
     }
 
     private static function PromoCodes($percent, $description)
