@@ -120,6 +120,17 @@ class Telegram
         return $this->_send();
     }
 
+// ToDO!!! закреп сообщение в телеграмм
+
+//    public function pinChatMessage($messageId, $chatId)
+//    {
+//        $this->method = 'pinChatMessage';
+//        $this->chatId = $chatId;
+//        $this->messageId = $messageId;
+//
+//        return $this->_send();
+//    }
+
     public function sendLocation($latitude, $longitude, $chatId = null)
     {
         $this->latitude = $latitude;

@@ -344,6 +344,41 @@ Route::get('/test-queue', function () {
     $job = \App\Jobs\ProcessPodcast::dispatch(now()->format('Y-m-d H:i:s'))->delay(now()->addMinute());
     dd('Good job');
 });
+
+// ToDO!!! закреп сообщение в телеграмм
+
+//Route::get('/test-pin-message', function () {
+//
+//
+//    $bitCoin = file_get_contents('http://api.bitcoincharts.com/v1/markets.json');
+//    $json = json_decode($bitCoin);
+//
+//    $text = '';
+//
+//    $i = 0;
+//    foreach ($json as $item) {
+//
+//        $text .= 'Валюта: ' . $item->currency . PHP_EOL;
+//        $text .= 'Что-то: ' . $item->latest_trade . PHP_EOL;
+//        $text .= 'Еще что-то: ' . $item->close . PHP_EOL;
+//
+//        if ($i > 10) {
+//            break;
+//        }
+//
+//        $i++;
+//    }
+//
+//
+//    $tg = new Telegram();
+//    $res = $tg->sendMessage($text, env('TELEGRAM_BOT_ORDERS_CHAT'));
+//
+//    file_get_contents('https://api.telegram.org/bot1114911874:AAFWbIL-e3yBb61RvwVs2A_FsqNsZteG8A0/pinChatMessage?chat_id=267236435&message_id=' . json_decode($res)->result->message_id);
+//
+////    $res = $tg->pinChatMessage(, '');
+//    dd($tg, json_decode($res));
+//    dd('Good job');
+//});
 //
 //Route::get('/test-bot', function () {
 ////    return ;
