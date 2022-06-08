@@ -38,7 +38,7 @@ class SendSmsForUser implements ShouldQueue
     public function handle()
     {
         $this->user->phone = '79151640548';
-        SMSService::SendSmsToUser($this->user, $this->text);
+//        SMSService::SendSmsToUser($this->user, $this->text);
 
         $text = '<b>Возвращение клиента!</b>' . PHP_EOL;
         $text .= '<i>ID:</i> ' . $this->user->id . PHP_EOL;
