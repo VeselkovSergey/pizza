@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Services\SMS\SMSService;
+use App\Services\Telegram\Telegram;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -38,5 +39,13 @@ class SendSmsForUser implements ShouldQueue
     {
         $this->user->phone = '79151640548';
         SMSService::SendSmsToUser($this->user, $this->text);
+
+        $text = '<b>Возвращение клиента!</b>' . PHP_EOL;
+        $text .= '<i>ID:</i> ' . $this->user->id . PHP_EOL;
+        $text .= '<i>Имя:</i> ' . $this->user->name . PHP_EOL;
+        $text .= '<i>Телефон:</i> ' . $this->user->phone . PHP_EOL;
+
+        $tg = new Telegram();
+        $tg->sendMessage($text, env('TELEGRAM_BOT_CUSTOMER_RETURNS_CHAT'));
     }
 }
