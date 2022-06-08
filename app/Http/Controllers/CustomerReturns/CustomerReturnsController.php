@@ -51,6 +51,7 @@ class CustomerReturnsController extends Controller
             ->offset($pageSize * ($page - 1))
             ->get();
 
+        $last = 0;
         foreach ($res as $key => $item) {
             /** @var CustomerReturns $item */
             if ($item->is_send_sms === 0) {
@@ -67,8 +68,11 @@ pizza-dubna.ru/?promo='.$promoCode.'
 Для "плохих" отзывов😈
 pizza-dubna.ru/review';
                 SendSmsForUser::dispatch($user, $text, $promoCode)->delay(now()->addMinute($key));
+                $last = $key + 1;
             }
         }
+        SendSmsForUser::dispatch(User::where('phone', '79151640548')->first(), 'Рассылка завершена!', 'Рассылка завершена!')->delay(now()->addMinute($last));
+        SendSmsForUser::dispatch(User::where('phone', '79035023983')->first(), 'Рассылка завершена!', 'Рассылка завершена!')->delay(now()->addMinute($last));
     }
 
     private static function PromoCodes($percent, $description)
