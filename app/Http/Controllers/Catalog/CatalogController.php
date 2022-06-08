@@ -23,10 +23,13 @@ class CatalogController extends Controller
             return Categories::all();
         });
 
+        $promoCode = request('promo');
+
         return view('catalog.index', [
             'allProducts' => $allProducts,
             'allCategory' => $allCategory,
             'combos' => $combos,
+            'promo' => $promoCode,
             'footer' => true,
         ]);
     }

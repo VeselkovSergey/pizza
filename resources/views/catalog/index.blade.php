@@ -599,6 +599,15 @@ $combos1 = [
             });
         });
 
+        function promoApply()
+        {
+            const promo = '{{$promo}}';
+            if (promo) {
+                CheckPromo(promo);
+            }
+        }
+        promoApply();
+
     </script>
 
 @stop

@@ -148,15 +148,16 @@ class PromoCodesController extends Controller
             'title' => $title,
             'conditions' => json_encode((object)[
                 'every' => (object)[
-                    'productModifications' => null,
-                    'reiterationsCounts' => null,
-                    'discountPercent' => null,
-                    'discountSum' => null,
                     'salePrice' => null,
+                    'discountSum' => null,
+                    'discountPercent' => null,
+                    'reiterationsCounts' => 0,
+                    'productModifications' => [],
+                    'generalReiterationsCounts' => 0,
                 ],
                 'general' => (object)[
-                    'discountPercent' => $percent,
                     'discountSum' => null,
+                    'discountPercent' => $percent,
                 ]
             ]),
             'description' => $description,

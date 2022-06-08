@@ -175,6 +175,22 @@ basketButton.addEventListener('click', () => {
 
 let basketWindow;
 
+function CheckPromo(promoCodeValue) {
+    localStorage.removeItem('promoCode');
+
+    Ajax(routeCheckPromoCodeRequest, 'POST', {promoCode: promoCodeValue})
+        .then((response) => {
+            if (response.status) {
+                let result = response.result;
+                localStorage.setItem('promoCode', JSON.stringify(result.conditions));
+                ModalWindow(result.description);
+            } else {
+                ModalWindow('Промокод не действителен');
+            }
+            UpdateBasketSum();
+        });
+}
+
 function BasketWindow() {
 
     if (Object.keys(allProducts).length === 0) {
@@ -257,17 +273,7 @@ function BasketWindow() {
             if (promoCodeValue === '') {
                 UpdateBasketSum();
             } else {
-                Ajax(routeCheckPromoCodeRequest, 'POST', {promoCode: promoCodeValue})
-                    .then((response) => {
-                        if (response.status) {
-                            let result = response.result;
-                            localStorage.setItem('promoCode', JSON.stringify(result.conditions));
-                            ModalWindow(result.description);
-                        } else {
-                            ModalWindow('Промокод не действителен');
-                        }
-                        UpdateBasketSum();
-                    });
+                CheckPromo(promoCodeValue);
             }
         });
     }
