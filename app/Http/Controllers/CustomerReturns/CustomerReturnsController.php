@@ -43,7 +43,7 @@ class CustomerReturnsController extends Controller
 
     public function SendSms()
     {
-        $pageSize = 3;
+        $pageSize = 100;
         $page = 1;
 
         $res = CustomerReturns::query()
@@ -66,7 +66,7 @@ class CustomerReturnsController extends Controller
 pizza-dubna.ru/?promo='.$promoCode.'
 Для "плохих" отзывов😈
 pizza-dubna.ru/review';
-                SendSmsForUser::dispatch($user, $text)->delay(now()->addMinute($key));
+                SendSmsForUser::dispatch($user, $text, $promoCode)->delay(now()->addMinute($key));
             }
         }
     }

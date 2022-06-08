@@ -18,16 +18,18 @@ class SendSmsForUser implements ShouldQueue
 
     protected User $user;
     protected string $text;
+    protected string $promoCode;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user, $text)
+    public function __construct(User $user, $text, $promoCode)
     {
         $this->user = $user;
         $this->text = $text;
+        $this->promoCode = $promoCode;
     }
 
     /**
@@ -37,13 +39,14 @@ class SendSmsForUser implements ShouldQueue
      */
     public function handle()
     {
-        $this->user->phone = '79151640548';
-//        SMSService::SendSmsToUser($this->user, $this->text);
+//        $this->user->phone = '79151640548';
+        SMSService::SendSmsToUser($this->user, $this->text);
 
         $text = '<b>Возвращение клиента!</b>' . PHP_EOL;
         $text .= '<i>ID:</i> ' . $this->user->id . PHP_EOL;
         $text .= '<i>Имя:</i> ' . $this->user->name . PHP_EOL;
         $text .= '<i>Телефон:</i> ' . $this->user->phone . PHP_EOL;
+        $text .= '<i>Промо:</i> ' . $this->promoCode . PHP_EOL;
 
         $tg = new Telegram();
         $tg->sendMessage($text, env('TELEGRAM_BOT_CUSTOMER_RETURNS_CHAT'));
