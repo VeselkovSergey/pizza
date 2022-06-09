@@ -345,10 +345,9 @@ Route::get('/test-queue', function () {
     dd('Good job');
 });
 
-// ToDO!!! закреп сообщение в телеграмм
+// ToDO!!! закреп сообщение в телеграмм!!!
 
-//Route::get('/test-pin-message', function () {
-//
+//Route::get('/test-pin-message', function () {//
 //
 //    $bitCoin = file_get_contents('http://api.bitcoincharts.com/v1/markets.json');
 //    $json = json_decode($bitCoin);
