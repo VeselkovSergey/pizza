@@ -295,7 +295,8 @@ class OrdersController extends Controller
         }
 
         if ($order->IsDelivered()) {
-            self::SendSmsForReview($order->User);
+            // #toDo отправить сообщение клиенту
+            //self::SendSmsForReview($order->User);
         }
 
         Cache::forget('order-' . $order->id);
