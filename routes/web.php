@@ -25,7 +25,10 @@ Route::get('/plug', function () {
     return view('plug');
 })->name('plug-page');
 
-Route::get('/', [Controllers\Catalog\CatalogController::class, 'Index'])->name('home-page');
+Route::get('/', function () {
+    return redirect(\route('plug-page'));
+})->name('home-page');
+
 Route::get('/cache-clear', function () {
     Cache::flush();
     return redirect(\route('home-page'));
