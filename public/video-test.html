@@ -15,6 +15,16 @@
             .then((response)=>{try{response.json()}catch(e){}})
             .then(data=>{ console.log(data); })
         }
+        
+        function get2() {
+         
+            async function fetchAsync ('https://52.svetacdn.in/tQ7mudXLQUUG/movie/888', {headers: {API_TOKEN: 'Y5OXsPA2Uj6XmNPWohCYGzCHPBeW7t8x'}}) {
+              let response = await fetch(url);
+              let data = await response.json();
+              return data;
+            }
+            
+        }
         </script>
     
 </body>
