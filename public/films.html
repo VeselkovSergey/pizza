@@ -28,7 +28,27 @@
 
     </div>
 
+    <div class="serials-cards-container" style="display: flex; flex-wrap: wrap;">
+
+
+    </div>
+
     <div class="film-info-container">
+
+
+    </div>
+
+    <div class="film-translations" style="display: flex; flex-wrap: wrap;">
+
+
+    </div>
+
+    <div class="film-seasons" style="display: flex; flex-wrap: wrap;">
+
+
+    </div>
+
+    <div class="film-series" style="display: flex; flex-wrap: wrap;">
 
 
     </div>
@@ -38,7 +58,7 @@
 
 
 <div class="player-container" style="width: 50%;">
-    <video id="player" crossorigin="anonymous"></video>
+
 </div>
 
 <script>
@@ -47,8 +67,16 @@
     document.body.querySelector('.search-field').addEventListener('input', (event) => {
         clearTimeout(timerSearchField);
         timerSearchField = setTimeout(() => {
+            if (event.target.value.length < 3) return;
+
             let query = event.target.value;
-            searchFilms(query)
+
+            clearFilmsContainer();
+            clearFilmInfoContainer();
+            clearSerialsContainer();
+
+            searchFilms(query);
+            searchSerials(query);
         }, 1000);
     });
 
@@ -60,37 +88,54 @@
                 return response.json();
             })
             .then((data) => {
-                generateFilmsCards(data.results);
+                generateFilmsCards(data.results, videosCardsContainer);
+            });
+    }
+
+    function searchSerials(query) {
+        const SEARCH_API_URL = 'https://apitmdb.cub.watch/3/search/tv?api_key=4ef0d7355d9ffb5151e987764708ce96&language=ru&query=';
+
+        fetch(SEARCH_API_URL + query)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                generateFilmsCards(data.results, serialsCardsContainer, true);
             });
     }
 
     const videosCardsContainer = document.body.querySelector('.videos-cards-container');
+    const serialsCardsContainer = document.body.querySelector('.serials-cards-container');
 
     function clearFilmsContainer() {
         videosCardsContainer.innerHTML = '';
     }
+    function clearSerialsContainer() {
+        serialsCardsContainer.innerHTML = '';
+    }
 
     const FILM_POSTER_URL = 'https://imagetmdb.cub.watch/t/p/w200';
 
-    function generateFilmsCards(filmsObjects) {
+    function generateFilmsCards(filmsObjects, container, isSerial = false) {
 
-        clearFilmsContainer();
-        clearFilmInfoContainer();
+        filmsObjects
+            .sort((prev, next) => {
+                let prevDate = prev.release_date ?? prev.first_air_date;
+                let nextDate = next.release_date ?? next.first_air_date;
 
-        filmsObjects.forEach((filmObject) => {
+                return Date.parse(nextDate) - Date.parse(prevDate);
+            })
+            .forEach((filmObject) => {
             const id = filmObject.id;
-            const title = filmObject.title;
+            const title = filmObject.title ?? filmObject.name;
             const description = filmObject.overview;
             const poster = filmObject.poster_path !== null ? FILM_POSTER_URL + filmObject.poster_path : 'https://bpic.588ku.com/back_pic/05/10/88/62598e75d484d19.jpg!/fh/300/quality/90/unsharp/true/compress/true';
-            const releaseDate = filmObject.release_date;
-
-            console.log(filmObject)
-
+            const releaseDate = filmObject.release_date ?? filmObject.first_air_date;
 
             const filmContainer = document.createElement('div');
-            filmContainer.addEventListener('click', () => getFilmInfo(id))
+            filmContainer.addEventListener('click', () => getFilmInfo(id, isSerial))
             filmContainer.className = 'film-card-container';
-            videosCardsContainer.append(filmContainer);
+            container.append(filmContainer);
 
             const posterContainer = document.createElement('img');
             posterContainer.src = poster;
@@ -106,14 +151,14 @@
         });
     }
 
-    function getFilmInfo(id) {
-        const FILM_URL = 'https://apitmdb.cub.watch/3/movie/' + id + '?api_key=4ef0d7355d9ffb5151e987764708ce96&language=ru'
+    function getFilmInfo(id, isSerial) {
+        const FILM_URL = 'https://apitmdb.cub.watch/3/'+(isSerial ? 'tv' : 'movie')+'/' + id + '?api_key=4ef0d7355d9ffb5151e987764708ce96&language=ru'
         fetch(FILM_URL)
             .then((response) => {
                 return response.json();
             })
             .then((data) => {
-                showFilmInfo(data);
+                showFilmInfo(data, isSerial);
             });
     }
 
@@ -123,15 +168,17 @@
         filmInfoContainer.innerHTML = '';
     }
 
-    function showFilmInfo(filmInfo) {
+    function showFilmInfo(filmInfo, isSerial) {
         clearFilmsContainer();
         clearFilmInfoContainer();
+        clearSerialsContainer();
 
-        const imdbId = filmInfo.imdb_id;
-        const title = filmInfo.title;
+        const id = filmInfo.id;
+        // const imdbId = filmInfo.imdb_id;
+        const title = filmInfo.title ?? filmInfo.name;
         const description = filmInfo.overview;
         const poster = FILM_POSTER_URL + filmInfo.poster_path;
-        const releaseDate = filmInfo.release_date;
+        const releaseDate = filmInfo.release_date ?? filmInfo.first_air_date;
 
         const filmContainer = document.createElement('div');
         filmInfoContainer.append(filmContainer);
@@ -143,7 +190,14 @@
         const startViewing = document.createElement('button');
         startViewing.innerHTML = 'Просмотр';
         startViewing.addEventListener('click', () => {
-            getFilmFiles(imdbId);
+            fetch('http://apitmdb.cub.watch/3/'+(isSerial ? 'tv' : 'movie')+'/'+id+'/external_ids?api_key=4ef0d7355d9ffb5151e987764708ce96&language=ru')
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    getFilmFiles(data.imdb_id, isSerial);
+                });
+
         });
         filmContainer.append(startViewing);
 
@@ -161,93 +215,182 @@
 
     }
 
-    function getFilmFiles(imdbId) {
-        fetch('https://cdn.svetacdn.in/api/short?api_token=' + VIDEO_CDN_API_TOKEN + '&imdb_id=' + imdbId)
+    function getFilmFiles(imdbId, isSerial) {
+        fetch('https://cdn.svetacdn.in/api/'+(isSerial ? 'tv-series' : 'short')+'?api_token=' + VIDEO_CDN_API_TOKEN + '&imdb_id=' + imdbId)
             .then((response) => {
                 return response.json();
             })
             .then((data) => {
-                parseVideoFiles(data.data[0].iframe_src);
-                clearFilmsContainer();
-                clearFilmInfoContainer();
+                if (data?.data[0]?.iframe_src) {
+                    parseVideoFiles(data.data[0].iframe_src);
+                    clearFilmsContainer();
+                    clearFilmInfoContainer();
+                    clearSerialsContainer();
+                } else {
+                    alert('Нет данных');
+                }
             });
     }
 
     const VIDEO_CDN_API_TOKEN = '3i40G5TSECmLF77oAqnEgbx61ZWaOYaE';
 
+    let translations = {};
+
     function parseVideoFiles(iframeSrc) {
 
-        const playerContainer = document.body.querySelector('.player-container');
-        playerContainer.innerHTML = '<video id="player" crossorigin="anonymous"></video>';
+        translations = {};
 
         // iframeSrc = '//5886534688564.svetacdn.in/0HlZgU1l1mw5/movie/15754';
         fetch('https:'+iframeSrc+'?api_token=' + VIDEO_CDN_API_TOKEN)
             .then((response) => {
                 response.text()
                     .then((raw) => {
+
+                        let regExp = new RegExp('<option[^>]+value="(.*?)"[^>]+>(.*?)<\\/option>', 'gms');
+                        let translationsMathAll = raw.replace(/\n/g, '').matchAll(regExp);
+                        translationsMathAll = Array.from(translationsMathAll);
+
+                        translationsMathAll.forEach((translation) => {
+                            translations[translation[1]] = {
+                                translationTitle: translation[2].trim()
+                            }
+                        });
+
                         let math = raw.replace(/\n/g, '').match(/id="files" value="(.*?)"/);
 
-                        let json = JSON.parse(math[1].replace(/&quot;/g, '"'), {});
+                        let json = JSON.parse(math[1].replace(/&quot;/g, '"'));
 
-                        let videos = [];
+                        Object.keys(json).forEach((index) => {
 
-                        Object.keys(json).forEach((i) => {
-                            let items = extractItems(json[i], 0);
-                            videos.push(items);
+                            const translationRaw = json[index];
+
+                            try {
+
+                                translations[index]['seasons'] = JSON.parse(translationRaw);
+                                // console.log(translations)
+                                // translation.forEach((season) => {
+                                //     season.folder.forEach((files) => {
+                                //         let qualities = extractItems(files.file, 0);
+                                //         // console.log(qualities);
+                                //     });
+                                // });
+
+
+                            }catch (e) {
+                                translations[index]['qualities'] = extractItems(translationRaw, 0);
+
+                            }
                         });
 
-                        // const file = videos[0][0].file; //http://cloud.cdnland.in/5a701568e0c814e78966d69304193194:2022061803/movies/ed23bce433a4f3fb33c8be6eb4a636704e2f0569/720.mp4?dn=Плохие парни_1080.mp4
-                        // const quality = videos[0][0].quality;
+                        generateTranslates();
 
-                        // console.log(file)
-
-                        const plyrVideoData = [];
-                        videos[0].forEach((item) => {
-                            plyrVideoData.push({
-                                src: item.file,
-                                type: 'video/mp4',
-                                size: item.quality,
-                            });
-                        });
-
-                        const player = new Plyr('#player');
-
-                        player.source = {
-                            type: 'video',
-                            title: 'Example title',
-                            download: false,
-                            sources: plyrVideoData,
-                        };
-
-                        // const videoContainer = document.createElement('video');
-                        // videoContainer.setAttribute('src', file);
-                        // videoContainer.setAttribute('controls', '');
-                        // videoContainer.setAttribute('crossorigin', 'anonymous');
-                        // document.body.querySelector('.video-container').append(videoContainer);
-                        //
-                        // document.body.querySelector('.quality').innerHTML = quality;
                     });
-            })
-    }
+            });
 
-    function extractItems(str) {
-        try {
-            let items = str.split(',').map(function (item) {
-                return {
-                    quality: parseInt(item.match(/\[(\d+)p\]/)[1]),
-                    file: 'http:' + item.replace(/\[\d+p\]/, '').split(' or ')[0]
-                };
-            })/*.filter(function (item) {
+        function extractItems(str) {
+            try {
+                let items = str.split(',').map(function (item) {
+                    return {
+                        quality: parseInt(item.match(/\[(\d+)p\]/)[1]),
+                        file: 'http:' + item.replace(/\[\d+p\]/, '').split(' or ')[0]
+                    };
+                })/*.filter(function (item) {
                 return item.quality <= max_quality;
             });*/
-            items.sort(function (a, b) {
-                return b.quality - a.quality;
-            });
-            return items;
-        } catch (e) {
+                items.sort(function (a, b) {
+                    return b.quality - a.quality;
+                });
+                return items;
+            } catch (e) {
+            }
+
+            return [];
         }
 
-        return [];
+        function generateTranslates() {
+
+            const filmTranslations = document.body.querySelector('.film-translations');
+            filmTranslations.innerHTML = '';
+
+            const filmSeasons = document.body.querySelector('.film-seasons');
+            filmSeasons.innerHTML = '';
+
+            const filmSeries = document.body.querySelector('.film-series');
+            filmSeries.innerHTML = '';
+
+            Object.keys(translations).forEach((translateId) => {
+                const translation = translations[translateId];
+                const translationItem = document.createElement('button');
+                translationItem.innerHTML = translation.translationTitle;
+                filmTranslations.append(translationItem);
+
+                translationItem.addEventListener('click', () => setTranslate(translation));
+
+            });
+
+            function setTranslate(translation) {
+
+
+                if (translation.qualities) {
+                    const plyrVideoData = [];
+                    translation.qualities.forEach((item) => {
+                        plyrVideoData.push({
+                            src: item.file,
+                            type: 'video/mp4',
+                            size: item.quality,
+                        });
+                    });
+
+                    startPlayer(plyrVideoData)
+
+                } else {
+                    translation.seasons.forEach((season) => {
+                        const seasonContainer = document.createElement('button');
+                        seasonContainer.innerHTML = season.comment;
+                        filmSeasons.append(seasonContainer);
+                        seasonContainer.addEventListener('click', () => {
+                            season.folder.forEach((series) => {
+                                const seriesContainer = document.createElement('button');
+                                seriesContainer.innerHTML = series.comment.replace('&lt;br&gt;', '').replace('&lt;i&gt;', ' ').replace('&lt;/i&gt;', '');
+                                filmSeries.append(seriesContainer);
+
+                                seriesContainer.addEventListener('click', () => {
+                                    let qualities = extractItems(series.file, 0);
+
+                                    const plyrVideoData = [];
+                                    qualities.forEach((item) => {
+                                        plyrVideoData.push({
+                                            src: item.file,
+                                            type: 'video/mp4',
+                                            size: item.quality,
+                                        });
+                                    });
+
+                                    startPlayer(plyrVideoData)
+                                });
+
+                            });
+                        });
+                    });
+                }
+
+            }
+
+            function startPlayer(plyrVideoData) {
+                const playerContainer = document.body.querySelector('.player-container');
+                playerContainer.innerHTML = '<video id="player" crossorigin="anonymous"></video>';
+
+                const player = new Plyr('#player');
+                player.source = {
+                    type: 'video',
+                    title: 'Example title',
+                    download: false,
+                    sources: plyrVideoData,
+                };
+            }
+
+        }
+
     }
 
 </script>
