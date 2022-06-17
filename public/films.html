@@ -43,83 +43,6 @@
 
 <script>
 
-    const VIDEO_CDN_API_TOKEN = '3i40G5TSECmLF77oAqnEgbx61ZWaOYaE';
-
-    function parseVideoFiles(iframeSrc) {
-
-        const playerContainer = document.body.querySelector('.player-container');
-        playerContainer.innerHTML = '<video id="player" crossorigin="anonymous"></video>';
-
-        // iframeSrc = '//5886534688564.svetacdn.in/0HlZgU1l1mw5/movie/15754';
-        fetch('https:'+iframeSrc+'?api_token=' + VIDEO_CDN_API_TOKEN)
-            .then((response) => {
-                response.text()
-                    .then((raw) => {
-                        let math = raw.replace(/\n/g, '').match(/id="files" value="(.*?)"/);
-
-                        let json = JSON.parse(math[1].replace(/&quot;/g, '"'), {});
-
-                        let videos = [];
-
-                        Object.keys(json).forEach((i) => {
-                            let items = extractItems(json[i], 0);
-                            videos.push(items);
-                        });
-
-                        // const file = videos[0][0].file; //http://cloud.cdnland.in/5a701568e0c814e78966d69304193194:2022061803/movies/ed23bce433a4f3fb33c8be6eb4a636704e2f0569/720.mp4?dn=Плохие парни_1080.mp4
-                        // const quality = videos[0][0].quality;
-
-                        // console.log(file)
-
-                        const plyrVideoData = [];
-                        videos[0].forEach((item) => {
-                            plyrVideoData.push({
-                                src: item.file,
-                                type: 'video/mp4',
-                                size: item.quality,
-                            });
-                        });
-
-                        const player = new Plyr('#player');
-
-                        player.source = {
-                            type: 'video',
-                            title: 'Example title',
-                            download: false,
-                            sources: plyrVideoData,
-                        };
-
-                        // const videoContainer = document.createElement('video');
-                        // videoContainer.setAttribute('src', file);
-                        // videoContainer.setAttribute('controls', '');
-                        // videoContainer.setAttribute('crossorigin', 'anonymous');
-                        // document.body.querySelector('.video-container').append(videoContainer);
-                        //
-                        // document.body.querySelector('.quality').innerHTML = quality;
-                    });
-            })
-    }
-
-    function extractItems(str) {
-        try {
-            let items = str.split(',').map(function (item) {
-                return {
-                    quality: parseInt(item.match(/\[(\d+)p\]/)[1]),
-                    file: 'http:' + item.replace(/\[\d+p\]/, '').split(' or ')[0]
-                };
-            })/*.filter(function (item) {
-                return item.quality <= max_quality;
-            });*/
-            items.sort(function (a, b) {
-                return b.quality - a.quality;
-            });
-            return items;
-        } catch (e) {
-        }
-
-        return [];
-    }
-
     let timerSearchField = null;
     document.body.querySelector('.search-field').addEventListener('input', (event) => {
         clearTimeout(timerSearchField);
@@ -248,6 +171,83 @@
                 clearFilmsContainer();
                 clearFilmInfoContainer();
             });
+    }
+
+    const VIDEO_CDN_API_TOKEN = '3i40G5TSECmLF77oAqnEgbx61ZWaOYaE';
+
+    function parseVideoFiles(iframeSrc) {
+
+        const playerContainer = document.body.querySelector('.player-container');
+        playerContainer.innerHTML = '<video id="player" crossorigin="anonymous"></video>';
+
+        // iframeSrc = '//5886534688564.svetacdn.in/0HlZgU1l1mw5/movie/15754';
+        fetch('https:'+iframeSrc+'?api_token=' + VIDEO_CDN_API_TOKEN)
+            .then((response) => {
+                response.text()
+                    .then((raw) => {
+                        let math = raw.replace(/\n/g, '').match(/id="files" value="(.*?)"/);
+
+                        let json = JSON.parse(math[1].replace(/&quot;/g, '"'), {});
+
+                        let videos = [];
+
+                        Object.keys(json).forEach((i) => {
+                            let items = extractItems(json[i], 0);
+                            videos.push(items);
+                        });
+
+                        // const file = videos[0][0].file; //http://cloud.cdnland.in/5a701568e0c814e78966d69304193194:2022061803/movies/ed23bce433a4f3fb33c8be6eb4a636704e2f0569/720.mp4?dn=Плохие парни_1080.mp4
+                        // const quality = videos[0][0].quality;
+
+                        // console.log(file)
+
+                        const plyrVideoData = [];
+                        videos[0].forEach((item) => {
+                            plyrVideoData.push({
+                                src: item.file,
+                                type: 'video/mp4',
+                                size: item.quality,
+                            });
+                        });
+
+                        const player = new Plyr('#player');
+
+                        player.source = {
+                            type: 'video',
+                            title: 'Example title',
+                            download: false,
+                            sources: plyrVideoData,
+                        };
+
+                        // const videoContainer = document.createElement('video');
+                        // videoContainer.setAttribute('src', file);
+                        // videoContainer.setAttribute('controls', '');
+                        // videoContainer.setAttribute('crossorigin', 'anonymous');
+                        // document.body.querySelector('.video-container').append(videoContainer);
+                        //
+                        // document.body.querySelector('.quality').innerHTML = quality;
+                    });
+            })
+    }
+
+    function extractItems(str) {
+        try {
+            let items = str.split(',').map(function (item) {
+                return {
+                    quality: parseInt(item.match(/\[(\d+)p\]/)[1]),
+                    file: 'http:' + item.replace(/\[\d+p\]/, '').split(' or ')[0]
+                };
+            })/*.filter(function (item) {
+                return item.quality <= max_quality;
+            });*/
+            items.sort(function (a, b) {
+                return b.quality - a.quality;
+            });
+            return items;
+        } catch (e) {
+        }
+
+        return [];
     }
 
 </script>
