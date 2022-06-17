@@ -190,7 +190,7 @@
         const startViewing = document.createElement('button');
         startViewing.innerHTML = 'Просмотр';
         startViewing.addEventListener('click', () => {
-            fetch('http://apitmdb.cub.watch/3/'+(isSerial ? 'tv' : 'movie')+'/'+id+'/external_ids?api_key=4ef0d7355d9ffb5151e987764708ce96&language=ru')
+            fetch('https://apitmdb.cub.watch/3/'+(isSerial ? 'tv' : 'movie')+'/'+id+'/external_ids?api_key=4ef0d7355d9ffb5151e987764708ce96&language=ru')
                 .then((response) => {
                     return response.json();
                 })
