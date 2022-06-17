@@ -130,7 +130,7 @@
     });
 
     function searchFilms(query) {
-        const SEARCH_API_URL = 'http://apitmdb.cub.watch/3/search/movie?api_key=4ef0d7355d9ffb5151e987764708ce96&language=ru&query=';
+        const SEARCH_API_URL = 'https://apitmdb.cub.watch/3/search/movie?api_key=4ef0d7355d9ffb5151e987764708ce96&language=ru&query=';
 
         fetch(SEARCH_API_URL + query)
             .then((response) => {
@@ -147,7 +147,7 @@
         videosCardsContainer.innerHTML = '';
     }
 
-    const FILM_POSTER_URL = 'http://imagetmdb.cub.watch/t/p/w200';
+    const FILM_POSTER_URL = 'https://imagetmdb.cub.watch/t/p/w200';
 
     function generateFilmsCards(filmsObjects) {
 
@@ -184,7 +184,7 @@
     }
 
     function getFilmInfo(id) {
-        const FILM_URL = 'http://apitmdb.cub.watch/3/movie/' + id + '?api_key=4ef0d7355d9ffb5151e987764708ce96&language=ru'
+        const FILM_URL = 'https://apitmdb.cub.watch/3/movie/' + id + '?api_key=4ef0d7355d9ffb5151e987764708ce96&language=ru'
         fetch(FILM_URL)
             .then((response) => {
                 return response.json();
@@ -239,7 +239,7 @@
     }
 
     function getFilmFiles(imdbId) {
-        fetch('http://cdn.svetacdn.in/api/short?api_token=' + VIDEO_CDN_API_TOKEN + '&imdb_id=' + imdbId)
+        fetch('https://cdn.svetacdn.in/api/short?api_token=' + VIDEO_CDN_API_TOKEN + '&imdb_id=' + imdbId)
             .then((response) => {
                 return response.json();
             })
