@@ -1,0 +1,256 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css"/>
+
+<script src="https://cdn.plyr.io/3.7.2/plyr.polyfilled.js"></script>
+
+<style>
+    .film-card-container {
+        max-width: 200px;
+        padding: 10px;
+    }
+</style>
+
+<div>
+
+    <input type="text" placeholder="Название фильма" class="search-field">
+
+    <div class="videos-cards-container" style="display: flex; flex-wrap: wrap;">
+
+
+    </div>
+
+    <div class="film-info-container">
+
+
+    </div>
+
+
+</div>
+
+
+<div class="player-container" style="width: 50%;">
+    <video id="player" crossorigin="anonymous"></video>
+</div>
+
+<script>
+
+    const VIDEO_CDN_API_TOKEN = '3i40G5TSECmLF77oAqnEgbx61ZWaOYaE';
+
+    function parseVideoFiles(iframeSrc) {
+
+        const playerContainer = document.body.querySelector('.player-container');
+        playerContainer.innerHTML = '<video id="player" crossorigin="anonymous"></video>';
+
+        // iframeSrc = '//5886534688564.svetacdn.in/0HlZgU1l1mw5/movie/15754';
+        fetch('https:'+iframeSrc+'?api_token=' + VIDEO_CDN_API_TOKEN)
+            .then((response) => {
+                response.text()
+                    .then((raw) => {
+                        let math = raw.replace(/\n/g, '').match(/id="files" value="(.*?)"/);
+
+                        let json = JSON.parse(math[1].replace(/&quot;/g, '"'), {});
+
+                        let videos = [];
+
+                        Object.keys(json).forEach((i) => {
+                            let items = extractItems(json[i], 0);
+                            videos.push(items);
+                        });
+
+                        // const file = videos[0][0].file; //http://cloud.cdnland.in/5a701568e0c814e78966d69304193194:2022061803/movies/ed23bce433a4f3fb33c8be6eb4a636704e2f0569/720.mp4?dn=Плохие парни_1080.mp4
+                        // const quality = videos[0][0].quality;
+
+                        // console.log(file)
+
+                        const plyrVideoData = [];
+                        videos[0].forEach((item) => {
+                            plyrVideoData.push({
+                                src: item.file,
+                                type: 'video/mp4',
+                                size: item.quality,
+                            });
+                        });
+
+                        const player = new Plyr('#player');
+
+                        player.source = {
+                            type: 'video',
+                            title: 'Example title',
+                            download: false,
+                            sources: plyrVideoData,
+                        };
+
+                        // const videoContainer = document.createElement('video');
+                        // videoContainer.setAttribute('src', file);
+                        // videoContainer.setAttribute('controls', '');
+                        // videoContainer.setAttribute('crossorigin', 'anonymous');
+                        // document.body.querySelector('.video-container').append(videoContainer);
+                        //
+                        // document.body.querySelector('.quality').innerHTML = quality;
+                    });
+            })
+    }
+
+    function extractItems(str) {
+        try {
+            let items = str.split(',').map(function (item) {
+                return {
+                    quality: parseInt(item.match(/\[(\d+)p\]/)[1]),
+                    file: 'http:' + item.replace(/\[\d+p\]/, '').split(' or ')[0]
+                };
+            })/*.filter(function (item) {
+                return item.quality <= max_quality;
+            });*/
+            items.sort(function (a, b) {
+                return b.quality - a.quality;
+            });
+            return items;
+        } catch (e) {
+        }
+
+        return [];
+    }
+
+    let timerSearchField = null;
+    document.body.querySelector('.search-field').addEventListener('input', (event) => {
+        clearTimeout(timerSearchField);
+        timerSearchField = setTimeout(() => {
+            let query = event.target.value;
+            searchFilms(query)
+        }, 1000);
+    });
+
+    function searchFilms(query) {
+        const SEARCH_API_URL = 'http://apitmdb.cub.watch/3/search/movie?api_key=4ef0d7355d9ffb5151e987764708ce96&language=ru&query=';
+
+        fetch(SEARCH_API_URL + query)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                generateFilmsCards(data.results);
+            });
+    }
+
+    const videosCardsContainer = document.body.querySelector('.videos-cards-container');
+
+    function clearFilmsContainer() {
+        videosCardsContainer.innerHTML = '';
+    }
+
+    const FILM_POSTER_URL = 'http://imagetmdb.cub.watch/t/p/w200';
+
+    function generateFilmsCards(filmsObjects) {
+
+        clearFilmsContainer();
+        clearFilmInfoContainer();
+
+        filmsObjects.forEach((filmObject) => {
+            const id = filmObject.id;
+            const title = filmObject.title;
+            const description = filmObject.overview;
+            const poster = filmObject.poster_path !== null ? FILM_POSTER_URL + filmObject.poster_path : 'http://bpic.588ku.com/back_pic/05/10/88/62598e75d484d19.jpg!/fh/300/quality/90/unsharp/true/compress/true';
+            const releaseDate = filmObject.release_date;
+
+            console.log(filmObject)
+
+
+            const filmContainer = document.createElement('div');
+            filmContainer.addEventListener('click', () => getFilmInfo(id))
+            filmContainer.className = 'film-card-container';
+            videosCardsContainer.append(filmContainer);
+
+            const posterContainer = document.createElement('img');
+            posterContainer.src = poster;
+            filmContainer.append(posterContainer);
+
+            const titleContainer = document.createElement('div');
+            titleContainer.innerHTML = title
+            filmContainer.append(titleContainer);
+
+            const releaseDateContainer = document.createElement('div');
+            releaseDateContainer.innerHTML = releaseDate
+            filmContainer.append(releaseDateContainer);
+        });
+    }
+
+    function getFilmInfo(id) {
+        const FILM_URL = 'http://apitmdb.cub.watch/3/movie/' + id + '?api_key=4ef0d7355d9ffb5151e987764708ce96&language=ru'
+        fetch(FILM_URL)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                showFilmInfo(data);
+            });
+    }
+
+    const filmInfoContainer = document.body.querySelector('.film-info-container');
+
+    function clearFilmInfoContainer() {
+        filmInfoContainer.innerHTML = '';
+    }
+
+    function showFilmInfo(filmInfo) {
+        clearFilmsContainer();
+        clearFilmInfoContainer();
+
+        const imdbId = filmInfo.imdb_id;
+        const title = filmInfo.title;
+        const description = filmInfo.overview;
+        const poster = FILM_POSTER_URL + filmInfo.poster_path;
+        const releaseDate = filmInfo.release_date;
+
+        const filmContainer = document.createElement('div');
+        filmInfoContainer.append(filmContainer);
+
+        const posterContainer = document.createElement('img');
+        posterContainer.src = poster;
+        filmContainer.append(posterContainer);
+
+        const startViewing = document.createElement('button');
+        startViewing.innerHTML = 'Просмотр';
+        startViewing.addEventListener('click', () => {
+            getFilmFiles(imdbId);
+        });
+        filmContainer.append(startViewing);
+
+        const titleContainer = document.createElement('div');
+        titleContainer.innerHTML = title
+        filmContainer.append(titleContainer);
+
+        const releaseDateContainer = document.createElement('div');
+        releaseDateContainer.innerHTML = releaseDate
+        filmContainer.append(releaseDateContainer);
+
+        const descriptionContainer = document.createElement('div');
+        descriptionContainer.innerHTML = description
+        filmContainer.append(descriptionContainer);
+
+    }
+
+    function getFilmFiles(imdbId) {
+        fetch('http://cdn.svetacdn.in/api/short?api_token=' + VIDEO_CDN_API_TOKEN + '&imdb_id=' + imdbId)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                parseVideoFiles(data.data[0].iframe_src);
+                clearFilmsContainer();
+                clearFilmInfoContainer();
+            });
+    }
+
+</script>
+
+</body>
+</html>
