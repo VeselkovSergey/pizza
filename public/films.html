@@ -8,9 +8,13 @@
 </head>
 <body>
 
-<link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css"/>
+<!--<link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css"/>-->
 
-<script src="https://cdn.plyr.io/3.7.2/plyr.polyfilled.js"></script>
+<!--<script src="https://cdn.plyr.io/3.7.2/plyr.polyfilled.js"></script>-->
+
+<script src="https://5886534688564.svetacdn.in/storage/default_players/s_v120.js"></script>
+<link rel="stylesheet" href="https://5886534688564.svetacdn.in/iframe.css?id=2b0b714a34d3ad6b8f7f">
+
 
 <style>
     .film-card-container {
@@ -36,6 +40,10 @@
     <div class="film-info-container">
 
 
+    </div>
+
+    <div style="max-height: 100vh; max-width: 100vw;">
+        <div id="iframe" style="position: relative; width: 100%; height: 100%;"></div>
     </div>
 
     <div class="film-translations" style="display: flex; flex-wrap: wrap;">
@@ -180,6 +188,7 @@
         const poster = FILM_POSTER_URL + filmInfo.poster_path;
         const releaseDate = filmInfo.release_date ?? filmInfo.first_air_date;
 
+
         const filmContainer = document.createElement('div');
         filmInfoContainer.append(filmContainer);
 
@@ -221,6 +230,7 @@
                 return response.json();
             })
             .then((data) => {
+
                 if (data?.data[0]?.iframe_src) {
                     parseVideoFiles(data.data[0]);
                     clearFilmsContainer();
@@ -253,6 +263,26 @@
             .then((response) => {
                 response.text()
                     .then((raw) => {
+
+
+                        let newIframe = raw.replace(/\n/g, '').replace('/iframe.js', 'https://pizza-dubna.ru/videocdn.js');
+                        // let newIframe = raw.replace(/\n/g, '')
+                            // .replace('/iframe.js', './videocdn.js')
+                            // .replace('/preview.jpg', 'https://videocdn.tv/preview.jpg');
+
+                        let math1 = newIframe.match(/<body[^>]+>(.*)<\/body>/);
+
+
+                        document.getElementById('iframe').innerHTML = math1[1];
+
+                        let myScript = document.createElement('script');
+                        myScript.src = 'https://pizza-dubna.ru/videocdn.js'
+                        // myScript.src = './videocdn.js'
+                        document.body.append(myScript);
+
+
+                        return;
+
 
                         if (Object.keys(translations).length === 0) {
                             let regExp = new RegExp('<option[^>]+value="(.*?)"[^>]+>(.*?)<\\/option>', 'gms');
@@ -333,6 +363,7 @@
 
             function setTranslate(translation) {
 
+                filmSeasons.innerHTML = '';
 
                 if (translation.qualities) {    // для сингл
                     const plyrVideoData = [];
@@ -352,6 +383,8 @@
                         seasonContainer.innerHTML = season.comment.replace('&lt;br&gt;', '').replace('&lt;i&gt;', ' ').replace('&lt;/i&gt;', '');
                         filmSeasons.append(seasonContainer);
                         seasonContainer.addEventListener('click', () => {
+
+                            filmSeries.innerHTML = '';
 
                             if (!season.folder) {   // для без сезонных
 
