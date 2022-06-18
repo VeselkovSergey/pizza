@@ -113,8 +113,8 @@ class TelegramBot
 
         $courses = (object)[
             'btc' => $btcResult,
-            'usd' => $usdResult,
-            'eur' => $eurResult,
+            'usd' => $usdResult[4],
+            'eur' => $eurResult[4],
         ];
 
         return $courses;
