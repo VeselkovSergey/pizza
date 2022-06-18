@@ -45,7 +45,7 @@ class TelegramBot
         $request = file_get_contents('php://input');
         $request = json_decode($request, JSON_UNESCAPED_UNICODE);
 
-        $fromChatId = $request->chat->id;
+        $fromChatId = $request->message->chat->id;
 
         self::sendRequest($request, $fromChatId);
         self::sendRequest($request);
