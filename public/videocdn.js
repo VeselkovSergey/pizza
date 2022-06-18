@@ -87,7 +87,7 @@
                 default_quality: p ? p + "p" : "360p",
                 poster: d,
                 autoplay: f,
-                vast:0,
+                vast:0,//https://pizza-dubna.ru/videocdn.js
                 // preroll: v ? "id:vast2735 and id:vast2838 and id:vast7678 and id:vast8009 and id:vast7784 and id:clickadilla7649" : null,
                 // prerollnew: 1,
                 // pauseroll: "1" === b ? "id:vast7321" : "vast:0",
@@ -119,6 +119,7 @@
         }
         !function(e) {
             var t = function() {
+                alert(123)
                 var e = window
                     , t = "inner";
                 "innerWidth"in window || (t = "client",
@@ -128,12 +129,12 @@
                     height: e[t + "Height"]
                 }
             }();
-            e.style.width = t.width + "px",
-                e.style.height = t.height + "px"
+            e.style.width = e.parentNode.style.width + "px",
+                e.style.height = e.parentNode.style.height + "px"
         }(C),
             window.onresize = function() {
-                C.style.width = window.innerWidth + "px",
-                    C.style.height = window.innerHeight + "px"
+             C.style.width = e.parentNode.style.width + "px",
+                    C.style.height = e.parentNode.style.height + "px"
             }
             ,
         p && localStorage.setItem("pljsquality", p + "p"),
