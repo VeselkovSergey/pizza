@@ -75,6 +75,14 @@
             }
             (0,
                 o.default)("#player").empty();
+
+                let file = "tv_series" === a && "1" == w ? s[e || 0] : s[e || 0].replace(/poster/gi, "deletePoster");
+                let replaceName = file.replace(/\\\/\\\/cloud.cdnland.in/gi, "http:\\/\\/cloud.cdnland.in");
+                replaceName = replaceName.replace(/\/\/cloud.cdnland.in/gi, "http://cloud.cdnland.in");
+
+            console.log(file)
+            console.log(replaceName)
+
             var r = new Playerjs({
                 id: "player",
                 parent_domain: document.referrer,
@@ -83,7 +91,7 @@
                 eventlisteners: 0,
                 qualitystore: 1,
                 title: y ? null : l,
-                file: "tv_series" === a && "1" == w ? s[e || 0] : s[e || 0].replace(/poster/gi, "deletePoster").replace(/\\\/\\\/cloud.cdnland.in/gi, "http:\\/\\/cloud.cdnland.in"),
+                file: file,
                 default_quality: p ? p + "p" : "360p",
                 poster: d,
                 autoplay: f,
