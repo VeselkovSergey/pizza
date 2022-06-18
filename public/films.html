@@ -21,6 +21,10 @@
         max-width: 200px;
         padding: 10px;
     }
+
+    .film-card-container img {
+        border-radius: 10px;
+    }
 </style>
 
 <div style="padding: 20px;">
@@ -142,7 +146,7 @@
         clearFilmSeries();
         clearFilmInfoContainer();
         document.getElementById('iframe').innerHTML = '';
-        window.history.pushState(null, null, location.host + '?film=' + query);
+        window.history.pushState(null, null, '?film=' + query);
 
         searchFilms(query);
         searchSerials(query);
