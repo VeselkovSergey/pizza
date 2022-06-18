@@ -119,7 +119,6 @@
         }
         !function(e) {
             var t = function() {
-                alert(123)
                 var e = window
                     , t = "inner";
                 "innerWidth"in window || (t = "client",
