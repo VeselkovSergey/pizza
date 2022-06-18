@@ -100,7 +100,29 @@
     }
 
     let timerSearchField = null;
-    document.body.querySelector('.search-field').addEventListener('keyup', (event) => {
+    document.body.querySelector('.search-field').addEventListener('keydown', (event) => {
+
+
+        if (event.target.value.length === 0) {
+            clearFilmsContainer();
+            clearSerialsContainer();
+            clearFilmTranslations();
+            clearFilmSeasons();
+            clearFilmSeries();
+            clearFilmInfoContainer();
+        }
+
+        if (event.target.value.length < 3) return;
+
+        let query = event.target.value;
+
+        if (event.key === 'Enter') {
+            keydownSearchInput(query)
+        }
+
+    });
+
+    document.body.querySelector('.search-field').addEventListener('input', (event) => {
 
         if (event.target.value.length < 3) return;
 
@@ -108,11 +130,7 @@
 
         clearTimeout(timerSearchField);
 
-        if (event.key === 'Enter') {
-            keydownSearchInput(query)
-        } else {
-            timerSearchField = setTimeout(() => keydownSearchInput(query), 1000);
-        }
+        timerSearchField = setTimeout(() => keydownSearchInput(query), 1000);
 
     });
 
@@ -124,6 +142,7 @@
         clearFilmSeries();
         clearFilmInfoContainer();
         document.getElementById('iframe').innerHTML = '';
+        window.history.pushState(null, null, location.host + '?film=' + query);
 
         searchFilms(query);
         searchSerials(query);
@@ -471,6 +490,15 @@
 
         }
 
+    }
+
+    const url = new URL(location.href);
+    const filmTitle = url.searchParams.get("film");
+    const isCard = url.searchParams.get("card");
+
+    if (filmTitle) {
+        document.body.querySelector('.search-field').value = filmTitle;
+        keydownSearchInput(filmTitle);
     }
 
 </script>
