@@ -13,7 +13,7 @@
 <!--<script src="https://cdn.plyr.io/3.7.2/plyr.polyfilled.js"></script>-->
 
 <script src="https://5886534688564.svetacdn.in/storage/default_players/s_v120.js"></script>
-<link rel="stylesheet" href="https://5886534688564.svetacdn.in/iframe.css?id=2b0b714a34d3ad6b8f7f">
+<link rel="stylesheet" href="https://5886534688564.svetacdn.in/iframe.css">
 
 
 <style>
@@ -266,24 +266,20 @@
 
 
                         let newIframe = raw.replace(/\n/g, '').replace('/iframe.js', 'https://pizza-dubna.ru/videocdn.js');
-                        // let newIframe = raw.replace(/\n/g, '')
-                            // .replace('/iframe.js', './videocdn.js')
-                            // .replace('/preview.jpg', 'https://videocdn.tv/preview.jpg');
-
                         let math1 = newIframe.match(/<body[^>]+>(.*)<\/body>/);
-
 
                         document.getElementById('iframe').innerHTML = math1[1];
 
                         let myScript = document.createElement('script');
                         myScript.src = 'https://pizza-dubna.ru/videocdn.js'
-                        // myScript.src = './videocdn.js'
                         document.body.append(myScript);
 
 
                         return;
 
-
+                        /**
+                         * для своего плеера
+                         */
                         if (Object.keys(translations).length === 0) {
                             let regExp = new RegExp('<option[^>]+value="(.*?)"[^>]+>(.*?)<\\/option>', 'gms');
                             let translationsMathAll = raw.replace(/\n/g, '').matchAll(regExp);
