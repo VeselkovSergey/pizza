@@ -195,7 +195,7 @@
                     return response.json();
                 })
                 .then((data) => {
-                    getFilmFiles(data.imdb_id, isSerial);
+                    getFilmFiles(data.imdb_id, isSerial, title);
                 });
 
         });
@@ -215,14 +215,14 @@
 
     }
 
-    function getFilmFiles(imdbId, isSerial) {
-        fetch('https://cdn.svetacdn.in/api/'+(isSerial ? 'tv-series' : 'short')+'?api_token=' + VIDEO_CDN_API_TOKEN + '&imdb_id=' + imdbId)
+    function getFilmFiles(imdbId, isSerial, title) {
+        fetch('https://cdn.svetacdn.in/api/'+(isSerial ? 'tv-series' : 'short')+'?api_token=' + VIDEO_CDN_API_TOKEN + (imdbId ? ('&imdb_id=' + imdbId) : ('&title=' + title)))
             .then((response) => {
                 return response.json();
             })
             .then((data) => {
                 if (data?.data[0]?.iframe_src) {
-                    parseVideoFiles(data.data[0].iframe_src);
+                    parseVideoFiles(data.data[0]);
                     clearFilmsContainer();
                     clearFilmInfoContainer();
                     clearSerialsContainer();
@@ -236,25 +236,35 @@
 
     let translations = {};
 
-    function parseVideoFiles(iframeSrc) {
+    function parseVideoFiles(data) {
+
+        const iframeSrc = data.iframe_src;
 
         translations = {};
 
-        // iframeSrc = '//5886534688564.svetacdn.in/0HlZgU1l1mw5/movie/15754';
+        data.translations.forEach((translation) => {
+            if (!translation.id) return;
+            translations[translation.id] = {
+                translationTitle: translation.title,
+            }
+        });
+
         fetch('https:'+iframeSrc+'?api_token=' + VIDEO_CDN_API_TOKEN)
             .then((response) => {
                 response.text()
                     .then((raw) => {
 
-                        let regExp = new RegExp('<option[^>]+value="(.*?)"[^>]+>(.*?)<\\/option>', 'gms');
-                        let translationsMathAll = raw.replace(/\n/g, '').matchAll(regExp);
-                        translationsMathAll = Array.from(translationsMathAll);
+                        if (Object.keys(translations).length === 0) {
+                            let regExp = new RegExp('<option[^>]+value="(.*?)"[^>]+>(.*?)<\\/option>', 'gms');
+                            let translationsMathAll = raw.replace(/\n/g, '').matchAll(regExp);
+                            translationsMathAll = Array.from(translationsMathAll);
 
-                        translationsMathAll.forEach((translation) => {
-                            translations[translation[1]] = {
-                                translationTitle: translation[2].trim()
-                            }
-                        });
+                            translationsMathAll.forEach((translation) => {
+                                translations[translation[1]] = {
+                                    translationTitle: translation[2].trim()
+                                }
+                            });
+                        }
 
                         let math = raw.replace(/\n/g, '').match(/id="files" value="(.*?)"/);
 
@@ -264,21 +274,14 @@
 
                             const translationRaw = json[index];
 
+                            if (!translations[index]) {
+                                return;
+                            }
+
                             try {
-
                                 translations[index]['seasons'] = JSON.parse(translationRaw);
-                                // console.log(translations)
-                                // translation.forEach((season) => {
-                                //     season.folder.forEach((files) => {
-                                //         let qualities = extractItems(files.file, 0);
-                                //         // console.log(qualities);
-                                //     });
-                                // });
-
-
                             }catch (e) {
                                 translations[index]['qualities'] = extractItems(translationRaw, 0);
-
                             }
                         });
 
@@ -331,7 +334,7 @@
             function setTranslate(translation) {
 
 
-                if (translation.qualities) {
+                if (translation.qualities) {    // для сингл
                     const plyrVideoData = [];
                     translation.qualities.forEach((item) => {
                         plyrVideoData.push({
@@ -346,30 +349,49 @@
                 } else {
                     translation.seasons.forEach((season) => {
                         const seasonContainer = document.createElement('button');
-                        seasonContainer.innerHTML = season.comment;
+                        seasonContainer.innerHTML = season.comment.replace('&lt;br&gt;', '').replace('&lt;i&gt;', ' ').replace('&lt;/i&gt;', '');
                         filmSeasons.append(seasonContainer);
                         seasonContainer.addEventListener('click', () => {
-                            season.folder.forEach((series) => {
-                                const seriesContainer = document.createElement('button');
-                                seriesContainer.innerHTML = series.comment.replace('&lt;br&gt;', '').replace('&lt;i&gt;', ' ').replace('&lt;/i&gt;', '');
-                                filmSeries.append(seriesContainer);
 
-                                seriesContainer.addEventListener('click', () => {
-                                    let qualities = extractItems(series.file, 0);
+                            if (!season.folder) {   // для без сезонных
 
-                                    const plyrVideoData = [];
-                                    qualities.forEach((item) => {
-                                        plyrVideoData.push({
-                                            src: item.file,
-                                            type: 'video/mp4',
-                                            size: item.quality,
-                                        });
+                                let qualities = extractItems(season.file, 0);
+
+                                const plyrVideoData = [];
+                                qualities.forEach((item) => {
+                                    plyrVideoData.push({
+                                        src: item.file,
+                                        type: 'video/mp4',
+                                        size: item.quality,
                                     });
-
-                                    startPlayer(plyrVideoData)
                                 });
 
-                            });
+                                startPlayer(plyrVideoData)
+
+                            } else {    // с сезонами
+
+                                season.folder.forEach((series) => {
+                                    const seriesContainer = document.createElement('button');
+                                    seriesContainer.innerHTML = series.comment.replace('&lt;br&gt;', '').replace('&lt;i&gt;', ' ').replace('&lt;/i&gt;', '');
+                                    filmSeries.append(seriesContainer);
+
+                                    seriesContainer.addEventListener('click', () => {
+                                        let qualities = extractItems(series.file, 0);
+
+                                        const plyrVideoData = [];
+                                        qualities.forEach((item) => {
+                                            plyrVideoData.push({
+                                                src: item.file,
+                                                type: 'video/mp4',
+                                                size: item.quality,
+                                            });
+                                        });
+
+                                        startPlayer(plyrVideoData)
+                                    });
+
+                                });
+                            }
                         });
                     });
                 }
