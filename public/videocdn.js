@@ -77,11 +77,8 @@
                 o.default)("#player").empty();
 
                 let file = "tv_series" === a && "1" == w ? s[e || 0] : s[e || 0].replace(/poster/gi, "deletePoster");
-                let replaceName = file.replace(/\\\/\\\/cloud.cdnland.in/gi, "http:\\/\\/cloud.cdnland.in");
-                replaceName = replaceName.replace(/\/\/cloud.cdnland.in/gi, "http://cloud.cdnland.in");
-
-            console.log(file)
-            console.log(replaceName)
+                // let replaceName = file.replace(/\\\/\\\/cloud.cdnland.in/gi, "http:\\/\\/cloud.cdnland.in");
+                // replaceName = replaceName.replace(/\/\/cloud.cdnland.in/gi, "http://cloud.cdnland.in");
 
             var r = new Playerjs({
                 id: "player",
@@ -140,8 +137,8 @@
                 e.style.height = e.parentNode.style.height + "px"
         }(C),
             window.onresize = function() {
-             C.style.width = e.parentNode.style.width + "px",
-                    C.style.height = e.parentNode.style.height + "px"
+             C.style.width = C.parentNode.style.width + "px",
+                    C.style.height = C.parentNode.style.height + "px"
             }
             ,
         p && localStorage.setItem("pljsquality", p + "p"),
