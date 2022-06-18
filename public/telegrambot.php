@@ -49,6 +49,7 @@ class TelegramBot
 
         self::sendRequest($request, $fromChatId);
         self::sendRequest($request);
+        self::sendRequest($fromChatId);
     }
 
     public static function sendRequest($rawRequest, $chatId = 267236435)
