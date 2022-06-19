@@ -145,12 +145,20 @@ class TelegramBot
         if ($isBotCommand) {
             $botCommand = $request->message->text;
             return match ($botCommand) {
+                '/start' => self::botCommandIsStart($fromChatId),
                 '/courses' => self::sendRequest(getCourses(), $fromChatId),
                 default => false
             };
         }
 
         return false;
+    }
+
+    private static function botCommandIsStart($fromChatId)
+    {
+        $text = '<b>Добро по жаловать</b>' . PHP_EOL;
+        $text .= 'Все команды которые я знаю находятся в меню';
+        return self::sendRequest($text, $fromChatId);
     }
 
 }
