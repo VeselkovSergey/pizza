@@ -145,11 +145,7 @@ class TelegramBot
     {
         $fromChatId = $request->message->chat->id;
 
-        $isBotCommand = $request?->message?->entities[0]?->type?->bot_command;
-        self::sendRequest($request?->message?->entities, $fromChatId);
-        self::sendRequest($request?->message?->entities[0], $fromChatId);
-        self::sendRequest($request?->message?->entities[0]?->type, $fromChatId);
-        self::sendRequest($request?->message?->entities[0]?->type?->bot_command, $fromChatId);
+        $isBotCommand = $request?->message?->entities[0]?->type === 'bot_command';
         if ($isBotCommand) {
             $botCommand = $request->message->text;
             self::sendRequest($botCommand, $fromChatId);
