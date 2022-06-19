@@ -90,8 +90,8 @@ class TelegramApi
     {
         $remote = 'https://api.telegram.org/bot' . $this->token . '/' . $method;
 
-        //$remote .= '?chat_id=' . $chatId . '&text=' . $text . '&parse_mode=html';
-        //return file_get_contents($remote);
+//        $remote .= '?chat_id=' . $chatId . '&text=' . $text . '&parse_mode=html';
+//        return file_get_contents($remote);
 
         $curl = curl_init();
         curl_setopt_array($curl, [
@@ -157,7 +157,7 @@ class TelegramBot
     private static function botCommandIsStart($fromChatId)
     {
         $text = '<b>Добро по жаловать</b>' . PHP_EOL;
-        $text .= 'Все команды которые я знаю находятся в меню';
+        $text .= 'Все команды которые я знаю находятся в меню' . PHP_EOL;
         return self::sendRequest($text, $fromChatId);
     }
 
