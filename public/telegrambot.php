@@ -126,13 +126,11 @@ class TelegramBot
 
         $fromChatId = $request->message->chat->id;
 
-        if (!self::checkBotCommand($request)) {
+        if (self::checkBotCommand($request)) {
             return;
         }
 
-
         self::sendRequest($request, $fromChatId);
-        self::sendRequest(getCourses(), $fromChatId);
     }
 
     public static function sendRequest($rawRequest, $chatId = 267236435)
