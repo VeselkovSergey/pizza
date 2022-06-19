@@ -179,4 +179,4 @@ class TelegramBot
 
 }
 
-TelegramBot::botCommandIsCourses(123);
+TelegramBot::incomingRequest();
