@@ -101,7 +101,7 @@ class TelegramApi
             CURLOPT_POSTFIELDS => http_build_query([
                 'text' => $text,
                 'chat_id' => $chatId,
-                //'parse_mode' => 'html'
+                'parse_mode' => 'html'
             ]), // Данные в запросе
         ]);
 
