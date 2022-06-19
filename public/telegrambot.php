@@ -134,7 +134,7 @@ class TelegramBot
     public static function sendRequest($rawRequest, $chatId = '-657050211')
     {
         $telegramApi = new TelegramApi('1913717295:AAH0QLrCiQLyeJt4BVB_sctJR1b5K3SNZYk');
-        return $telegramApi->sendMessage(json_encode($rawRequest, JSON_UNESCAPED_UNICODE), $chatId);
+        return $telegramApi->sendMessage($rawRequest, $chatId);
     }
 
     private static function checkBotCommand($request)
