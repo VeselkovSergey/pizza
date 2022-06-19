@@ -1,5 +1,82 @@
 <?php
 
+function curlGet($remote)
+{
+    $userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44';
+
+    $curl = curl_init();
+    curl_setopt_array($curl, [
+        CURLOPT_URL => $remote, // Полный адрес метода
+        CURLOPT_RETURNTRANSFER => true, // Возвращать ответ
+//            CURLOPT_POST => false, // Метод POST
+        CURLOPT_USERAGENT => $userAgent
+
+    ]);
+
+    return curl_exec($curl);
+}
+
+function getCourses()
+{
+    $urlCourses = 'https://quote.ru/v5/ajax/key-indicator-update/?_' . time();
+
+    $courses = [];
+    $coursesResult = json_decode(curlGet($urlCourses))->shared_key_indicators_under_topline;
+    foreach ($coursesResult as $item) {
+        $currency = (object)[
+            'currency' => $item->item->ticker,
+            'date' => $item->item->prepared->maxDealDate,
+        ];
+
+        if ($item->item->data_type === 'cash') {
+            $currency->value1 = $item->item->prepared->value1;
+            $currency->value2 = $item->item->prepared->value2;
+        } else {
+            $currency->value = $item->item->prepared->closevalue;
+        }
+        $courses[] = $currency;
+
+    }
+    return $courses;
+}
+
+function coursesByCurrency()
+{
+
+    $btcUrl = 'https://www.rbc.ru/crypto/data/graph/166026/day/1/?_=' . time();
+    $btcResult = array_pop(json_decode(curlGet($btcUrl))->result->data)[1];
+
+    $usdUrl = 'https://quote.rbc.ru/data/ticker/graph/59111/d/?_=' . time();
+    $usdResultArray = json_decode(curlGet($usdUrl))->result->data;
+    $usdResult = null;
+    foreach ($usdResultArray as $key => $item) {
+        if ($key !== 0 && is_null($item[4])) {
+            break;
+        } else {
+            $usdResult = $item;
+        }
+    }
+
+    $eurUrl = 'https://quote.ru/data/ticker/graph/59090/d/?_=' . time();
+    $eurResultArray = json_decode(curlGet($eurUrl))->result->data;
+    $eurResult = null;
+    foreach ($eurResultArray as $key => $item) {
+        if ($key !== 0 && is_null($item[4])) {
+            break;
+        } else {
+            $eurResult = $item;
+        }
+    }
+
+    $courses = (object)[
+        'btc' => $btcResult,
+        'usd' => $usdResult,
+        'eur' => $eurResult,
+    ];
+
+    return $courses;
+}
+
 class TelegramApi
 {
     private $token;
@@ -49,7 +126,7 @@ class TelegramBot
 
         $fromChatId = $request->message->chat->id;
         self::sendRequest($request, $fromChatId);
-        self::sendRequest(self::courses(), $fromChatId);
+        self::sendRequest(getCourses(), $fromChatId);
     }
 
     public static function sendRequest($rawRequest, $chatId = 267236435)
@@ -57,68 +134,7 @@ class TelegramBot
         $telegramApi = new TelegramApi('1913717295:AAH0QLrCiQLyeJt4BVB_sctJR1b5K3SNZYk');
         $telegramApi->sendMessage(json_encode($rawRequest, JSON_UNESCAPED_UNICODE), $chatId);
     }
-
-    public static function courses()
-    {
-        $userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44';
-
-        $btcUrl = 'https://www.rbc.ru/crypto/data/graph/166026/day/1/?_=' . time();
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $btcUrl, // Полный адрес метода
-            CURLOPT_RETURNTRANSFER => true, // Возвращать ответ
-//            CURLOPT_POST => false, // Метод POST
-            CURLOPT_USERAGENT => $userAgent
-
-        ]);
-        $btcResult = array_pop(json_decode(curl_exec($curl))->result->data)[1];
-
-        $usdUrl = 'https://quote.rbc.ru/data/ticker/graph/59111/d/?_=' . time();
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $usdUrl, // Полный адрес метода
-            CURLOPT_RETURNTRANSFER => true, // Возвращать ответ
-//            CURLOPT_POST => false, // Метод POST
-            CURLOPT_USERAGENT => $userAgent
-
-        ]);
-        $usdResultArray = json_decode(curl_exec($curl))->result->data;
-        $usdResult = null;
-        foreach ($usdResultArray as $key => $item) {
-            if ($key !== 0 && is_null($item[4])) {
-                break;
-            } else {
-                $usdResult = $item;
-            }
-        }
-
-        $eurUrl = 'https://quote.ru/data/ticker/graph/59090/d/?_=' . time();
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $eurUrl, // Полный адрес метода
-            CURLOPT_RETURNTRANSFER => true, // Возвращать ответ
-//            CURLOPT_POST => false, // Метод POST
-            CURLOPT_USERAGENT => $userAgent
-
-        ]);
-        $eurResultArray = json_decode(curl_exec($curl))->result->data;
-        $eurResult = null;
-        foreach ($eurResultArray as $key => $item) {
-            if ($key !== 0 && is_null($item[4])) {
-                break;
-            } else {
-                $eurResult = $item;
-            }
-        }
-
-        $courses = (object)[
-            'btc' => $btcResult,
-            'usd' => $usdResult[4],
-            'eur' => $eurResult[4],
-        ];
-
-        return $courses;
-    }
+    
 }
 
 TelegramBot::incomingRequest();
