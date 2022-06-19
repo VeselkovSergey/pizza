@@ -161,16 +161,17 @@ class TelegramBot
         return self::sendRequest($text, $fromChatId);
     }
 
-    private static function botCommandIsCourses($fromChatId)
+    public static function botCommandIsCourses($fromChatId)
     {
         $text = '<b>Курсы валют:</b>' . PHP_EOL;
         $coursesObj = getCourses();
         foreach ($coursesObj as $courses) {
-            $text .= '<i>'.$courses->currency.':</i> <b>' . $courses->value ?? ($courses->value1 . '/' .  $courses->value2) . '</b> на ' . $courses->date . PHP_EOL;
+            $text .= '<i>'.$courses->currency.':</i> <b>' . $courses->value ?? $courses->value1 . '</b> на ' . $courses->date . PHP_EOL;
         }
-        return self::sendRequest($text, $fromChatId);
+        var_dump($text);
+//        return self::sendRequest($text, $fromChatId);
     }
 
 }
 
-TelegramBot::incomingRequest();
+TelegramBot::botCommandIsCourses(123);
