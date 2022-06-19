@@ -148,6 +148,7 @@ class TelegramBot
         $isBotCommand = $request?->message?->entities?->type?->bot_command;
         if ($isBotCommand) {
             $botCommand = $request->message->text;
+            self::sendRequest($botCommand, $fromChatId);
             return match ($botCommand) {
                 '/courses' => self::sendRequest(getCourses(), $fromChatId),
                 default => false
