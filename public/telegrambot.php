@@ -90,8 +90,8 @@ class TelegramApi
     {
         $remote = 'https://api.telegram.org/bot' . $this->token . '/' . $method;
 
-        $remote .= '?chat_id=' . $chatId . '&text=' . $text . '&parse_mode=html';
-        return file_get_contents($remote);
+        //$remote .= '?chat_id=' . $chatId . '&text=' . $text . '&parse_mode=html';
+        //return file_get_contents($remote);
 
         $curl = curl_init();
         curl_setopt_array($curl, [
@@ -101,7 +101,7 @@ class TelegramApi
             CURLOPT_POSTFIELDS => http_build_query([
                 'text' => $text,
                 'chat_id' => $chatId,
-                'parse_mode' => 'html'
+                //'parse_mode' => 'html'
             ]), // Данные в запросе
         ]);
 
