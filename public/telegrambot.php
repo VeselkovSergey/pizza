@@ -146,7 +146,7 @@ class TelegramBot
             $botCommand = $request->message->text;
             return match ($botCommand) {
                 '/start' => self::botCommandIsStart($fromChatId),
-                '/courses' => self::sendRequest(getCourses(), $fromChatId),
+                '/courses' => self::botCommandIsCourses($fromChatId),
                 default => false
             };
         }
@@ -158,6 +158,16 @@ class TelegramBot
     {
         $text = '<b>Добро по жаловать</b>' . PHP_EOL;
         $text .= '<i>Все команды которые я знаю находятся в меню</i>' . PHP_EOL;
+        return self::sendRequest($text, $fromChatId);
+    }
+
+    private static function botCommandIsCourses($fromChatId)
+    {
+        $text = '<b>Курсы валют:</b>' . PHP_EOL;
+        $coursesObj = getCourses();
+        foreach ($coursesObj as $courses) {
+            $text .= '<i>'.$courses->currency.': </i><b>' . $courses->value ?? ($courses->value1 . '/' .  $courses->value2) . '</b> на ' . $courses->date;
+        }
         return self::sendRequest($text, $fromChatId);
     }
 
