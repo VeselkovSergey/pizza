@@ -157,7 +157,7 @@ class TelegramBot
     private static function botCommandIsStart($fromChatId)
     {
         $text = '<b>Добро по жаловать</b>' . PHP_EOL;
-        $text .= 'Все команды которые я знаю находятся в меню' . PHP_EOL;
+        $text .= '<i>Все команды которые я знаю находятся в меню</i>' . PHP_EOL;
         return self::sendRequest($text, $fromChatId);
     }
 
