@@ -105,8 +105,13 @@ class TelegramApi
             ]), // Данные в запросе
         ]);
 
+        $result = curl_exec($curl);
 
-        return curl_exec($curl);
+        $file = 'tgBot.txt';
+        file_put_contents($file, PHP_EOL, FILE_APPEND);
+        file_put_contents($file, $result, FILE_APPEND);
+
+        return $result;
     }
 
     public function sendMessage($text, $chatId)
