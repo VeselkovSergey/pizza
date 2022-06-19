@@ -125,6 +125,12 @@ class TelegramBot
         self::sendRequest($request);
 
         $fromChatId = $request->message->chat->id;
+        
+        if (!self::checkBotCommand($request)) {
+            return;
+        }
+
+
         self::sendRequest($request, $fromChatId);
         self::sendRequest(getCourses(), $fromChatId);
     }
@@ -132,9 +138,24 @@ class TelegramBot
     public static function sendRequest($rawRequest, $chatId = 267236435)
     {
         $telegramApi = new TelegramApi('1913717295:AAH0QLrCiQLyeJt4BVB_sctJR1b5K3SNZYk');
-        $telegramApi->sendMessage(json_encode($rawRequest, JSON_UNESCAPED_UNICODE), $chatId);
+        return $telegramApi->sendMessage(json_encode($rawRequest, JSON_UNESCAPED_UNICODE), $chatId);
     }
-    
+
+    private static function checkBotCommand($request)
+    {
+        $fromChatId = $request->message->chat->id;
+
+        $botCommand = $request?->message?->entities?->type?->bot_command;
+        if ($botCommand) {
+            return match ($botCommand) {
+                '/courses' => self::sendRequest(getCourses(), $fromChatId),
+                default => false
+            };
+        }
+        
+        return false;
+    }
+
 }
 
 TelegramBot::incomingRequest();
