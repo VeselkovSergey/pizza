@@ -125,7 +125,7 @@ class TelegramBot
         self::sendRequest($request);
 
         $fromChatId = $request->message->chat->id;
-        
+
         if (!self::checkBotCommand($request)) {
             return;
         }
@@ -145,14 +145,15 @@ class TelegramBot
     {
         $fromChatId = $request->message->chat->id;
 
-        $botCommand = $request?->message?->entities?->type?->bot_command;
-        if ($botCommand) {
+        $isBotCommand = $request?->message?->entities?->type?->bot_command;
+        if ($isBotCommand) {
+            $botCommand = $request->message->text;
             return match ($botCommand) {
                 '/courses' => self::sendRequest(getCourses(), $fromChatId),
                 default => false
             };
         }
-        
+
         return false;
     }
 
