@@ -129,11 +129,9 @@ class TelegramBot
         if (self::checkBotCommand($request)) {
             return;
         }
-
-        self::sendRequest($request, $fromChatId);
     }
 
-    public static function sendRequest($rawRequest, $chatId = 267236435)
+    public static function sendRequest($rawRequest, $chatId = '-657050211')
     {
         $telegramApi = new TelegramApi('1913717295:AAH0QLrCiQLyeJt4BVB_sctJR1b5K3SNZYk');
         return $telegramApi->sendMessage(json_encode($rawRequest, JSON_UNESCAPED_UNICODE), $chatId);
